@@ -72,18 +72,12 @@ const Hero = ({ isLoaded = true }) => {
 
           {/* Main Title */}
           <div ref={headingRef} className="space-y-2 md:space-y-3">
-            <h1
-              className="font-newsreader text-3xl sm:text-4xl md:text-5xl lg:text-[2.9rem] xl:text-[3.4rem] text-slate-900 leading-[1.08] tracking-[-0.01em] font-light"
-            >
+            <h1 className="font-inter text-3xl sm:text-4xl md:text-5xl lg:text-[3.4rem] text-slate-900 leading-[1.1] tracking-[-0.02em] font-light">
               Master Software Testing <br className="hidden sm:inline" />
-              &amp; Quality Assurance
+              &amp; Quality Assurance <br />
+              with real-world{' '}
+              <span className="font-semibold text-[#1878C0]">Banking Tech Leadership</span>
             </h1>
-            <h2
-              className="font-newsreader text-2xl sm:text-3xl md:text-4xl lg:text-[2.3rem] xl:text-[2.7rem] leading-[1.12] tracking-[-0.01em] font-light"
-            >
-              <span className="text-[#1878C0]">with real-world</span>{' '}
-              <span className="text-slate-900">Banking Tech Leadership</span>
-            </h2>
           </div>
 
           {/* Short Subtitle */}
