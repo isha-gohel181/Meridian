@@ -107,7 +107,7 @@ const AITool: React.FC = () => {
 
     try {
       const token = localStorage.getItem('accessToken');
-      const baseUrl = import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_BASE_URL || 'https://happy-life-sx03.onrender.com';
+      const baseUrl = import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_BASE_URL || 'https://api.xpertqa.in';
       // Remove trailing slash if present, then add /ai/chat
       const apiUrl = `${baseUrl.replace(/\/$/, '')}/ai/chat`;
       const response = await fetch(

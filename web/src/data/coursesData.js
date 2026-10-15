@@ -3,7 +3,7 @@ export const dummyCourses = [
     id: 'astro-1',
     category: 'ASTRO-VASTU COURSES',
     title: 'Astro-Vastu Foundation & Master Consultation Program',
-    description: 'Master the principles of Vedic Astrology combined with Vastu Shastra. Learn birth chart mapping, house significations, and non-destructive spatial remedies with Dr. Yogesh Sharma.',
+    description: 'Master the principles of Vedic Astrology combined with Vastu Shastra. Learn birth chart mapping, house significations, and non-destructive spatial remedies with Manoj Saxena.',
     shortDescription: 'Complete Vedic Astro-Vastu foundation program with practical remedies.',
     price: '18,999',
     salePrice: '12,999',
@@ -14,7 +14,7 @@ export const dummyCourses = [
     thumbnail: '/courses/architecture.png',
     isNew: true,
     tags: ['Astro-Vastu', 'Kundli', 'Remedies', 'Masterclass'],
-    mentorName: 'Dr. Yogesh Sharma',
+    mentorName: 'Manoj Saxena',
   },
   {
     id: 'astro-2',
@@ -31,7 +31,7 @@ export const dummyCourses = [
     thumbnail: '/courses/typography.png',
     isNew: false,
     tags: ['Astrology', 'Kundli', 'Prediction', 'Vedic'],
-    mentorName: 'Dr. Yogesh Sharma',
+    mentorName: 'Manoj Saxena',
   },
   {
     id: 'astro-3',
@@ -48,7 +48,7 @@ export const dummyCourses = [
     thumbnail: '/courses/motion.png',
     isNew: true,
     tags: ['Vastu', 'Home Energy', 'Commercial Vastu', 'Remedies'],
-    mentorName: 'Dr. Yogesh Sharma',
+    mentorName: 'Manoj Saxena',
   },
   {
     id: 'astro-4',
@@ -65,7 +65,7 @@ export const dummyCourses = [
     thumbnail: '/courses/curator.png',
     isNew: true,
     tags: ['Remedies', 'Upay', 'Rahu', 'Shani Dev'],
-    mentorName: 'Dr. Yogesh Sharma',
+    mentorName: 'Manoj Saxena',
   },
   {
     id: 'astro-5',
@@ -82,7 +82,7 @@ export const dummyCourses = [
     thumbnail: '/courses/narrative.png',
     isNew: false,
     tags: ['Numerology', 'Name Correction', 'Business Success'],
-    mentorName: 'Dr. Yogesh Sharma',
+    mentorName: 'Manoj Saxena',
   },
   {
     id: 'astro-6',
@@ -99,7 +99,7 @@ export const dummyCourses = [
     thumbnail: '/courses/pricing.png',
     isNew: true,
     tags: ['Finance', 'Business Astrology', 'Wealth Vastu'],
-    mentorName: 'Dr. Yogesh Sharma',
+    mentorName: 'Manoj Saxena',
   }
 ];
 
@@ -193,7 +193,7 @@ export const testSeriesData = [
     description: 'Practical knowledge on daily lifestyle remedies for Rahu, Saturn, Venus, and Mars without superstition.',
     questions: [
       {
-        question: 'According to Dr. Yogesh Sharma, what is the best daily habit to pacify negative Rahu vibrations?',
+        question: 'According to Manoj Saxena, what is the best daily habit to pacify negative Rahu vibrations?',
         options: [
           'Wearing costly gemstones without consulting',
           'Keeping bathrooms, gadgets, and bedroom clutter-free with disciplined routines',
@@ -224,7 +224,7 @@ export const buyBooksData = [
     id: 'book-1',
     title: 'Astro-Vastu Handbook: Harmonizing Home & Destiny',
     category: 'Astro-Vastu',
-    author: 'Dr. Yogesh Sharma',
+    author: 'Manoj Saxena',
     format: 'eBook (PDF) + Directional Compass Guide',
     pages: 340,
     fileSize: '16.4 MB',
@@ -239,7 +239,7 @@ export const buyBooksData = [
       'Complete 16-zone Vastu energy breakdown',
       '50+ High-yield visual remedy charts without demolition',
       'Case studies on solving financial blockages and sleep disorders',
-      'Kundli and Vastu integration frameworks by Dr. Yogesh Sharma'
+      'Kundli and Vastu integration frameworks by Manoj Saxena'
     ],
     sampleExcerpt: 'Chapter 3: The North-East Ishan Principle — How keeping this zone pure and uncluttered activates mental clarity and divine intuition.'
   },
@@ -247,7 +247,7 @@ export const buyBooksData = [
     id: 'book-2',
     title: 'Vedic Kundli Decoding: A Practical Modern Guide',
     category: 'Vedic Astrology',
-    author: 'Dr. Yogesh Sharma',
+    author: 'Manoj Saxena',
     format: 'eBook (PDF) + 12 Houses Chart',
     pages: 410,
     fileSize: '24.8 MB',
@@ -270,7 +270,7 @@ export const buyBooksData = [
     id: 'book-3',
     title: 'Rahu, Ketu & Shani: Turning Planetary Challenges into Strengths',
     category: 'Planetary Remedies',
-    author: 'Dr. Yogesh Sharma',
+    author: 'Manoj Saxena',
     format: 'eBook (PDF) + Daily Upay Checklists',
     pages: 380,
     fileSize: '19.2 MB',

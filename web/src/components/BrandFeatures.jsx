@@ -168,7 +168,7 @@ const BrandFeatures = () => {
         <div className="features-header text-center space-y-8 mx-auto">
            <div className="space-y-4">
               <span className="font-jetbrains text-[9px] text-amber-700 tracking-[0.8em] font-black uppercase">{t('howWeHelp')}</span>
-              <h2 className="font-newsreader text-[clamp(3.5rem,8vw,6rem)] italic leading-[0.9] text-normal mb-8">
+               <h2 className="font-newsreader text-[clamp(2.25rem,4.5vw,3.75rem)] font-normal leading-[1.05] text-normal mb-8">
                  {t('designedToGrow')}
               </h2>
            </div>
@@ -192,7 +192,7 @@ const BrandFeatures = () => {
                     <div className="space-y-8">
                        <div className="space-y-4">
                           <span className="font-jetbrains text-[9px] text-amber-700 tracking-[0.5em] font-black uppercase">{feature.tag}</span>
-                          <h3 className="font-newsreader italic text-4xl md:text-5xl text-slate-900 font-extralight leading-none tracking-tight group-hover:text-amber-600 transition-colors duration-500">
+                           <h3 className="font-newsreader text-4xl md:text-5xl text-slate-900 font-normal leading-none tracking-tight group-hover:text-amber-600 transition-colors duration-500">
                              {feature.title}
                           </h3>
                        </div>

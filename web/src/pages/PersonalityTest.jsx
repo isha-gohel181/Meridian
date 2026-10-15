@@ -293,7 +293,7 @@ const PersonalityTest = () => {
                 <div className="flex flex-col md:flex-row items-center justify-center gap-8 py-12 border-t border-white/5">
                    <button 
                       onClick={() => { setTestState('intro'); setCurrentIndex(0); setAnswers({}); }}
-                      className="group flex items-center gap-6 px-12 py-5 border border-white/10 font-montserrat text-[14px] font-bold tracking-[0.4em] uppercase text-description/80 hover:text-normal hover:bg-white/5 transition-all duration-500 rounded-full"
+                      className="group flex items-center gap-6 px-12 py-5 border border-white/10 font-montserrat text-[14px] font-bold tracking-[0.4em] uppercase text-description/80 hover:text-normal hover:bg-white/5 transition-all duration-500 rounded-xl"
                    >
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="group-hover:rotate-180 transition-transform duration-700 opacity-40"><path d="M2.5 2v6h6M21.5 22v-6h-6M22 11.5A10 10 0 0 0 3.2 7.2M2 12.5a10 10 0 0 0 18.8 4.3" /></svg>
                       RESET TEST PROTOCOL
@@ -419,7 +419,7 @@ const PersonalityTest = () => {
                                           onMouseLeave={(e) => {
                                             gsap.to(e.currentTarget.querySelector('.dot-inner'), { x: 0, y: 0, duration: 0.6, ease: 'elastic.out(1, 0.3)' });
                                           }}
-                                          className={`${sizes[level-1]} rounded-full border border-white/20 transition-all duration-500 flex items-center justify-center group/btn-circle relative overflow-hidden cursor-pointer
+                                          className={`${sizes[level-1]} rounded-xl border border-white/20 transition-all duration-500 flex items-center justify-center group/btn-circle relative overflow-hidden cursor-pointer
                                             ${answers[questions[currentIndex].id] === level 
                                                 ? 'border-accent bg-accent/20 scale-110 shadow-accent-small' 
                                                 : 'hover:border-accent/60 hover:scale-110'}`}

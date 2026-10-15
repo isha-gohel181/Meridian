@@ -41,18 +41,18 @@ layer(base);
   --color-white: #ffffff;
   --color-black: #101828;
 
-  --color-brand-25: #f4f8fc;
-  --color-brand-50: #eaf2f9;
-  --color-brand-100: #d0e4f4;
-  --color-brand-200: #a5cde9;
-  --color-brand-300: #6eaee0;
-  --color-brand-400: #3e8fd3;
-  --color-brand-500: #2171B5;
-  --color-brand-600: #1b5e99;
-  --color-brand-700: #174b7c;
-  --color-brand-800: #143e65;
-  --color-brand-900: #123454;
-  --color-brand-950: #0c2035;
+  --color-brand-25: #f3f9fd;
+  --color-brand-50: #e8f3fb;
+  --color-brand-100: #cee7f7;
+  --color-brand-200: #a2d0ef;
+  --color-brand-300: #6bb3e4;
+  --color-brand-400: #3f96d7;
+  --color-brand-500: #1878C0;
+  --color-brand-600: #1468a8;
+  --color-brand-700: #11588e;
+  --color-brand-800: #0f4a75;
+  --color-brand-900: #0d3d60;
+  --color-brand-950: #082640;
 
   --color-blue-light-25: #f5fbff;
   --color-blue-light-50: #f0f9ff;
@@ -147,7 +147,7 @@ layer(base);
   --shadow-theme-xl: 0px 20px 24px -4px rgba(16, 24, 40, 0.08),
     0px 8px 8px -4px rgba(16, 24, 40, 0.03);
   --shadow-datepicker: -5px 0 0 #262d3c, 5px 0 0 #262d3c;
-  --shadow-focus-ring: 0px 0px 0px 4px rgba(70, 95, 255, 0.12);
+  --shadow-focus-ring: 0px 0px 0px 4px rgba(24, 120, 192, 0.12);
   --shadow-slider-navigation: 0px 1px 2px 0px rgba(16, 24, 40, 0.1),
     0px 1px 3px 0px rgba(16, 24, 40, 0.1);
   --shadow-tooltip: 0px 4px 6px -2px rgba(16, 24, 40, 0.05),
@@ -204,7 +204,7 @@ layer(base);
 }
 
 @utility menu-item-active {
-  @apply bg-white text-[#2171B5] font-bold shadow-md shadow-black/10;
+  @apply bg-white text-[#1878C0] font-bold shadow-md shadow-black/10;
 }
 
 @utility menu-item-inactive {
@@ -216,7 +216,7 @@ layer(base);
 }
 
 @utility menu-item-icon-active {
-  @apply text-[#2171B5];
+  @apply text-[#1878C0];
 }
 
 @utility menu-item-icon-size {
@@ -234,7 +234,7 @@ layer(base);
 }
 
 @utility menu-item-arrow-active {
-  @apply rotate-180 text-[#2171B5];
+  @apply rotate-180 text-[#1878C0];
 }
 
 @utility menu-item-arrow-inactive {
@@ -526,13 +526,13 @@ span.flatpickr-weekday,
 .flatpickr-day.selected.nextMonthDay,
 .flatpickr-day.startRange.nextMonthDay,
 .flatpickr-day.endRange.nextMonthDay {
-  background: #D99B2A;
+  background: #1878C0;
   @apply !border-brand-500 !bg-brand-500 hover:!border-brand-500 hover:!bg-brand-500;
 }
 .flatpickr-day.selected.startRange + .endRange:not(:nth-child(7n + 1)),
 .flatpickr-day.startRange.startRange + .endRange:not(:nth-child(7n + 1)),
 .flatpickr-day.endRange.startRange + .endRange:not(:nth-child(7n + 1)) {
-  box-shadow: -10px 0 0 #D99B2A;
+  box-shadow: -10px 0 0 #1878C0;
 }
 
 .flatpickr-months .flatpickr-prev-month svg,

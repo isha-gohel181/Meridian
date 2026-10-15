@@ -19,14 +19,14 @@ async function seed() {
   console.log('✅ Connected to MongoDB');
 
   // 1. Get or create Admin user for author references
-  let admin = await User.findOne({ email: 'admin@happylife.com' });
+  let admin = await User.findOne({ email: 'admin@xpertqa.in' });
   if (!admin) {
     admin = await User.findOne({ role: 'admin' });
   }
   if (!admin) {
     admin = await User.create({
-      fullName: 'Happy Life Admin',
-      email: 'admin@happylife.com',
+      fullName: 'Xpertqa Admin',
+      email: 'admin@xpertqa.in',
       password: 'password_hash_placeholder',
       role: 'admin',
       is_verify: true,
@@ -96,7 +96,7 @@ async function seed() {
           data: {
             show: true,
             leftTitle: 'Traditional Programs',
-            rightTitle: 'Happy Life Masterclass',
+            rightTitle: 'Xpertqa Masterclass',
             leftPoints: [
               'Beginner focus, heavy theory with no practical tools',
               'Taught by instructors who never ran independent businesses',
@@ -452,8 +452,8 @@ async function seed() {
   console.log('--- Seeding Forum Threads ---');
   const forumThreadsData = [
     {
-      title: 'Welcome to the Happy Life Community! Introduce Yourself Here 🎉',
-      content: 'Welcome everyone! This community is built to help you align your energy, master modern solopreneur skills, and connect with fellow seekers and builders. Drop a comment below with your name, where you are from, and your main goal for this year!',
+      title: 'Welcome to the Xpertqa Community! Introduce Yourself Here 🎉',
+      content: 'Welcome everyone! This community is built to help you learn, master modern skills, and connect with fellow seekers and builders. Drop a comment below with your name, where you are from, and your main goal for this year!',
       tags: ['welcome', 'community', 'general'],
       isPinned: true,
       isApproved: true,
@@ -510,11 +510,11 @@ async function seed() {
       content: 'The landscape of entrepreneurship has fundamentally changed. Today, a single dedicated solopreneur equipped with modern automation and authentic communication can outpace traditional large teams...',
       imageUrl: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&auto=format&fit=crop&q=80',
       coverImage: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&auto=format&fit=crop&q=80',
-      url: 'https://happylife.com/news/rise-of-the-modern-solopreneur-2026',
+      url: 'https://xpertqa.in/news/rise-of-the-modern-solopreneur-2026',
       publishedAt: new Date(),
       categories: ['Business & Growth'],
       tags: ['Solopreneur', 'Automation', 'AI', 'Future of Work'],
-      author: 'Happy Life Editorial'
+      author: 'Xpertqa Editorial'
     },
     {
       title: 'Harmonizing Cosmic Timing with Major Career and Business Decisions',
@@ -524,11 +524,11 @@ async function seed() {
       content: 'Throughout history, leaders and visionaries have observed natural celestial cycles to time major endeavors. In this article, we break down practical, grounded ways to align your planning with cosmic timing...',
       imageUrl: 'https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?w=1200&auto=format&fit=crop&q=80',
       coverImage: 'https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?w=1200&auto=format&fit=crop&q=80',
-      url: 'https://happylife.com/news/harmonizing-cosmic-timing-career-decisions',
+      url: 'https://xpertqa.in/news/harmonizing-cosmic-timing-career-decisions',
       publishedAt: new Date(),
       categories: ['Astrology & Insights'],
       tags: ['Astrology', 'Career', 'Timing', 'Mindset'],
-      author: 'Dr. Yogesh'
+      author: 'Manoj Saxena'
     },
     {
       title: '5 Daily Practices for Sustained Emotional Clarity and Vital Energy',
@@ -538,11 +538,11 @@ async function seed() {
       content: 'True success begins with physical and emotional vitality. Discover 5 daily micro-habits that take less than 10 minutes but dramatically elevate your clarity, resilience, and sense of peace...',
       imageUrl: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=1200&auto=format&fit=crop&q=80',
       coverImage: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=1200&auto=format&fit=crop&q=80',
-      url: 'https://happylife.com/news/5-daily-practices-vital-energy',
+      url: 'https://xpertqa.in/news/5-daily-practices-vital-energy',
       publishedAt: new Date(),
       categories: ['Wellness & Lifestyle'],
       tags: ['Wellness', 'Energy', 'Mindfulness', 'Balance'],
-      author: 'Happy Life Editorial'
+      author: 'Xpertqa Editorial'
     }
   ];
 
@@ -593,7 +593,7 @@ async function seed() {
     {
       name: 'Rahul Mehta',
       role: 'Consultant & Creator',
-      message: 'Dr. Yogesh’s astrological timing insights gave me the exact clarity I needed before launching my new consultancy. Invaluable guidance!',
+      message: 'Manoj Saxena’s banking QA guidance gave me the exact hands-on clarity and enterprise confidence I needed. Invaluable mentorship!',
       rating: 5,
       image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&auto=format&fit=crop&q=80',
       status: 'approved'

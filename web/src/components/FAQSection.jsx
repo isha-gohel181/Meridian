@@ -11,7 +11,7 @@ const defaultFaqData = {
     { id: "02", q: "Are these courses suitable for beginners?", a: "Yes! Our curriculum is designed to guide you step-by-step from core Vedic astrology fundamentals to advanced chart interpretation." },
     { id: "03", q: "How long do I have access to the lessons?", a: "You have 24/7 unlimited access to all course modules and video lessons based on your enrollment plan (1 Month, 3 Months, or 1 Year)." },
     { id: "04", q: "Can I revisit previous lessons after completing them?", a: "Yes. Your active enrollment allows unlimited revisits to any module you've unlocked to practice and refine your knowledge." },
-    { id: "05", q: "Is there a certification upon course completion?", a: "Yes, you will receive an official, verified Happy Life Astro Certificate of Completion upon finishing all modules." },
+    { id: "05", q: "Is there a certification upon course completion?", a: "Yes, you will receive an official, verified Xpertqa Certificate of Completion upon finishing all modules." },
     { id: "06", q: "Can I interact with instructors or ask questions?", a: "Yes, questions can be submitted via the student discussion forum and during scheduled live Q&A sessions." }
   ],
   Subscription: [

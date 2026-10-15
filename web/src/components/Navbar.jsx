@@ -35,8 +35,8 @@ const Navbar = ({ isLoaded }) => {
   ]
 
   const socialLinks = [
-    { name: 'YouTube', icon: 'M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z M10 15V9l6 3z', url: 'https://youtube.com/@happylifeastro?si=6jttLMEZmVEyoDbS' },
-    { name: 'Instagram', icon: 'M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z M17.5 6.5h.01', url: 'https://www.instagram.com/happy_life_astro?utm_source=qr&stkn=MTA5NHpxc2tpeXE4Yg%3D%3D', isInsta: true },
+    { name: 'YouTube', icon: 'M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z M10 15V9l6 3z', url: 'https://youtube.com' },
+    { name: 'Instagram', icon: 'M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z M17.5 6.5h.01', url: 'https://www.instagram.com', isInsta: true },
     { name: 'X', icon: 'M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154H7.594l5.243 6.932 6.064-6.933zm-1.292 19.49h2.039L6.486 3.24H4.298L17.61 20.644z', url: '#' },
     { name: 'Facebook', icon: 'M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z', url: '#' }
   ]
@@ -81,62 +81,21 @@ const Navbar = ({ isLoaded }) => {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Set the initial pill state for Light Ambient Glass UI with Ocean Blue Aura
+      // Big expanded glass pill state by default (previously applied on scroll)
       gsap.set(navContainerRef.current, {
-        top: '1.5rem',
-        width: '94%',
-        maxWidth: '1200px',
+        top: '1rem',
+        width: '90%',
+        maxWidth: '1350px',
         left: '50%',
         xPercent: -50,
       })
       gsap.set(innerNavRef.current, {
-        borderRadius: '999px',
+        borderRadius: '1rem',
         paddingTop: '0.75rem',
         paddingBottom: '0.75rem',
-        backgroundColor: 'rgba(255, 255, 255, 0.92)',
-        backdropFilter: 'blur(20px)'
+        backgroundColor: 'rgba(255, 255, 255, 0.98)',
+        backdropFilter: 'blur(24px)'
       })
-
-      if (window.innerWidth >= 1024) {
-        ScrollTrigger.create({
-          trigger: 'body',
-          start: 'top -40',
-          onEnter: () => {
-            gsap.to(navContainerRef.current, {
-              top: '1rem',
-              width: '90%',
-              maxWidth: '1350px',
-              duration: 0.4,
-              ease: 'power3.out',
-              overwrite: 'auto'
-            })
-            gsap.to(innerNavRef.current, {
-              backgroundColor: 'rgba(255, 255, 255, 0.98)',
-              backdropFilter: 'blur(24px)',
-              duration: 0.4,
-              ease: 'power3.out',
-              overwrite: 'auto'
-            })
-          },
-          onLeaveBack: () => {
-            gsap.to(navContainerRef.current, {
-              top: '1.5rem',
-              width: '94%',
-              maxWidth: '1200px',
-              duration: 0.4,
-              ease: 'power3.out',
-              overwrite: 'auto'
-            })
-            gsap.to(innerNavRef.current, {
-              backgroundColor: 'rgba(255, 255, 255, 0.92)',
-              backdropFilter: 'blur(20px)',
-              duration: 0.4,
-              ease: 'power3.out',
-              overwrite: 'auto'
-            })
-          }
-        })
-      }
     })
 
     return () => ctx.revert()
@@ -268,11 +227,11 @@ const Navbar = ({ isLoaded }) => {
 
         <div
           ref={innerNavRef}
-          className="flex items-center justify-between bg-white/92 rounded-[2rem] md:rounded-full px-4 md:px-7 !py-2.5 border border-slate-200/90 shadow-[0_4px_30px_rgba(33,113,181,0.12)] backdrop-blur-2xl relative z-20 will-change-[padding,background-color]"
+          className="flex items-center justify-between bg-white/92 rounded-2xl px-4 md:px-7 !py-2.5 border border-slate-200/90 shadow-[0_4px_30px_rgba(24, 120, 192,0.12)] backdrop-blur-2xl relative z-20 will-change-[padding,background-color]"
         >
 
           <Link to="/" ref={logoRef} className="flex items-center hover:opacity-80 transition-opacity gap-2.5">
-            <img src="/logos/osa_logo.png" alt="Happy Life Logo" className="h-9 md:h-11 w-auto object-contain" />
+            <img src="/logos/osa_logo.png" alt="Xpertqa Logo" className="h-9 md:h-11 w-auto object-contain" />
           </Link>
 
           <div
@@ -283,7 +242,7 @@ const Navbar = ({ isLoaded }) => {
             {/* Liquid Active Pill Indicator */}
             <div
               ref={pillRef}
-              className="absolute top-1/2 -translate-y-1/2 h-8 bg-accent/10 border border-accent/20 rounded-full pointer-events-none transition-all duration-300 z-0 opacity-0"
+              className="absolute top-1/2 -translate-y-1/2 h-8 bg-accent/10 border border-accent/20 rounded-xl pointer-events-none transition-all duration-300 z-0 opacity-0"
             />
 
             {navLinks.map((link) => (
@@ -292,7 +251,7 @@ const Navbar = ({ isLoaded }) => {
                 to={link.path}
                 onMouseEnter={handleHover}
                 className={({ isActive }) =>
-                  `nav-slot nav-link-item group px-4 py-2 rounded-full font-inter text-[11px] font-semibold uppercase transition-all duration-300 tracking-[0.18em] relative z-10 ${
+                  `nav-slot nav-link-item group px-4 py-2 rounded-xl font-inter text-[11px] font-semibold uppercase transition-all duration-300 tracking-[0.18em] relative z-10 ${
                     isActive ? 'nav-item-active text-accent font-bold' : 'text-slate-700 hover:text-slate-900'
                   }`
                 }
@@ -306,7 +265,7 @@ const Navbar = ({ isLoaded }) => {
             {/* Sign In / Dashboard Button */}
             <Link
               to={isAuthenticated ? "/dashboard" : "/login"}
-              className="relative group bg-accent text-white font-bold px-4 md:px-5 py-2 rounded-full font-inter text-[10px] uppercase tracking-[0.15em] overflow-hidden transition-all duration-300 hover:scale-[1.04] active:scale-95 shadow-accent-soft flex items-center justify-center gap-1.5"
+              className="relative group bg-accent text-white font-bold px-4 md:px-5 py-2 rounded-xl font-inter text-[10px] uppercase tracking-[0.15em] overflow-hidden transition-all duration-300 hover:scale-[1.04] active:scale-95 shadow-accent-soft flex items-center justify-center gap-1.5"
             >
               <span className="relative z-10 font-black">{isAuthenticated ? t('dashboard') : t('signIn')}</span>
               <div className="absolute inset-0 bg-white/25 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out skew-x-12" />
@@ -314,7 +273,7 @@ const Navbar = ({ isLoaded }) => {
 
             <button
               onClick={toggleMenu}
-              className="xl:hidden w-9 h-9 rounded-full bg-slate-100 border border-slate-200 flex flex-col items-center justify-center gap-[4px] relative z-[130] group hover:bg-accent/15 hover:border-accent/30 transition-colors"
+              className="xl:hidden w-9 h-9 rounded-xl bg-slate-100 border border-slate-200 flex flex-col items-center justify-center gap-[4px] relative z-[130] group hover:bg-accent/15 hover:border-accent/30 transition-colors"
             >
               <span ref={line1Ref} className="w-3.5 h-[2px] bg-slate-800 transition-colors group-hover:bg-accent" />
               <span ref={line2Ref} className="w-4.5 h-[2px] bg-slate-800 transition-colors group-hover:bg-accent" />
@@ -337,14 +296,14 @@ const Navbar = ({ isLoaded }) => {
           {/* Internal Menu Header */}
           <header className="menu-header absolute top-0 left-0 w-full px-8 md:px-12 py-8 md:py-10 flex items-center justify-between z-50">
             <Link to="/" onClick={toggleMenu} className="flex items-center gap-3 hover:opacity-80 transition-opacity">
-              <img src="/logos/osa_logo.png" alt="Happy Life Logo" className="h-10 md:h-12 w-auto object-contain" />
+              <img src="/logos/osa_logo.png" alt="Xpertqa Logo" className="h-10 md:h-12 w-auto object-contain" />
             </Link>
 
             <button
               onClick={toggleMenu}
               className="group w-12 h-12 md:w-14 md:h-14 flex items-center justify-center relative hover:scale-110 active:scale-90 transition-transform"
             >
-              <div className="absolute inset-0 bg-slate-100 rounded-full scale-0 group-hover:scale-100 transition-transform duration-500 ease-expo" />
+              <div className="absolute inset-0 bg-slate-100 rounded-xl scale-0 group-hover:scale-100 transition-transform duration-500 ease-expo" />
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="relative transition-transform duration-700 group-hover:rotate-180">
                 <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-normal" />
               </svg>
@@ -408,7 +367,7 @@ const Navbar = ({ isLoaded }) => {
                 </div>
                 <div className="flex flex-col gap-2 items-center text-center w-full">
                   <p className="font-jetbrains text-[9px] tracking-[0.3em] sm:tracking-[0.6em] text-slate-500 uppercase italic whitespace-normal">Where Ambition Meets Execution</p>
-                  <p className="font-jetbrains text-[8px] tracking-[0.1em] sm:tracking-[0.2em] text-slate-400 uppercase whitespace-normal">© 2026 HAPPY LIFE ASTRO</p>
+                  <p className="font-jetbrains text-[8px] tracking-[0.1em] sm:tracking-[0.2em] text-slate-400 uppercase whitespace-normal">© 2026 XPERTQA. ALL RIGHTS RESERVED.</p>
                 </div>
               </div>
             </div>

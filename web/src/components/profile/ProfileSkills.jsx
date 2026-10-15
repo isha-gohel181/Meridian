@@ -114,7 +114,7 @@ const ProfileSkills = () => {
                            <a 
                               href={(() => {
                                  if (doc.Doc.startsWith('http')) return doc.Doc;
-                                 const rawBase = import.meta.env.VITE_BASE_URL || import.meta.env.VITE_API_BASE || 'https://happy-life-sx03.onrender.com';
+                                 const rawBase = import.meta.env.VITE_BASE_URL || import.meta.env.VITE_API_BASE || 'https://api.xpertqa.in';
                                  const baseUrl = rawBase.replace(/\/api\/v1\/?$/, '');
                                  return `${baseUrl}/uploads/${doc.Doc}`;
                               })()} 

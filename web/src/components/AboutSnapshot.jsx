@@ -83,18 +83,18 @@ const AboutSnapshot = () => {
                </div>
                
                <h2 className="snapshot-text text-4xl md:text-5xl font-black text-slate-900 leading-[1.1] mb-6">
-                  Your Ultimate Guide to <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-500 to-amber-700">Astrological Mastery.</span>
+                  Your Ultimate Guide to <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1878C0] to-sky-700">QA & Testing Mastery.</span>
                </h2>
                
                <p className="snapshot-text text-lg text-slate-600 mb-8 leading-relaxed font-medium">
-                  Happy Life Astro is a premier online educational platform designed to empower learners with authentic Vedic Astrology, Vastu, Numerology, and spiritual wisdom. Transform your life and guide others with clarity and confidence.
+                  Xpertqa is a premier online platform designed to empower learners with industry-standard computer programming, consultancy, and quality assurance education. Transform your skill set and advance your career with confidence.
                </p>
 
                <ul className="snapshot-text space-y-4 mb-10">
                   {[
-                     "Comprehensive Vedic Astrology, Vastu & Numerology courses",
-                     "Live interactive workshops & masterclasses by Dr. Yogesh Sharma",
-                     "Verified certifications, personalized mentorship & study guides"
+                     "Comprehensive Banking Domain QA & UAT frameworks",
+                     "Live interactive workshops & masterclasses by Manoj Saxena",
+                     "Verified certifications, personalized mentorship & interview tracks"
                   ].map((item, index) => (
                      <li key={index} className="flex items-center gap-3 text-slate-700 font-medium">
                         <div className="flex-shrink-0 w-6 h-6 rounded-full bg-green-100 text-green-600 flex items-center justify-center">
@@ -108,7 +108,7 @@ const AboutSnapshot = () => {
                </ul>
 
                <div className="snapshot-text">
-                  <Link to="/about-us" className="inline-flex items-center justify-center gap-2 bg-slate-900 text-white px-8 py-4 rounded-full font-bold uppercase tracking-widest text-sm hover:bg-amber-500 transition-colors duration-300 group">
+                  <Link to="/about-us" className="inline-flex items-center justify-center gap-2 bg-slate-900 text-white px-8 py-4 rounded-xl font-bold uppercase tracking-widest text-sm hover:bg-amber-500 transition-colors duration-300 group">
                      Discover Our Story
                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="group-hover:translate-x-1 transition-transform">
                         <line x1="5" y1="12" x2="19" y2="12" />

@@ -150,7 +150,7 @@ const MyCourses = () => {
                             const thumb = item.course?.thumbnail;
                             if (!thumb) return '/news_placeholder.png';
                             if (thumb.startsWith('http')) return thumb;
-                            const rawBase = import.meta.env.VITE_BASE_URL || import.meta.env.VITE_API_BASE || 'https://happy-life-sx03.onrender.com';
+                            const rawBase = import.meta.env.VITE_BASE_URL || import.meta.env.VITE_API_BASE || 'https://api.xpertqa.in';
                             const baseUrl = rawBase.replace(/\/api\/v1\/?$/, '');
                             return `${baseUrl}${thumb.startsWith('/') ? '' : '/'}${thumb}`;
                         })()} 
@@ -233,7 +233,7 @@ const MyCourses = () => {
                       <div className="pt-2">
                          <button 
                             onClick={() => navigate(`/dashboard/course/${item.courseId || item.course?._id || item._id}`)}
-                            className="w-full py-3.5 bg-accent text-slate-950 font-jetbrains text-xs font-black uppercase tracking-[0.3em] hover:scale-[1.02] active:scale-95 transition-all rounded-full shadow-accent-soft text-center"
+                            className="w-full py-3.5 bg-accent text-slate-950 font-jetbrains text-xs font-black uppercase tracking-[0.3em] hover:scale-[1.02] active:scale-95 transition-all rounded-xl shadow-accent-soft text-center"
                          >
                             Continue Learning
                          </button>

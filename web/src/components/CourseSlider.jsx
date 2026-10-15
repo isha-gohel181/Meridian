@@ -6,17 +6,17 @@ import sanitizeDisplay from '../utils/textSanitize'
 import RollingText from './RollingText'
 
 const fallbackCourses = [
-  { id: '1', title: 'Become An AI Builder In 30 Days.', tag: 'AI & TECH', thumbnail: '/courses/curator.png' },
-  { id: '2', title: 'MVP Engineering Masterclass', tag: 'ENGINEERING', thumbnail: '/courses/motion.png' },
-  { id: '3', title: 'Learn How To Communicate', tag: 'COMMUNICATION', thumbnail: '/courses/workshop.png' },
-  { id: '4', title: 'Branding Masterclass', tag: 'BRANDING', thumbnail: '/courses/architecture.png' },
-  { id: '5', title: 'The Art Of Content Creation', tag: 'CONTENT', thumbnail: '/courses/narrative.png' },
-  { id: '6', title: 'SEO Masterclass & Growth', tag: 'MARKETING', thumbnail: '/courses/pricing.png' },
-  { id: '7', title: 'Google Ads Mastery', tag: 'ADVERTISING', thumbnail: '/courses/typography.png' },
-  { id: '8', title: 'Facebook Ads Domination', tag: 'PAID ADS', thumbnail: '/digital_curator_card_v1.png' },
-  { id: '9', title: 'Website Made Easy', tag: 'WEB DESIGN', thumbnail: '/gig_tech.png' },
-  { id: '10', title: 'Solopreneur Blueprint', tag: 'BUSINESS', thumbnail: '/gig_vis.png' },
-  { id: '11', title: 'Vibe Marketing Engine', tag: 'GROWTH', thumbnail: '/gig_motion.png' }
+  { id: '1', title: 'Banking Domain QA & Financial Systems Testing', tag: 'BANKING QA', thumbnail: '/courses/curator.png' },
+  { id: '2', title: 'Core Banking UAT & System Migration Masterclass', tag: 'UAT & MIGRATION', thumbnail: '/courses/motion.png' },
+  { id: '3', title: 'End-to-End Automation Testing (Selenium & Playwright)', tag: 'AUTOMATION', thumbnail: '/courses/workshop.png' },
+  { id: '4', title: 'Enterprise QA Leadership & Agile Transformation', tag: 'QA LEADERSHIP', thumbnail: '/courses/architecture.png' },
+  { id: '5', title: 'Second Innings: From Banking Operations to Senior QA', tag: 'CAREER TRACK', thumbnail: '/courses/narrative.png' },
+  { id: '6', title: 'API Testing & Microservices Validation with Postman', tag: 'API TESTING', thumbnail: '/courses/pricing.png' },
+  { id: '7', title: 'Payment Gateways & FinTech Transaction Security Testing', tag: 'FINTECH QA', thumbnail: '/courses/typography.png' },
+  { id: '8', title: 'Performance Engineering & Load Testing with JMeter', tag: 'PERFORMANCE', thumbnail: '/digital_curator_card_v1.png' },
+  { id: '9', title: 'ISTQB Certified Tester Foundation & Advanced Guide', tag: 'CERTIFICATION', thumbnail: '/gig_tech.png' },
+  { id: '10', title: 'Test Strategy, Defect Lifecycle & Test Management', tag: 'TEST STRATEGY', thumbnail: '/gig_vis.png' },
+  { id: '11', title: 'DevOps QA: CI/CD Pipelines with Jenkins & GitHub Actions', tag: 'DEVOPS QA', thumbnail: '/gig_motion.png' }
 ]
 
 const CourseSlider = () => {
@@ -196,7 +196,7 @@ const CourseSlider = () => {
     if (imgPath.startsWith('http://') || imgPath.startsWith('https://') || imgPath.startsWith('data:') || imgPath.startsWith('/courses/') || imgPath.startsWith('/gig_') || imgPath.startsWith('/digital_')) {
       return imgPath
     }
-    const rawBase = import.meta.env.VITE_IMAGE_URL || import.meta.env.VITE_BASE_URL || import.meta.env.VITE_API_BASE || 'https://happy-life-sx03.onrender.com'
+    const rawBase = import.meta.env.VITE_IMAGE_URL || import.meta.env.VITE_BASE_URL || import.meta.env.VITE_API_BASE || 'https://api.xpertqa.in'
     const baseUrl = rawBase.replace(/\/api\/v1\/?$/, '')
     return `${baseUrl}${imgPath.startsWith('/') ? '' : '/'}${imgPath}`
   }
@@ -204,7 +204,7 @@ const CourseSlider = () => {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full py-8 md:py-14 pb-16 md:pb-24 overflow-hidden select-none bg-gradient-to-b from-[#f4f8fc] via-[#ebf4fa]/60 to-[#f8fafc]"
+      className="relative w-full py-8 md:py-14 pb-16 md:pb-24 overflow-hidden select-none bg-gradient-to-b from-[#eef7fe] via-[#e4f1fb]/60 to-[#f8fafc]"
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
       onMouseLeave={() => {
@@ -215,8 +215,8 @@ const CourseSlider = () => {
       onTouchEnd={handleTouchEnd}
     >
       {/* Edge Gradient Masks for Smooth Fade */}
-      <div className="absolute top-0 left-0 z-20 w-[14vw] md:w-[18vw] h-full bg-gradient-to-r from-[#f4f8fc] to-transparent pointer-events-none" />
-      <div className="absolute top-0 right-0 z-20 w-[14vw] md:w-[18vw] h-full bg-gradient-to-l from-[#f4f8fc] to-transparent pointer-events-none" />
+      <div className="absolute top-0 left-0 z-20 w-[14vw] md:w-[18vw] h-full bg-gradient-to-r from-[#eef7fe] to-transparent pointer-events-none" />
+      <div className="absolute top-0 right-0 z-20 w-[14vw] md:w-[18vw] h-full bg-gradient-to-l from-[#eef7fe] to-transparent pointer-events-none" />
 
       {/* Marquee Track with ample padding so cards are fully displayed */}
       <div

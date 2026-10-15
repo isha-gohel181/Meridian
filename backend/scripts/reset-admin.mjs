@@ -15,19 +15,8 @@ async function resetAdmin() {
 
   const admins = [
     {
-      fullName: 'Happy Life Admin',
-      email: 'admin@happylife.com',
-      password: hashedPassword,
-      role: 'admin',
-      is_verify: true,
-      emailVerified: true,
-      status: 'active',
-      isActive: true,
-      profilePicture: 'default-profile.png'
-    },
-    {
-      fullName: 'Administrator',
-      email: 'admin@osacademy.com',
+      fullName: 'Xpertqa Admin',
+      email: 'admin@xpertqa.in',
       password: hashedPassword,
       role: 'admin',
       is_verify: true,
@@ -57,10 +46,9 @@ async function resetAdmin() {
   }
 
   console.log('\n=============================================');
-  console.log('🎉 Admin accounts reset successfully in happy_life database:');
+  console.log('🎉 Admin account reset successfully:');
   console.log('---------------------------------------------');
-  console.log('📧 Primary Email  : admin@happylife.com');
-  console.log('📧 Secondary Email: admin@osacademy.com');
+  console.log('📧 Primary Email  : admin@xpertqa.in');
   console.log('🔑 Password       : Admin@123');
   console.log('🛡️ Role           : admin');
   console.log('=============================================\n');

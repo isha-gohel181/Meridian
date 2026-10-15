@@ -110,7 +110,7 @@ const Login = () => {
       <div className="login-left">
         <div className="flex items-center justify-between w-full mb-8">
           <Link to="/" className="login-logo flex items-center gap-2.5">
-            <img src="/logo/osa_logo.png" alt="Happy Life Logo" className="h-11 w-auto object-contain" />
+            <img src="/logo/osa_logo.png" alt="Xpertqa Logo" className="h-11 w-auto object-contain" />
           </Link>
         </div>
 
@@ -219,7 +219,7 @@ const Login = () => {
         </div>
 
         <div className="login-footer">
-          © {new Date().getFullYear()} HAPPY LIFE. ALL RIGHTS RESERVED.
+          © {new Date().getFullYear()} XPERTQA. ALL RIGHTS RESERVED.
         </div>
       </div>
 
@@ -227,18 +227,18 @@ const Login = () => {
       <div className="login-right">
         <div className="system-status">
           <div className="status-dot"></div>
-          ASTRO-VASTU PORTAL
+          XPERTQA LEARNING PORTAL
         </div>
 
         <div className="bg-text-wrap">
-          <div className="bg-text">Align.</div>
-          <div className="bg-text">Prosper.</div>
-          <div className="bg-text">Harmonize.</div>
+          <div className="bg-text">Build.</div>
+          <div className="bg-text">Test.</div>
+          <div className="bg-text">Excel.</div>
         </div>
 
         <div className="testimonial-card">
           <p className="testimonial-quote">
-            "The practical guidance and logical Astro-Vastu remedies by Dr. Yogesh Sharma transformed our environment and brought profound clarity to our life."
+            "The practical computer programming consultancy and quality assurance training at Xpertqa transformed our skill set and brought profound career advancement."
           </p>
         </div>
 
@@ -254,7 +254,7 @@ const Login = () => {
         </div>
 
         <p className="right-description">
-          Connect with authentic Vedic wisdom and personalized Astro-Vastu remedies for lasting peace and prosperity.
+          Connect with authentic computer programming, consultancy, and quality assurance education for lasting professional success.
         </p>
 
         <div className="nav-arrows">

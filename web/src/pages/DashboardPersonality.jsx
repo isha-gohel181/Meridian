@@ -173,7 +173,7 @@ const DashboardPersonality = () => {
         category: c.categoryId?.name?.toUpperCase() || "SKILL",
         title: c.title,
         description: c.description,
-        image: c.thumbnail ? (c.thumbnail.startsWith('http') ? c.thumbnail : `https://happy-life-sx03.onrender.com/${c.thumbnail}`) : "/news_placeholder.png"
+        image: c.thumbnail ? (c.thumbnail.startsWith('http') ? c.thumbnail : `https://api.xpertqa.in/${c.thumbnail}`) : "/news_placeholder.png"
     })) || resultData.recommendedCourses
   }
 
@@ -285,7 +285,7 @@ const DashboardPersonality = () => {
                     </div>
                     <Link 
                       to="/dashboard/courses"
-                      className="px-10 py-5 border border-white/10 font-jetbrains text-[9px] font-bold tracking-[0.4em] uppercase text-description/80 hover:text-normal hover:bg-white/5 transition-all duration-500 rounded-full"
+                      className="px-10 py-5 border border-white/10 font-jetbrains text-[9px] font-bold tracking-[0.4em] uppercase text-description/80 hover:text-normal hover:bg-white/5 transition-all duration-500 rounded-xl"
                     >
                       Browse Full Catalog
                     </Link>
@@ -300,7 +300,7 @@ const DashboardPersonality = () => {
                 <div className="flex flex-col md:flex-row items-center justify-center gap-8 py-12 border-t border-white/5">
                    <Link 
                       to="/personality-test"
-                      className="group flex items-center gap-6 px-12 py-5 border border-white/10 font-jetbrains text-[9px] font-bold tracking-[0.4em] uppercase text-description/80 hover:text-normal hover:bg-white/5 transition-all duration-500 rounded-full"
+                      className="group flex items-center gap-6 px-12 py-5 border border-white/10 font-jetbrains text-[9px] font-bold tracking-[0.4em] uppercase text-description/80 hover:text-normal hover:bg-white/5 transition-all duration-500 rounded-xl"
                    >
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="group-hover:rotate-180 transition-transform duration-700 opacity-40">
                          <path d="M2.5 2v6h6M21.5 22v-6h-6M22 11.5A10 10 0 0 0 3.2 7.2M2 12.5a10 10 0 0 0 18.8 4.3" />

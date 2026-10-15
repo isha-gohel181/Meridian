@@ -83,7 +83,7 @@ const ForumFilterModal = ({ stats, tags, discourseTags, onStartTopic }) => {
         <button 
           ref={buttonRef}
           onClick={() => setIsOpen(true)}
-          className="fixed left-8 bottom-10 w-14 h-14 bg-accent rounded-full flex items-center justify-center text-slate-950 shadow-accent-soft hover:scale-110 active:scale-95 transition-all z-[900] group md:hidden"
+          className="fixed left-8 bottom-10 w-14 h-14 bg-accent rounded-xl flex items-center justify-center text-slate-950 shadow-accent-soft hover:scale-110 active:scale-95 transition-all z-[900] group md:hidden"
         >
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="group-hover:rotate-90 transition-transform duration-500">
             <path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/>
@@ -116,7 +116,7 @@ const ForumFilterModal = ({ stats, tags, discourseTags, onStartTopic }) => {
               </div>
               <button 
                 onClick={handleClose}
-                className="w-14 h-14 rounded-full border border-slate-200 flex items-center justify-center text-slate-500 hover:text-slate-900 hover:border-slate-300 transition-all duration-500 md:w-12 md:h-12"
+                className="w-14 h-14 rounded-xl border border-slate-200 flex items-center justify-center text-slate-500 hover:text-slate-900 hover:border-slate-300 transition-all duration-500 md:w-12 md:h-12"
               >
                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
               </button>
@@ -184,7 +184,7 @@ const ForumFilterModal = ({ stats, tags, discourseTags, onStartTopic }) => {
               <span className="font-jetbrains text-[8px] text-slate-400 tracking-[0.8em] uppercase">Calibration protocol v2.10.4</span>
               <div className="flex gap-6">
                  <button onClick={handleClose} className="font-montserrat text-[14px] font-black text-slate-500 hover:text-slate-900 uppercase tracking-[0.3em] transition-colors">Abort</button>
-                 <button onClick={handleClose} className="font-montserrat text-[14px] font-black px-6 py-2.5 bg-accent text-slate-950 rounded-full shadow-accent-soft uppercase tracking-[0.3em]">Apply Filters</button>
+                 <button onClick={handleClose} className="font-montserrat text-[14px] font-black px-6 py-2.5 bg-accent text-slate-950 rounded-xl shadow-accent-soft uppercase tracking-[0.3em]">Apply Filters</button>
               </div>
            </div>
         </div>

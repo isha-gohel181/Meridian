@@ -16,7 +16,7 @@ const ProfileSidebar = ({ compact = false }) => {
   const getProfileImage = (pic) => {
     if (!pic || pic === 'default-profile.png') return null
     if (pic.startsWith('http') || pic.startsWith('blob:')) return pic
-    const rawBase = import.meta.env.VITE_BASE_URL || import.meta.env.VITE_API_BASE || 'https://happy-life-sx03.onrender.com'
+    const rawBase = import.meta.env.VITE_BASE_URL || import.meta.env.VITE_API_BASE || 'https://api.xpertqa.in'
     const baseUrl = rawBase.replace(/\/api\/v1\/?$/, '')
     const cleanPath = pic.startsWith('/') ? pic : `/uploads/${pic}`
     return `${baseUrl}${cleanPath}`

@@ -21,9 +21,9 @@ const io = new Server(server, {
       if (origin.endsWith('.vercel.app') || origin.endsWith('.onrender.com')) return callback(null, true);
       
       const allowedOrigins = [
-        "https://happy-life-nu.vercel.app",
-        "https://happy-life-admin.vercel.app",
-        "https://happy-life-sx03.onrender.com",
+        "https://xpertqa.in",
+        "https://www.xpertqa.in",
+        "https://api.xpertqa.in",
         process.env.FRONTEND_URL,
         process.env.ADMIN_URL,
         "http://localhost:5173",

@@ -44,7 +44,7 @@ function renderInvoiceHtml(order, guestUser, company) {
   <html>
   <head>
     <meta charset="UTF-8" />
-    <title>Happy Life Astro Invoice</title>
+    <title>Xpertqa Invoice</title>
     <style>
       * { 
         box-sizing: border-box; 
@@ -483,8 +483,8 @@ function renderInvoiceHtml(order, guestUser, company) {
       <header class="invoice-header">
         <div class="header-content">
           <div class="company-info">
-            <h1>Happy Life Astro</h1>
-            <p class="company-tagline">Online Learning & Astrology Platform</p>
+            <h1>Xpertqa</h1>
+            <p class="company-tagline">Computer Programming, Consultancy and Related Services</p>
           </div>
           <div class="invoice-details">
             <div class="invoice-number">Invoice #${order.orderNo}</div>
@@ -614,13 +614,13 @@ function renderInvoiceHtml(order, guestUser, company) {
       <footer class="invoice-footer">
         <div class="footer-content">
           <div class="footer-left">
-            <div class="footer-text">Thank you for choosing Happy Life Astro! 🎓</div>
+            <div class="footer-text">Thank you for choosing Xpertqa! 🎓</div>
             <div class="support-info">Your trusted learning partner</div>
           </div>
           <div class="footer-right">
             <div class="footer-text">Need Support?</div>
             <div class="support-info">
-              Contact us at <a href="mailto:${process.env.SupportEmail || 'support@happylifeastro.school'}" class="support-email">${process.env.SupportEmail || 'support@happylifeastro.school'}</a>
+              Contact us at <a href="mailto:${process.env.SupportEmail || 'xsmartqa.com@gmail.com'}" class="support-email">${process.env.SupportEmail || 'xsmartqa.com@gmail.com'}</a>
             </div>
           </div>
         </div>

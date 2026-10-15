@@ -25,7 +25,7 @@ const GlobalChatButton = () => {
         <div className="absolute inset-0 bg-accent rounded-full blur-2xl opacity-20 group-hover:opacity-40 transition-opacity duration-500" />
         
         {/* Main Button Body */}
-        <div className="w-16 h-16 bg-accent rounded-full flex items-center justify-center relative z-10 shadow-accent-soft hover:scale-110 active:scale-95 transition-all duration-300">
+        <div className="w-16 h-16 bg-accent rounded-xl flex items-center justify-center relative z-10 shadow-accent-soft hover:scale-110 active:scale-95 transition-all duration-300">
            
            {/* Chat Icon - Clean Support Protocol */}
            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="text-dark">

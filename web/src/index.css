@@ -51,48 +51,48 @@ textarea,
   --font-jetbrains: "JetBrains Mono", monospace;
   --font-signature: "Mrs Saint Delafield", cursive;
 
-  /* Ocean Blue Palette (#2171B5) & Crisp Light Theme */
-  --color-accent: #2171B5;
+  /* Ocean Blue Palette (#1878C0) & Crisp Light Theme */
+  --color-accent: #1878C0;
   /* Primary Ocean Blue */
-  --color-accent-secondary: #4b9ee5;
-  /* Bright Sky Blue */
+  --color-accent-secondary: #48A848;
+  /* Fresh Green Accent (from logo) */
   --color-dark: #f8fafc;
   /* Crisp Light Background */
   --color-normal: #0F172A;
   /* Slate 900 High Contrast Text */
   --color-description: #475569;
   /* Slate 600 Body Text */
-  --color-border: rgba(33, 113, 181, 0.12);
+  --color-border: rgba(24, 120, 192, 0.12);
   /* Subtle blue border */
   --color-card: #FFFFFF;
   /* Pure White Card */
-  --color-card-border: rgba(33, 113, 181, 0.08);
+  --color-card-border: rgba(24, 120, 192, 0.08);
 
-  --shadow-accent-large: 0 10px 30px -5px rgba(33, 113, 181, 0.45), 0 0 20px rgba(33, 113, 181, 0.25);
-  --shadow-accent-soft: 0 4px 20px -2px rgba(33, 113, 181, 0.3);
+  --shadow-accent-large: 0 10px 30px -5px rgba(24, 120, 192, 0.45), 0 0 20px rgba(24, 120, 192, 0.25);
+  --shadow-accent-soft: 0 4px 20px -2px rgba(24, 120, 192, 0.3);
 
   /* Override color palettes dynamically */
-  --color-amber-50: #f0f7fd;
-  --color-amber-100: #e0effa;
-  --color-amber-200: #badcf6;
-  --color-amber-300: #8dc4f0;
-  --color-amber-400: #2171B5;
-  --color-amber-500: #1b5c94;
-  --color-amber-600: #164974;
-  --color-amber-700: #133d60;
-  --color-amber-800: #11324e;
-  --color-amber-900: #0b2034;
+  --color-amber-50: #eef7fe;
+  --color-amber-100: #d9edfc;
+  --color-amber-200: #b3daf8;
+  --color-amber-300: #82c3f2;
+  --color-amber-400: #1878C0;
+  --color-amber-500: #1468a8;
+  --color-amber-600: #11598f;
+  --color-amber-700: #0f4a76;
+  --color-amber-800: #0d3d62;
+  --color-amber-900: #0a2b46;
 
-  --color-yellow-50: #f0f7fd;
-  --color-yellow-100: #e0effa;
-  --color-yellow-200: #badcf6;
-  --color-yellow-300: #8dc4f0;
-  --color-yellow-400: #2171B5;
-  --color-yellow-500: #1b5c94;
-  --color-yellow-600: #164974;
-  --color-yellow-700: #133d60;
-  --color-yellow-800: #11324e;
-  --color-yellow-900: #0b2034;
+  --color-yellow-50: #eef7fe;
+  --color-yellow-100: #d9edfc;
+  --color-yellow-200: #b3daf8;
+  --color-yellow-300: #82c3f2;
+  --color-yellow-400: #1878C0;
+  --color-yellow-500: #1468a8;
+  --color-yellow-600: #11598f;
+  --color-yellow-700: #0f4a76;
+  --color-yellow-800: #0d3d62;
+  --color-yellow-900: #0a2b46;
 
   --color-slate-50: #f8fafc;
   --color-slate-100: #f1f5f9;

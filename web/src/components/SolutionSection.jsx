@@ -68,14 +68,14 @@ const SolutionSection = ({ course, section }) => {
             {sanitizeDisplay(section?.title || "The Solution").split(' ').map((word, i, arr) => (
               <React.Fragment key={i}>
                 {i === arr.length - 1 ? (
-                  <span className="text-[#2171B5]">{word}</span>
+                  <span className="text-[#1878C0]">{word}</span>
                 ) : (
                   word + ' '
                 )}
               </React.Fragment>
             ))}
           </h2>
-          <div className="h-[2px] bg-[#2171B5]/40 w-24" />
+          <div className="h-[2px] bg-[#1878C0]/40 w-24" />
         </div>
 
         <div className="min-[1301px]:border-l border-slate-200 pl-0 min-[1301px]:pl-12 py-2">
@@ -124,17 +124,17 @@ const SolutionSection = ({ course, section }) => {
         )}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-5xl mx-auto">
           {section?.points?.map((p, i) => (
-            <div key={i} className="sol-point group flex items-center gap-5 px-6 py-5 bg-blue-50/80 border-l-4 border-[#2171B5] rounded-xl shadow-xs transition-all duration-300">
+            <div key={i} className="sol-point group flex items-center gap-5 px-6 py-5 bg-blue-50/80 border-l-4 border-[#1878C0] rounded-xl shadow-xs transition-all duration-300">
               <div className="w-8 h-8 rounded-full border border-blue-200 flex items-center justify-center shrink-0 bg-blue-100">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2171B5" strokeWidth="4"><path d="M20 6L9 17l-5-5" /></svg>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1878C0" strokeWidth="4"><path d="M20 6L9 17l-5-5" /></svg>
               </div>
-              <span className="font-montserrat text-xs md:text-sm text-[#2171B5] font-semibold tracking-wide uppercase">{sanitizeDisplay(p)}</span>
+              <span className="font-montserrat text-xs md:text-sm text-[#1878C0] font-semibold tracking-wide uppercase">{sanitizeDisplay(p)}</span>
             </div>
           ))}
         </div>
       </div>
 
-      <div className="w-full h-[1px] bg-gradient-to-r from-transparent via-[#2171B5]/20 to-transparent mt-20" />
+      <div className="w-full h-[1px] bg-gradient-to-r from-transparent via-[#1878C0]/20 to-transparent mt-20" />
     </section>
   )
 }

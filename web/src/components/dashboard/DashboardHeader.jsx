@@ -42,7 +42,7 @@ const DashboardHeader = () => {
   const getProfileImage = (pic) => {
     if (!pic || pic === 'default-profile.png') return null
     if (pic.startsWith('http') || pic.startsWith('blob:')) return pic
-    const rawBase = import.meta.env.VITE_BASE_URL || import.meta.env.VITE_API_BASE || 'https://happy-life-sx03.onrender.com'
+    const rawBase = import.meta.env.VITE_BASE_URL || import.meta.env.VITE_API_BASE || 'https://api.xpertqa.in'
     const baseUrl = rawBase.replace(/\/api\/v1\/?$/, '')
     const cleanPath = pic.startsWith('/') ? pic : `/uploads/${pic}`
     return `${baseUrl}${cleanPath}`
@@ -161,7 +161,7 @@ const DashboardHeader = () => {
 
         <div className="dash-menu-item absolute top-0 left-0 w-full p-6 flex items-center justify-between z-20">
           <div className="flex items-center gap-2.5">
-            <img src="/logos/osa_logo.png" alt="Happy Life Logo" className="h-8 md:h-9 w-auto object-contain" />
+            <img src="/logos/osa_logo.png" alt="Xpertqa Logo" className="h-8 md:h-9 w-auto object-contain" />
           </div>
           <button
             onClick={toggleMenu}
@@ -244,7 +244,7 @@ const DashboardHeader = () => {
       <div className="flex items-center gap-6">
         {/* DASHBOARD LOGO */}
         <Link to="/" className="flex items-center gap-2.5 hover:opacity-80 transition-opacity text-slate-900">
-          <img src="/logos/osa_logo.png" alt="Happy Life Logo" className="h-8 md:h-9 w-auto object-contain" />
+          <img src="/logos/osa_logo.png" alt="Xpertqa Logo" className="h-8 md:h-9 w-auto object-contain" />
         </Link>
 
         <nav className="hidden [@media(min-width:1300px)]:flex items-center gap-6">
@@ -305,7 +305,7 @@ const DashboardHeader = () => {
         {/* SUPPORT */}
         <Link
           to="/dashboard/support"
-          className={`relative p-2 rounded-full transition-all ${location.pathname === '/dashboard/support' ? 'bg-amber-100 text-amber-700' : 'hover:bg-slate-100 text-slate-700'}`}
+          className={`relative p-2 rounded-xl transition-all ${location.pathname === '/dashboard/support' ? 'bg-amber-100 text-amber-700' : 'hover:bg-slate-100 text-slate-700'}`}
         >
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" className={location.pathname === '/dashboard/support' ? 'text-amber-700' : 'text-slate-600 hover:text-amber-600'}>
             <path d="M3 11V9a9 9 0 0 1 18 0v2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -319,7 +319,7 @@ const DashboardHeader = () => {
         <div className="relative">
           <button
             onClick={() => { setShowNotifications(!showNotifications); setShowProfileMenu(false); }}
-            className={`relative group p-2 rounded-full transition-all ${showNotifications ? 'bg-slate-100 text-slate-900' : 'hover:bg-slate-100 text-slate-700'}`}
+            className={`relative group p-2 rounded-xl transition-all ${showNotifications ? 'bg-slate-100 text-slate-900' : 'hover:bg-slate-100 text-slate-700'}`}
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" className={showNotifications ? 'text-amber-600' : 'text-slate-600 group-hover:text-amber-600'}>
               <path d="M18 8C18 6.4087 17.3679 4.88258 16.2426 3.75736C15.1174 2.63214 13.5913 2 12 2C10.4087 2 8.88258 2.63214 7.75736 3.75736C6.63214 4.88258 6 6.4087 6 8C6 15 3 17 3 17H21C21 17 18 15 18 8Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />

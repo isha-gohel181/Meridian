@@ -18,7 +18,7 @@ const ContinueLearning = () => {
   )
   const rawThumb = lastSession.thumbnail || activeCourse?.thumbnail 
   const thumbnail = rawThumb 
-    ? (rawThumb.startsWith('http') ? rawThumb : `${import.meta.env.VITE_IMAGE_URL || import.meta.env.VITE_BASE_URL || 'https://happy-life-sx03.onrender.com'}/${rawThumb.startsWith('/') ? rawThumb.slice(1) : rawThumb}`) 
+    ? (rawThumb.startsWith('http') ? rawThumb : `${import.meta.env.VITE_IMAGE_URL || import.meta.env.VITE_BASE_URL || 'https://api.xpertqa.in'}/${rawThumb.startsWith('/') ? rawThumb.slice(1) : rawThumb}`) 
     : bannerImg
 
   const percentage = Math.min(100, Math.max(0, Math.round(lastSession.completionPercentage || 0)))
@@ -38,7 +38,7 @@ const ContinueLearning = () => {
          <span className="bg-white/10 backdrop-blur-md border border-white/20 rounded-full px-4 py-1.5 font-inter text-[10px] text-white font-bold uppercase tracking-wider">
             {activeCourse?.title || 'Course'}
          </span>
-         <button className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 group-hover:bg-accent group-hover:border-accent transition-colors">
+                   <button className="w-10 h-10 rounded-xl bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 group-hover:bg-accent group-hover:border-accent transition-colors">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" className="text-white group-hover:translate-x-0.5 transition-transform">
                <path d="M5 12h14M12 5l7 7-7 7" strokeWidth="2.5" />
             </svg>
@@ -71,7 +71,7 @@ const ContinueLearning = () => {
             
             <button 
                onClick={() => navigate(`/dashboard/course/${lastSession.courseId}`)}
-               className="w-full md:w-auto bg-accent text-white px-8 py-3.5 rounded-full font-inter text-[11px] font-bold tracking-widest uppercase hover:scale-[1.05] active:scale-95 transition-all shadow-accent-soft flex items-center justify-center gap-3 shrink-0"
+               className="w-full md:w-auto bg-accent text-white px-8 py-3.5 rounded-xl font-inter text-[11px] font-bold tracking-widest uppercase hover:scale-[1.05] active:scale-95 transition-all shadow-accent-soft flex items-center justify-center gap-3 shrink-0"
             >
                {t('resume')}
                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">

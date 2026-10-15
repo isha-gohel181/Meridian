@@ -283,7 +283,7 @@ const Courses = () => {
     if (!thumb) return '/herocard.png'
     const normalized = String(thumb).replace(/\\/g, '/')
     if (/^https?:\/\//i.test(normalized)) return normalized
-    const baseUrl = import.meta.env.VITE_BASE_URL || 'https://happy-life-sx03.onrender.com'
+    const baseUrl = import.meta.env.VITE_BASE_URL || 'https://api.xpertqa.in'
     return normalized.startsWith('/') ? `${baseUrl}${normalized}` : `${baseUrl}/${normalized}`
   }
 
@@ -383,7 +383,7 @@ const Courses = () => {
     setEventRegisterLoading(true)
     setEventRegisterError('')
 
-    const BASE_URL = import.meta.env.VITE_BASE_URL || 'https://happy-life-sx03.onrender.com'
+    const BASE_URL = import.meta.env.VITE_BASE_URL || 'https://api.xpertqa.in'
     const token = localStorage.getItem('edrilla_token') || localStorage.getItem('token')
     const headers = { 'Content-Type': 'application/json' }
     if (token) headers['Authorization'] = `Bearer ${token}`
@@ -428,7 +428,7 @@ const Courses = () => {
             key: checkData.razorpay.key || import.meta.env.VITE_RAZORPAY_KEY_ID,
             amount: checkData.razorpay.order?.amount || Math.round((checkData.razorpay.amount || 0) * 100),
             currency: checkData.razorpay.currency || 'INR',
-            name: 'Happy Life',
+            name: 'Xpertqa',
             description: `Registration: ${activeEventModal.title}`,
             order_id: checkData.razorpay.order?.id,
             prefill: {
@@ -540,7 +540,7 @@ const Courses = () => {
                   <button
                     key={id}
                     onClick={() => handleFilterChange(id)}
-                    className={`course-filter-reveal px-6 py-3 font-montserrat text-[11px] font-bold tracking-[0.2em] border transition-all duration-500 uppercase rounded-none cursor-pointer ${
+                    className={`course-filter-reveal px-6 py-3 font-montserrat text-[11px] font-bold tracking-[0.2em] border transition-all duration-500 uppercase rounded-xl cursor-pointer ${
                       isActive
                         ? 'bg-accent text-white border-accent'
                         : 'text-description border-border hover:border-accent/40 hover:text-normal'
@@ -603,7 +603,7 @@ const Courses = () => {
                       <button
                         key={level}
                         onClick={() => setSelectedDifficulty(level)}
-                        className={`px-8 py-4 font-montserrat text-[11px] font-bold tracking-[0.2em] border transition-all duration-500 uppercase rounded-none cursor-pointer ${
+                        className={`px-8 py-4 font-montserrat text-[11px] font-bold tracking-[0.2em] border transition-all duration-500 uppercase rounded-xl cursor-pointer ${
                           selectedDifficulty === level
                             ? 'bg-accent text-white border-accent'
                             : 'text-description border-border hover:border-accent/30 hover:text-normal'
@@ -762,7 +762,7 @@ const Courses = () => {
                   <div className="pt-6">
                     <button
                       onClick={() => startQuiz(test)}
-                      className="w-full py-3 px-4 rounded-none bg-accent text-white font-montserrat text-xs font-bold uppercase tracking-wider hover:opacity-90 transition-all duration-300 flex items-center justify-center gap-2 shadow-sm active:scale-98 cursor-pointer"
+                      className="w-full py-3 px-4 rounded-xl bg-accent text-white font-montserrat text-xs font-bold uppercase tracking-wider hover:opacity-90 transition-all duration-300 flex items-center justify-center gap-2 shadow-sm active:scale-98 cursor-pointer"
                     >
                       <span>Start Test Series</span>
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
@@ -829,13 +829,13 @@ const Courses = () => {
                   <div className="p-6 pt-0 flex gap-2.5">
                     <button
                       onClick={() => openBookModal(book)}
-                      className="flex-1 py-2.5 px-3 rounded-none border border-border text-normal font-montserrat text-xs font-bold uppercase tracking-wider hover:bg-black/5 dark:hover:bg-white/5 transition-colors cursor-pointer text-center"
+                      className="flex-1 py-2.5 px-3 rounded-xl border border-border text-normal font-montserrat text-xs font-bold uppercase tracking-wider hover:bg-black/5 dark:hover:bg-white/5 transition-colors cursor-pointer text-center"
                     >
                       Preview
                     </button>
                     <button
                       onClick={() => openBookModal(book)}
-                      className="flex-1 py-2.5 px-3 rounded-none bg-accent text-white font-montserrat text-xs font-bold uppercase tracking-wider hover:scale-[1.02] active:scale-98 transition-all shadow-xs cursor-pointer text-center"
+                      className="flex-1 py-2.5 px-3 rounded-xl bg-accent text-white font-montserrat text-xs font-bold uppercase tracking-wider hover:scale-[1.02] active:scale-98 transition-all shadow-xs cursor-pointer text-center"
                     >
                       Get eBook
                     </button>
@@ -957,7 +957,7 @@ const Courses = () => {
               </div>
               <button
                 onClick={() => setActiveQuizModal(null)}
-                className="w-10 h-10 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center font-bold transition-colors cursor-pointer"
+                className="w-10 h-10 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center font-bold transition-colors cursor-pointer"
               >
                 ✕
               </button>
@@ -1120,7 +1120,7 @@ const Courses = () => {
               </div>
               <button
                 onClick={() => setActiveBookModal(null)}
-                className="w-10 h-10 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center font-bold transition-colors cursor-pointer"
+                className="w-10 h-10 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center font-bold transition-colors cursor-pointer"
               >
                 ✕
               </button>
@@ -1230,7 +1230,7 @@ const Courses = () => {
               <button
                 disabled={eventRegisterLoading}
                 onClick={() => setActiveEventModal(null)}
-                className="w-10 h-10 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center font-bold transition-colors cursor-pointer shrink-0 disabled:opacity-50"
+                className="w-10 h-10 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center font-bold transition-colors cursor-pointer shrink-0 disabled:opacity-50"
               >
                 ✕
               </button>

@@ -265,31 +265,56 @@ const Contact = () => {
 
                     {/* Right Column: Office Coordinates / Support Info */}
                     <div className="lg:col-span-5 space-y-8 contact-reveal lg:sticky lg:top-28">
-                        <div className="bg-white border border-slate-200 rounded-3xl p-8 md:p-10 relative overflow-hidden flex flex-col justify-between min-h-[460px] shadow-xl">
+                        <div className="bg-white border border-slate-200 rounded-3xl p-8 md:p-10 relative overflow-hidden flex flex-col justify-between shadow-xl">
                             {/* Scanning Effect */}
                             <div ref={scanLineRef} className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-amber-400 to-transparent z-10 opacity-40 shadow-sm" />
 
                             <div className="space-y-8">
                                 {/* Header bracket */}
                                 <div className="flex justify-between items-center opacity-40">
-                                    <span className="font-jetbrains text-[8px] tracking-[0.4em] uppercase text-slate-500">Coordinates</span>
+                                    <span className="font-jetbrains text-[8px] tracking-[0.4em] uppercase text-slate-500">Official Details</span>
                                     <div className="h-[1px] w-16 bg-slate-300" />
-                                    <span className="font-jetbrains text-[8px] tracking-[0.1em] uppercase text-slate-500">Happy Life HQ</span>
+                                    <span className="font-jetbrains text-[8px] tracking-[0.1em] uppercase text-slate-500">Xpertqa Registered Office</span>
                                 </div>
 
                                 <div className="space-y-6">
-                                    {/* Email Section */}
-                                    <div className="space-y-2">
-                                        <h3 className="font-newsreader text-xl italic text-amber-800 font-bold">{t('emailSupport')}</h3>
-                                        <p className="font-jetbrains text-xs text-slate-600 leading-relaxed">
-                                            For general inquiries, course-related questions, or technical assistance:
+                                    {/* Company & Activity */}
+                                    <div className="space-y-1">
+                                        <h3 className="font-newsreader text-2xl italic text-slate-900 font-bold">Xpertqa</h3>
+                                        <p className="font-jetbrains text-xs text-amber-800 font-bold uppercase tracking-wider">
+                                            Computer Programming, Consultancy and Related Services
                                         </p>
-                                        <div className="pt-2">
+                                    </div>
+
+                                    {/* Phone Section */}
+                                    <div className="space-y-2 pt-4 border-t border-slate-100">
+                                        <span className="font-jetbrains text-[9px] uppercase tracking-[0.3em] font-bold text-slate-500 block">Phone Support</span>
+                                        <div className="flex items-center gap-2">
+                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-amber-600 shrink-0">
+                                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                                            </svg>
                                             <a
-                                                href="mailto:happylifereport@gmail.com"
+                                                href="tel:+916263384994"
+                                                className="font-jetbrains text-base md:text-lg font-bold text-slate-900 hover:text-amber-600 transition-colors"
+                                            >
+                                                +91 62633 84994
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    {/* Email Section */}
+                                    <div className="space-y-2 pt-4 border-t border-slate-100">
+                                        <span className="font-jetbrains text-[9px] uppercase tracking-[0.3em] font-bold text-slate-500 block">Email Address</span>
+                                        <div className="flex items-center gap-2">
+                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-amber-600 shrink-0">
+                                                <rect width="20" height="16" x="2" y="4" rx="2" />
+                                                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                                            </svg>
+                                            <a
+                                                href="mailto:xsmartqa.com@gmail.com"
                                                 className="font-jetbrains text-base md:text-lg font-bold text-slate-900 hover:text-amber-600 transition-colors break-all"
                                             >
-                                                happylifereport@gmail.com
+                                                xsmartqa.com@gmail.com
                                             </a>
                                         </div>
                                         <p className="font-jetbrains text-[9px] text-slate-500 uppercase tracking-wider">
@@ -297,38 +322,35 @@ const Contact = () => {
                                         </p>
                                     </div>
 
-                                    {/* Address Section */}
-                                    {/* <div className="space-y-2 pt-4 border-t border-slate-100">
-                                        <h3 className="font-newsreader text-xl italic text-amber-800 font-bold">{t('officeAddress')}</h3>
-                                        <div className="font-jetbrains text-sm text-slate-800 leading-relaxed">
-                                            <p className="font-bold text-slate-900">Lapaas Digital Private Limited</p>
-                                            <p className="text-slate-600">Sec 11, Rohini</p>
-                                            <p className="text-slate-600">New Delhi, India</p>
+                                    {/* Registered Office Address Section */}
+                                    <div className="space-y-2 pt-4 border-t border-slate-100">
+                                        <span className="font-jetbrains text-[9px] uppercase tracking-[0.3em] font-bold text-slate-500 block">Registered Office</span>
+                                        <div className="flex items-start gap-2">
+                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-amber-600 shrink-0 mt-0.5">
+                                                <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+                                                <circle cx="12" cy="10" r="3" />
+                                            </svg>
+                                            <p className="font-jetbrains text-xs text-slate-700 leading-relaxed">
+                                                Flat 74, Green City Apartments, Block 5, Gulmohar Road, Trilanga, Bhopal, Madhya Pradesh – 462039, India
+                                            </p>
                                         </div>
-                                    </div> */}
+                                    </div>
 
-                                    {/* Feedback Info Section */}
-                                    <div className="space-y-1.5 pt-4 border-t border-slate-100">
-                                        <h3 className="font-newsreader text-xl italic text-amber-800 font-bold">{t('feedbackSuggestions')}</h3>
-                                        <p className="font-jetbrains text-xs text-slate-600 leading-relaxed">
-                                            Your feedback helps us improve. If you have ideas, suggestions, or feature requests, email us with the subject: <span className="text-amber-800 font-bold">"Feedback – [Your Name]"</span>.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Social Grid */}
-                            <div className="pt-8 mt-8 border-t border-slate-100">
-                                <h3 className="font-newsreader text-xl italic text-amber-800 font-bold mb-3">{t('socialMedia')}</h3>
-                                <div className="flex flex-col gap-2">
-                                    <div className="font-jetbrains text-xs text-slate-600">
-                                        YouTube – <a href="https://youtube.com/@happylifeastro?si=6jttLMEZmVEyoDbS" target="_blank" rel="noopener noreferrer" className="text-amber-800 font-bold hover:underline transition-all">Happy Life Astro</a>
-                                    </div>
-                                    <div className="font-jetbrains text-xs text-slate-600">
-                                        Instagram – <a href="https://www.instagram.com/happy_life_astro?utm_source=qr&stkn=MTA5NHpxc2tpeXE4Yg%3D%3D" target="_blank" rel="noopener noreferrer" className="text-amber-800 font-bold hover:underline transition-all">@happy_life_astro</a>
-                                    </div>
-                                    <div className="font-jetbrains text-xs text-slate-600">
-                                        Email – <a href="mailto:happylifereport@gmail.com" className="text-amber-800 font-bold hover:underline transition-all">happylifereport@gmail.com</a>
+                                    {/* Location Map Section */}
+                                    <div className="pt-4 border-t border-slate-100 space-y-2">
+                                        <span className="font-jetbrains text-[9px] uppercase tracking-[0.3em] font-bold text-slate-500 block">Office Location</span>
+                                        <div className="w-full h-44 rounded-2xl overflow-hidden border border-slate-200 shadow-inner">
+                                            <iframe
+                                                title="Xpertqa Registered Office Location"
+                                                width="100%"
+                                                height="100%"
+                                                style={{ border: 0 }}
+                                                loading="lazy"
+                                                allowFullScreen
+                                                referrerPolicy="no-referrer-when-downgrade"
+                                                src="https://maps.google.com/maps?q=Trilanga,+Bhopal,+Madhya+Pradesh+462039&t=&z=14&ie=UTF8&iwloc=&output=embed"
+                                            />
+                                        </div>
                                     </div>
                                 </div>
                             </div>

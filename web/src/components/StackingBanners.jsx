@@ -6,30 +6,30 @@ import { useLanguage } from '../context/LanguageContext'
 
 const DEFAULT_SELECTIONS = [
   {
-    id: 'astro_vastu',
-    title: 'Astro-Vastu Mastery',
-    subtitle: 'Harmonize Your Home & Destiny',
+    id: 'banking_domain_qa',
+    title: 'Banking Domain Testing & UAT',
+    subtitle: 'Core Banking, Payment Rails & Regulatory Workflows',
     image: '/courses/architecture.png',
     type: 'all_courses'
   },
   {
-    id: 'kundli_analysis',
-    title: 'Vedic Kundli & Remedies',
-    subtitle: 'Practical Solutions for Modern Challenges',
+    id: 'enterprise_qa_transformation',
+    title: 'Enterprise QA Transformation',
+    subtitle: 'Large-scale Migration, Automation & Leadership',
     image: '/courses/motion.png',
     type: 'all_courses'
   },
   {
-    id: 'numerology_guidance',
-    title: 'Numerology & Name Alignment',
-    subtitle: 'Unlock The Power of Numbers',
+    id: 'second_innings_qa',
+    title: 'Second Innings in QA',
+    subtitle: 'Transforming Domain Professionals into QA Leaders',
     image: '/courses/typography.png',
     type: 'all_courses'
   },
   {
-    id: 'career_finance_astrology',
-    title: 'Career & Financial Astrology',
-    subtitle: 'Overcome Obstacles with Logical Upay',
+    id: 'hands_on_automation',
+    title: 'Hands-on QA & Automation',
+    subtitle: 'Industry-Grade Frameworks, API & Real-World Projects',
     image: '/courses/curator.png',
     type: 'all_courses'
   }
@@ -48,7 +48,7 @@ const StackingBanners = () => {
       if (!path.startsWith('/') && !path.startsWith('uploads/')) {
         path = `uploads/${path}`
       }
-      const rawBase = import.meta.env.VITE_BASE_URL || 'https://happy-life-sx03.onrender.com'
+      const rawBase = import.meta.env.VITE_BASE_URL || 'https://api.xpertqa.in'
       const baseUrl = rawBase.replace(/\/api\/v1\/?$/, '')
       return `${baseUrl}${path.startsWith('/') ? '' : '/'}${path}`
     } catch {
@@ -119,7 +119,7 @@ const StackingBanners = () => {
                   {t('selectedForYou') || 'Selected for You'}
                 </span>
               </div>
-              <h2 className="font-newsreader text-6xl md:text-8xl italic text-normal leading-[0.85] tracking-tighter">
+              <h2 className="font-newsreader text-5xl md:text-7xl not-italic text-normal leading-[0.85] tracking-tighter">
                 The <br />
                 <span className="text-accent ml-8">Selection</span>
               </h2>
@@ -128,7 +128,7 @@ const StackingBanners = () => {
             {/* Description with Vertical Glowing Line Indicator */}
             <div className="relative pl-8">
               <div className="absolute left-0 top-0 bottom-0 w-[1px] bg-gradient-to-b from-accent/60 via-accent/10 to-transparent"></div>
-              <div className="absolute left-[-3px] top-0 w-[7px] h-[7px] rounded-full bg-accent animate-pulse shadow-[0_0_15px_rgba(33,113,181,0.8)]"></div>
+              <div className="absolute left-[-3px] top-0 w-[7px] h-[7px] rounded-full bg-accent animate-pulse shadow-[0_0_15px_rgba(24, 120, 192,0.8)]"></div>
               <p className="font-jetbrains text-[11px] text-description tracking-[0.2em] leading-[2.2] uppercase max-w-sm">
                 {t('selectionSub') || 'A hand-picked collection of lessons built to help you grow faster. Learn the best strategies from our most popular courses.'}
               </p>
@@ -138,7 +138,7 @@ const StackingBanners = () => {
             <div className="pt-4 md:pt-6 flex items-center gap-8 group/all">
               <button 
                 onClick={() => navigate('/courses')}
-                className="px-12 py-6 rounded-none font-montserrat text-[12px] font-bold tracking-[0.3em] relative group/btn overflow-hidden transition-all hover:scale-105 active:scale-95 bg-accent text-white w-fit shadow-[0_10px_40px_rgba(33,113,181,0.25)]"
+                className="px-12 py-6 rounded-xl font-montserrat text-[12px] font-bold tracking-[0.3em] relative group/btn overflow-hidden transition-all hover:scale-105 active:scale-95 bg-accent text-white w-fit shadow-[0_10px_40px_rgba(24, 120, 192,0.25)]"
               >
                 <RollingText text={t('exploreAll') || 'EXPLORE ALL'} className="relative z-10" />
                 <div className="absolute inset-0 bg-white/20 translate-y-full group-hover/btn:translate-y-0 transition-transform duration-500"></div>
@@ -185,7 +185,7 @@ const StackingBanners = () => {
                 <div className="absolute bottom-6 left-6 pointer-events-auto z-20">
                   <button 
                     onClick={() => handleCardClick(card)}
-                    className="px-8 py-5 rounded-none font-montserrat text-[14px] font-bold tracking-[0.2em] relative group/btn overflow-hidden transition-all hover:scale-105 active:scale-95 bg-accent text-white w-fit shadow-md"
+                    className="px-8 py-5 rounded-xl font-montserrat text-[14px] font-bold tracking-[0.2em] relative group/btn overflow-hidden transition-all hover:scale-105 active:scale-95 bg-accent text-white w-fit shadow-md"
                   >
                     <RollingText 
                       text={

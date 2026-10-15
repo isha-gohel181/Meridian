@@ -210,7 +210,7 @@ const CuratedCatalog = () => {
               if (!thumb) return '/herocard.png';
               const normalized = String(thumb).replace(/\\/g, '/');
               if (/^https?:\/\//i.test(normalized)) return normalized;
-              const rawBase = import.meta.env.VITE_BASE_URL || import.meta.env.VITE_API_BASE || 'https://happy-life-sx03.onrender.com';
+              const rawBase = import.meta.env.VITE_BASE_URL || import.meta.env.VITE_API_BASE || 'https://api.xpertqa.in';
               const baseUrl = rawBase.replace(/\/api\/v1\/?$/, '');
               return normalized.startsWith('/') ? `${baseUrl}${normalized}` : `${baseUrl}/${normalized}`;
             };

@@ -118,7 +118,7 @@ const Signup = () => {
       <div className="signup-left">
         <div className="flex items-center justify-between w-full mb-8">
           <Link to="/" className="signup-logo flex items-center gap-2.5">
-            <img src="/logo/osa_logo.png" alt="Happy Life Logo" className="h-11 w-auto object-contain" />
+            <img src="/logo/osa_logo.png" alt="Xpertqa Logo" className="h-11 w-auto object-contain" />
           </Link>
         </div>
 
@@ -308,7 +308,7 @@ const Signup = () => {
         </div>
 
         <div className="signup-footer">
-          © {new Date().getFullYear()} HAPPY LIFE. ALL RIGHTS RESERVED.
+          © {new Date().getFullYear()} XPERTQA. ALL RIGHTS RESERVED.
         </div>
       </div>
 
@@ -316,18 +316,18 @@ const Signup = () => {
       <div className="signup-right">
         <div className="system-status">
           <div className="status-dot"></div>
-          ASTRO-VASTU PORTAL
+          XPERTQA LEARNING PORTAL
         </div>
 
         <div className="bg-text-wrap">
-          <div className="bg-text">Align.</div>
-          <div className="bg-text">Prosper.</div>
-          <div className="bg-text">Harmonize.</div>
+          <div className="bg-text">Build.</div>
+          <div className="bg-text">Test.</div>
+          <div className="bg-text">Excel.</div>
         </div>
 
         <div className="testimonial-card">
           <p className="testimonial-quote">
-            "Happy Life Astro offers simple, doable Vedic remedies without superstition. It completely harmonized our energy and unlocked career success."
+            "Xpertqa offers industry-standard computer programming, consultancy, and quality assurance education. It accelerated our career success."
           </p>
         </div>
 

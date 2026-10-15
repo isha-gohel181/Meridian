@@ -24,9 +24,9 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 // CORS config — dynamic origin to support credentials (wildcard '*' is
 // incompatible with credentials:true per the browser spec)
 const ALLOWED_ORIGINS = [
-  "https://happy-life-nu.vercel.app",
-  "https://happy-life-admin.vercel.app",
-  "https://happy-life-sx03.onrender.com",
+  "https://xpertqa.in",
+  "https://www.xpertqa.in",
+  "https://api.xpertqa.in",
   process.env.FRONTEND_URL,
   process.env.ADMIN_URL,
   "http://localhost:5173",

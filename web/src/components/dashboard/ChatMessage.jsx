@@ -79,7 +79,7 @@ const CustomAudioPlayer = ({ src }) => {
                 {/* Play/Pause Button */}
                 <button 
                     onClick={togglePlay}
-                    className="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center text-white transition-colors shrink-0"
+                    className="w-8 h-8 rounded-xl bg-white/5 hover:bg-white/10 flex items-center justify-center text-white transition-colors shrink-0"
                 >
                     {isPlaying ? (
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
@@ -186,7 +186,7 @@ const ChatMessage = ({ msg, isSent, onReply, isSupportChat }) => {
         if (rawUrl.startsWith('http') || rawUrl.startsWith('blob:')) {
             return rawUrl;
         }
-        const rawBase = import.meta.env.VITE_IMAGE_URL || import.meta.env.VITE_BASE_URL || import.meta.env.VITE_API_BASE || 'https://happy-life-sx03.onrender.com';
+        const rawBase = import.meta.env.VITE_IMAGE_URL || import.meta.env.VITE_BASE_URL || import.meta.env.VITE_API_BASE || 'https://api.xpertqa.in';
         const baseUrl = rawBase.replace(/\/api\/v1\/?$/, '');
         return `${baseUrl}${rawUrl.startsWith('/') ? '' : '/'}${rawUrl}`;
     };
@@ -530,7 +530,7 @@ const ChatMessage = ({ msg, isSent, onReply, isSupportChat }) => {
                         </span>
                         <button 
                             onClick={() => setActiveImageIndex(null)}
-                            className="p-2.5 bg-white/5 hover:bg-white/10 hover:text-red-400 text-white rounded-full transition-all duration-300"
+                            className="p-2.5 bg-white/5 hover:bg-white/10 hover:text-red-400 text-white rounded-xl transition-all duration-300"
                             title="Close preview"
                         >
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
@@ -557,7 +557,7 @@ const ChatMessage = ({ msg, isSent, onReply, isSupportChat }) => {
                                     e.stopPropagation();
                                     setActiveImageIndex(prev => prev - 1);
                                 }}
-                                className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 p-3.5 bg-white/5 hover:bg-white/15 hover:scale-105 active:scale-95 text-white rounded-full transition-all duration-300 border border-white/5 z-10"
+                                className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 p-3.5 bg-white/5 hover:bg-white/15 hover:scale-105 active:scale-95 text-white rounded-xl transition-all duration-300 border border-white/5 z-10"
                                 title="Previous image"
                             >
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
@@ -570,7 +570,7 @@ const ChatMessage = ({ msg, isSent, onReply, isSupportChat }) => {
                                     e.stopPropagation();
                                     setActiveImageIndex(prev => prev + 1);
                                 }}
-                                className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 p-3.5 bg-white/5 hover:bg-white/15 hover:scale-105 active:scale-95 text-white rounded-full transition-all duration-300 border border-white/5 z-10"
+                                className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 p-3.5 bg-white/5 hover:bg-white/15 hover:scale-105 active:scale-95 text-white rounded-xl transition-all duration-300 border border-white/5 z-10"
                                 title="Next image"
                             >
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 12 12 9 6"/></svg>

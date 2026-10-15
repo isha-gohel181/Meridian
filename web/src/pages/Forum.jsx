@@ -236,7 +236,7 @@ const QuestionCard = ({ question }) => {
                     const pic = question.profilePicture;
                     if (!pic) return '/news_placeholder.png';
                     if (pic.startsWith('http')) return pic;
-                    const rawBase = import.meta.env.VITE_BASE_URL || import.meta.env.VITE_API_BASE || 'https://happy-life-sx03.onrender.com';
+                    const rawBase = import.meta.env.VITE_BASE_URL || import.meta.env.VITE_API_BASE || 'https://api.xpertqa.in';
                     const baseUrl = rawBase.replace(/\/api\/v1\/?$/, '');
                     return `${baseUrl}/uploads/profiles/${pic}`;
                 })()} 
@@ -286,7 +286,7 @@ const QuestionCard = ({ question }) => {
                   return /\.(jpg|jpeg|png|gif|webp|svg)$/i.test(path);
                 }).map((att, idx) => {
                   const path = typeof att === 'string' ? att : (att.type || '');
-                  const fullUrl = path.startsWith('http') ? path : `https://happy-life-sx03.onrender.com/${path.startsWith('uploads/') ? path : `uploads/forum/${path}`}`;
+                  const fullUrl = path.startsWith('http') ? path : `https://api.xpertqa.in/${path.startsWith('uploads/') ? path : `uploads/forum/${path}`}`;
                   
                   return (
                     <div key={idx} className="attachment-item relative aspect-video bg-dark border border-border rounded-none overflow-hidden group/img shadow-sm">
@@ -301,7 +301,7 @@ const QuestionCard = ({ question }) => {
                       <div className="absolute inset-0 bg-slate-950/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
                         <button 
                           onClick={() => setFullImageUrl(fullUrl)}
-                          className="p-3 bg-accent text-white rounded-none shadow-md"
+                          className="p-3 bg-accent text-white rounded-xl shadow-md"
                         >
                           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
                         </button>
@@ -321,7 +321,7 @@ const QuestionCard = ({ question }) => {
                 <div className="flex items-center gap-3">
                    <button 
                        onClick={() => handleSentiment('like')}
-                       className={`w-8 h-8 flex items-center justify-center rounded-none transition-all border ${sentiment === 'like' ? 'bg-accent border-accent text-white shadow-sm' : 'border-border text-description hover:border-accent hover:text-accent bg-card'}`}
+                       className={`w-8 h-8 flex items-center justify-center rounded-xl transition-all border ${sentiment === 'like' ? 'bg-accent border-accent text-white shadow-sm' : 'border-border text-description hover:border-accent hover:text-accent bg-card'}`}
                    >
                        <svg width="14" height="14" viewBox="0 0 24 24" fill={sentiment === 'like' ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2.5"><path d="M7 11V19H17C17.55 19 18 18.55 18 18V9C18 8.45 17.55 8 17 8H12.67L13.12 4.41C13.19 3.84 12.79 3.32 12.22 3.25C12.15 3.24 12.07 3.24 12 3.24C11.55 3.24 11.13 3.42 10.82 3.73L7 7.56V11H7Z" strokeLinecap="round" strokeLinejoin="round"/></svg>
                    </button>
@@ -329,7 +329,7 @@ const QuestionCard = ({ question }) => {
                    
                    <button 
                        onClick={() => handleSentiment('dislike')}
-                       className={`w-8 h-8 flex items-center justify-center rounded-none transition-all border ${sentiment === 'dislike' ? 'bg-red-500 border-red-500 text-white' : 'border-border text-description hover:border-red-400 hover:text-red-600 bg-card'}`}
+                       className={`w-8 h-8 flex items-center justify-center rounded-xl transition-all border ${sentiment === 'dislike' ? 'bg-red-500 border-red-500 text-white' : 'border-border text-description hover:border-red-400 hover:text-red-600 bg-card'}`}
                    >
                        <svg width="14" height="14" viewBox="0 0 24 24" fill={sentiment === 'dislike' ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2.5" className="rotate-180"><path d="M7 11V19H17C17.55 19 18 18.55 18 18V9C18 8.45 17.55 8 17 8H12.67L13.12 4.41C13.19 3.84 12.79 3.32 12.22 3.25C12.15 3.24 12.07 3.24 12 3.24C11.55 3.24 11.13 3.42 10.82 3.73L7 7.56V11H7Z" strokeLinecap="round" strokeLinejoin="round"/></svg>
                    </button>
@@ -342,7 +342,7 @@ const QuestionCard = ({ question }) => {
                 <span className="font-jetbrains text-[8px] text-description/60 uppercase tracking-widest font-bold">BUTTON</span>
                 <button 
                   onClick={() => setIsOpen(!isOpen)}
-                  className="flex items-center gap-2 px-3 py-1.5 bg-card hover:bg-dark border border-border rounded-none font-jetbrains text-xs font-bold text-normal transition-all"
+                  className="flex items-center gap-2 px-3 py-1.5 bg-card hover:bg-dark border border-border rounded-xl font-jetbrains text-xs font-bold text-normal transition-all"
                 >
                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-accent"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
                    <span>{repliesCount} REPLIES</span>
@@ -353,7 +353,7 @@ const QuestionCard = ({ question }) => {
               <span className="hidden md:inline text-description font-jetbrains text-lg tracking-[0.5em]">...</span>
               <button 
                 onClick={() => setIsOpen(!isOpen)}
-                className={`w-10 h-10 border border-accent rounded-full flex items-center justify-center text-accent transition-transform duration-500 ${isOpen ? 'rotate-180' : 'rotate-0'}`}
+                className={`w-10 h-10 border border-accent rounded-xl flex items-center justify-center text-accent transition-transform duration-500 ${isOpen ? 'rotate-180' : 'rotate-0'}`}
               >
                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M19 14l-7 7-7-7M12 3v18" strokeLinecap="round" strokeLinejoin="round"/></svg>
               </button>
@@ -383,7 +383,7 @@ const QuestionCard = ({ question }) => {
                             const pic = reply.profilePicture;
                             if (!pic) return '/news_placeholder.png';
                             if (pic.startsWith('http')) return pic;
-                            const rawBase = import.meta.env.VITE_BASE_URL || import.meta.env.VITE_API_BASE || 'https://happy-life-sx03.onrender.com';
+                            const rawBase = import.meta.env.VITE_BASE_URL || import.meta.env.VITE_API_BASE || 'https://api.xpertqa.in';
                             const baseUrl = rawBase.replace(/\/api\/v1\/?$/, '');
                             return `${baseUrl}/uploads/profiles/${pic}`;
                         })()} 
@@ -427,7 +427,7 @@ const QuestionCard = ({ question }) => {
                                   const pic = nested.profilePicture;
                                   if (!pic) return '/news_placeholder.png';
                                   if (pic.startsWith('http')) return pic;
-                                  const rawBase = import.meta.env.VITE_BASE_URL || import.meta.env.VITE_API_BASE || 'https://happy-life-sx03.onrender.com';
+                                  const rawBase = import.meta.env.VITE_BASE_URL || import.meta.env.VITE_API_BASE || 'https://api.xpertqa.in';
                                   const baseUrl = rawBase.replace(/\/api\/v1\/?$/, '');
                                   return `${baseUrl}/uploads/profiles/${pic}`;
                               })()} 
@@ -513,7 +513,7 @@ const QuestionCard = ({ question }) => {
 
                   <button 
                     onClick={handlePublish}
-                    className="px-8 py-4 bg-accent text-white font-bold font-jetbrains text-[9px] tracking-[0.3em] uppercase hover:brightness-105 transition-all rounded-none"
+                    className="px-8 py-4 bg-accent text-white font-bold font-jetbrains text-[9px] tracking-[0.3em] uppercase hover:brightness-105 transition-all rounded-xl"
                   >
                     PUBLISH
                   </button>
@@ -538,7 +538,7 @@ const QuestionCard = ({ question }) => {
              <div className="lg:hidden mb-12">
                 <button 
                     onClick={() => setIsMobileFilterOpen(!isMobileFilterOpen)}
-                    className="w-full flex items-center justify-between p-7 border border-border bg-card hover:bg-dark transition-all group rounded-none"
+                    className="w-full flex items-center justify-between p-7 border border-border bg-card hover:bg-dark transition-all group rounded-xl"
                 >
                     <div className="flex items-center gap-4">
                         <div className="w-8 h-8 flex items-center justify-center border border-border rounded-none group-hover:border-accent group-hover:text-accent transition-all">
@@ -558,7 +558,7 @@ const QuestionCard = ({ question }) => {
                             <h4 className="font-jetbrains text-[9px] font-bold text-description tracking-[0.3em] uppercase underline underline-offset-8 decoration-accent/30">{t('popularTags')}</h4>
                             <div className="flex flex-wrap gap-2">
                                 {tags.map((tag) => (
-                                    <button key={tag} className="px-4 py-2 border border-border font-jetbrains text-[8px] text-description hover:text-accent hover:border-accent transition-all uppercase tracking-widest rounded-none">
+                                    <button key={tag} className="px-4 py-2 border border-border font-jetbrains text-[8px] text-description hover:text-accent hover:border-accent transition-all uppercase tracking-widest rounded-xl">
                                         {tag}
                                     </button>
                                 ))}
@@ -583,7 +583,7 @@ const QuestionCard = ({ question }) => {
                             <h4 className="font-jetbrains text-[9px] font-bold text-description tracking-[0.3em] uppercase underline underline-offset-8 decoration-accent/30">{t('popularDiscourse')}</h4>
                             <div className="flex flex-wrap gap-2">
                                 {discourseTags.map((tag) => (
-                                    <button key={tag} className="px-4 py-2 border border-border font-jetbrains text-[8px] text-description hover:text-normal transition-all uppercase tracking-widest rounded-none">
+                                    <button key={tag} className="px-4 py-2 border border-border font-jetbrains text-[8px] text-description hover:text-normal transition-all uppercase tracking-widest rounded-xl">
                                         {tag}
                                     </button>
                                 ))}
@@ -626,7 +626,7 @@ const QuestionCard = ({ question }) => {
                 <div className="sidebar-reveal mb-12">
                    <button 
                      onClick={() => setIsModalOpen(true)}
-                     className="w-full bg-accent text-white p-8 md:p-10 font-jetbrains text-[11px] font-black uppercase tracking-[0.4em] hover:scale-[1.02] active:scale-95 transition-all shadow-accent-soft flex flex-col items-center justify-center text-center gap-4 group rounded-none border border-accent cursor-pointer"
+                     className="w-full bg-accent text-white p-8 md:p-10 font-jetbrains text-[11px] font-black uppercase tracking-[0.4em] hover:scale-[1.02] active:scale-95 transition-all shadow-accent-soft flex flex-col items-center justify-center text-center gap-4 group rounded-xl border border-accent cursor-pointer"
                    >
                       <div className="w-14 h-14 rounded-full bg-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-all duration-300">
                          <svg 
@@ -634,14 +634,14 @@ const QuestionCard = ({ question }) => {
                            height="26" 
                            viewBox="0 0 24 24" 
                            fill="none" 
-                           stroke="#2171B5" 
+                           stroke="#1878C0" 
                            strokeWidth="3.5" 
                            strokeLinecap="round" 
                            strokeLinejoin="round" 
-                           style={{ stroke: '#2171B5', color: '#2171B5' }}
+                           style={{ stroke: '#1878C0', color: '#1878C0' }}
                          >
-                           <line x1="12" y1="5" x2="12" y2="19" style={{ stroke: '#2171B5' }} />
-                           <line x1="5" y1="12" x2="19" y2="12" style={{ stroke: '#2171B5' }} />
+                           <line x1="12" y1="5" x2="12" y2="19" style={{ stroke: '#1878C0' }} />
+                           <line x1="5" y1="12" x2="19" y2="12" style={{ stroke: '#1878C0' }} />
                          </svg>
                       </div>
                       <span className="text-white font-black tracking-[0.35em] text-[12px]">{t('startNewTopic')}</span>
@@ -654,7 +654,7 @@ const QuestionCard = ({ question }) => {
                 <h4 className="font-montserrat text-[14px] font-bold text-accent tracking-[0.3em] uppercase underline underline-offset-8 decoration-accent/30 mb-2">{t('popularTags')}</h4>
                 <div className="flex flex-wrap gap-3">
                     {tags.map((tag) => (
-                      <button key={tag} className="px-5 py-3 border border-border bg-card font-jetbrains text-[9px] text-description hover:text-accent hover:border-accent transition-all uppercase tracking-widest rounded-none">
+                      <button key={tag} className="px-5 py-3 border border-border bg-card font-jetbrains text-[9px] text-description hover:text-accent hover:border-accent transition-all uppercase tracking-widest rounded-xl">
                         {tag}
                       </button>
                     ))}
@@ -679,7 +679,7 @@ const QuestionCard = ({ question }) => {
                 <h4 className="font-montserrat text-[14px] font-bold text-accent tracking-[0.3em] uppercase opacity-50 mb-6 underline underline-offset-8 decoration-accent/10">{t('popularDiscourse')}</h4>
                 <div className="flex flex-wrap gap-3">
                     {discourseTags.map((tag) => (
-                      <button key={tag} className="px-5 py-3 border border-border bg-card font-jetbrains text-[9px] text-description hover:text-normal transition-all uppercase tracking-widest rounded-none">
+                      <button key={tag} className="px-5 py-3 border border-border bg-card font-jetbrains text-[9px] text-description hover:text-normal transition-all uppercase tracking-widest rounded-xl">
                         {tag}
                       </button>
                     ))}

@@ -548,7 +548,7 @@ const AppSidebar: React.FC = () => {
 
   return (
     <aside
-      className={`fixed mt-16 flex flex-col lg:mt-0 top-0 px-4 left-0 bg-[#2171B5] text-white h-screen transition-all duration-300 ease-in-out z-50 border-r border-blue-400/20 shadow-xl
+      className={`fixed mt-16 flex flex-col lg:mt-0 top-0 px-4 left-0 bg-[#1878C0] text-white h-screen transition-all duration-300 ease-in-out z-50 border-r border-blue-400/20 shadow-xl
         ${isExpanded || isMobileOpen
           ? "w-[290px]"
           : isHovered
@@ -568,13 +568,13 @@ const AppSidebar: React.FC = () => {
             <img
               className="h-16 w-auto max-w-[200px] object-contain brightness-0 invert drop-shadow-md transition-transform duration-300 hover:scale-105"
               src="/images/logo/osa_logo.png"
-              alt="Happy Life Logo"
+              alt="Xpertqa Logo"
             />
           ) : (
             <img
               className="h-11 w-auto max-w-[48px] object-contain brightness-0 invert drop-shadow-md"
               src="/images/logo/osa_logo.png"
-              alt="Happy Life Logo"
+              alt="Xpertqa Logo"
             />
           )}
         </Link>

@@ -7,21 +7,21 @@ const PageMeta = ({
   title: string;
   description: string;
 }) => {
-  let cleanTitle = title || "Happy Life Admin";
+  let cleanTitle = title || "Xpertqa Admin";
   if (cleanTitle.includes("TailAdmin") || cleanTitle.includes("React.js")) {
     cleanTitle = cleanTitle
       .replace(/React\.js\s*/gi, "")
-      .replace(/\s*Dashboard\s*\|\s*TailAdmin.*$/gi, " | Happy Life Admin")
-      .replace(/\|\s*TailAdmin.*$/gi, "| Happy Life Admin")
-      .replace(/TailAdmin/gi, "Happy Life Admin")
+      .replace(/\s*Dashboard\s*\|\s*TailAdmin.*$/gi, " | Xpertqa Admin")
+      .replace(/\|\s*TailAdmin.*$/gi, "| Xpertqa Admin")
+      .replace(/TailAdmin/gi, "Xpertqa Admin")
       .trim();
-    if (!cleanTitle.includes("Happy Life Admin")) {
-      cleanTitle = `${cleanTitle} | Happy Life Admin`;
+    if (!cleanTitle.includes("Xpertqa Admin")) {
+      cleanTitle = `${cleanTitle} | Xpertqa Admin`;
     }
   }
 
   const cleanDescription = (description || "")
-    .replace(/TailAdmin/gi, "Happy Life Admin")
+    .replace(/TailAdmin/gi, "Xpertqa Admin")
     .replace(/React\.js\s*/gi, "");
 
   return (

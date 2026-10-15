@@ -96,7 +96,7 @@ const CreateTopicModal = ({ isOpen, onClose, onSubmit }) => {
            </div>
             <button 
               onClick={handleClose}
-              className="w-10 h-10 rounded-none border border-border flex items-center justify-center text-description hover:text-accent hover:border-accent transition-all duration-300 cursor-pointer"
+              className="w-10 h-10 rounded-xl border border-border flex items-center justify-center text-description hover:text-accent hover:border-accent transition-all duration-300 cursor-pointer"
             >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
            </button>
@@ -151,7 +151,7 @@ const CreateTopicModal = ({ isOpen, onClose, onSubmit }) => {
                     <button 
                       key={tag}
                       onClick={() => toggleTag(tag)}
-                      className={`px-4 py-2 border font-jetbrains text-[9px] font-bold uppercase tracking-widest transition-all duration-300 rounded-none cursor-pointer
+                      className={`px-4 py-2 border font-jetbrains text-[9px] font-bold uppercase tracking-widest transition-all duration-300 rounded-xl cursor-pointer
                         ${selectedTags.includes(tag) ? 'bg-accent border-accent text-white shadow-sm' : 'border-border text-description hover:border-accent hover:text-normal bg-card'}`}
                     >
                        #{tag}
@@ -224,7 +224,7 @@ const CreateTopicModal = ({ isOpen, onClose, onSubmit }) => {
             <button 
               onClick={handleSubmit}
               disabled={!title.trim() || !content.trim() || isSubmitting}
-              className="bg-accent text-white font-bold px-8 py-3.5 font-montserrat text-[11px] uppercase tracking-[0.3em] flex items-center gap-3 hover:scale-[1.02] active:scale-95 transition-all shadow-sm disabled:opacity-50 disabled:cursor-not-allowed min-w-[180px] justify-center rounded-none cursor-pointer"
+              className="bg-accent text-white font-bold px-8 py-3.5 font-montserrat text-[11px] uppercase tracking-[0.3em] flex items-center gap-3 hover:scale-[1.02] active:scale-95 transition-all shadow-sm disabled:opacity-50 disabled:cursor-not-allowed min-w-[180px] justify-center rounded-xl cursor-pointer"
             >
                {isSubmitting ? (
                  <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />

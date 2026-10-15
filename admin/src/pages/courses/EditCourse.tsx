@@ -42,7 +42,7 @@ import Editor from "../../components/Editor";
 import LandingPageSections from "./LandingPageSections";
 import AddReview from "./AddReview";
 
-const baseUrl = import.meta.env.VITE_IMAGE_URL || import.meta.env.VITE_BASE_URL || "https://happy-life-sx03.onrender.com/";
+const baseUrl = import.meta.env.VITE_IMAGE_URL || import.meta.env.VITE_BASE_URL || "https://api.xpertqa.in/";
 
 // Success Popup Component (unchanged)
 const SuccessPopup = ({
@@ -434,7 +434,7 @@ const EditCourse = () => {
     certificateRecipientName: "Student Name",
     certificateIssuerName: "",
     certificateIssuerTitle: "",
-    certificateOrganization: "Happy Life Academy",
+    certificateOrganization: "Xpertqa Academy",
     certificateDescription: "",
     // Enhanced Landing Page Sections
     landingPageSections: [],
@@ -649,7 +649,7 @@ const EditCourse = () => {
         certificateRecipientName: course.certificateRecipientName || "Student Name",
         certificateIssuerName: course.certificateIssuerName || "",
         certificateIssuerTitle: course.certificateIssuerTitle || "",
-        certificateOrganization: course.certificateOrganization || "Happy Life Academy",
+        certificateOrganization: course.certificateOrganization || "Xpertqa Academy",
         certificateDescription: course.certificateDescription || "",
         // Enhanced Landing Page Sections
         landingPageSections: (course.landingPageSections && course.landingPageSections.length > 0)
@@ -2152,7 +2152,7 @@ const EditCourse = () => {
                         <div className="w-full max-w-4xl mx-auto bg-gradient-to-br from-amber-50 to-amber-100 rounded-lg shadow-2xl p-8 border-4 border-amber-400">
                           {/* Certificate Header */}
                           <div className="bg-gradient-to-r from-[#0f172a] via-[#1e3a8a] to-[#0f172a] text-white py-5 px-6 rounded-t-lg mb-6 text-center border-b-2 border-amber-400">
-                            <span className="text-[10px] font-bold text-amber-300 uppercase tracking-[0.3em]">HAPPY LIFE ACADEMY</span>
+                            <span className="text-[10px] font-bold text-amber-300 uppercase tracking-[0.3em]">XPERTQA ACADEMY</span>
                             <h3 className="text-2xl font-bold mt-1 text-white">
                               {(formData as any).certificateTitle || "Certificate of Completion"}
                             </h3>
@@ -2198,7 +2198,7 @@ const EditCourse = () => {
                               </div>
                               <div className="text-right">
                                 <p className="font-bold text-[#1e3a8a]">
-                                  {(formData as any).certificateOrganization || "Happy Life Academy"}
+                                  {(formData as any).certificateOrganization || "Xpertqa Academy"}
                                 </p>
                               </div>
                             </div>
@@ -2304,10 +2304,10 @@ const EditCourse = () => {
                         <input
                           type="text"
                           name="certificateOrganization"
-                          value={formData.certificateOrganization || "Happy Life Academy"}
+                          value={formData.certificateOrganization || "Xpertqa Academy"}
                           onChange={handleInputChange}
                           className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-3 dark:text-gray-200 focus:ring-2 focus:ring-blue-500"
-                          placeholder="Happy Life Academy"
+                          placeholder="Xpertqa Academy"
                         />
                       </div>
                     </div>

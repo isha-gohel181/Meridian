@@ -40,7 +40,7 @@ function getWelcomeEmailHTML(name, email) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to Happy Life Astro</title>
+    <title>Welcome to Xpertqa</title>
     <style>
         * {
             margin: 0;
@@ -219,7 +219,7 @@ function getWelcomeEmailHTML(name, email) {
 <body>
     <div class="email-container">
         <div class="header">
-            <div class="logo">HAPPY LIFE ASTRO</div>
+            <div class="logo">XPERTQA</div>
             <div class="tagline">Online Learning Platform</div>
         </div>
         
@@ -232,7 +232,7 @@ function getWelcomeEmailHTML(name, email) {
                 <p class="highlight-text">Your course is ready for you. Access all video lessons, study material, and community discussions directly from your student dashboard.</p>
             </div>
             
-            <div class="highlight-box" style="background-color: #f1f5f9; border-left: 4px solid #2171B5; margin: 30px 0;">
+            <div class="highlight-box" style="background-color: #f1f5f9; border-left: 4px solid #1878C0; margin: 30px 0;">
                 <p class="highlight-text" style="font-weight:bold;">Your Login Credentials:</p>
                 <p class="highlight-text">Email: <b>${email}</b></p>
                 <p class="highlight-text" style="font-size:13px; color:#666;">(Use the password created during checkout or reset password link.)</p>
@@ -242,7 +242,7 @@ function getWelcomeEmailHTML(name, email) {
                 <div class="download-title">Ready to Start Learning?</div>
                 <div class="download-subtitle">Access your course on the web platform</div>
                <div class="download-buttons">
-  <a href="${process.env.FRONTEND_URL || 'https://happylifeastro.school'}/login" class="download-btn" target="_blank">🌐 Web Portal</a>
+  <a href="${process.env.FRONTEND_URL || 'https://xpertqa.in'}/login" class="download-btn" target="_blank">🌐 Web Portal</a>
 </div>
 
             </div>
@@ -251,13 +251,13 @@ function getWelcomeEmailHTML(name, email) {
             
             <div class="signature">
                 <p class="signature-text">Warm regards,</p>
-                <p class="signature-name">Happy Life Astro Team</p>
+                <p class="signature-name">Xpertqa Team</p>
             </div>
         </div>
         
         <div class="footer">
             <p class="support-info">Need help? Contact us at</p>
-            <a href="mailto:${process.env.SupportEmail || 'support@happylifeastro.school'}" class="support-email">${process.env.SupportEmail || 'support@happylifeastro.school'}</a>
+            <a href="mailto:${process.env.SupportEmail || 'xsmartqa.com@gmail.com'}" class="support-email">${process.env.SupportEmail || 'xsmartqa.com@gmail.com'}</a>
         </div>
     </div>
 </body>
@@ -266,7 +266,7 @@ function getWelcomeEmailHTML(name, email) {
 }
 
 async function sendWelcomeEmail({ name, email }) {
-  const subject = "Welcome to Happy Life Astro - Let's Start Your Journey!";
+  const subject = "Welcome to Xpertqa - Let's Start Your Journey!";
   const html = getWelcomeEmailHTML(name, email);
   
   await emailService.getTransporter("transactional").sendMail({

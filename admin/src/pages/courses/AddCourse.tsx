@@ -562,7 +562,7 @@ const AddCourse = () => {
     certificateRecipientName: "Student Name",
     certificateIssuerName: "",
     certificateIssuerTitle: "",
-    certificateOrganization: "Happy Life Academy",
+    certificateOrganization: "Xpertqa Academy",
     certificateDescription: "",
     // Enhanced Landing Page Sections
     landingPageSections: [
@@ -905,7 +905,7 @@ const AddCourse = () => {
         certificateRecipientName: "Student Name",
         certificateIssuerName: "",
         certificateIssuerTitle: "",
-        certificateOrganization: "Happy Life Academy",
+        certificateOrganization: "Xpertqa Academy",
         certificateDescription: "",
         // Enhanced Landing Page Sections
         overviewSection: { show: false, title: "", subtitle: "", description: null, images: [] },

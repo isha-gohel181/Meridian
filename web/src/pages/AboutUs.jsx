@@ -54,7 +54,7 @@ const AboutUs = () => {
         </h1>
         
         <p className="hero-animate text-lg md:text-2xl text-slate-600 max-w-3xl leading-relaxed font-medium">
-          Happy Life Astro is an astrology and Vastu consultancy led by Dr. Yogesh Sharma, dedicated to providing practical, logical, and doable remedies for modern life challenges.
+          Xpertqa is a consultancy and training platform dedicated to providing practical, logical, and industry-ready solutions for modern computer programming, software quality assurance, and technical growth.
         </p>
       </section>
 
@@ -80,30 +80,30 @@ const AboutUs = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <div className="relative rounded-[2rem] overflow-hidden shadow-2xl aspect-square lg:aspect-auto lg:h-[600px]">
             <img 
-              src="https://images.unsplash.com/photo-1532012164546-f432f2e3edd4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" 
-              alt="Dr. Yogesh Sharma Guidance" 
-              className="w-full h-full object-cover"
+              src="/manoj_saxena.jpeg" 
+              alt="Manoj Saxena QA Leadership" 
+              className="w-full h-full object-cover object-top"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent" />
             <div className="absolute bottom-10 left-10 right-10">
               <h3 className="text-white text-3xl font-bold mb-3">Our Mission</h3>
               <p className="text-white/80 text-lg leading-relaxed">
-                To simplify the profound science of Vedic Astrology, Numerology, and Vastu Shastra into practical, actionable habits that bring peace, health, financial prosperity, and mental clarity.
+                To empower the next generation of testers and domain experts with practical, industry-relevant Software Testing skills, banking domain depth, and proven QA leadership.
               </p>
             </div>
           </div>
           
           <div className="flex flex-col justify-center">
             <h2 className="text-4xl md:text-5xl font-black text-slate-900 leading-tight mb-8">
-              Astrology that works <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-[#2171B5]">for your modern life.</span>
+              Quality Assurance that drives <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-[#1878C0]">real enterprise impact.</span>
             </h2>
             <div className="space-y-6 text-lg text-slate-600 leading-relaxed font-medium">
               <p>
-                We believe astrology is a blueprint of planetary energies—not a system of fear or fatalism. Dr. Yogesh Sharma brings a refreshing, unorthodox approach: no black magic, no overnight false guarantees, and no burdensome rituals.
+                We believe software quality assurance is the backbone of modern digital banking and enterprise systems. Manoj Saxena brings 25+ years of hands-on expertise across leading global financial institutions like DBS, ANZ, Citi, and Nucleus Software.
               </p>
               <p>
-                Whether dealing with career bottlenecks, financial struggles, relationship friction, or home energy imbalances (Vastu dosha), our consultations and courses empower you with easy, everyday remedies that yield real harmony.
+                Whether you are launching your tech career, mastering large-scale UAT and test automation, or building a high-value second innings in QA from a business domain background, our structured mentorship equips you with real-world competence.
               </p>
             </div>
           </div>
@@ -147,7 +147,7 @@ const AboutUs = () => {
               {
                 icon: <path d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>,
                 title: "Live Webinars & Masterclasses",
-                desc: "Interactive video sessions and courses directly mentored by Dr. Yogesh Sharma."
+                desc: "Interactive video sessions and mentorship tracks directly guided by Manoj Saxena."
               },
               {
                 icon: <path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>,

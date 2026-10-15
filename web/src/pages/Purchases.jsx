@@ -64,7 +64,7 @@ const Purchases = () => {
                </h1>
             </div>
             <p className="max-w-md font-jetbrains text-xs text-slate-600 font-medium leading-relaxed uppercase tracking-[0.15em] text-left md:text-right">
-               {t('purchasesLedgerSub') || 'Persistent record of course enrollments, consultation packages, and transaction receipts across Happy Life.'}
+               {t('purchasesLedgerSub') || 'Persistent record of course enrollments, service packages, and transaction receipts across Xpertqa.'}
             </p>
           </div>
 
@@ -153,7 +153,7 @@ const Purchases = () => {
                         {/* <div className="col-span-2 flex justify-end gap-3 transition-all duration-500">
                            {item.certificate ? (
                               <a 
-                                href={`https://happy-life-sx03.onrender.com/${item.certificate.certificate_url}`} 
+                                href={`https://api.xpertqa.in/${item.certificate.certificate_url}`} 
                                 target="_blank" 
                                 rel="noreferrer"
                                 className="font-jetbrains text-xs font-bold text-amber-700 hover:text-slate-950 uppercase tracking-wider transition-colors bg-amber-100 px-3 py-1.5 rounded-full border border-amber-300/60"
@@ -179,7 +179,7 @@ const Purchases = () => {
                    <button 
                      onClick={() => currentPage > 1 && paginate(currentPage - 1)}
                      disabled={currentPage === 1}
-                     className={`font-jetbrains text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full border transition-all ${currentPage === 1 ? 'border-slate-200 text-slate-300 cursor-not-allowed' : 'border-slate-300 bg-white text-slate-700 hover:bg-accent hover:border-amber-400 hover:text-slate-950'}`}
+                     className={`font-jetbrains text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-xl border transition-all ${currentPage === 1 ? 'border-slate-200 text-slate-300 cursor-not-allowed' : 'border-slate-300 bg-white text-slate-700 hover:bg-accent hover:border-amber-400 hover:text-slate-950'}`}
                    >
                      Prev
                    </button>
@@ -189,7 +189,7 @@ const Purchases = () => {
                          <button
                            key={num}
                            onClick={() => paginate(num)}
-                           className={`w-9 h-9 rounded-full font-jetbrains text-xs font-bold transition-all ${
+                           className={`w-9 h-9 rounded-xl font-jetbrains text-xs font-bold transition-all ${
                              currentPage === num 
                                ? 'bg-accent text-slate-950 shadow-sm font-black' 
                                : 'bg-white border border-slate-200 text-slate-600 hover:border-slate-300'
@@ -203,7 +203,7 @@ const Purchases = () => {
                    <button 
                      onClick={() => currentPage < totalPages && paginate(currentPage + 1)}
                      disabled={currentPage === totalPages}
-                     className={`font-jetbrains text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full border transition-all ${currentPage === totalPages ? 'border-slate-200 text-slate-300 cursor-not-allowed' : 'border-slate-300 bg-white text-slate-700 hover:bg-accent hover:border-amber-400 hover:text-slate-950'}`}
+                     className={`font-jetbrains text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-xl border transition-all ${currentPage === totalPages ? 'border-slate-200 text-slate-300 cursor-not-allowed' : 'border-slate-300 bg-white text-slate-700 hover:bg-accent hover:border-amber-400 hover:text-slate-950'}`}
                    >
                      Next
                    </button>

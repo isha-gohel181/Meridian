@@ -170,7 +170,7 @@ const FreeContent = () => {
               Free <span className="italic font-normal text-amber-600">Knowledge Hub</span>
             </h1>
             <p className="mt-3 text-slate-600 max-w-2xl text-sm sm:text-base leading-relaxed">
-              Discover authentic Vedic wisdom and Astro-Vastu knowledge with our curated repository of downloadable PDF guides, insightful video lectures & remedies by Dr. Yogesh Sharma, and astrological quizzes.
+              Discover industry-grade Software Testing, QA leadership, and banking technology resources with our curated repository of downloadable guides, video masterclasses by Manoj Saxena, and technical quizzes.
             </p>
           </div>
 
@@ -299,7 +299,7 @@ const FreeContent = () => {
             <button
               key={cat}
               onClick={() => setSelectedCategory(cat)}
-              className={`px-3.5 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all duration-300 ${
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-medium whitespace-nowrap transition-all duration-300 ${
                 selectedCategory === cat
                   ? 'bg-amber-500 text-white font-bold shadow-sm'
                   : 'bg-white/80 text-slate-600 border border-slate-200/80 hover:border-amber-300 hover:text-slate-900'
@@ -672,7 +672,7 @@ const FreeContent = () => {
               </div>
               <button
                 onClick={() => setActivePdfModal(null)}
-                className="w-8 h-8 rounded-full bg-white border border-slate-200 text-slate-500 hover:text-slate-900 flex items-center justify-center transition-colors"
+                className="w-8 h-8 rounded-xl bg-white border border-slate-200 text-slate-500 hover:text-slate-900 flex items-center justify-center transition-colors"
               >
                 ✕
               </button>
@@ -771,7 +771,7 @@ const FreeContent = () => {
                 </div>
                 <button
                   onClick={() => setActiveClassModal(null)}
-                  className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center shrink-0 transition-colors"
+                  className="w-8 h-8 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center shrink-0 transition-colors"
                 >
                   ✕
                 </button>
@@ -807,7 +807,7 @@ const FreeContent = () => {
 
             {/* Modal Footer */}
             <div className="p-4 px-6 border-t border-slate-100 bg-slate-50 flex items-center justify-between">
-              <span className="text-xs text-slate-500">Free open lecture provided by Happy Life</span>
+              <span className="text-xs text-slate-500">Free open lecture provided by Xpertqa</span>
               <button
                 onClick={() => setActiveClassModal(null)}
                 className="px-6 py-2.5 bg-slate-900 hover:bg-amber-600 text-white font-mono text-xs font-bold uppercase tracking-wider rounded-xl transition-colors"
@@ -847,7 +847,7 @@ const FreeContent = () => {
                 )}
                 <button
                   onClick={() => setActiveQuizModal(null)}
-                  className="w-8 h-8 rounded-full bg-white border border-slate-200 text-slate-500 hover:text-slate-900 flex items-center justify-center transition-colors"
+                  className="w-8 h-8 rounded-xl bg-white border border-slate-200 text-slate-500 hover:text-slate-900 flex items-center justify-center transition-colors"
                 >
                   ✕
                 </button>

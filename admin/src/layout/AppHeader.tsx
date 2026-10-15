@@ -87,12 +87,12 @@ const AppHeader: React.FC = () => {
             <img
               className="dark:hidden h-9 w-auto object-contain"
               src="/images/logo/osa_logo.png"
-              alt="Happy Life Logo"
+              alt="Xpertqa Logo"
             />
             <img
               className="hidden dark:block h-9 w-auto object-contain"
               src="/images/logo/osa_logo.png"
-              alt="Happy Life Logo"
+              alt="Xpertqa Logo"
             />
           </Link>
 

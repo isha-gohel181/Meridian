@@ -132,7 +132,7 @@ const MyForum = () => {
                               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="text-amber-600"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
                               <span className="font-jetbrains text-xs font-bold">{thread.replies?.length || 0} {t('replies') || 'Replies'}</span>
                            </div>
-                           <Link to={`/dashboard/forum`} className="ml-auto font-jetbrains text-xs text-slate-950 font-black uppercase tracking-wider bg-accent hover:scale-105 px-5 py-2 rounded-full shadow-accent-soft transition-all">
+                           <Link to={`/dashboard/forum`} className="ml-auto font-jetbrains text-xs text-slate-950 font-black uppercase tracking-wider bg-accent hover:scale-105 px-5 py-2 rounded-xl shadow-accent-soft transition-all">
                               {t('viewDetails') || 'View Discourse'}
                            </Link>
                         </div>
@@ -151,7 +151,7 @@ const MyForum = () => {
                 </div>
                 <Link 
                   to="/dashboard/forum"
-                  className="mt-2 font-jetbrains text-xs text-slate-950 font-black uppercase tracking-[0.3em] bg-accent px-8 py-3 rounded-full shadow-accent-soft hover:scale-105 transition-all"
+                  className="mt-2 font-jetbrains text-xs text-slate-950 font-black uppercase tracking-[0.3em] bg-accent px-8 py-3 rounded-xl shadow-accent-soft hover:scale-105 transition-all"
                 >
                   {t('startNewTopic') || 'Join the conversation'}
                 </Link>

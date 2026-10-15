@@ -12,7 +12,7 @@ export default function AuthLayout({
     <div className="relative p-6 bg-white z-1 dark:bg-gray-900 sm:p-0">
       <div className="relative flex flex-col justify-center w-full h-screen lg:flex-row dark:bg-gray-900 sm:p-0">
         {children}
-        <div className="items-center hidden w-full h-full lg:w-1/2 bg-[#2171B5] lg:grid">
+        <div className="items-center hidden w-full h-full lg:w-1/2 bg-[#1878C0] lg:grid">
           <div className="relative flex items-center justify-center z-1">
             {/* <!-- ===== Common Grid Shape Start ===== --> */}
             <GridShape />
@@ -21,11 +21,11 @@ export default function AuthLayout({
                 <img
                   className="h-20 w-auto object-contain brightness-0 invert drop-shadow-md transition-transform duration-300 hover:scale-105"
                   src="/images/logo/osa_logo.png"
-                  alt="Happy Life Logo"
+                  alt="Xpertqa Logo"
                 />
               </Link>
               <p className="text-center text-white/90 font-medium tracking-wide">
-                Happy Life Admin Dashboard 
+                Xpertqa Admin Dashboard 
               </p>
             </div>
           </div>

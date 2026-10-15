@@ -41,7 +41,7 @@ class NotificationService {
             },
             android: {
                 notification: {
-                    channelId: "Happy Life Astro",
+                    channelId: "Xpertqa",
                 },
             },
             apns: {

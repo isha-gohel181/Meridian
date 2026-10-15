@@ -7,7 +7,7 @@ const getImageUrl = (thumb) => {
   if (!thumb) return bannerImg
   const normalized = String(thumb).replace(/\\/g, '/')
   if (/^https?:\/\//i.test(normalized)) return normalized
-  const baseUrl = import.meta.env.VITE_BASE_URL || 'https://happy-life-sx03.onrender.com'
+  const baseUrl = import.meta.env.VITE_BASE_URL || 'https://api.xpertqa.in'
   return normalized.startsWith('/') ? `${baseUrl}${normalized}` : `${baseUrl}/${normalized}`
 }
 

@@ -142,7 +142,7 @@ const News = () => {
     image: (() => {
         const url = n.imageUrl || n.coverImage || n.image;
         if (!url) return '/news_placeholder.png';
-        const rawBase = import.meta.env.VITE_BASE_URL || import.meta.env.VITE_API_BASE || 'https://happy-life-sx03.onrender.com';
+        const rawBase = import.meta.env.VITE_BASE_URL || import.meta.env.VITE_API_BASE || 'https://api.xpertqa.in';
         const baseUrl = rawBase.replace(/\/api\/v1\/?$/, '');
         const finalUrl = url.startsWith('http') ? url : `${baseUrl}/uploads/news/${url}`;
         return encodeURI(finalUrl);
@@ -261,7 +261,7 @@ const News = () => {
                  <button 
                   key={i} 
                   onClick={() => dispatch(fetchNews({ page: i + 1 }))}
-                  className={`w-8 h-8 rounded-none flex items-center justify-center transition-all cursor-pointer ${currentPage === i + 1 ? 'bg-accent text-white font-bold shadow-sm' : 'bg-card border border-border text-description hover:border-accent hover:text-normal'}`}
+                  className={`w-8 h-8 rounded-xl flex items-center justify-center transition-all cursor-pointer ${currentPage === i + 1 ? 'bg-accent text-white font-bold shadow-sm' : 'bg-card border border-border text-description hover:border-accent hover:text-normal'}`}
                  >
                    {(i + 1).toString().padStart(2, '0')}
                  </button>

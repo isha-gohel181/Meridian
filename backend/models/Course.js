@@ -101,7 +101,7 @@ const courseSchema = new mongoose.Schema({
   certificateRecipientName: { type: String, trim: true, default: "Student Name" },
   certificateIssuerName: { type: String, trim: true },
   certificateIssuerTitle: { type: String, trim: true },
-  certificateOrganization: { type: String, trim: true, default: "Happy Life Astro" },
+  certificateOrganization: { type: String, trim: true, default: "Xpertqa" },
   certificateDescription: { type: String, trim: true },
   downloadableFiles: [{
     name: { type: String, trim: true },

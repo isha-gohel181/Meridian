@@ -9,7 +9,7 @@ export const freePdfsData = [
     rating: 4.9,
     badge: 'Popular',
     thumbnail: 'https://images.unsplash.com/photo-1532012164546-f432f2e3edd4?w=600&auto=format&fit=crop&q=80',
-    description: 'A complete handbook covering birth chart analysis, the significance of 12 houses, planetary placements, and Mahadasha cycles by Dr. Yogesh Sharma.',
+    description: 'A complete handbook covering birth chart analysis, the significance of 12 houses, planetary placements, and Mahadasha cycles by Manoj Saxena.',
     topics: ['Lagna & Ascendant', '12 Houses Meaning', 'Planetary Strengths', 'Mahadasha & Antardasha', 'Karmic Patterns'],
     fileUrl: '/docs/vedic-kundli-basics.pdf',
     sampleSnippet: `// Kundli Interpretation Principle
@@ -48,7 +48,7 @@ export const freePdfsData = [
     description: 'Comprehensive remedial guide for shadow planets (Chhaya Grahas). Turn Rahu into an engine of innovation and Ketu into spiritual wisdom.',
     topics: ['Rahu in 12 Houses', 'Ketu Spiritual Alignments', 'Overcoming Anxiety & Restlessness', 'Daily Practical Upay', 'Dietary & Lifestyle Habits'],
     fileUrl: '/docs/rahu-ketu-remedies.pdf',
-    sampleSnippet: `// Rahu Remedial Guidelines by Dr. Yogesh Sharma
+    sampleSnippet: `// Rahu Remedial Guidelines by Manoj Saxena
 // 1. Maintain cleanliness in toilet and electronic gadgets.
 // 2. Avoid clutter under the bed to keep mental clarity intact.
 // 3. Respect seniors and maintain disciplined daily routines.`
@@ -113,7 +113,7 @@ export const freeClassesData = [
     category: 'Vedic Astrology',
     duration: '45 mins',
     level: 'Beginner',
-    instructor: 'Dr. Yogesh Sharma',
+    instructor: 'Manoj Saxena',
     role: 'Astro-Vastu Consultant',
     rating: 4.9,
     views: '24.5k',
@@ -134,7 +134,7 @@ export const freeClassesData = [
     category: 'Planetary Remedies',
     duration: '1 hr 15 mins',
     level: 'Intermediate',
-    instructor: 'Dr. Yogesh Sharma',
+    instructor: 'Manoj Saxena',
     role: 'Astro-Vastu Consultant',
     rating: 5.0,
     views: '32.1k',
@@ -155,7 +155,7 @@ export const freeClassesData = [
     category: 'Vastu Shastra',
     duration: '50 mins',
     level: 'Beginner to Intermediate',
-    instructor: 'Dr. Yogesh Sharma',
+    instructor: 'Manoj Saxena',
     role: 'Astro-Vastu Consultant',
     rating: 4.8,
     views: '19.4k',
@@ -176,7 +176,7 @@ export const freeClassesData = [
     category: 'Planetary Remedies',
     duration: '1 hr 30 mins',
     level: 'Intermediate',
-    instructor: 'Dr. Yogesh Sharma',
+    instructor: 'Manoj Saxena',
     role: 'Astro-Vastu Consultant',
     rating: 4.9,
     views: '28.7k',
@@ -197,7 +197,7 @@ export const freeClassesData = [
     category: 'Numerology',
     duration: '1 hr 10 mins',
     level: 'All Levels',
-    instructor: 'Dr. Yogesh Sharma',
+    instructor: 'Manoj Saxena',
     role: 'Astro-Vastu Consultant',
     rating: 4.9,
     views: '21.3k',
@@ -218,7 +218,7 @@ export const freeClassesData = [
     category: 'Vastu Shastra',
     duration: '55 mins',
     level: 'All Levels',
-    instructor: 'Dr. Yogesh Sharma',
+    instructor: 'Manoj Saxena',
     role: 'Astro-Vastu Consultant',
     rating: 5.0,
     views: '35.8k',
@@ -334,7 +334,7 @@ export const freeTestsData = [
     description: 'Test your understanding of logic-driven, doable remedies for planetary imbalances (Shani, Rahu, Venus, Sun) without superstition.',
     questions: [
       {
-        question: 'What is the primary logical philosophy of remedies (Upay) advocated by Dr. Yogesh Sharma?',
+        question: 'What is the primary logical philosophy of remedies (Upay) advocated by Manoj Saxena?',
         options: [
           'Expensive gemstones are mandatory for all problems',
           'Aligning daily habits, discipline, and non-destructive spatial energy',

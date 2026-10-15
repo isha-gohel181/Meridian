@@ -17,18 +17,18 @@ const PrivacyPolicy = () => {
         <div className="privacy-animate space-y-6 text-base leading-relaxed">
           <p><strong>Effective Date:</strong> January 1, 2026</p>
           <p>
-            At Happy Life Astro, we take your privacy and data security seriously. This Privacy Policy explains how we collect, use, and protect your personal information when you use our website, mobile application, and astrology learning platform.
+            At Xpertqa, we take your privacy and data security seriously. This Privacy Policy explains how we collect, use, and protect your personal information when you use our website, application, and learning platform.
           </p>
 
           <h2 className="text-xl font-bold text-amber-600 mt-6">1. Information We Collect</h2>
           <p>
-            We may collect personal information such as your name, email address, phone number, date of birth, time of birth, place of birth (for astrological analysis and consultations), and payment details when you register for an account, book a consultation, or purchase a course.
+            We may collect personal information such as your name, email address, phone number, and payment details when you register for an account, enroll in a program, or purchase a course or service.
           </p>
 
           <h2 className="text-xl font-bold text-amber-600 mt-6">2. How We Use Your Information</h2>
           <ul className="list-disc pl-6 space-y-2">
-            <li>To provide and maintain our astrology courses, certifications, and educational services.</li>
-            <li>To generate accurate astrological charts, reports, and personalized consultations.</li>
+            <li>To provide and maintain our courses, certifications, and educational services.</li>
+            <li>To provide course materials, learning resources, and technical support.</li>
             <li>To process your orders, enrollments, and payment receipts securely.</li>
             <li>To communicate important updates, account verification OTPs, and support messages.</li>
             <li>To enhance and secure our online learning platform and student dashboard.</li>
@@ -36,7 +36,7 @@ const PrivacyPolicy = () => {
 
           <h2 className="text-xl font-bold text-amber-600 mt-6">3. Data Protection & Security</h2>
           <p>
-            We implement strict security measures including encrypted data transmission (HTTPS/TLS), secure authentication, and access control policies to safeguard your personal and astrological information.
+            We implement strict security measures including encrypted data transmission (HTTPS/TLS), secure authentication, and access control policies to safeguard your personal information.
           </p>
 
           <h2 className="text-xl font-bold text-amber-600 mt-6">4. Third-Party Services</h2>
@@ -52,8 +52,8 @@ const PrivacyPolicy = () => {
           <h2 className="text-xl font-bold text-amber-600 mt-6">6. Contact Us</h2>
           <p>
             If you have questions or inquiries regarding our Privacy Policy or data handling, please contact us at{' '}
-            <a href="mailto:happylifereport@gmail.com" className="text-amber-600 font-bold hover:underline">
-              happylifereport@gmail.com
+            <a href="mailto:xsmartqa.com@gmail.com" className="text-amber-600 font-bold hover:underline">
+              xsmartqa.com@gmail.com
             </a>.
           </p>
         </div>

@@ -60,7 +60,7 @@ const Checkout = () => {
    const { settings, coupons, couponData, couponError, couponLoading } = useSelector(state => state.config)
    const authUser = useSelector(state => state.auth?.user)
 
-   const rawBase = import.meta.env.VITE_BASE_URL || import.meta.env.VITE_API_BASE || 'https://happy-life-sx03.onrender.com';
+   const rawBase = import.meta.env.VITE_BASE_URL || import.meta.env.VITE_API_BASE || 'https://api.xpertqa.in';
    const BASE_API = rawBase.replace(/\/api\/v1\/?$/, '');
 
    const [formData, setFormData] = useState(() => {
@@ -188,7 +188,7 @@ const Checkout = () => {
             key: rKey,
             amount: rAmount,
             currency: razor.currency || 'INR',
-            name: 'Happy Life Astro',
+            name: 'Xpertqa',
             description: course.title || 'Course Purchase',
             order_id: order.id,
             handler: async function (response) {
@@ -228,7 +228,7 @@ const Checkout = () => {
                courseId: course._id || '',
                planId: selectedPlan.id || ''
             },
-            theme: { color: '#2171B5' }
+            theme: { color: '#1878C0' }
          }
 
          const rzp = new window.Razorpay(options)
@@ -347,7 +347,7 @@ const Checkout = () => {
          {/* GLOBAL BACK BUTTON */}
          <button
             onClick={() => navigate(-1)}
-            className="fixed top-4 left-4 sm:top-8 sm:left-8 z-50 flex items-center gap-2 px-4 py-2 bg-slate-900/90 hover:bg-slate-900 text-white backdrop-blur-md border border-white/20 hover:border-blue-400 transition-all duration-300 rounded-none shadow-lg cursor-pointer"
+            className="fixed top-4 left-4 sm:top-8 sm:left-8 z-50 flex items-center gap-2 px-4 py-2 bg-slate-900/90 hover:bg-slate-900 text-white backdrop-blur-md border border-white/20 hover:border-blue-400 transition-all duration-300 rounded-xl shadow-lg cursor-pointer"
          >
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" className="stroke-white">
                <path d="M19 12H5M12 19l-7-7 7-7" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -378,7 +378,7 @@ const Checkout = () => {
             </div>
 
             {/* Scanning Overlay */}
-            <div ref={scanLineRef} className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-blue-400 to-transparent z-10 opacity-50 shadow-[0_0_15px_rgba(33,113,181,0.6)]" />
+            <div ref={scanLineRef} className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-blue-400 to-transparent z-10 opacity-50 shadow-[0_0_15px_rgba(24, 120, 192,0.6)]" />
             
             <div className="absolute inset-0 pointer-events-none z-10 p-6 sm:p-10 flex flex-col justify-between">
 
@@ -406,7 +406,7 @@ const Checkout = () => {
 
                   <div className="inline-flex items-center gap-2 bg-emerald-500/15 border border-emerald-400/30 px-3 py-1 rounded-none backdrop-blur-md">
                      <div className="w-2 h-2 bg-emerald-400 rounded-none animate-pulse" />
-                     <span className="text-[10px] text-emerald-300 tracking-wider font-semibold uppercase">Happy Life Astro Certified</span>
+                     <span className="text-[10px] text-emerald-300 tracking-wider font-semibold uppercase">Xpertqa Certified</span>
                   </div>
                </div>
 
@@ -517,7 +517,7 @@ const Checkout = () => {
                                  type="button"
                                  onClick={sendOtp}
                                  disabled={sendingOtp || !formData.email}
-                                 className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-none transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                                 className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-xl transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                               >
                                  {sendingOtp ? 'Sending OTP...' : 'Verify Email'}
                               </button>
@@ -613,7 +613,7 @@ const Checkout = () => {
                                     type="button"
                                     onClick={handleApplyCoupon}
                                     disabled={couponLoading || !formData.coupon}
-                                    className="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold uppercase rounded-none transition-all shadow-sm shrink-0 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                                    className="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold uppercase rounded-xl transition-all shadow-sm shrink-0 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                                  >
                                     {couponLoading ? '...' : 'Apply'}
                                  </button>
@@ -644,7 +644,7 @@ const Checkout = () => {
                         <button 
                            onClick={handlePayment} 
                            type="button" 
-                           className="w-full bg-blue-600 hover:bg-blue-700 text-white py-4 px-6 rounded-none font-bold text-base shadow-md transition-all flex items-center justify-center gap-3 cursor-pointer"
+                           className="w-full bg-blue-600 hover:bg-blue-700 text-white py-4 px-6 rounded-xl font-bold text-base shadow-md transition-all flex items-center justify-center gap-3 cursor-pointer"
                         >
                            <span>Complete Payment • ₹{displayTotal}</span>
                            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
@@ -700,10 +700,10 @@ const Checkout = () => {
                      className="w-full p-3 bg-slate-50 border border-slate-300 focus:border-blue-600 focus:bg-white text-slate-900 text-sm rounded-none text-center tracking-widest font-mono font-bold outline-none"
                   />
                   <div className="flex gap-2.5 justify-end">
-                     <button type="button" onClick={() => { setShowOTPModal(false); setOtp(''); setOtpMessage('') }} className="px-4 py-2 border border-slate-300 hover:bg-slate-50 rounded-none text-xs font-semibold text-slate-700 cursor-pointer">
+                     <button type="button" onClick={() => { setShowOTPModal(false); setOtp(''); setOtpMessage('') }} className="px-4 py-2 border border-slate-300 hover:bg-slate-50 rounded-xl text-xs font-semibold text-slate-700 cursor-pointer">
                         Cancel
                      </button>
-                     <button type="button" onClick={verifyOtp} disabled={verifyingOtp} className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-none text-xs font-bold shadow-sm cursor-pointer disabled:opacity-50">
+                     <button type="button" onClick={verifyOtp} disabled={verifyingOtp} className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold shadow-sm cursor-pointer disabled:opacity-50">
                         {verifyingOtp ? 'Verifying...' : 'Verify OTP'}
                      </button>
                   </div>
@@ -731,7 +731,7 @@ const Checkout = () => {
 
                   <button
                      onClick={() => navigate('/dashboard/my-courses')}
-                     className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3.5 rounded-none font-bold text-sm shadow-md hover:bg-blue-800 transition-all flex justify-center items-center gap-2 cursor-pointer"
+                     className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3.5 rounded-xl font-bold text-sm shadow-md hover:bg-blue-800 transition-all flex justify-center items-center gap-2 cursor-pointer"
                   >
                      <span>Go to My Courses</span>
                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>

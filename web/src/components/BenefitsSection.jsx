@@ -35,14 +35,14 @@ BenefitsSection = ({ course, section }) => {
             {sanitizeDisplay(section?.title || "What You Will Achieve").split(' ').map((word, i, arr) => (
               <React.Fragment key={i}>
                 {i === arr.length - 1 ? (
-                  <span className="text-[#2171B5]">{word}</span>
+                  <span className="text-[#1878C0]">{word}</span>
                 ) : (
                   word + ' '
                 )}
               </React.Fragment>
             ))}
           </h2>
-          <div className="h-[2px] bg-[#2171B5]/40 w-24" />
+          <div className="h-[2px] bg-[#1878C0]/40 w-24" />
         </div>
 
         {section?.content && (
@@ -58,12 +58,12 @@ BenefitsSection = ({ course, section }) => {
 
       <div className="benefit-grid grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
         {section?.points?.map((feat, i) => (
-          <div key={i} className="benefit-card border border-slate-200/80 bg-white p-6 md:p-8 rounded-2xl shadow-sm hover:shadow-md hover:border-[#2171B5]/50 relative group transition-all duration-300 h-full flex flex-col justify-start min-h-[140px]">
+          <div key={i} className="benefit-card border border-slate-200/80 bg-white p-6 md:p-8 rounded-2xl shadow-sm hover:shadow-md hover:border-[#1878C0]/50 relative group transition-all duration-300 h-full flex flex-col justify-start min-h-[140px]">
             <div className="absolute top-3 right-4 select-none pointer-events-none">
-              <span className="font-jetbrains text-3xl md:text-4xl font-black text-[#2171B5]/20 group-hover:text-[#2171B5]/40 transition-colors">{String(i + 1).padStart(2, '0')}</span>
+              <span className="font-jetbrains text-3xl md:text-4xl font-black text-[#1878C0]/20 group-hover:text-[#1878C0]/40 transition-colors">{String(i + 1).padStart(2, '0')}</span>
             </div>
             <div className="flex items-start gap-4 pr-8 relative z-10">
-              <div className="w-2.5 h-2.5 bg-[#2171B5] rounded-full mt-1.5 shrink-0 shadow-[0_0_8px_rgba(33,113,181,0.35)]" />
+              <div className="w-2.5 h-2.5 bg-[#1878C0] rounded-full mt-1.5 shrink-0 shadow-[0_0_8px_rgba(24, 120, 192,0.35)]" />
               <span className="font-montserrat text-sm md:text-[15px] text-slate-800 font-semibold tracking-wide leading-relaxed">
                 {feat}
               </span>

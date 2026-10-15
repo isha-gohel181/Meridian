@@ -6,8 +6,8 @@ export default function SignIn() {
   return (
     <>
       <PageMeta
-        title="Sign In | Happy Life Admin"
-        description="Sign in to Happy Life Admin Dashboard"
+        title="Sign In | Xpertqa Admin"
+        description="Sign in to Xpertqa Admin Dashboard"
       />
       <AuthLayout>
         <SignInForm />

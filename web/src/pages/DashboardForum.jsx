@@ -204,7 +204,7 @@ const DashboardForum = () => {
                   const pic = question.profilePicture;
                   if (!pic) return '/news_placeholder.png';
                   if (pic.startsWith('http')) return pic;
-                  const rawBase = import.meta.env.VITE_BASE_URL || import.meta.env.VITE_API_BASE || 'https://happy-life-sx03.onrender.com';
+                  const rawBase = import.meta.env.VITE_BASE_URL || import.meta.env.VITE_API_BASE || 'https://api.xpertqa.in';
                   const baseUrl = rawBase.replace(/\/api\/v1\/?$/, '');
                   return `${baseUrl}/uploads/profiles/${pic}`;
                 })()}
@@ -254,7 +254,7 @@ const DashboardForum = () => {
                   return /\.(jpg|jpeg|png|gif|webp|svg)$/i.test(path);
                 }).map((att, idx) => {
                   const path = typeof att === 'string' ? att : (att.type || '');
-                  const fullUrl = path.startsWith('http') ? path : `https://happy-life-sx03.onrender.com/${path.startsWith('uploads/') ? path : `uploads/forum/${path}`}`;
+                  const fullUrl = path.startsWith('http') ? path : `https://api.xpertqa.in/${path.startsWith('uploads/') ? path : `uploads/forum/${path}`}`;
 
                   return (
                     <div key={idx} className="attachment-item relative aspect-video bg-slate-100 border border-slate-200 rounded-xl overflow-hidden group/img shadow-sm">
@@ -269,7 +269,7 @@ const DashboardForum = () => {
                       <div className="absolute inset-0 bg-slate-950/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
                         <button
                           onClick={() => setFullImageUrl(fullUrl)}
-                          className="p-3 bg-amber-400 text-slate-950 rounded-full shadow-md"
+                          className="p-3 bg-amber-400 text-slate-950 rounded-xl shadow-md"
                         >
                           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" /></svg>
                         </button>
@@ -291,18 +291,18 @@ const DashboardForum = () => {
                     setLikesCount(prev => prev + 1);
                     dispatch(likeThread(question.id));
                   }}
-                  className={`flex items-center gap-2 px-3.5 py-1.5 rounded-full border transition-all ${sentiment === 'like' ? 'bg-amber-400 border-amber-400 text-slate-950 font-bold' : 'border-slate-200 bg-slate-50 text-slate-600 hover:border-amber-400 hover:text-amber-700'}`}
+                  className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl border transition-all ${sentiment === 'like' ? 'bg-amber-400 border-amber-400 text-slate-950 font-bold' : 'border-slate-200 bg-slate-50 text-slate-600 hover:border-amber-400 hover:text-amber-700'}`}
                 >
                   <svg width="14" height="14" viewBox="0 0 24 24" fill={sentiment === 'like' ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3" /></svg>
                   <span className="font-montserrat text-xs font-bold">{formatCount(likesCount)}</span>
                 </button>
-                <button onClick={() => setIsOpen(!isOpen)} className="flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-slate-200 bg-slate-50 text-slate-600 hover:border-amber-400 hover:text-amber-700 transition-all font-montserrat text-xs font-bold uppercase">
+                <button onClick={() => setIsOpen(!isOpen)} className="flex items-center gap-2 px-3.5 py-1.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-600 hover:border-amber-400 hover:text-amber-700 transition-all font-montserrat text-xs font-bold uppercase">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /></svg>
                   <span>{repliesCount} REPLIES</span>
                 </button>
               </div>
             </div>
-            <button onClick={() => setIsOpen(!isOpen)} className={`w-9 h-9 flex items-center justify-center border border-slate-200 bg-slate-50 hover:bg-amber-100 rounded-full text-slate-700 transition-transform duration-500 ${isOpen ? 'rotate-180' : 'rotate-0'}`}>
+            <button onClick={() => setIsOpen(!isOpen)} className={`w-9 h-9 flex items-center justify-center border border-slate-200 bg-slate-50 hover:bg-amber-100 rounded-xl text-slate-700 transition-transform duration-500 ${isOpen ? 'rotate-180' : 'rotate-0'}`}>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M19 14l-7 7-7-7" /></svg>
             </button>
           </div>
@@ -318,7 +318,7 @@ const DashboardForum = () => {
                       const pic = reply.profilePicture;
                       if (!pic) return '/news_placeholder.png';
                       if (pic.startsWith('http')) return pic;
-                      const rawBase = import.meta.env.VITE_BASE_URL || import.meta.env.VITE_API_BASE || 'https://happy-life-sx03.onrender.com';
+                      const rawBase = import.meta.env.VITE_BASE_URL || import.meta.env.VITE_API_BASE || 'https://api.xpertqa.in';
                       const baseUrl = rawBase.replace(/\/api\/v1\/?$/, '');
                       return `${baseUrl}/uploads/profiles/${pic}`;
                     })()}

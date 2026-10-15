@@ -172,7 +172,7 @@ export default function UserDropdown() {
         </ul>
         <button
           onClick={handleLogOut}
-          className="flex items-center justify-center w-full gap-2.5 px-4 py-2.5 mt-3 text-sm font-medium text-white transition-all duration-200 rounded-xl bg-[#2171B5] hover:bg-[#1a5c96] shadow-sm cursor-pointer"
+          className="flex items-center justify-center w-full gap-2.5 px-4 py-2.5 mt-3 text-sm font-medium text-white transition-all duration-200 rounded-xl bg-[#1878C0] hover:bg-[#1a5c96] shadow-sm cursor-pointer"
         >
           <svg
             className="w-5 h-5 fill-current"

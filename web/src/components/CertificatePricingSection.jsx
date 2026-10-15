@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/all'
-import certificateImg from '../assets/images/happy_life_certificate.png'
+import certificateImg from '../assets/images/xpertqa_certificate.png'
 import { useLanguage } from '../context/LanguageContext'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -102,11 +102,11 @@ const CertificatePricingSection = ({ course }) => {
                      src={(() => {
                         if (!course?.certificateImage) return certificateImg;
                         if (course.certificateImage.startsWith('http') || course.certificateImage.startsWith('blob:')) return course.certificateImage;
-                        const rawBase = import.meta.env.VITE_IMAGE_URL || import.meta.env.VITE_BASE_URL || import.meta.env.VITE_API_BASE || 'https://happy-life-sx03.onrender.com';
+                        const rawBase = import.meta.env.VITE_IMAGE_URL || import.meta.env.VITE_BASE_URL || import.meta.env.VITE_API_BASE || 'https://api.xpertqa.in';
                         const baseUrl = rawBase.replace(/\/api\/v1\/?$/, '');
                         return `${baseUrl}${course.certificateImage.startsWith('/') ? '' : '/'}${course.certificateImage}`;
                      })()}
-                     alt="Happy Life Academy Certificate"
+                     alt="Xpertqa Academy Certificate"
                      className="w-full h-auto transition-all duration-1000"
                   />
 
@@ -183,7 +183,7 @@ const CertificatePricingSection = ({ course }) => {
               ${selectedPlanId ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6 pointer-events-none'}`}>
                   <button
                      onClick={handleContinue}
-                     className="w-full relative group bg-accent px-6 md:px-12 py-6 md:py-7 flex items-center justify-center gap-4 md:gap-6 hover:scale-[1.02] active:scale-95 transition-all duration-500 rounded-full shadow-accent-soft"
+                     className="w-full relative group bg-accent px-6 md:px-12 py-6 md:py-7 flex items-center justify-center gap-4 md:gap-6 hover:scale-[1.02] active:scale-95 transition-all duration-500 rounded-xl shadow-accent-soft"
                   >
                      <span className="relative z-10 font-jetbrains text-slate-950 text-[10px] md:text-xs font-black tracking-[0.3em] md:tracking-[0.6em] uppercase whitespace-nowrap">Continue to Buy</span>
                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" className="relative z-10 stroke-slate-950 group-hover:translate-x-2 transition-transform duration-500">

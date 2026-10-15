@@ -99,7 +99,7 @@ const CourseDetail = () => {
     if (course) {
       // Set dynamic page title
       if (course.title) {
-        document.title = `${course.title} | Happy Life Astro`
+        document.title = `${course.title} | Xpertqa`
       }
       // Set dynamic SEO meta description for search engines
       if (course.seoMetaDescription || course.subtitle || course.description) {
@@ -146,7 +146,7 @@ const CourseDetail = () => {
         if (rawUrl.startsWith('http') || rawUrl.startsWith('blob:')) {
             apiImage = rawUrl;
         } else {
-            const rawBase = import.meta.env.VITE_IMAGE_URL || import.meta.env.VITE_BASE_URL || import.meta.env.VITE_API_BASE || 'https://happy-life-sx03.onrender.com';
+            const rawBase = import.meta.env.VITE_IMAGE_URL || import.meta.env.VITE_BASE_URL || import.meta.env.VITE_API_BASE || 'https://api.xpertqa.in';
             const baseUrl = rawBase.replace(/\/api\/v1\/?$/, '');
             apiImage = `${baseUrl}${rawUrl.startsWith('/') ? '' : '/'}${rawUrl}`;
         }
@@ -168,7 +168,7 @@ const CourseDetail = () => {
               if (rawUrl.startsWith('http') || rawUrl.startsWith('blob:')) {
                   lessonImage = rawUrl;
               } else {
-                  const rawBase = import.meta.env.VITE_IMAGE_URL || import.meta.env.VITE_BASE_URL || import.meta.env.VITE_API_BASE || 'https://happy-life-sx03.onrender.com';
+                  const rawBase = import.meta.env.VITE_IMAGE_URL || import.meta.env.VITE_BASE_URL || import.meta.env.VITE_API_BASE || 'https://api.xpertqa.in';
                   const baseUrl = rawBase.replace(/\/api\/v1\/?$/, '');
                   lessonImage = `${baseUrl}${rawUrl.startsWith('/') ? '' : '/'}${rawUrl}`;
               }
@@ -245,7 +245,7 @@ const CourseDetail = () => {
                         <div className="flex items-center gap-6">
                           <span className="font-jetbrains text-accent font-black tracking-[0.4em] uppercase text-[10px]">Chapter {String(mIndex + 1).padStart(2, '0')}</span>
                           <div className="h-[1px] flex-1 bg-white/10" />
-                          <button className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center group-hover/header:border-accent transition-colors bg-dark/50">
+                          <button className="w-8 h-8 rounded-xl border border-white/10 flex items-center justify-center group-hover/header:border-accent transition-colors bg-dark/50">
                             <svg 
                               width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"
                               className={`transition-transform duration-700 ${isExpanded ? 'rotate-[225deg] stroke-accent' : ''}`}

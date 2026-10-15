@@ -68,7 +68,7 @@ const Dashboard = () => {
 
          {/* Floating Messenger */}
          <div className="fixed bottom-10 right-10 z-[100]">
-            <button className="w-14 h-14 bg-amber-400 text-slate-950 rounded-full flex items-center justify-center shadow-lg shadow-amber-400/20 hover:scale-110 active:scale-95 transition-all group border border-amber-300">
+            <button className="w-14 h-14 bg-amber-400 text-slate-950 rounded-xl flex items-center justify-center shadow-lg shadow-amber-400/20 hover:scale-110 active:scale-95 transition-all group border border-amber-300">
                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="text-slate-950">
                   <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
                </svg>

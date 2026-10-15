@@ -31,7 +31,7 @@ const FreeContentSection = () => {
 
         <Link
           to="/free-content"
-          className="group inline-flex items-center gap-2 px-6 py-3 rounded-full bg-slate-900 hover:bg-amber-600 text-white font-mono text-xs font-bold uppercase tracking-wider transition-all shadow-sm shrink-0"
+          className="group inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-slate-900 hover:bg-amber-600 text-white font-mono text-xs font-bold uppercase tracking-wider transition-all shadow-sm shrink-0"
         >
           <span>Explore All Free Library</span>
           <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
@@ -49,7 +49,7 @@ const FreeContentSection = () => {
           <button
             key={tab.key}
             onClick={() => setActiveTab(tab.key)}
-            className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-bold font-mono uppercase tracking-wider transition-all duration-300 ${
+            className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold font-mono uppercase tracking-wider transition-all duration-300 ${
               activeTab === tab.key
                 ? 'bg-amber-500 text-white shadow-md'
                 : 'bg-white border border-slate-200 text-slate-600 hover:border-amber-300 hover:text-slate-900'

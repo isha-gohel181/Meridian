@@ -81,7 +81,7 @@ const Profile = () => {
                      <p className="font-newsreader italic text-xl text-red-700">{error}</p>
                      <button 
                         onClick={() => dispatch(fetchUserProfile())}
-                        className="px-8 py-3 bg-red-100 text-red-700 font-jetbrains text-xs font-bold uppercase tracking-widest hover:bg-red-200 transition-all rounded-full"
+                        className="px-8 py-3 bg-red-100 text-red-700 font-jetbrains text-xs font-bold uppercase tracking-widest hover:bg-red-200 transition-all rounded-xl"
                      >
                         Retry
                      </button>

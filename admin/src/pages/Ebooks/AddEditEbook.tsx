@@ -42,7 +42,7 @@ export default function AddEditEbook() {
           isActive: data.ebook.isActive,
         });
         if (data.ebook.coverImage) {
-          const imgBase = (import.meta.env.VITE_IMAGE_URL || import.meta.env.VITE_BASE_URL || 'https://happy-life-sx03.onrender.com').replace(/\/+$/, '');
+          const imgBase = (import.meta.env.VITE_IMAGE_URL || import.meta.env.VITE_BASE_URL || 'https://api.xpertqa.in').replace(/\/+$/, '');
           setCoverImagePreview(data.ebook.coverImage.startsWith('http') ? data.ebook.coverImage : `${imgBase}${data.ebook.coverImage.startsWith('/') ? '' : '/'}${data.ebook.coverImage}`);
         }
       }
@@ -107,7 +107,7 @@ export default function AddEditEbook() {
 
   return (
     <div>
-      <PageMeta title={`${isEdit ? 'Edit' : 'Add'} Book | Happy Life`} description="Manage Book" />
+      <PageMeta title={`${isEdit ? 'Edit' : 'Add'} Book | Xpertqa`} description="Manage Book" />
       <PageBreadcrumb pageTitle={`${isEdit ? 'Edit' : 'Add'} Book`} />
       <div className="bg-white rounded-2xl border border-gray-200 p-6 dark:bg-gray-900 dark:border-gray-800">
         <h2 className="text-lg font-semibold mb-4 text-gray-800 dark:text-white/90">Ebook Form</h2>
