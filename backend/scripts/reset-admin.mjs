@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 import User from '../models/user.js';
 
-const MONGO_URI = process.env.MONGO_URI || 'mongodb+srv://ishagohel181:JHf4FanNi8VCBZz0@cluster0.pmyvsgz.mongodb.net/happy_life?retryWrites=true&w=majority&appName=Cluster0';
+const MONGO_URI = process.env.MONGO_URI || 'mongodb+srv://ishagohel181_db_user:DowKSvrk3sJ14Ml4@cluster0.meojiss.mongodb.net/xpertqa?retryWrites=true&w=majority';
 
 async function resetAdmin() {
   console.log('Connecting to MongoDB at:', MONGO_URI);

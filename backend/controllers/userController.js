@@ -989,36 +989,38 @@ export const login = async (req, res) => {
     // Only generate tokens if everything is successful
     const { accessToken, refreshToken, accessTokenExp, refreshTokenExp } = await Token.generateTokens(user, platform || "web", deviceId);
 
-    // Connect to Redis
-    const redis = await initRedis();
+    // Connect to Redis (optional cache - fail-safe)
+    try {
+      const redis = await initRedis();
+      if (redis && redis.isOpen) {
+        const accessTTL = Math.max(1, Math.floor((accessTokenExp - Date.now()) / 1000));
+        const refreshTTL = Math.max(1, Math.floor((refreshTokenExp - Date.now()) / 1000));
 
-    // Store tokens in Redis with TTL
-    if (redis) {
-      const accessTTL = Math.max(1, Math.floor((accessTokenExp - Date.now()) / 1000));
-      const refreshTTL = Math.max(1, Math.floor((refreshTokenExp - Date.now()) / 1000));
+        await redis.set(`accessToken:${accessToken}`, "valid", { EX: accessTTL });
+        await redis.set(`refreshToken:${refreshToken}`, userId, { EX: refreshTTL });
 
-      await redis.set(`accessToken:${accessToken}`, "valid", { EX: accessTTL });
-      await redis.set(`refreshToken:${refreshToken}`, userId, { EX: refreshTTL });
+        // Cache user data in Redis (expires in 1 hour)
+        await redis.setEx(
+          `user:${userId}`,
+          3600,
+          JSON.stringify({
+            _id: user._id,
+            email: user.email,
+            fullName: user.fullName,
+            roles: user.roles,
+            profilePicture: user.profilePicture,
+            bio: user.bio,
+            phone: user.phone,
+            address: user.address,
+            company: user.company,
+            createdAt: user.createdAt,
+            updatedAt: user.updatedAt,
+          })
+        );
+      }
+    } catch (redisErr) {
+      console.warn("⚠️ Redis cache unavailable, proceeding without cache:", redisErr?.message);
     }
-
-    // Cache user data in Redis (expires in 1 hour)
-    await redis.setEx(
-      `user:${userId}`,
-      3600,
-      JSON.stringify({
-        _id: user._id,
-        email: user.email,
-        fullName: user.fullName,
-        roles: user.roles,
-        profilePicture: user.profilePicture,
-        bio: user.bio,
-        phone: user.phone,
-        address: user.address,
-        company: user.company,
-        createdAt: user.createdAt,
-        updatedAt: user.updatedAt,
-      })
-    );
 
     // Set tokens as HTTP-only cookies (no maxAge)
     Token.setTokensCookies(res, accessToken, refreshToken);
