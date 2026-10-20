@@ -330,10 +330,17 @@ const translations = {
     updatingJob: 'Updating...',
 
     // Landing Sections & Home Page
-    growthTitle: 'ENERGY ALIGNMENT & LIFE HARMONY',
-    growthDesc: 'Transform life obstacles into prosperity and inner peace with personalized Astro-Vastu guidance and continuous support.',
+    growthBadge: 'CAREER ACCELERATION',
+    growthHeadline1: 'Master Software Testing',
+    growthHeadline2: '& Quality Assurance',
     growthHeadline: 'Master Software Testing & Quality Assurance',
-    growthSub: 'Structured courses, live classes, quizzes, and expert mentorship — everything you need to build a career in QA.',
+    growthSub: 'Step into high-demand QA and software testing roles with structured courses, real-world banking projects, automation frameworks, and 1-on-1 industry mentorship.',
+    growthCtaPrimary: 'Explore QA Programs',
+    growthCtaSecondary: 'Join Community Forum',
+    growthFeature1: 'Banking & Enterprise Projects',
+    growthFeature2: 'Automation & API Frameworks',
+    growthFeature3: '25+ Yrs Industry Mentorship',
+    growthRating: '4.9/5 Student Satisfaction',
     
     selectedForYou: 'CURATED FOR YOU',
     selectionTitle: 'The Guidance',
@@ -866,10 +873,17 @@ const translations = {
     updatingJob: 'अपडेट किया जा रहा है...',
 
     // Landing Sections & Home Page
-    growthTitle: 'ऊर्जा संतुलन और जीवन में सुख-समृद्धि',
-    growthDesc: 'व्यक्तिगत ज्योतिष-वास्तु मार्गदर्शन और निरंतर समर्थन के साथ जीवन की बाधाओं को समृद्धि में बदलें।',
+    growthBadge: 'करियर मार्गदर्शन',
+    growthHeadline1: 'सॉफ्टवेयर टेस्टिंग और',
+    growthHeadline2: 'क्वालिटी एश्योरेंस में महारत हासिल करें',
     growthHeadline: 'सॉफ्टवेयर टेस्टिंग और क्वालिटी एश्योरेंस में महारत हासिल करें',
-    growthSub: 'संरचित कोर्स, लाइव क्लास, क्विज़ और विशेषज्ञ मेंटरशिप — QA में करियर बनाने के लिए आवश्यक सब कुछ।',
+    growthSub: 'संरचित कोर्स, लाइव बैंकिंग प्रोजेक्ट्स, टेस्ट ऑटोमेशन और 1-ऑन-1 मेंटरशिप के साथ QA में अपने करियर को नई ऊंचाइयों पर ले जाएं।',
+    growthCtaPrimary: 'सभी कोर्स देखें',
+    growthCtaSecondary: 'कम्युनिटी फोरम से जुड़ें',
+    growthFeature1: 'बैंकिंग व एंटरप्राइज प्रोजेक्ट्स',
+    growthFeature2: 'ऑटोमेशन व एपीआई टेस्टिंग',
+    growthFeature3: '25+ वर्ष का इंडस्ट्री अनुभव',
+    growthRating: '4.9/5 छात्र संतुष्टि दर',
     
     selectedForYou: 'आपके लिए विशेष',
     selectionTitle: 'विशेष मार्गदर्शन',
