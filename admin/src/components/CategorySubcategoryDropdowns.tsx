@@ -140,7 +140,7 @@ export default function CategorySubcategoryDropdowns({
       }
 
       if (popupFor === "category") {
-        await dispatch(createCourseCategory(formData)).unwrap();
+        const createdCat: any = await dispatch(createCourseCategory(formData)).unwrap();
         toast.success("New category added successfully!");
         // Refetch categories to update the dropdown
         await dispatch(
@@ -153,21 +153,33 @@ export default function CategorySubcategoryDropdowns({
             },
           })
         ).unwrap();
+        if (createdCat?._id && onCategoryChange) {
+          onCategoryChange(createdCat._id, createdCat.name);
+        }
       } else if (popupFor === "subcategory") {
-        await dispatch(createSubCategory(formData)).unwrap();
+        const payload = {
+          name: data.title,
+          categoryId: selectedCategoryId,
+          status: "active",
+        };
+        const createdSub: any = await dispatch(createSubCategory(payload)).unwrap();
         toast.success("New subcategory added successfully!");
         // Refetch subcategories for the selected category
         if (selectedCategoryId) {
           await dispatch(fetchSubcategoriesByCategory(selectedCategoryId)).unwrap();
+        }
+        if (createdSub?._id && onSubcategoryChange) {
+          onSubcategoryChange(createdSub._id, createdSub.name);
         }
       }
 
       // Reset form data and close popup
       setData({ title: "", image: null });
       setShowPopup(false);
-    } catch (error) {
+    } catch (error: any) {
       console.error(`Error adding new ${popupFor}:`, error);
-      toast.error(`Failed to add ${popupFor}. Please try again.`);
+      const msg = typeof error === "string" ? error : error?.message || `Failed to add ${popupFor}. Please try again.`;
+      toast.error(msg);
     } finally {
       setIsSubmitting(false);
     }

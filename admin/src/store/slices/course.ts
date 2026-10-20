@@ -94,7 +94,7 @@ export const fetchCourseById = createAsyncThunk(
       
       return response.data?.data?.course;
     } catch (error: any) {
-      return rejectWithValue(error.response?.data || error.message);
+      return rejectWithValue(error.response?.data?.message || (typeof error.response?.data === 'string' ? error.response?.data : null) || error.message || "Failed to fetch course");
     }
   }
 );
@@ -103,18 +103,20 @@ export const updateCourse = createAsyncThunk(
   "course/updateCourse",
   async ({ id, data }: { id: string; data: FormData }, { rejectWithValue }) => {
     try {
-      // Remove any existing 'instructorId' entries before appending the correct one
-      data.delete("instructorId");
-      data.append("instructorId", "68b69334dffbe2b24ed4f059");
+      const existingInstructor = data.get("instructorId");
+      if (!existingInstructor || existingInstructor === "undefined" || existingInstructor === "null") {
+        data.delete("instructorId");
+        data.append("instructorId", "68b69334dffbe2b24ed4f059");
+      }
 
       const response = await axiosInstance.put(`/courses/${id}`, data, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
-      return response.data;
+      return response.data?.data?.course || response.data?.course || response.data;
     } catch (error: any) {
-      return rejectWithValue(error.response?.data || error.message);
+      return rejectWithValue(error.response?.data?.message || (typeof error.response?.data === 'string' ? error.response?.data : null) || error.message || "Failed to update course");
     }
   }
 );
@@ -232,7 +234,7 @@ const courseSlice = createSlice({
       })
       .addCase(updateCourse.fulfilled, (state, action) => {
         state.loading = false;
-        state.data = action.payload;
+        state.data = action.payload?.data?.course || action.payload?.course || action.payload;
       })
       .addCase(updateCourse.rejected, (state, action) => {
         state.loading = false;

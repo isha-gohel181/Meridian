@@ -31,21 +31,27 @@ export const createCategory = async (req, res) => {
 
     const category = await categoryService.create(categoryData);
 
-    const redis = await initRedis();
-    const categoryId = category._id.toString();
-    const categoryCacheData = {
-      _id: category._id,
-      name: category.name,
-      slug: category.slug,
-      status: category.status,
-      image: category.image, // Include image in cache
-      isDeleted: category.isDeleted,
-      createdAt: category.createdAt,
-      updatedAt: category.updatedAt
-    };
+    try {
+      const redis = await initRedis();
+      if (redis) {
+        const categoryId = category._id.toString();
+        const categoryCacheData = {
+          _id: category._id,
+          name: category.name,
+          slug: category.slug,
+          status: category.status,
+          image: category.image, // Include image in cache
+          isDeleted: category.isDeleted,
+          createdAt: category.createdAt,
+          updatedAt: category.updatedAt
+        };
 
-    await redis.setEx(`category:${categoryId}`, 3600, JSON.stringify(categoryCacheData));
-    //console.log('🗂️ Redis cache updated for category:', categoryId);
+        await redis.setEx(`category:${categoryId}`, 3600, JSON.stringify(categoryCacheData));
+        //console.log('🗂️ Redis cache updated for category:', categoryId);
+      }
+    } catch (cacheErr) {
+      console.warn('⚠️ Redis category cache update skipped:', cacheErr?.message);
+    }
 
     return res.status(201).json({
       success: true,
@@ -200,21 +206,27 @@ export const updateCategory = async (req, res) => {
 
     const updatedCategory = await categoryService.updateById(id, updateData);
 
-    const redis = await initRedis();
-    const categoryId = updatedCategory._id.toString();
-    const categoryCacheData = {
-      _id: updatedCategory._id,
-      name: updatedCategory.name,
-      slug: updatedCategory.slug,
-      status: updatedCategory.status,
-      image: updatedCategory.image, // Include image in cache
-      isDeleted: updatedCategory.isDeleted,
-      createdAt: updatedCategory.createdAt,
-      updatedAt: updatedCategory.updatedAt
-    };
+    try {
+      const redis = await initRedis();
+      if (redis) {
+        const categoryId = updatedCategory._id.toString();
+        const categoryCacheData = {
+          _id: updatedCategory._id,
+          name: updatedCategory.name,
+          slug: updatedCategory.slug,
+          status: updatedCategory.status,
+          image: updatedCategory.image, // Include image in cache
+          isDeleted: updatedCategory.isDeleted,
+          createdAt: updatedCategory.createdAt,
+          updatedAt: updatedCategory.updatedAt
+        };
 
-    await redis.setEx(`category:${categoryId}`, 3600, JSON.stringify(categoryCacheData));
-    //console.log('🗂️ Redis cache updated for category:', categoryId);
+        await redis.setEx(`category:${categoryId}`, 3600, JSON.stringify(categoryCacheData));
+        //console.log('🗂️ Redis cache updated for category:', categoryId);
+      }
+    } catch (cacheErr) {
+      console.warn('⚠️ Redis category cache update skipped:', cacheErr?.message);
+    }
 
     return res.status(200).json({
       success: true,
@@ -266,9 +278,15 @@ export const deleteCategory = async (req, res) => {
 
     const deletedCategory = await categoryService.softDeleteById(id);
 
-    const redis = await initRedis();
-    await redis.del(`category:${id}`);
-    //console.log('🗑️ Category cache cleared:', id);
+    try {
+      const redis = await initRedis();
+      if (redis) {
+        await redis.del(`category:${id}`);
+        //console.log('🗑️ Category cache cleared:', id);
+      }
+    } catch (cacheErr) {
+      console.warn('⚠️ Redis category cache delete skipped:', cacheErr?.message);
+    }
 
     return res.status(200).json({
       success: true,

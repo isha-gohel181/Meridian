@@ -9,21 +9,27 @@ export const createSubCategory = async (req, res) => {
 
     const subCategory = await subCategoryService.create(req.body);
 
-    const redis = await initRedis();
-    const subCategoryId = subCategory._id.toString();
-    const subCategoryCacheData = {
-      _id: subCategory._id,
-      name: subCategory.name,
-      slug: subCategory.slug,
-      categoryId: subCategory.categoryId,
-      status: subCategory.status,
-      isDeleted: subCategory.isDeleted,
-      createdAt: subCategory.createdAt,
-      updatedAt: subCategory.updatedAt,
-    };
+    try {
+      const redis = await initRedis();
+      if (redis) {
+        const subCategoryId = subCategory._id.toString();
+        const subCategoryCacheData = {
+          _id: subCategory._id,
+          name: subCategory.name,
+          slug: subCategory.slug,
+          categoryId: subCategory.categoryId,
+          status: subCategory.status,
+          isDeleted: subCategory.isDeleted,
+          createdAt: subCategory.createdAt,
+          updatedAt: subCategory.updatedAt,
+        };
 
-    await redis.setEx(`subcategory:${subCategoryId}`, 3600, JSON.stringify(subCategoryCacheData));
-    //console.log('🗂️ Redis cache updated for subcategory:', subCategoryId);
+        await redis.setEx(`subcategory:${subCategoryId}`, 3600, JSON.stringify(subCategoryCacheData));
+        //console.log('🗂️ Redis cache updated for subcategory:', subCategoryId);
+      }
+    } catch (cacheErr) {
+      console.warn('⚠️ Redis subcategory cache update skipped:', cacheErr?.message);
+    }
 
     return res.status(201).json({
       success: true,
@@ -68,33 +74,46 @@ export const getSubCategoryById = async (req, res) => {
       });
     }
 
-    const redis = await initRedis();
-    const cachedSubCategory = await redis.get(`subcategory:${id}`);
-    if (cachedSubCategory) {
-      //console.log('🚀 SubCategory data retrieved from Redis cache');
-      const subCategoryData = JSON.parse(cachedSubCategory);
-      return res.status(200).json({
-        success: true,
-        message: '✅ SubCategory retrieved successfully',
-        data: { subCategory: subCategoryData },
-        err: {},
-      });
+    try {
+      const redis = await initRedis();
+      if (redis) {
+        const cachedSubCategory = await redis.get(`subcategory:${id}`);
+        if (cachedSubCategory) {
+          //console.log('🚀 SubCategory data retrieved from Redis cache');
+          const subCategoryData = JSON.parse(cachedSubCategory);
+          return res.status(200).json({
+            success: true,
+            message: '✅ SubCategory retrieved successfully',
+            data: { subCategory: subCategoryData },
+            err: {},
+          });
+        }
+      }
+    } catch (cacheErr) {
+      console.warn('⚠️ Redis subcategory cache read skipped:', cacheErr?.message);
     }
 
     const subCategory = await subCategoryService.getById(id);
-    const subCategoryCacheData = {
-      _id: subCategory._id,
-      name: subCategory.name,
-      slug: subCategory.slug,
-      categoryId: subCategory.categoryId,
-      status: subCategory.status,
-      isDeleted: subCategory.isDeleted,
-      createdAt: subCategory.createdAt,
-      updatedAt: subCategory.updatedAt,
-    };
+    try {
+      const redis = await initRedis();
+      if (redis) {
+        const subCategoryCacheData = {
+          _id: subCategory._id,
+          name: subCategory.name,
+          slug: subCategory.slug,
+          categoryId: subCategory.categoryId,
+          status: subCategory.status,
+          isDeleted: subCategory.isDeleted,
+          createdAt: subCategory.createdAt,
+          updatedAt: subCategory.updatedAt,
+        };
 
-    await redis.setEx(`subcategory:${id}`, 3600, JSON.stringify(subCategoryCacheData));
-    //console.log('🗂️ SubCategory data cached in Redis:', id);
+        await redis.setEx(`subcategory:${id}`, 3600, JSON.stringify(subCategoryCacheData));
+        //console.log('🗂️ SubCategory data cached in Redis:', id);
+      }
+    } catch (cacheErr) {
+      console.warn('⚠️ Redis subcategory cache write skipped:', cacheErr?.message);
+    }
 
     return res.status(200).json({
       success: true,
@@ -157,21 +176,27 @@ export const updateSubCategory = async (req, res) => {
 
     const updatedSubCategory = await subCategoryService.updateById(id, req.body);
 
-    const redis = await initRedis();
-    const subCategoryId = updatedSubCategory._id.toString();
-    const subCategoryCacheData = {
-      _id: updatedSubCategory._id,
-      name: updatedSubCategory.name,
-      slug: updatedSubCategory.slug,
-      categoryId: updatedSubCategory.categoryId,
-      status: updatedSubCategory.status,
-      isDeleted: updatedSubCategory.isDeleted,
-      createdAt: updatedSubCategory.createdAt,
-      updatedAt: updatedSubCategory.updatedAt,
-    };
+    try {
+      const redis = await initRedis();
+      if (redis) {
+        const subCategoryId = updatedSubCategory._id.toString();
+        const subCategoryCacheData = {
+          _id: updatedSubCategory._id,
+          name: updatedSubCategory.name,
+          slug: updatedSubCategory.slug,
+          categoryId: updatedSubCategory.categoryId,
+          status: updatedSubCategory.status,
+          isDeleted: updatedSubCategory.isDeleted,
+          createdAt: updatedSubCategory.createdAt,
+          updatedAt: updatedSubCategory.updatedAt,
+        };
 
-    await redis.setEx(`subcategory:${subCategoryId}`, 3600, JSON.stringify(subCategoryCacheData));
-    //console.log('🗂️ Redis cache updated for subcategory:', subCategoryId);
+        await redis.setEx(`subcategory:${subCategoryId}`, 3600, JSON.stringify(subCategoryCacheData));
+        //console.log('🗂️ Redis cache updated for subcategory:', subCategoryId);
+      }
+    } catch (cacheErr) {
+      console.warn('⚠️ Redis subcategory cache update skipped:', cacheErr?.message);
+    }
 
     return res.status(200).json({
       success: true,
@@ -219,9 +244,15 @@ export const deleteSubCategory = async (req, res) => {
 
     const deletedSubCategory = await subCategoryService.softDeleteById(id);
 
-    const redis = await initRedis();
-    await redis.del(`subcategory:${id}`);
-    //console.log('🗑️ SubCategory cache cleared:', id);
+    try {
+      const redis = await initRedis();
+      if (redis) {
+        await redis.del(`subcategory:${id}`);
+        //console.log('🗑️ SubCategory cache cleared:', id);
+      }
+    } catch (cacheErr) {
+      console.warn('⚠️ Redis subcategory cache delete skipped:', cacheErr?.message);
+    }
 
     return res.status(200).json({
       success: true,

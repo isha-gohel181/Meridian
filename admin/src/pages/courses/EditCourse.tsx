@@ -78,7 +78,9 @@ const SuccessPopup = ({
           >
             {type === "success" ? "Success!" : "Error!"}
           </h3>
-          <p className="text-gray-600 dark:text-gray-300 mb-6">{message}</p>
+          <p className="text-gray-600 dark:text-gray-300 mb-6">
+            {typeof message === "object" ? JSON.stringify(message) : String(message || "")}
+          </p>
           <button
             onClick={onClose}
             className={`px-6 py-2 rounded-lg font-medium transition-colors ${type === "success"
@@ -349,12 +351,12 @@ const DemoVideoInput = ({
 };
 
 const EditCourse = () => {
-  const { id } = useParams();
+  const { id, courseId: routeCourseId } = useParams();
   const location = useLocation();
   const dispatch = useDispatch();
 
-  // Fallback extraction from pathname
-  const courseId = id || location.pathname.split("/").pop();
+  // Robust extraction from route params or pathname
+  const courseId = routeCourseId || id || location.pathname.split("/").filter(Boolean).pop();
   const {
     loading,
     error,
@@ -576,7 +578,7 @@ const EditCourse = () => {
   // Always process course data when it changes
   useEffect(() => {
     if (courseData) {
-      const course = courseData.data || courseData;
+      const course = courseData?.data?.course || courseData?.course || courseData?.data || courseData;
 
       setFormData((prev) => ({
         ...prev,
@@ -1048,10 +1050,16 @@ const EditCourse = () => {
       const token = localStorage.getItem("token") || "";
       dispatch(fetchCourseById({ courseId, token }));
 
-    } catch (error) {
+    } catch (error: any) {
+      const errorMsg =
+        (typeof error === "string" ? error : null) ||
+        error?.message ||
+        error?.err?.message ||
+        error?.data?.message ||
+        "Failed to update course. Please try again.";
       setPopup({
         isVisible: true,
-        message: error.message || "Failed to update course. Please try again.",
+        message: typeof errorMsg === "string" ? errorMsg : JSON.stringify(errorMsg),
         type: "error",
       });
     }
@@ -1068,6 +1076,39 @@ const EditCourse = () => {
         <div className="text-center">
           <Loader2 className="w-8 h-8 animate-spin mx-auto mb-4 text-blue-600" />
           <p className="text-gray-600 dark:text-gray-300">Loading course data...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!courseData && !loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center p-4">
+        <div className="text-center max-w-md bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
+          <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
+          <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">Unable to Load Course</h2>
+          <p className="text-gray-600 dark:text-gray-300 mb-6 text-sm">
+            {typeof error === "string" ? error : (error as any)?.message || "Course data could not be retrieved. Please check the course ID or try again."}
+          </p>
+          <div className="flex justify-center gap-4">
+            <button
+              onClick={() => {
+                if (courseId) {
+                  const token = localStorage.getItem("token") || "";
+                  dispatch(fetchCourseById({ courseId, token }));
+                }
+              }}
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium text-sm transition-colors"
+            >
+              Retry
+            </button>
+            <button
+              onClick={() => window.history.back()}
+              className="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg hover:bg-gray-300 font-medium text-sm transition-colors"
+            >
+              Go Back
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -1170,7 +1211,9 @@ const EditCourse = () => {
           {error && (
             <div className="bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-700 rounded-lg p-4 mb-6 flex items-center gap-3">
               <AlertCircle className="w-5 h-5 text-red-500" />
-              <span className="text-red-700 dark:text-red-300 text-sm">{error}</span>
+              <span className="text-red-700 dark:text-red-300 text-sm">
+                {typeof error === "object" ? ((error as any)?.message || JSON.stringify(error)) : String(error)}
+              </span>
             </div>
           )}
 
@@ -2166,8 +2209,10 @@ const EditCourse = () => {
                             <p className="text-gray-800 text-lg leading-relaxed mb-8">
                               {(() => {
                                 const recipientName = (formData as any).certificateRecipientName || "Student Name";
-                                let description = (formData as any).certificateDescription ||
-                                  `This certificate is awarded to **${recipientName}** for successfully completing the course.`;
+                                const rawDesc = (formData as any).certificateDescription;
+                                let description = (typeof rawDesc === "string" && rawDesc)
+                                  ? rawDesc
+                                  : `This certificate is awarded to **${recipientName}** for successfully completing the course.`;
 
                                 // Replace any instance of "Student Name" (with or without **) with the actual recipient name
                                 description = description.replace(/Student Name/g, recipientName);

@@ -1644,10 +1644,15 @@ export const updateCourse = async (req, res) => {
       await courseService.updateCoursePlans(id, formattedPlans);
     }
 
-    const redis = await initRedis();
-    const courseId = updatedCourse._id.toString();
-    await redis.setEx(`course:${courseId}`, 3600, JSON.stringify(updatedCourse));
-    // //console.log("🗂️ Redis cache updated for course:", courseId);
+    try {
+      const redis = await initRedis();
+      if (redis) {
+        const courseId = updatedCourse._id.toString();
+        await redis.setEx(`course:${courseId}`, 3600, JSON.stringify(updatedCourse));
+      }
+    } catch (cacheErr) {
+      console.warn("⚠️ Course cache update skipped:", cacheErr?.message);
+    }
 
     return res.status(200).json({
       success: true,
