@@ -47,11 +47,11 @@ const navItems: NavItem[] = [
     name: "Courses",
     path: "/courses/all/courses"
   },
-  {
-    icon: <MessageCircle />,
-    name: "Course Feedbacks",
-    path: "/course-feedbacks",
-  },
+  // {
+  //   icon: <MessageCircle />,
+  //   name: "Course Feedbacks",
+  //   path: "/course-feedbacks",
+  // },
 
   // {
   //   icon: <PageIcon />,

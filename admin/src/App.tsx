@@ -159,7 +159,7 @@ export default function App() {
                   path="/courses/text-courses/:lessonId"
                   element={<EditTextLessonEditor />}
                 />
-                <Route path="/course-feedbacks" element={<CourseFeedbacks />} />
+                {/* <Route path="/course-feedbacks" element={<CourseFeedbacks />} /> */}
 
 
                 <Route path="/reporters/add" element={<AddReporter />} />
