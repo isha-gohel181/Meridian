@@ -121,8 +121,8 @@ const DashboardCourses = () => {
                 { id: 'ALL COURSES', label: t('allCoursesTab') || 'ALL COURSES' },
                 { id: 'GS COURSES', label: t('gsCoursesTab') || 'GS COURSES' },
                 { id: 'OPTIONAL COURSES', label: t('optionalCoursesTab') || 'OPTIONAL COURSES' },
-                { id: 'TEST SERIES', label: t('testSeriesTab') || 'TEST SERIES' },
-                { id: 'BUY BOOKS', label: t('buyBooksTab') || 'BUY BOOKS' }
+                // { id: 'TEST SERIES', label: t('testSeriesTab') || 'TEST SERIES' },
+                // { id: 'BUY BOOKS', label: t('buyBooksTab') || 'BUY BOOKS' }
               ].map(({ id, label }) => (
                  <button 
                    key={id}

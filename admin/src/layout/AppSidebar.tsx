@@ -53,19 +53,19 @@ const navItems: NavItem[] = [
     path: "/course-feedbacks",
   },
 
-  {
-    icon: <PageIcon />,
-    name: "Test Series",
-    path: "/test-series",
-  },
-  {
-    icon: <BoxCubeIcon />,
-    name: "Physical Books",
-    subItems: [
-      { name: "Manage Books", path: "/ebooks" },
-      { name: "Book Orders", path: "/ebooks/orders" }
-    ]
-  },
+  // {
+  //   icon: <PageIcon />,
+  //   name: "Test Series",
+  //   path: "/test-series",
+  // },
+  // {
+  //   icon: <BoxCubeIcon />,
+  //   name: "Physical Books",
+  //   subItems: [
+  //     { name: "Manage Books", path: "/ebooks" },
+  //     { name: "Book Orders", path: "/ebooks/orders" }
+  //   ]
+  // },
 
   // {
   //   icon: <BoxCubeIcon />,

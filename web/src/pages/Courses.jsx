@@ -46,11 +46,11 @@ const Courses = () => {
       )
     }
 
-    // Include specialized modules
-    list.push(
-      { id: 'TEST SERIES', labelKey: 'testSeriesTab', defaultLabel: 'TEST SERIES', isSpecial: true },
-      { id: 'BUY BOOKS', labelKey: 'buyBooksTab', defaultLabel: 'BUY BOOKS', isSpecial: true }
-    )
+    // Include specialized modules (commented out)
+    // list.push(
+    //   { id: 'TEST SERIES', labelKey: 'testSeriesTab', defaultLabel: 'TEST SERIES', isSpecial: true },
+    //   { id: 'BUY BOOKS', labelKey: 'buyBooksTab', defaultLabel: 'BUY BOOKS', isSpecial: true }
+    // )
 
     return list
   }, [categories])
@@ -61,8 +61,8 @@ const Courses = () => {
     const filterParam = searchParams.get('filter')
     const catParam = searchParams.get('category')
 
-    if (tabParam === 'test-series' || filterParam === 'TEST SERIES') return 'TEST SERIES'
-    if (tabParam === 'buy-books' || filterParam === 'BUY BOOKS') return 'BUY BOOKS'
+    // if (tabParam === 'test-series' || filterParam === 'TEST SERIES') return 'TEST SERIES'
+    // if (tabParam === 'buy-books' || filterParam === 'BUY BOOKS') return 'BUY BOOKS'
     if (catParam) {
       const match = categories?.find(c => c.slug === catParam || c._id === catParam || c.name?.toLowerCase() === catParam.toLowerCase())
       if (match) return match._id
@@ -149,11 +149,12 @@ const Courses = () => {
   const handleFilterChange = (filterId) => {
     setActiveFilter(filterId)
     setIsFilterOpen(false)
-    if (filterId === 'TEST SERIES') {
-      setSearchParams({ tab: 'test-series' })
-    } else if (filterId === 'BUY BOOKS') {
-      setSearchParams({ tab: 'buy-books' })
-    } else if (filterId === 'ALL COURSES') {
+    // if (filterId === 'TEST SERIES') {
+    //   setSearchParams({ tab: 'test-series' })
+    // } else if (filterId === 'BUY BOOKS') {
+    //   setSearchParams({ tab: 'buy-books' })
+    // } else 
+    if (filterId === 'ALL COURSES') {
       setSearchParams({})
     } else {
       const matchedCat = categories?.find(c => c._id === filterId || c.name === filterId || c.slug === filterId)
@@ -555,11 +556,12 @@ const Courses = () => {
             {/* Counter and Filter Toggle */}
             <div className="col-span-4 flex flex-col items-end gap-10 course-filter-reveal opacity-0">
               <span className="font-montserrat text-[11px] text-description/80 uppercase tracking-[0.15em] font-bold">
-                {activeFilter === 'TEST SERIES'
+                {/* activeFilter === 'TEST SERIES'
                   ? `${testSeriesData.length} COURSES AVAILABLE`
                   : activeFilter === 'BUY BOOKS'
                   ? `${buyBooksData.length} COURSES AVAILABLE`
-                  : `${filteredCourses.length} COURSES AVAILABLE`}
+                  : */}
+                {`${filteredCourses.length} COURSES AVAILABLE`}
               </span>
 
               {activeFilter !== 'TEST SERIES' && activeFilter !== 'BUY BOOKS' && (
@@ -660,11 +662,12 @@ const Courses = () => {
           <div className="md:hidden flex flex-col gap-8">
             <div className="flex items-center justify-between">
               <span className="font-jetbrains text-[8px] text-description/80 uppercase tracking-[0.2em] font-bold">
-                {activeFilter === 'TEST SERIES'
+                {/* activeFilter === 'TEST SERIES'
                   ? `${testSeriesData.length} COURSES AVAILABLE`
                   : activeFilter === 'BUY BOOKS'
                   ? `${buyBooksData.length} COURSES AVAILABLE`
-                  : `${filteredCourses.length} COURSES AVAILABLE`}
+                  : */}
+                {`${filteredCourses.length} COURSES AVAILABLE`}
               </span>
               {activeFilter !== 'TEST SERIES' && activeFilter !== 'BUY BOOKS' && (
                 <button
@@ -715,8 +718,9 @@ const Courses = () => {
 
         {/* 3. Main Views Conditional Rendering */}
 
-        {/* VIEW A: TEST SERIES (Quizzes & Mock Tests) */}
-        {activeFilter === 'TEST SERIES' && (
+        {/* VIEW A: TEST SERIES (Quizzes & Mock Tests) - Commented Out */}
+        {/*
+        activeFilter === 'TEST SERIES' && (
           <div className="max-w-7xl mx-auto mb-16">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {testSeriesData.map((test) => (
@@ -774,10 +778,12 @@ const Courses = () => {
               ))}
             </div>
           </div>
-        )}
+        )
+        */}
 
-        {/* VIEW B: BUY BOOKS (eBooks & Study Materials) */}
-        {activeFilter === 'BUY BOOKS' && (
+        {/* VIEW B: BUY BOOKS (eBooks & Study Materials) - Commented Out */}
+        {/*
+        activeFilter === 'BUY BOOKS' && (
           <div className="max-w-7xl mx-auto mb-16">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {buyBooksData.map((book) => (
@@ -786,7 +792,6 @@ const Courses = () => {
                   className="bg-card rounded-2xl overflow-hidden border border-border shadow-sm hover:shadow-xl hover:border-accent transition-all duration-300 flex flex-col justify-between group"
                 >
                   <div>
-                    {/* Book Cover Banner */}
                     <div className="relative h-48 overflow-hidden bg-black/5 dark:bg-white/5">
                       <img
                         src={book.coverImage}
@@ -844,7 +849,8 @@ const Courses = () => {
               ))}
             </div>
           </div>
-        )}
+        )
+        */}
 
         {/* VIEW C: COURSES GRID (All Courses, GS Courses, Optional Courses) */}
         {activeFilter !== 'TEST SERIES' && activeFilter !== 'BUY BOOKS' && (
@@ -931,8 +937,9 @@ const Courses = () => {
 
       </div>
 
-      {/* 5. INTERACTIVE QUIZ MODAL (Test Series) */}
-      {activeQuizModal && (
+      {/* 5. INTERACTIVE QUIZ MODAL (Test Series) - Commented Out */}
+      {/*
+      activeQuizModal && (
         <div
           data-lenis-prevent="true"
           onClick={(e) => {
@@ -947,7 +954,6 @@ const Courses = () => {
             onClick={(e) => e.stopPropagation()}
             className="bg-white w-full max-w-2xl rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto overscroll-contain outline-none focus:outline-none my-auto"
           >
-            {/* Header */}
             <div className="flex items-center justify-between border-b border-slate-100 pb-4">
               <div>
                 <span className="text-[10px] font-mono font-bold text-amber-700 bg-amber-50 px-2.5 py-1 rounded-md uppercase">
@@ -965,7 +971,6 @@ const Courses = () => {
 
             {!quizSubmitted ? (
               <div className="space-y-6">
-                {/* Progress & Timer */}
                 <div className="flex items-center justify-between text-xs font-mono text-slate-600 bg-slate-50 p-3 rounded-xl border border-slate-100">
                   <span>Question {currentQuizIndex + 1} of {activeQuizModal.questions.length}</span>
                   <span className="font-bold text-amber-800 flex items-center gap-1.5">
@@ -973,13 +978,11 @@ const Courses = () => {
                   </span>
                 </div>
 
-                {/* Question */}
                 <div className="space-y-4">
                   <h4 className="text-base sm:text-lg font-bold text-slate-900 leading-snug">
                     {activeQuizModal.questions[currentQuizIndex].question}
                   </h4>
 
-                  {/* Options */}
                   <div className="space-y-2.5">
                     {activeQuizModal.questions[currentQuizIndex].options.map((opt, optIdx) => {
                       const isSelected = selectedAnswers[currentQuizIndex] === optIdx
@@ -1005,7 +1008,6 @@ const Courses = () => {
                   </div>
                 </div>
 
-                {/* Footer Navigation */}
                 <div className="flex items-center justify-between pt-4 border-t border-slate-100">
                   <button
                     disabled={currentQuizIndex === 0}
@@ -1033,7 +1035,6 @@ const Courses = () => {
                 </div>
               </div>
             ) : (
-              /* Quiz Result Review */
               <div className="space-y-6">
                 <div className="text-center py-6 bg-amber-50 rounded-2xl border border-amber-200/80 space-y-2">
                   <div className="text-3xl">🎯</div>
@@ -1045,7 +1046,6 @@ const Courses = () => {
                   </p>
                 </div>
 
-                {/* Explanations List */}
                 <div data-lenis-prevent="true" className="space-y-4 max-h-72 overflow-y-auto overscroll-contain pr-2">
                   {activeQuizModal.questions.map((q, idx) => {
                     const isCorrect = selectedAnswers[idx] === q.correctIndex
@@ -1091,10 +1091,12 @@ const Courses = () => {
             )}
           </div>
         </div>
-      )}
+      )
+      */}
 
-      {/* 6. BOOK DETAILS & PREVIEW MODAL (Buy Books) */}
-      {activeBookModal && (
+      {/* 6. BOOK DETAILS & PREVIEW MODAL (Buy Books) - Commented Out */}
+      {/*
+      activeBookModal && (
         <div
           data-lenis-prevent="true"
           onClick={(e) => {
@@ -1109,7 +1111,6 @@ const Courses = () => {
             onClick={(e) => e.stopPropagation()}
             className="bg-white w-full max-w-2xl rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto overscroll-contain outline-none focus:outline-none my-auto"
           >
-            {/* Header */}
             <div className="flex items-center justify-between border-b border-slate-100 pb-4">
               <div>
                 <span className="text-[10px] font-mono font-bold text-rose-700 bg-rose-50 px-2.5 py-1 rounded-md uppercase">
@@ -1126,13 +1127,11 @@ const Courses = () => {
               </button>
             </div>
 
-            {/* Content Details */}
             <div className="space-y-5">
               <p className="text-xs sm:text-sm text-slate-700 leading-relaxed">
                 {activeBookModal.description}
               </p>
 
-              {/* Highlights */}
               <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100 space-y-2">
                 <h5 className="text-xs font-bold text-slate-900 uppercase tracking-wider">Book Highlights & Key Topics</h5>
                 <ul className="space-y-1.5 text-xs text-slate-600">
@@ -1145,7 +1144,6 @@ const Courses = () => {
                 </ul>
               </div>
 
-              {/* Sample Excerpt */}
               <div className="bg-amber-50/60 p-4 rounded-2xl border border-amber-200/80 space-y-1.5">
                 <div className="text-[10px] font-mono font-bold uppercase text-amber-900 tracking-wider">Sample Chapter Excerpt</div>
                 <p className="text-xs italic text-slate-800 leading-relaxed font-newsreader">
@@ -1153,7 +1151,6 @@ const Courses = () => {
                 </p>
               </div>
 
-              {/* Price & Buy CTA */}
               <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-slate-100">
                 <div>
                   <div className="text-[10px] font-mono text-slate-400 uppercase">Special Launch Price</div>
@@ -1183,7 +1180,8 @@ const Courses = () => {
             </div>
           </div>
         </div>
-      )}
+      )
+      */}
 
       {/* 7. INTERACTIVE EVENT REGISTRATION MODAL */}
       {activeEventModal && (

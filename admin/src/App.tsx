@@ -297,15 +297,15 @@ export default function App() {
 
 
                 {/* Test Series */}
-                <Route path="/test-series" element={<TestSeriesList />} />
+                {/* <Route path="/test-series" element={<TestSeriesList />} />
                 <Route path="/test-series/add" element={<AddEditTestSeries />} />
-                <Route path="/test-series/edit/:id" element={<AddEditTestSeries />} />
+                <Route path="/test-series/edit/:id" element={<AddEditTestSeries />} /> */}
 
                 {/* Physical Books */}
-                <Route path="/ebooks" element={<EbookList />} />
+                {/* <Route path="/ebooks" element={<EbookList />} />
                 <Route path="/ebooks/add" element={<AddEditEbook />} />
                 <Route path="/ebooks/edit/:id" element={<AddEditEbook />} />
-                <Route path="/ebooks/orders" element={<BookOrderList />} />
+                <Route path="/ebooks/orders" element={<BookOrderList />} /> */}
               </Route>
             </Route>
 
