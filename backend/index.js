@@ -4,7 +4,8 @@ import app from './app.js';
 import dotenv from 'dotenv';
 import { connectToDatabase } from './db/connect.js';
 import { ServerConfig } from './config/server.config.js';
-// import { initRedis } from './config/redisClient.js';
+import { initRedis, isRedisEnabled } from './config/redisClient.js';
+import { printServerBanner } from './utils/banner.js';
 import videoSocketHandler from './sockets/videoSocketHandler.js';
 import jwt from 'jsonwebtoken';
 import Message from './models/Message.js';
@@ -420,8 +421,8 @@ const PORT = process.env.PORT || ServerConfig.port || 4000;
 server.listen(PORT, async () => {
   try {
     await connectToDatabase();
-    // await initRedis();
-    console.log(`🚀 Server + WebSocket running on port ${PORT}`);
+    await initRedis();
+    printServerBanner({ port: PORT });
   } catch (error) {
     console.error('❌ Error starting server:', error);
     process.exit(1);

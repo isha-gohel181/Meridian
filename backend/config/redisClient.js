@@ -60,23 +60,38 @@ const safeRedisProxy = new Proxy(mockRedisClient, {
   },
 });
 
+export const isRedisEnabled = () => {
+  const envVal = String(process.env.REDIS_ENABLED || 'false').toLowerCase().trim();
+  return envVal === 'true' || envVal === '1';
+};
+
 const initRedis = async () => {
+  if (!isRedisEnabled()) {
+    if (!redisDisabled) {
+      console.log('⚡ [REDIS] Redis disabled by config (REDIS_ENABLED=false). Using in-memory fallback cache.');
+      redisDisabled = true;
+    }
+    return safeRedisProxy;
+  }
+
   if (redisDisabled) return safeRedisProxy;
   if (redisClient && redisClient.isOpen) return redisClient;
   if (isConnecting) return safeRedisProxy;
 
   try {
     if (!process.env.REDIS_HOST || !process.env.REDIS_PORT) {
+      console.warn('⚠️ [REDIS] REDIS_HOST or REDIS_PORT not set. Using in-memory fallback cache.');
       redisDisabled = true;
       return safeRedisProxy;
     }
 
     isConnecting = true;
+    console.log(`🔌 [REDIS] Connecting to Redis at ${process.env.REDIS_HOST}:${process.env.REDIS_PORT}...`);
     const client = createClient({
       socket: {
         host: process.env.REDIS_HOST,
         port: Number(process.env.REDIS_PORT),
-        connectTimeout: 1000,
+        connectTimeout: 2000,
         reconnectStrategy: (retries) => {
           if (retries > 2) {
             console.warn('⚠️ [REDIS] Host unreachable after 2 attempts. Using in-memory fallback cache.');
@@ -96,6 +111,7 @@ const initRedis = async () => {
     await client.connect();
     redisClient = client;
     isConnecting = false;
+    console.log('✅ [REDIS] Connected successfully to Redis server!');
     return redisClient;
   } catch (err) {
     isConnecting = false;
