@@ -29,7 +29,7 @@ const NewsCard = ({ article, variant = 'standard' }) => {
           <span className="font-jetbrains text-xs font-bold text-white bg-accent tracking-wider uppercase mb-4 px-3.5 py-1 rounded-none w-fit shadow-sm">
             {article.category}
           </span>
-          <h2 className="font-newsreader italic text-3xl md:text-5xl font-extralight leading-tight text-white transition-colors group-hover:text-accent mb-4 max-w-3xl">
+          <h2 className="marketing-card-title text-2xl md:text-4xl leading-tight text-white transition-colors group-hover:text-accent mb-4 max-w-3xl">
             {article.title}
           </h2>
           <p className="font-montserrat text-xs leading-relaxed text-slate-200 tracking-wide max-w-2xl font-medium line-clamp-2 mb-6">
@@ -64,7 +64,7 @@ const NewsCard = ({ article, variant = 'standard' }) => {
           <span className="font-jetbrains text-[10px] font-bold text-accent bg-accent/10 border border-accent/20 tracking-wider uppercase px-3 py-1 rounded-none w-fit">
             {article.category}
           </span>
-          <h2 className="font-newsreader italic text-2xl md:text-3xl leading-snug text-normal font-bold transition-colors group-hover:text-accent">
+          <h2 className="marketing-card-title text-xl md:text-2xl leading-snug transition-colors group-hover:text-accent">
             {article.title}
           </h2>
           <div className="flex items-center gap-4 pt-4 border-t border-border">
@@ -95,7 +95,7 @@ const NewsCard = ({ article, variant = 'standard' }) => {
           <span className="font-jetbrains text-[10px] font-bold text-accent bg-accent/10 border border-accent/20 tracking-wider uppercase px-3 py-1 rounded-none w-fit">
             {article.category}
           </span>
-          <h3 className="font-newsreader italic text-xl md:text-2xl leading-snug text-normal font-bold transition-colors group-hover:text-accent line-clamp-2">
+          <h3 className="marketing-card-title text-lg md:text-xl leading-snug transition-colors group-hover:text-accent line-clamp-2">
             {article.title}
           </h3>
           <p className="font-montserrat text-xs leading-relaxed text-description font-medium line-clamp-2">
@@ -182,34 +182,27 @@ const News = () => {
       <div className="max-w-7xl mx-auto">
         
         {/* News Header - Restored Interlocking Editorial Style */}
-        <div className="mb-16">
-            <span className="font-jetbrains text-xs font-bold text-accent tracking-[0.4em] uppercase mb-4 block">
-              {t('archive2024') || 'DISPATCH ARCHIVE'}
-            </span>
-            
-            <div className="relative">
-              <h1 className="font-newsreader text-4xl md:text-6xl font-extralight italic text-normal tracking-tight">
-                <span className="block">{t('latestTitle') || 'Latest'}</span>
-                <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 md:gap-0 mt-2">
-                  <div className="relative">
-                    <span className="whitespace-nowrap block">{t('dispatchesTitle') || 'Dispatches & Insights'}</span>
-                  </div>
-                  
-                  {/* Search: Repositioned to bottom-right baseline */}
-                  <div className="w-full md:w-[420px] group relative md:mb-2">
-                    <input 
-                      type="text" 
-                      placeholder={t('searchNewsPlaceholder') || 'Search dispatches...'}
-                      value={search}
-                      onChange={(e) => setSearch(e.target.value)}
-                      className="w-full bg-card border border-border rounded-none py-3 px-6 pr-12 font-jetbrains text-xs text-normal focus:outline-none focus:border-accent shadow-sm transition-all duration-300 placeholder:text-description/60"
-                    />
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="absolute right-5 top-1/2 -translate-y-1/2 text-description group-hover:text-accent transition-colors">
-                      <circle cx="11" cy="11" r="8" /><path d="M21 21l-4.35-4.35" />
-                    </svg>
-                  </div>
-                </div>
+        <div className="mb-12 md:mb-16">
+            <p className="marketing-page-eyebrow mb-2">
+              {t('archive2024') || 'Dispatch archive'}
+            </p>
+            <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+              <h1 className="marketing-page-title max-w-2xl">
+                {t('latestTitle') || 'Latest'}{' '}
+                <span className="text-[#1878C0]">{t('dispatchesTitle') || 'Dispatches & Insights'}</span>
               </h1>
+              <div className="w-full lg:max-w-md group relative shrink-0">
+                <input
+                  type="text"
+                  placeholder={t('searchNewsPlaceholder') || 'Search dispatches...'}
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  className="w-full bg-card border border-border rounded-xl py-3 px-6 pr-12 font-inter text-sm text-normal focus:outline-none focus:border-accent shadow-sm transition-all placeholder:text-description/60"
+                />
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="absolute right-5 top-1/2 -translate-y-1/2 text-description group-hover:text-accent transition-colors">
+                  <circle cx="11" cy="11" r="8" /><path d="M21 21l-4.35-4.35" />
+                </svg>
+              </div>
             </div>
         </div>
 
@@ -227,12 +220,21 @@ const News = () => {
           </div>
         )}
 
+        {!loading && formattedArticles.length === 0 && (
+          <div className="py-24 text-center border border-border rounded-2xl bg-card/50 mb-16">
+            <p className="font-jetbrains text-xs text-accent tracking-[0.3em] uppercase mb-3">Archive empty</p>
+            <p className="font-inter text-base text-slate-600">No news articles published yet. Check back soon.</p>
+          </div>
+        )}
+
         {/* Supporting Grid */}
+        {gridArticles.length > 0 && (
         <div className="grid grid-cols-1 md:grid-cols-6 lg:grid-cols-12 gap-8 mb-16">
             {gridArticles.map((article) => (
               <NewsCard key={article.id} article={article} />
             ))}
         </div>
+        )}
 
         {/* Scroll Sentinel */}
         <div ref={observerTarget} className="py-16 flex flex-col items-center justify-center gap-4 border-t border-border">

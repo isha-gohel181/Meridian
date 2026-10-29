@@ -40,43 +40,76 @@ const opts = {
 
 passport.use(
   "jwt",
-  new JwtStrategy(opts, async function (req, jwt_payload, done) {
-    try {
-      // SECURITY: centrally enforce token revocation. Logout and forced device
-      // deauthorisation blacklist access tokens in Redis; without this check,
-      // routes gated only by passport kept accepting revoked tokens until natural
-      // TTL expiry.
-      const rawToken = tokenExtractor(req);
-      if (rawToken && (await isAccessTokenBlacklisted(rawToken, jwt_payload))) {
-        return done(null, false);
+  new JwtStrategy(opts, function (req, jwt_payload, done) {
+    const finish = (err, user) => {
+      if (err) {
+        console.error("JWT Strategy Error:", err);
+        return done(err, false);
       }
+      return done(null, user);
+    };
 
-      const user = await User.findOne({ _id: jwt_payload._id }).select("-password");
-      if (!user) {
-        return done(null, false);
-      }
+    const rawToken = tokenExtractor(req);
 
-      // Reject banned / inactive users at the authentication layer so every
-      // JWT-protected route is covered without per-route middleware.
-      if (user.isBanned === true || user.status === "inactive" || user.isActive === false) {
-        return done(null, false);
-      }
-
-      // SECURITY: reject access tokens issued BEFORE the user's last password
-      // change — guarantees stolen tokens die when the password is changed.
-      if (user.passwordChangedAt && jwt_payload.iat) {
-        const changedAtSec = Math.floor(new Date(user.passwordChangedAt).getTime() / 1000);
-        if (jwt_payload.iat < changedAtSec) {
+    Promise.resolve()
+      .then(async () => {
+        if (rawToken && (await isAccessTokenBlacklisted(rawToken, jwt_payload))) {
           return done(null, false);
         }
-      }
 
-      return done(null, user);
-    } catch (error) {
-      console.error("JWT Strategy Error:", error);
-      return done(error, false);
-    }
+        const user = await User.findOne({ _id: jwt_payload._id }).select("-password");
+        if (!user) {
+          return done(null, false);
+        }
+
+        if (user.isBanned === true || user.status === "inactive" || user.isActive === false) {
+          return done(null, false);
+        }
+
+        if (user.passwordChangedAt && jwt_payload.iat) {
+          const changedAtSec = Math.floor(new Date(user.passwordChangedAt).getTime() / 1000);
+          if (jwt_payload.iat < changedAtSec) {
+            return done(null, false);
+          }
+        }
+
+        return done(null, user);
+      })
+      .catch((error) => finish(error, false));
   })
 );
+
+// Express 5 + passport: bare passport.authenticate('jwt') never ends the response
+// when a Bearer token is present. Wrap default JWT auth so failures return 401
+// and successes call next() (same pattern as optionalAuthenticate.js).
+const authenticate = passport.authenticate.bind(passport);
+passport.authenticate = function jwtAuthenticateWrapper(strategy, options, callback) {
+  if (typeof options === "function") {
+    callback = options;
+    options = {};
+  }
+
+  if (strategy === "jwt" && !callback) {
+    const authOptions = options || {};
+    return (req, res, next) => {
+      authenticate(strategy, authOptions, (err, user, info) => {
+        if (err) {
+          return next(err);
+        }
+        if (!user) {
+          return res.status(401).json({
+            success: false,
+            error: "Unauthorized",
+            message: info?.message || "Authentication required",
+          });
+        }
+        req.user = user;
+        return next();
+      })(req, res, next);
+    };
+  }
+
+  return authenticate(strategy, options, callback);
+};
 
 export default passport;

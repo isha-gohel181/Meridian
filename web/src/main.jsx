@@ -31,7 +31,10 @@ import './index.css'
 import App from './App.jsx'
 import { connectSocket } from './redux/slices/chat'
 
-const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || "1234567890-dummyclientid.apps.googleusercontent.com";
+const GOOGLE_CLIENT_ID =
+  import.meta.env.VITE_GOOGLE_CLIENT_ID ||
+  import.meta.env.VITE_GOOGLE_CLIENT ||
+  '';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

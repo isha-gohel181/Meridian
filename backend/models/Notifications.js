@@ -16,6 +16,7 @@ const notificationSchema = new mongoose.Schema(
       default: null,
     },
     device_id: { type: String, default: null }, // optional
+    broadcastId: { type: String, default: null, index: true },
   },
   {
     timestamps: { createdAt: "created_at", updatedAt: "updated_at" },

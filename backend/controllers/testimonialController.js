@@ -4,7 +4,7 @@ import Testimonial from '../models/Testimonial.js';
 // Admin: Add testimonial manually
 export const addTestimonialAdmin = async (req, res) => {
   try {
-    const { name, role, message, rating, courseId } = req.body;
+    const { name, role, message, rating, courseId, company, tag, outcome, showOnLanding } = req.body;
     if (!message || !name) {
       return res.status(400).json({ success: false, message: 'Name and message are required.' });
     }
@@ -12,7 +12,19 @@ export const addTestimonialAdmin = async (req, res) => {
     const image = req.files?.image?.[0]?.path?.replace(/\\/g, '/');
     const video = req.files?.video?.[0]?.path?.replace(/\\/g, '/');
 
-    const testimonial = await testimonialService.createTestimonial({ name, role, message, rating, courseId, image, video }, true);
+    const testimonial = await testimonialService.createTestimonial({
+      name,
+      role,
+      message,
+      rating,
+      courseId,
+      company,
+      tag,
+      outcome,
+      showOnLanding: showOnLanding === undefined || showOnLanding === 'true' || showOnLanding === true,
+      image,
+      video,
+    }, true);
     res.json({ success: true, message: 'Testimonial added and approved.', data: testimonial });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
@@ -38,11 +50,19 @@ export const listTestimonialsAdmin = async (req, res) => {
 export const updateTestimonialAdmin = async (req, res) => {
   try {
     const { id } = req.params;
-    const { message, status, rating } = req.body;
+    const { name, role, message, status, rating, company, tag, outcome, showOnLanding } = req.body;
     const update = {};
+    if (name !== undefined) update.name = name;
+    if (role !== undefined) update.role = role;
     if (message) update.message = message;
     if (status) update.status = status;
     if (rating) update.rating = rating;
+    if (company !== undefined) update.company = company;
+    if (tag !== undefined) update.tag = tag;
+    if (outcome !== undefined) update.outcome = outcome;
+    if (showOnLanding !== undefined) {
+      update.showOnLanding = showOnLanding === 'true' || showOnLanding === true;
+    }
 
     if (req.files?.image?.[0]) {
       update.image = req.files.image[0].path.replace(/\\/g, '/');
@@ -183,8 +203,12 @@ export const getMyTestimonials = async (req, res) => {
 // User: Get all approved testimonials
 export const getApprovedTestimonials = async (req, res) => {
   try {
-    const { courseId } = req.query;
+    const { courseId, landing } = req.query;
     const filter = { status: 'approved' };
+
+    if (landing === 'true' || landing === '1') {
+      filter.$or = [{ showOnLanding: true }, { showOnLanding: { $exists: false } }];
+    }
 
     // Add courseId filter if provided
     if (courseId) {

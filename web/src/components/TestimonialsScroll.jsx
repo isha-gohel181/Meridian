@@ -155,38 +155,67 @@ const StarRating = ({ rating = 5 }) => (
   </div>
 )
 
-const TestimonialsScroll = ({ reviews = [] }) => {
+const mapApiTestimonial = (r, idx) => {
+  let avatar = null;
+  if (r.image) {
+    const rawBase = import.meta.env.VITE_IMAGE_URL || import.meta.env.VITE_BASE_URL || 'https://api.xpertqa.in';
+    const baseUrl = rawBase.replace(/\/api\/v1\/?$/, '');
+    avatar = `${baseUrl}${r.image.startsWith('/') ? '' : '/'}${r.image}`;
+  }
+  const name = r.name || (r.userId && r.userId.fullName) || 'Verified Student';
+  const initials = name.split(' ').map(n => n[0]).slice(0, 2).join('').toUpperCase() || 'ST';
+  return {
+    name,
+    role: r.role || 'Software Quality Engineer',
+    company: r.company || 'Enterprise Banking',
+    tag: r.tag || 'VERIFIED ALUMNI',
+    outcome: r.outcome || 'Career Growth',
+    text: r.message || r.reviewText || r.text || '',
+    rating: r.rating || 5,
+    image: avatar,
+    initials,
+    avatarGradient: staticTestimonials[idx % staticTestimonials.length].avatarGradient,
+  };
+};
+
+const TestimonialsScroll = ({ reviews = [], variant = 'default' }) => {
   const ref = useRef(null)
   const colRefs = useRef([])
   const [columns, setColumns] = useState([])
   const [colCount, setColCount] = useState(3)
   const [apiTestimonials, setApiTestimonials] = useState([])
+  const [loadingReviews, setLoadingReviews] = useState(variant === 'landing')
+  const isLanding = variant === 'landing'
 
-  // Optional background fetch of live approved testimonials from backend
+  // Fetch approved testimonials from backend (landing page uses ?landing=true)
   useEffect(() => {
     if (reviews && Array.isArray(reviews) && reviews.length > 0) return;
 
     let isMounted = true;
     const fetchLiveTestimonials = async () => {
+      if (isLanding) setLoadingReviews(true);
       try {
         const rawBase = import.meta.env.VITE_BASE_URL || 'https://api.xpertqa.in';
         const baseUrl = rawBase.replace(/\/api\/v1\/?$/, '');
-        const res = await fetch(`${baseUrl}/testimonials`);
+        const query = isLanding ? '?landing=true' : '';
+        const res = await fetch(`${baseUrl}/testimonials${query}`);
         if (res.ok) {
           const json = await res.json();
           const items = Array.isArray(json?.data) ? json.data : (Array.isArray(json) ? json : []);
-          if (isMounted && items.length > 0) {
+          if (isMounted) {
             setApiTestimonials(items);
           }
         }
       } catch {
-        // Silently keep static curated testimonials
+        if (isMounted) setApiTestimonials([]);
+      } finally {
+        if (isMounted && isLanding) setLoadingReviews(false);
       }
     };
 
     fetchLiveTestimonials();
     return () => { isMounted = false; };
-  }, [reviews]);
+  }, [reviews, isLanding]);
 
   // Harmonize testimonials from props, API, or rich static fallback
   const displayTestimonials = useMemo(() => {
@@ -223,34 +252,18 @@ const TestimonialsScroll = ({ reviews = [] }) => {
     if (apiTestimonials.length > 0) {
       const validApi = apiTestimonials.filter(r => r && (r.message || r.reviewText || r.text));
       if (validApi.length > 0) {
-        return validApi.map((r, idx) => {
-          let avatar = null;
-          if (r.image) {
-            const rawBase = import.meta.env.VITE_IMAGE_URL || import.meta.env.VITE_BASE_URL || 'https://api.xpertqa.in';
-            const baseUrl = rawBase.replace(/\/api\/v1\/?$/, '');
-            avatar = `${baseUrl}${r.image.startsWith('/') ? '' : '/'}${r.image}`;
-          }
-          const name = r.name || (r.userId && r.userId.fullName) || "Verified Student";
-          const initials = name.split(' ').map(n => n[0]).slice(0, 2).join('').toUpperCase() || "ST";
-          return {
-            name,
-            role: r.role || "Software Quality Engineer",
-            company: r.company || "Banking Domain",
-            tag: r.tag || "VERIFIED ALUMNI",
-            outcome: "Placed Student",
-            text: r.message || r.reviewText || r.text || "",
-            rating: r.rating || 5,
-            image: avatar,
-            initials,
-            avatarGradient: staticTestimonials[idx % staticTestimonials.length].avatarGradient
-          };
-        });
+        return validApi.map((r, idx) => mapApiTestimonial(r, idx));
       }
     }
 
-    // 3. Fallback to rich, production-grade static testimonials
+    // Landing page: admin-managed only (no hardcoded fallback)
+    if (isLanding) {
+      return [];
+    }
+
+    // Default home/course fallback when API is empty
     return staticTestimonials;
-  }, [reviews, apiTestimonials]);
+  }, [reviews, apiTestimonials, isLanding]);
 
   // Handle responsive column grouping and repetition for infinite scroll effect
   useEffect(() => {
@@ -335,6 +348,29 @@ const TestimonialsScroll = ({ reviews = [] }) => {
   }, [columns, displayTestimonials.length]);
 
   const isLowCount = displayTestimonials.length <= 3;
+
+  if (loadingReviews) {
+    return (
+      <section className="w-full bg-slate-50 py-20 md:py-28 px-4 md:px-8 border-t border-slate-200/60">
+        <div className="max-w-7xl mx-auto flex justify-center py-16">
+          <div className="h-10 w-10 border-4 border-slate-200 border-t-[#1878C0] rounded-full animate-spin" />
+        </div>
+      </section>
+    );
+  }
+
+  if (isLanding && displayTestimonials.length === 0) {
+    return (
+      <section className="w-full bg-slate-50 py-20 md:py-28 px-4 md:px-8 border-t border-slate-200/60">
+        <div className="max-w-2xl mx-auto text-center space-y-3">
+          <h2 className="text-2xl md:text-3xl font-semibold text-slate-900">Student Success Stories</h2>
+          <p className="text-slate-600 text-sm md:text-base">
+            Reviews will appear here once published from the admin panel (Testimonials → Approved + Show on landing).
+          </p>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section

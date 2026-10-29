@@ -4,6 +4,7 @@ import fcmService from "../utils/notificationService.js";
 import Enrollment from "../models/CourseEnrollment.js";
 import User from "../models/user.js";
 import mongoose from "mongoose";
+import crypto from "crypto";
 
 class NotificationService {
 
@@ -134,8 +135,10 @@ class NotificationService {
       console.log(`🟢 Total users fetched from DB: ${allUsers.length}`);
 
       if (allUsers.length > 0) {
+        const broadcastId = crypto.randomUUID();
         const notificationsToInsert = allUsers.map(user => ({
           user_id: user._id,
+          broadcastId,
           data: {
             ...data,
             type: data.type || "general_notification"
@@ -258,8 +261,10 @@ async sendToCourseStudents(courseId, data, webPushLink = null) {
     };
 
     if (userIds.length > 0) {
+      const broadcastId = crypto.randomUUID();
       const notificationsToInsert = userIds.map(uid => ({
         user_id: uid,
+        broadcastId,
         data: courseNotificationData,
         status: 1 // unread
       }));

@@ -257,7 +257,7 @@ const QuestionCard = ({ question }) => {
 
           <div className="flex flex-col gap-4">
             <div className="space-y-3">
-              <h2 className="font-newsreader italic text-2xl md:text-3xl leading-snug text-normal font-bold group-hover:text-accent transition-colors">
+              <h2 className="marketing-card-title text-xl md:text-2xl leading-snug group-hover:text-accent transition-colors">
                 {question.title}
               </h2>
               {/* Render All Tags */}
@@ -529,6 +529,10 @@ const QuestionCard = ({ question }) => {
     <div ref={containerRef} className="min-h-screen bg-dark pt-44 pb-28 px-4 md:px-12 lg:px-20 overflow-x-clip text-normal">
       
       <div className="max-w-7xl mx-auto">
+        <div className="mb-12">
+          <p className="marketing-page-eyebrow mb-2">{t('forum') || 'Forum'}</p>
+          <h1 className="marketing-page-title">{t('forumTitle') || 'Community discussions'}</h1>
+        </div>
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-20">
           
           {/* Main Content (Left) - FAQ / Q&A List */}
@@ -599,7 +603,7 @@ const QuestionCard = ({ question }) => {
                     <div className="w-16 h-16 rounded-full border border-border flex items-center justify-center mb-6">
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-description"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
                     </div>
-                    <h3 className="font-newsreader italic text-3xl text-normal mb-2">No Discussions Yet</h3>
+                    <h3 className="marketing-card-title text-xl md:text-2xl mb-2">No Discussions Yet</h3>
                     <p className="font-jetbrains text-[9px] text-description uppercase tracking-widest">Be the first to start a new topic.</p>
                   </div>
                 )}
@@ -737,7 +741,7 @@ const QuestionCard = ({ question }) => {
                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>
               </div>
               <div className="text-center">
-                 <h3 className="font-newsreader italic text-2xl">Topic Published</h3>
+                 <h3 className="font-inter text-xl font-semibold not-italic">Topic Published</h3>
                  <p className="font-jetbrains text-[9px] uppercase tracking-[0.3em] opacity-70">Discourse added to terminal</p>
               </div>
            </div>

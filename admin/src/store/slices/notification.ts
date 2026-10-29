@@ -116,6 +116,7 @@ export const fetchNotifications = createAsyncThunk<
         const queryParams = new URLSearchParams({
             page: page.toString(),
             limit: limit.toString(),
+            grouped: 'true',
         });
 
         if (status !== undefined) queryParams.append('status', status.toString());

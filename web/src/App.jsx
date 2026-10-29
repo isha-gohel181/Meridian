@@ -295,6 +295,19 @@ const AppContent = () => {
     return () => clearTimeout(t)
   }, [])
 
+  // Keep public pages visible after client-side navigation (content-wrapper starts hidden for GSAP reveal)
+  useEffect(() => {
+    const el = document.getElementById('content-wrapper')
+    if (!el) return
+    el.style.opacity = '1'
+    el.style.pointerEvents = 'auto'
+    try {
+      ScrollTrigger.refresh()
+    } catch {
+      /* ignore */
+    }
+  }, [location.pathname])
+
   return (
     <>
       {/* <Preloader onComplete={() => setIsLoaded(true)} /> */}

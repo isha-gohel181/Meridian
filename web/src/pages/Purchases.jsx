@@ -57,9 +57,12 @@ const Purchases = () => {
           
           {/* HEADER SECTION */}
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 purchases-header">
-            <div className="space-y-2">
-               <p className="font-jetbrains text-xs text-amber-800 uppercase tracking-[0.4em] font-black italic">{t('archiveLedger') || 'Archive & Ledger'}</p>
-               <h1 className="font-newsreader italic text-5xl md:text-6xl text-slate-900 font-bold tracking-tight leading-none uppercase">
+            <div className="space-y-4">
+               <div className="flex items-center gap-3">
+                  <div className="w-1.5 h-1.5 bg-accent rounded-full animate-pulse" />
+                  <span className="font-jetbrains text-[10px] text-accent tracking-[0.4em] uppercase">{t('archiveLedger') || 'ARCHIVE & LEDGER'}</span>
+               </div>
+               <h1 className="font-newsreader italic text-4xl md:text-6xl text-slate-900 tracking-tighter">
                   {t('myPurchases')}
                </h1>
             </div>

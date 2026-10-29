@@ -478,3 +478,31 @@ textarea:focus,
 select:focus {
   border-color: var(--color-accent) !important;
 }
+
+/* Public marketing pages — match landing hero (Inter, no italic) */
+.marketing-page-eyebrow {
+  font-family: var(--font-inter);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #1878c0;
+}
+
+.marketing-page-title {
+  font-family: var(--font-inter);
+  font-size: clamp(1.875rem, 4vw, 3rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  color: #0f172a;
+  font-style: normal;
+}
+
+.marketing-card-title {
+  font-family: var(--font-inter);
+  font-weight: 600;
+  font-style: normal;
+  letter-spacing: -0.01em;
+  color: #0f172a;
+}

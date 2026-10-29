@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link, useLocation } from "react-router";
 
 // Assume these icons are imported from an icon library
@@ -18,7 +18,7 @@ import {
   VideoIcon,
 } from "../icons";
 import { useSidebar } from "../context/SidebarContext";
-import { Files, Tag, UserCircle2Icon, Bell, MessageCircle, Bot } from "lucide-react";
+import { Tag, UserCircle2Icon, Bell, MessageCircle, Search, X } from "lucide-react";
 
 type NavSubItem = {
   name: string;
@@ -243,6 +243,54 @@ const navItems: NavItem[] = [
   // },
 ];
 
+const filterSubItems = (subItems: NavSubItem[], query: string): NavSubItem[] => {
+  const q = query.trim().toLowerCase();
+  if (!q) return subItems;
+
+  return subItems.reduce<NavSubItem[]>((acc, sub) => {
+    const nameMatch = sub.name.toLowerCase().includes(q);
+    const pathMatch = sub.path?.toLowerCase().includes(q);
+
+    if (sub.subItems?.length) {
+      const nested = filterSubItems(sub.subItems, q);
+      if (nameMatch || nested.length) {
+        acc.push({
+          ...sub,
+          subItems: nested.length ? nested : sub.subItems,
+        });
+      }
+    } else if (nameMatch || pathMatch) {
+      acc.push(sub);
+    }
+    return acc;
+  }, []);
+};
+
+const filterNavItems = (items: NavItem[], query: string): NavItem[] => {
+  const q = query.trim().toLowerCase();
+  if (!q) return items;
+
+  return items.reduce<NavItem[]>((acc, item) => {
+    const nameMatch = item.name.toLowerCase().includes(q);
+    const pathMatch = item.path?.toLowerCase().includes(q);
+
+    if (item.subItems?.length) {
+      const filteredSubs = filterSubItems(item.subItems, q);
+      if (nameMatch) {
+        acc.push({
+          ...item,
+          subItems: filteredSubs.length ? filteredSubs : item.subItems,
+        });
+      } else if (filteredSubs.length) {
+        acc.push({ ...item, subItems: filteredSubs });
+      }
+    } else if (nameMatch || pathMatch) {
+      acc.push(item);
+    }
+    return acc;
+  }, []);
+};
+
 const othersItems: NavItem[] = [
   // {
   //   icon: <PlugInIcon />,
@@ -277,6 +325,7 @@ const AppSidebar: React.FC = () => {
     }
   });
 
+  const [menuSearch, setMenuSearch] = useState("");
   const [openSubmenu, setOpenSubmenu] = useState<string[]>([]);
   const [subMenuHeight, setSubMenuHeight] = useState<Record<string, number>>(
     {}
@@ -300,8 +349,10 @@ const AppSidebar: React.FC = () => {
     [isActive]
   );
 
-  // Auto-expand menus based on active route
+  // Auto-expand menus based on active route (skip while search is filtering)
   useEffect(() => {
+    if (menuSearch.trim()) return;
+
     const activeMenus: string[] = [];
 
     const checkMenuItems = (items: NavItem[], prefix: string) => {
@@ -324,7 +375,7 @@ const AppSidebar: React.FC = () => {
     checkMenuItems(navItems, "main");
 
     setOpenSubmenu(activeMenus);
-  }, [location, hasActiveSubItem]);
+  }, [location, hasActiveSubItem, menuSearch]);
 
   // Update submenu heights when they open
   useEffect(() => {
@@ -541,10 +592,41 @@ const AppSidebar: React.FC = () => {
     </ul>
   );
 
-  const filteredNavItems =
+  const roleFilteredNavItems =
     userRole === "news_editor"
       ? navItems.filter((nav) => nav.name === "News")
       : navItems;
+
+  const filteredNavItems = useMemo(
+    () => filterNavItems(roleFilteredNavItems, menuSearch),
+    [roleFilteredNavItems, menuSearch]
+  );
+
+  const sidebarWide = isExpanded || isHovered || isMobileOpen;
+  const isSearching = menuSearch.trim().length > 0;
+
+  // Expand submenus while searching so matches stay visible
+  useEffect(() => {
+    if (!isSearching) return;
+
+    const keys: string[] = [];
+    const collectKeys = (items: NavItem[], prefix: string) => {
+      items.forEach((nav, index) => {
+        const menuKey = `${prefix}-${index}`;
+        if (nav.subItems?.length) {
+          keys.push(menuKey);
+          nav.subItems.forEach((sub, subIndex) => {
+            if (sub.subItems?.length) {
+              keys.push(`${menuKey}-${subIndex}`);
+            }
+          });
+        }
+      });
+    };
+
+    collectKeys(filteredNavItems, "main");
+    setOpenSubmenu(keys);
+  }, [isSearching, filteredNavItems, menuSearch]);
 
   return (
     <aside
@@ -579,23 +661,68 @@ const AppSidebar: React.FC = () => {
           )}
         </Link>
       </div>
+
+      {sidebarWide ? (
+        <div className="mb-3 px-1">
+          <label className="sr-only" htmlFor="sidebar-menu-search">
+            Search menu
+          </label>
+          <div className="relative">
+            <Search
+              className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/50"
+              aria-hidden
+            />
+            <input
+              id="sidebar-menu-search"
+              type="search"
+              value={menuSearch}
+              onChange={(e) => setMenuSearch(e.target.value)}
+              placeholder="Search menu..."
+              className="w-full rounded-lg border border-white/20 bg-white/10 py-2.5 pl-9 pr-9 text-sm text-white placeholder:text-white/45 outline-none transition focus:border-white/40 focus:bg-white/15"
+            />
+            {menuSearch && (
+              <button
+                type="button"
+                onClick={() => setMenuSearch("")}
+                className="absolute right-2 top-1/2 -translate-y-1/2 rounded p-1 text-white/60 hover:bg-white/10 hover:text-white"
+                aria-label="Clear search"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            )}
+          </div>
+        </div>
+      ) : (
+        <div className="mb-3 flex justify-center px-1" title="Expand sidebar to search menu">
+          <span className="flex h-10 w-10 items-center justify-center rounded-lg border border-white/15 bg-white/10 text-white/70">
+            <Search className="h-4 w-4" />
+          </span>
+        </div>
+      )}
+
       <div className="flex flex-col overflow-y-auto duration-300 ease-linear no-scrollbar">
         <nav className="mb-6">
           <div className="flex flex-col gap-4">
             <div>
               <h2
-                className={`mb-3 text-[11px] font-bold tracking-[0.2em] uppercase flex leading-[20px] text-white/60 ${!isExpanded && !isHovered
+                className={`mb-3 text-[11px] font-bold tracking-[0.2em] uppercase flex leading-[20px] text-white/60 ${!sidebarWide
                   ? "lg:justify-center"
                   : "justify-start px-2"
                   }`}
               >
-                {isExpanded || isHovered || isMobileOpen ? (
+                {sidebarWide ? (
                   "Menu"
                 ) : (
                   <HorizontaLDots className="size-5 text-white/60" />
                 )}
               </h2>
-              {renderMenuItems(filteredNavItems, "main")}
+              {filteredNavItems.length === 0 ? (
+                <p className="px-2 py-3 text-center text-sm text-white/60">
+                  No menu items match &quot;{menuSearch.trim()}&quot;
+                </p>
+              ) : (
+                renderMenuItems(filteredNavItems, "main")
+              )}
             </div>
             {userRole !== "news_editor" && othersItems.length > 0 && (
               <div className="">
@@ -605,7 +732,7 @@ const AppSidebar: React.FC = () => {
                     : "justify-start px-2"
                     }`}
                 >
-                  {isExpanded || isHovered || isMobileOpen ? (
+                  {sidebarWide ? (
                     "Others"
                   ) : (
                     <HorizontaLDots className="size-5 text-white/60" />

@@ -1,19 +1,19 @@
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import routes from "./routes/index.js";
-import passport from "passport";
 import path from "path";
 import { fileURLToPath } from "url";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 
+// Must run before route modules load — they call passport.authenticate at import time
+import "./config/jwt-authenticate.js";
+import passport from "passport";
+import routes from "./routes/index.js";
+
 // Define __dirname for ES modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
-// Register Passport JWT strategy before using passport
-import "./config/jwt-authenticate.js";
 
 const app = express();
 app.set("trust proxy", 1); // Trust first proxy (Render load balancer)

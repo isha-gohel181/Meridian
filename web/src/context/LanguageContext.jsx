@@ -133,7 +133,7 @@ const translations = {
 
     // My Courses / Curriculum
     continuingEducation: 'CONTINUING EDUCATION',
-    myCurriculum: 'MY CURRICULUM',
+    myCurriculum: 'My Courses',
     activeCoursesLabel: 'ACTIVE COURSES',
     completionRateLabel: 'COMPLETION RATE',
     searchBtn: 'SEARCH',
@@ -160,7 +160,9 @@ const translations = {
     recentDiscourse: 'RECENT DISCOURSE',
     filterByIntelligence: 'FILTER BY INTELLIGENCE',
 
+    dispatchHub: 'DISPATCH HUB',
     // Job Posts
+    jobPostingsHub: 'CAREER BOARD',
     manageJobOpps: 'MANAGE AND TRACK YOUR PUBLISHED JOB OPPORTUNITIES',
     createNewPost: 'CREATE NEW POST',
     totalPostsLabel: 'TOTAL POSTS',
@@ -702,7 +704,9 @@ const translations = {
     recentDiscourse: 'हाल की चर्चा',
     filterByIntelligence: 'इंटेलिजेंस द्वारा फ़िल्टर करें',
 
+    dispatchHub: 'डिस्पैच हब',
     // Job Posts
+    jobPostingsHub: 'करियर बोर्ड',
     manageJobOpps: 'अपने प्रकाशित नौकरी के अवसरों को प्रबंधित और ट्रैक करें',
     createNewPost: 'नई पोस्ट बनाएं',
     totalPostsLabel: 'कुल पोस्ट',

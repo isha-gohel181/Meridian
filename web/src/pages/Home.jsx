@@ -23,7 +23,7 @@ const Home = ({ isLoaded }) => {
       
       <LogoMarquee />
       <StackingBanners />
-      <TestimonialsScroll />
+      <TestimonialsScroll variant="landing" />
       <BrandFeatures />
       <GrowthSection />
     </div>

@@ -51,53 +51,47 @@ const GrowthSection = () => {
   return (
     <section
       ref={containerRef}
-      className="w-full bg-dark py-6 md:py-8 pb-12 md:pb-16 px-4 sm:px-6 md:px-10 lg:px-16 overflow-x-hidden select-none"
+      className="w-full bg-slate-50 py-10 md:py-12 pb-14 md:pb-20 px-4 sm:px-6 md:px-10 lg:px-16 overflow-x-hidden select-none"
     >
-      {/* Sleek Compact CTA Banner Card with Realistic QA Background */}
       <div
         ref={cardRef}
-        className="growth-card group max-w-7xl mx-auto rounded-2xl md:rounded-3xl relative overflow-hidden border border-[#1878C0]/35 shadow-[0_15px_35px_-10px_rgba(24,120,192,0.3)] p-6 sm:p-8 md:p-8 lg:px-12 lg:py-7 flex flex-col lg:flex-row items-center justify-between gap-6 lg:gap-8"
+        className="growth-card group max-w-7xl mx-auto rounded-2xl md:rounded-3xl relative overflow-hidden border border-[#1878C0]/25 shadow-[0_20px_50px_-12px_rgba(24,120,192,0.35)] p-8 sm:p-10 md:p-10 lg:px-12 lg:py-12 min-h-[320px] sm:min-h-[340px] md:min-h-[360px] flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-10"
       >
-        {/* Realistic QA Background Image with Cinematic Overlay */}
         <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
           <img
             src={growthBannerBg}
-            alt="Quality Assurance and Software Testing Workspace"
-            className="w-full h-full object-cover object-center transform scale-100 group-hover:scale-105 transition-transform duration-1000 ease-out"
+            alt=""
+            aria-hidden
+            className="w-full h-full object-cover object-center opacity-[0.12] mix-blend-overlay group-hover:scale-105 transition-transform duration-1000 ease-out"
           />
-          {/* Brand-aligned Dark Ocean Blue Overlays for Perfect Contrast */}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#041627]/95 via-[#072440]/85 to-[#0e4875]/80" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#041627] via-transparent to-[#041627]/50" />
+          {/* Brand light-blue gradient (matches site #1878C0 theme) */}
+          <div className="absolute inset-0 bg-gradient-to-br from-[#1878C0] via-[#2a8fd4] to-[#6ec4f5]" />
+          <div className="absolute inset-0 bg-gradient-to-r from-white/10 via-transparent to-white/5" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(255,255,255,0.35),transparent_55%)]" />
 
-          {/* Ambient Brand Glows */}
-          <div className="absolute -top-16 -right-16 w-64 h-64 bg-[#1878C0]/30 blur-[80px] rounded-full" />
-          <div className="absolute -bottom-16 -left-16 w-64 h-64 bg-emerald-500/20 blur-[80px] rounded-full" />
+          <div className="absolute -top-20 -right-20 w-72 h-72 bg-white/25 blur-[90px] rounded-full" />
+          <div className="absolute -bottom-24 -left-16 w-64 h-64 bg-sky-200/40 blur-[80px] rounded-full" />
 
-          {/* Top & Bottom Accent Borders */}
-          <div className="absolute top-0 inset-x-0 h-[1px] bg-gradient-to-r from-transparent via-sky-300/60 to-transparent" />
-          <div className="absolute bottom-0 inset-x-0 h-[1px] bg-gradient-to-r from-transparent via-emerald-400/30 to-transparent" />
+          <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/50 to-transparent" />
+          <div className="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent" />
         </div>
 
         {/* Content Side */}
         <div className="growth-content flex flex-col items-center lg:items-start text-center lg:text-left gap-2 sm:gap-2.5 z-10 max-w-2xl">
           {/* Clean Pill Badge */}
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/20 shadow-sm">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="font-jetbrains text-[9px] md:text-[10px] font-semibold tracking-wider text-sky-100 uppercase">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/25 backdrop-blur-md border border-white/40 shadow-sm">
+            <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+            <span className="font-jetbrains text-[9px] md:text-[10px] font-semibold tracking-wider text-white uppercase">
               {t('growthBadge')}
             </span>
           </div>
 
-          {/* Main Headline with Highlight */}
-          <h2 className="font-inter text-xl sm:text-2xl md:text-3xl lg:text-3xl xl:text-4xl font-extrabold text-white tracking-tight leading-tight">
+          <h2 className="font-inter text-xl sm:text-2xl md:text-3xl lg:text-3xl xl:text-4xl font-extrabold text-white tracking-tight leading-tight drop-shadow-sm">
             <span>{t('growthHeadline1')} </span>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-200 via-white to-emerald-200">
-              {t('growthHeadline2')}
-            </span>
+            <span className="text-white/95">{t('growthHeadline2')}</span>
           </h2>
 
-          {/* Subtitle */}
-          <p className="text-xs sm:text-sm text-slate-100/90 leading-relaxed font-normal max-w-xl">
+          <p className="text-xs sm:text-sm text-white/90 leading-relaxed font-normal max-w-xl">
             {t('growthSub')}
           </p>
 
@@ -107,7 +101,7 @@ const GrowthSection = () => {
               {
                 text: t('growthFeature1'),
                 icon: (
-                  <svg className="w-3 h-3 text-sky-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <svg className="w-3 h-3 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M3 21h18M3 10h18M5 10v11M19 10v11M9 10v11M14 10v11M12 3L2 10h20L12 3z" />
                   </svg>
                 )
@@ -115,7 +109,7 @@ const GrowthSection = () => {
               {
                 text: t('growthFeature2'),
                 icon: (
-                  <svg className="w-3 h-3 text-sky-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <svg className="w-3 h-3 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <polyline points="16 18 22 12 16 6" />
                     <polyline points="8 6 2 12 8 18" />
                   </svg>
@@ -124,7 +118,7 @@ const GrowthSection = () => {
               {
                 text: t('growthFeature3'),
                 icon: (
-                  <svg className="w-3 h-3 text-sky-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <svg className="w-3 h-3 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <circle cx="12" cy="8" r="6" />
                     <path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11" />
                   </svg>
@@ -133,7 +127,7 @@ const GrowthSection = () => {
             ].map((badge, idx) => (
               <div
                 key={idx}
-                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/15 border border-white/15 backdrop-blur-sm text-[11px] font-medium text-white transition-colors"
+                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white/20 hover:bg-white/30 border border-white/35 backdrop-blur-sm text-[11px] font-medium text-white transition-colors"
               >
                 <span>{badge.icon}</span>
                 <span>{badge.text}</span>
@@ -143,12 +137,12 @@ const GrowthSection = () => {
         </div>
 
         {/* Action Side */}
-        <div className="growth-actions flex flex-col items-center lg:items-end gap-3 z-10 w-full sm:w-auto">
-          <div className="flex flex-col sm:flex-row lg:flex-col gap-2.5 w-full sm:w-auto">
+        <div className="growth-actions flex flex-col items-stretch lg:items-end gap-4 z-10 w-full lg:w-auto lg:min-w-[280px] xl:min-w-[320px]">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-3 w-full">
             {/* Primary Action Button */}
             <Link
               to="/courses"
-              className="w-full sm:w-[200px] lg:w-[210px] px-6 py-3 bg-white hover:bg-sky-50 text-[#1878C0] font-inter font-bold text-xs sm:text-sm tracking-wide rounded-xl shadow-lg shadow-black/20 hover:shadow-xl hover:scale-[1.02] active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 group/btn"
+              className="w-full min-h-[48px] px-6 py-3.5 md:py-4 bg-white hover:bg-slate-50 text-[#1878C0] font-inter font-bold text-sm tracking-wide rounded-xl shadow-lg shadow-[#1464a0]/25 hover:shadow-xl hover:scale-[1.01] active:scale-[0.98] transition-all duration-300 flex items-center justify-center gap-2 group/btn"
             >
               <span>{t('growthCtaPrimary')}</span>
               <svg
@@ -167,10 +161,10 @@ const GrowthSection = () => {
             {/* Secondary Action Button */}
             <Link
               to="/forum"
-              className="w-full sm:w-[200px] lg:w-[210px] px-6 py-3 bg-white/10 hover:bg-white/20 text-white border border-white/25 hover:border-white/40 font-inter font-semibold text-xs sm:text-sm tracking-wide rounded-xl backdrop-blur-md hover:scale-[1.02] active:scale-95 transition-all duration-300 flex items-center justify-center gap-2"
+              className="w-full min-h-[48px] px-6 py-3.5 md:py-4 bg-[#1464a0]/30 hover:bg-[#1464a0]/45 text-white border border-white/45 hover:border-white/60 font-inter font-semibold text-sm tracking-wide rounded-xl backdrop-blur-md hover:scale-[1.01] active:scale-[0.98] transition-all duration-300 flex items-center justify-center gap-2"
             >
               <svg
-                className="w-3.5 h-3.5 text-sky-200"
+                className="w-3.5 h-3.5 text-white"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -185,8 +179,8 @@ const GrowthSection = () => {
           </div>
 
           {/* Social Proof & Trust Metric */}
-          <div className="flex items-center gap-2 pt-0.5 text-sky-100/90 text-[11px]">
-            <div className="flex items-center gap-0.5 text-amber-300">
+          <div className="flex flex-wrap items-center justify-center lg:justify-end gap-2 pt-0.5 text-white/90 text-[11px]">
+            <div className="flex items-center gap-0.5 text-amber-200">
               {[...Array(5)].map((_, i) => (
                 <svg key={i} className="w-3 h-3 fill-current" viewBox="0 0 24 24">
                   <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
@@ -194,8 +188,8 @@ const GrowthSection = () => {
               ))}
             </div>
             <span className="font-semibold text-white">{t('growthRating')}</span>
-            <span className="text-white/40">•</span>
-            <span className="text-sky-200 font-medium">1,200+ Learners</span>
+            <span className="text-white/50">•</span>
+            <span className="text-white font-medium">1,200+ Learners</span>
           </div>
         </div>
       </div>

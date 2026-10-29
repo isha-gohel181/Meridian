@@ -130,56 +130,79 @@ const DashboardNews = () => {
   }, [dispatch, currentPage, totalPages, loading])
 
   useEffect(() => {
-    if (loading || formattedArticles.length === 0) return
+    if (loading) return
 
     window.scrollTo(0, 0)
     const ctx = gsap.context(() => {
-      gsap.fromTo('.news-dash-reveal',
-        { y: 50, autoAlpha: 0, filter: 'blur(10px)' },
-        { y: 0, autoAlpha: 1, filter: 'blur(0px)', duration: 1.2, ease: 'power4.out', stagger: 0.15 }
+      gsap.fromTo(
+        '.news-dash-reveal',
+        { y: 30, autoAlpha: 0 },
+        { y: 0, autoAlpha: 1, duration: 0.8, ease: 'power3.out', stagger: 0.08 }
       )
     }, containerRef)
     return () => ctx.revert()
   }, [loading, formattedArticles.length])
 
   return (
-    <div ref={containerRef} className="min-h-screen bg-dark selection:bg-accent/30 overflow-x-clip">
+    <div ref={containerRef} className="min-h-screen bg-slate-50 selection:bg-accent/30 overflow-x-clip">
       <DashboardHeader />
       
-      <main className="pt-32 pb-4 px-4">
-        <div className="max-w-full mx-auto">
+      <main className="pt-24 pb-16 px-4 md:px-12">
+        <div className="max-w-[1600px] mx-auto">
           
-          <div className="mb-20 news-dash-reveal opacity-0">
-             <span className="font-jetbrains text-[9px] font-black text-accent/50 tracking-[0.8em] uppercase mb-4 block">
-               Dispatch Hub
-             </span>
-             <h1 className="font-newsreader italic text-[clamp(3rem,8vw,6.5rem)] leading-[0.75] font-extralight uppercase select-none">
+          <div className="mb-12 news-dash-reveal space-y-4">
+             <div className="flex items-center gap-3">
+               <div className="w-1.5 h-1.5 bg-accent rounded-full animate-pulse" />
+               <span className="font-jetbrains text-[10px] text-accent tracking-[0.4em] uppercase">
+                 {t('dispatchHub') || 'DISPATCH HUB'}
+               </span>
+             </div>
+             <h1 className="font-newsreader italic text-4xl md:text-6xl text-slate-900 tracking-tighter">
                 {t('news')}
              </h1>
           </div>
 
+          {featuredMain && (
           <div className="grid grid-cols-12 gap-12 mb-32">
-             {featuredMain && <NewsCard article={featuredMain} variant="featured-main" />}
+             <NewsCard article={featuredMain} variant="featured-main" />
              <div className="col-span-12 lg:col-span-4 flex flex-col gap-10">
-                <div className="bg-accent/5 border border-accent/10 p-10 flex flex-col items-center justify-center gap-6 text-center group transition-all news-dash-reveal opacity-0">
+                <div className="bg-accent/5 border border-accent/10 p-10 flex flex-col items-center justify-center gap-6 text-center group transition-all news-dash-reveal">
                    <div className="w-14 h-14 bg-accent/10 rounded-full flex items-center justify-center text-accent animate-pulse group-hover:scale-110 transition-transform">
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
                    </div>
                    <h4 className="font-montserrat text-[14px] font-black text-accent tracking-[0.4em] uppercase">Intelligence Integrity</h4>
                    <p className="font-jetbrains text-[9px] text-description leading-relaxed uppercase opacity-60">Verified updates for premium dashboard carriers. calibrated daily at 0400 PST.</p>
                 </div>
-                <div className="bg-white/[0.01] border border-white/5 p-10 h-full flex flex-col justify-end news-dash-reveal opacity-0">
+                <div className="bg-white/[0.01] border border-white/5 p-10 h-full flex flex-col justify-end news-dash-reveal">
                    <span className="font-jetbrains text-[9px] font-black text-description/20 tracking-[0.4em] uppercase mb-4">Tactical Feed</span>
                    <p className="font-newsreader italic text-3xl text-normal leading-tight">Decentralized protocols and the future of creative labor.</p>
                 </div>
              </div>
           </div>
+          )}
 
-          <div className="grid grid-cols-12 gap-12 mb-10">
-             {gridArticles.map((article) => (
+          {!loading && formattedArticles.length === 0 && (
+            <div className="news-dash-reveal py-24 flex flex-col items-center justify-center gap-4 text-center border border-dashed border-slate-200 rounded-2xl bg-white">
+              <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center text-slate-400">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                  <path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2" />
+                  <path d="M18 14h-8" /><path d="M15 18h-5" /><path d="M10 6h8v4h-8V6Z" />
+                </svg>
+              </div>
+              <h3 className="font-newsreader italic text-2xl text-slate-600 font-bold">No dispatches yet</h3>
+              <p className="font-jetbrains text-[10px] text-slate-400 uppercase tracking-widest max-w-md">
+                News and updates will appear here when your team publishes them.
+              </p>
+            </div>
+          )}
+
+          {formattedArticles.length > 0 && (
+            <div className="grid grid-cols-12 gap-12 mb-10">
+              {gridArticles.map((article) => (
                 <NewsCard key={article.id} article={article} />
-             ))}
-          </div>
+              ))}
+            </div>
+          )}
 
           {/* Scroll Sentinel */}
           <div ref={observerTarget} className="py-20 flex flex-col items-center justify-center gap-4">

@@ -68,7 +68,7 @@ const GigCard = ({ gig }) => {
       {/* Content */}
       <div className="flex flex-col gap-6 flex-grow justify-between">
         <div className="flex flex-col gap-3">
-          <h3 className="font-newsreader italic text-2xl md:text-3xl leading-snug text-normal font-bold transition-colors group-hover:text-accent">
+          <h3 className="marketing-card-title text-xl md:text-2xl leading-snug transition-colors group-hover:text-accent">
             {safeRender(gig.title)}
           </h3>
 
@@ -176,22 +176,16 @@ const Gigs = () => {
       <div className="max-w-7xl mx-auto">
         <div className="mb-6">
           <div className="flex items-baseline gap-6 gig-header-reveal flex-wrap">
-            <h1 className="font-newsreader text-4xl md:text-6xl font-extralight italic text-normal tracking-tight">
+            <h1 className="marketing-page-title">
               {t('gigsTitle') || 'Open Opportunities'}
             </h1>
           </div>
-          <p className="font-jetbrains text-xs text-accent uppercase tracking-[0.4em] font-bold italic mt-2">{t('gigsSubtitle') || 'Curated Roles & Remote Gigs'}</p>
+          <p className="font-inter text-sm md:text-base text-slate-600 mt-2">{t('gigsSubtitle') || 'Curated Roles & Remote Gigs'}</p>
         </div>
 
         <div className="mb-10">
-          <div className="mt-6 flex items-center w-full relative">
-            <div className="sticky left-0 md:relative z-20 bg-dark pr-4 md:pr-6 flex-shrink-0">
-              <span className="inline-flex items-center justify-center h-[38px] font-montserrat text-[11px] bg-accent px-5 md:px-6 font-bold text-white tracking-widest uppercase whitespace-nowrap rounded-none">
-                {t('filterBy') || 'FILTER BY'}
-              </span>
-            </div>
-
-            <div className="flex flex-nowrap overflow-x-auto scrollbar-hide gap-2.5 w-full pl-2 md:pl-0 pb-2 touch-pan-x">
+          <div className="mt-6 flex items-center w-full">
+            <div className="flex flex-nowrap overflow-x-auto scrollbar-hide gap-2.5 w-full pb-2 touch-pan-x">
               {filterOptions.map((filterObj) => (
                 <button
                   key={filterObj.key}
@@ -315,7 +309,7 @@ const JobDetail = ({ job, onBack, submitting, dispatch }) => {
         <div className="grid grid-cols-1 lg:grid-cols-[1.5fr,1fr] gap-12">
           <div className="flex flex-col gap-8 bg-card border border-border p-8 rounded-none shadow-sm">
             <div className="flex flex-col gap-2">
-              <h1 className="font-newsreader text-4xl md:text-5xl font-extralight italic text-normal leading-tight">{safeRender(job.title)}</h1>
+              <h1 className="marketing-page-title leading-tight">{safeRender(job.title)}</h1>
               <p className="font-jetbrains text-xs text-description uppercase tracking-wider font-medium">
                 Posted by Client • {job.createdAt ? new Date(job.createdAt).toLocaleDateString() : 'Recently'}
               </p>
@@ -326,7 +320,7 @@ const JobDetail = ({ job, onBack, submitting, dispatch }) => {
             </div>
 
             <div className="space-y-3">
-              <h4 className="font-newsreader text-2xl italic font-bold text-normal">Position Overview</h4>
+              <h4 className="marketing-card-title text-xl">Position Overview</h4>
               <p className="font-montserrat text-sm text-description leading-relaxed font-medium">{safeRender(job.description)}</p>
             </div>
 
@@ -350,7 +344,7 @@ const JobDetail = ({ job, onBack, submitting, dispatch }) => {
             </div>
 
             <div className="flex flex-col gap-4">
-              <h4 className="font-newsreader text-2xl italic font-bold text-normal">Skills Required</h4>
+              <h4 className="marketing-card-title text-xl">Skills Required</h4>
               <div className="flex flex-wrap gap-2">
                 {(job.skills || job.tags || ['Design', 'Growth', 'Strategy']).map((skill, i) => (
                   <span key={i} className="px-4 py-2 border border-border font-jetbrains text-xs font-bold text-normal uppercase tracking-wider bg-black/5 dark:bg-white/5 rounded-none">
@@ -369,7 +363,7 @@ const JobDetail = ({ job, onBack, submitting, dispatch }) => {
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
                   </div>
                   <div>
-                    <h3 className="font-newsreader text-3xl italic font-bold text-normal">Submit Your Proposal</h3>
+                    <h3 className="marketing-card-title text-2xl">Submit Your Proposal</h3>
                     <p className="font-jetbrains text-xs text-description uppercase tracking-wider font-medium">Stand out with a compelling proposal</p>
                   </div>
                 </div>

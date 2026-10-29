@@ -5,10 +5,14 @@ const testimonialSchema = new mongoose.Schema({
   courseId: { type: mongoose.Schema.Types.ObjectId, ref: 'Course' }, // Optional course reference
   name: { type: String }, // Required if created by admin
   role: { type: String },
+  company: { type: String },
+  tag: { type: String },
+  outcome: { type: String },
   message: { type: String, required: true },
   rating: { type: Number, min: 1, max: 5 },
   image: { type: String }, // URL or path to image
   video: { type: String }, // URL or path to video
+  showOnLanding: { type: Boolean, default: true },
   status: {
     type: String,
     enum: ['pending', 'approved', 'rejected'],

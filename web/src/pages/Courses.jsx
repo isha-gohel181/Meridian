@@ -517,12 +517,12 @@ const Courses = () => {
         {/* Hero Title */}
         <div className={`courses-hero max-w-7xl mx-auto mb-8 ${eventList && eventList.length > 0 ? 'pt-8' : 'pt-28 md:pt-36'}`}>
           <div className="flex items-baseline gap-6 flex-wrap">
-            <h1 className="font-newsreader text-4xl md:text-6xl font-extralight italic text-normal tracking-tight">
+            <h1 className="marketing-page-title">
               {t('ourCourses') || 'Our Courses'}
             </h1>
           </div>
-          <p className="font-jetbrains text-xs text-accent uppercase tracking-[0.4em] font-bold italic mt-2">
-            {t('coursesSubtitle') !== 'coursesSubtitle' ? t('coursesSubtitle') : 'Curated Academic Modules & Learning Tracks'}
+          <p className="font-inter text-sm md:text-base text-slate-600 mt-2">
+            {t('coursesSubtitle') !== 'coursesSubtitle' ? t('coursesSubtitle') : 'Curated academic modules and learning tracks'}
           </p>
         </div>
 

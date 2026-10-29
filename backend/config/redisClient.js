@@ -52,6 +52,11 @@ const mockRedisClient = {
 // Safe proxy so ANY unexpected Redis command resolves gracefully without crashing
 const safeRedisProxy = new Proxy(mockRedisClient, {
   get(target, prop) {
+    // Never expose then/catch/finally — otherwise this proxy is treated as a
+    // thenable and `await initRedis()` (async return) never completes.
+    if (prop === "then" || prop === "catch" || prop === "finally") {
+      return undefined;
+    }
     if (prop in target) {
       return target[prop];
     }

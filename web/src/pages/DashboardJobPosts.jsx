@@ -49,9 +49,16 @@ const DashboardJobPosts = () => {
         <div className="max-w-[1600px] mx-auto">
           {/* Page Header Area */}
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16 job-dash-reveal opacity-0">
-            <div className="flex flex-col gap-2">
-              <h1 className="font-newsreader italic text-5xl text-slate-900 font-bold tracking-tight uppercase">{t('jobPostings')}</h1>
-              <p className="font-jetbrains text-[12px] font-bold text-amber-800 uppercase tracking-[0.4em]">{t('manageJobOpps')}</p>
+            <div className="space-y-4">
+              <div className="flex items-center gap-3">
+                <div className="w-1.5 h-1.5 bg-accent rounded-full animate-pulse" />
+                <span className="font-jetbrains text-[10px] text-accent tracking-[0.4em] uppercase">
+                  {t('jobPostingsHub') || 'CAREER BOARD'}
+                </span>
+              </div>
+              <h1 className="font-newsreader italic text-4xl md:text-6xl text-slate-900 tracking-tighter">
+                {t('jobPostings')}
+              </h1>
             </div>
             
             <button 

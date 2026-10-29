@@ -9,12 +9,16 @@ interface TestimonialData {
     _id?: string;
     name: string;
     role: string;
+    company?: string;
+    tag?: string;
+    outcome?: string;
     message: string;
     rating: number;
     courseId?: string;
     image?: string;
     video?: string;
     status?: string;
+    showOnLanding?: boolean;
     createdAt?: string;
     updatedAt?: string;
 }
@@ -146,8 +150,12 @@ const TestimonialsPage: React.FC = () => {
     const [formData, setFormData] = useState<TestimonialData>({
         name: '',
         role: '',
+        company: '',
+        tag: '',
+        outcome: '',
         message: '',
         rating: 5,
+        showOnLanding: true,
     });
 
     const [imageFile, setImageFile] = useState<File | null>(null);
@@ -222,10 +230,11 @@ const TestimonialsPage: React.FC = () => {
     });
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-        const { name, value } = e.target;
+        const { name, value, type } = e.target;
+        const checked = (e.target as HTMLInputElement).checked;
         setFormData({
             ...formData,
-            [name]: value,
+            [name]: type === 'checkbox' ? checked : value,
         });
     };
 
@@ -274,10 +283,14 @@ const TestimonialsPage: React.FC = () => {
         setFormData({
             name: testimonial.name,
             role: testimonial.role,
+            company: testimonial.company || '',
+            tag: testimonial.tag || '',
+            outcome: testimonial.outcome || '',
             message: testimonial.message,
             rating: testimonial.rating,
             courseId: testimonial.courseId,
             status: testimonial.status,
+            showOnLanding: testimonial.showOnLanding !== false,
             image: testimonial.image,
             video: testimonial.video
         });
@@ -351,6 +364,10 @@ const TestimonialsPage: React.FC = () => {
         formDataToSend.append('role', formData.role);
         formDataToSend.append('message', formData.message);
         formDataToSend.append('rating', String(formData.rating));
+        if (formData.company) formDataToSend.append('company', formData.company);
+        if (formData.tag) formDataToSend.append('tag', formData.tag);
+        if (formData.outcome) formDataToSend.append('outcome', formData.outcome);
+        formDataToSend.append('showOnLanding', String(formData.showOnLanding !== false));
         if (formData.courseId) formDataToSend.append('courseId', formData.courseId);
         if (imageFile) formDataToSend.append('image', imageFile);
         if (videoFile) formDataToSend.append('video', videoFile);
@@ -491,9 +508,14 @@ const TestimonialsPage: React.FC = () => {
 
             {/* Header Section */}
             <div className="flex flex-col sm:flex-row justify-between items-center mb-6">
-                <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4 sm:mb-0">
-                    Testimonials Management
-                </h1>
+                <div className="mb-4 sm:mb-0">
+                    <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+                        Testimonials Management
+                    </h1>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-1 max-w-xl">
+                        Approved testimonials with &quot;Show on landing page&quot; appear in the website home review section.
+                    </p>
+                </div>
                 <button
                     onClick={() => setShowAddForm(true)}
                     className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
@@ -757,6 +779,60 @@ const TestimonialsPage: React.FC = () => {
                                     required
                                 />
                             </div>
+
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                        Company
+                                    </label>
+                                    <input
+                                        type="text"
+                                        name="company"
+                                        value={formData.company || ''}
+                                        onChange={handleInputChange}
+                                        className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+                                        placeholder="e.g. Tier-1 Bank"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                        Outcome
+                                    </label>
+                                    <input
+                                        type="text"
+                                        name="outcome"
+                                        value={formData.outcome || ''}
+                                        onChange={handleInputChange}
+                                        className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+                                        placeholder="e.g. Promoted to QA Lead"
+                                    />
+                                </div>
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                    Tag (badge on card)
+                                </label>
+                                <input
+                                    type="text"
+                                    name="tag"
+                                    value={formData.tag || ''}
+                                    onChange={handleInputChange}
+                                    className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+                                    placeholder="e.g. BANKING DOMAIN QA"
+                                />
+                            </div>
+
+                            <label className="flex items-center gap-2 cursor-pointer">
+                                <input
+                                    type="checkbox"
+                                    name="showOnLanding"
+                                    checked={formData.showOnLanding !== false}
+                                    onChange={handleInputChange}
+                                    className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                                />
+                                <span className="text-sm text-gray-700 dark:text-gray-300">Show on website landing page</span>
+                            </label>
 
                             {isEditMode && (
                                 <div>

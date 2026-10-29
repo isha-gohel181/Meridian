@@ -177,16 +177,74 @@ notificationRouter.get(
         filter["data.type"] = type;
       }
 
-      // Get notifications with pagination
-      const notifications = await Notification.find(filter)
-        .populate("user_id", "name email role")
-        .sort({ created_at: -1 })
-        .skip(skip)
-        .limit(limitNum)
-        .lean();
+      const grouped = req.query.grouped !== "false" && !userId;
+      let notifications = [];
+      let total = 0;
 
-      // Get total count
-      const total = await Notification.countDocuments(filter);
+      if (grouped) {
+        const [aggResult] = await Notification.aggregate([
+          { $match: filter },
+          {
+            $group: {
+              _id: {
+                $cond: [
+                  { $ifNull: ["$broadcastId", false] },
+                  "$broadcastId",
+                  {
+                    $concat: [
+                      { $ifNull: [{ $toString: "$data.title" }, ""] },
+                      "||",
+                      { $ifNull: [{ $toString: "$data.description" }, ""] },
+                      "||",
+                      {
+                        $dateToString: {
+                          format: "%Y-%m-%dT%H:%M",
+                          date: "$created_at",
+                        },
+                      },
+                    ],
+                  },
+                ],
+              },
+              recipientCount: { $sum: 1 },
+              readCount: { $sum: { $cond: [{ $eq: ["$status", 0] }, 1, 0] } },
+              unreadCount: { $sum: { $cond: [{ $eq: ["$status", 1] }, 1, 0] } },
+              created_at: { $max: "$created_at" },
+              data: { $first: "$data" },
+              broadcastId: { $first: "$broadcastId" },
+            },
+          },
+          { $sort: { created_at: -1 } },
+          {
+            $facet: {
+              data: [{ $skip: skip }, { $limit: limitNum }],
+              count: [{ $count: "total" }],
+            },
+          },
+        ]);
+
+        const rows = aggResult?.data || [];
+        total = aggResult?.count?.[0]?.total || 0;
+        notifications = rows.map((row) => ({
+          _id: String(row._id),
+          data: row.data,
+          created_at: row.created_at,
+          broadcastId: row.broadcastId,
+          recipientCount: row.recipientCount,
+          readCount: row.readCount,
+          unreadCount: row.unreadCount,
+          status: row.unreadCount > 0 ? 1 : 0,
+          grouped: true,
+        }));
+      } else {
+        notifications = await Notification.find(filter)
+          .populate("user_id", "name email role fullName")
+          .sort({ created_at: -1 })
+          .skip(skip)
+          .limit(limitNum)
+          .lean();
+        total = await Notification.countDocuments(filter);
+      }
 
       return res.status(200).json({
         success: true,

@@ -662,44 +662,44 @@ const DashboardCoursePlayer = () => {
                            <div className="h-[1px] bg-white/5 flex-1" />
                         </div>
 
-                        <div className="flex items-center gap-3 mb-4">
-                            <div className="text-[12px] text-description/80">Status:</div>
-                            {dripLoading ? (
-                                <div className="text-[12px] text-accent">Fetching lesson statuses...</div>
-                            ) : dripError ? (
-                                <div className="text-[12px] text-red-400">Error fetching statuses</div>
-                            ) : (
-                                <div className="text-[12px] text-green-400">Statuses loaded</div>
-                            )}
-                            <button onClick={refreshStatuses} className="ml-4 px-3 py-1 bg-white/5 border border-white/5 text-[12px]">Refresh</button>
-                        </div>
+                        {(dripLoading || dripError) && (
+                            <p className="text-xs text-slate-400 mb-2">
+                                {dripLoading ? 'Updating lesson progress…' : 'Could not refresh lesson progress.'}
+                                {!dripLoading && (
+                                    <button type="button" onClick={refreshStatuses} className="ml-2 text-[#1878C0] font-semibold hover:underline">
+                                        Retry
+                                    </button>
+                                )}
+                            </p>
+                        )}
 
                         <div className="flex flex-col gap-4">
                             {currentCourse.modules?.map((module, i) => (
                                 <div 
                                     key={module._id || i}
-                                    className={`group border transition-all duration-700 overflow-hidden bg-white
-                                        ${activeAccordion === (module._id || i) ? 'border-amber-400 shadow-md' : 'border-slate-200 hover:border-slate-300'}`}
+                                    className={`group border transition-all duration-300 overflow-hidden bg-white rounded-2xl shadow-sm
+                                        ${activeAccordion === (module._id || i) ? 'border-[#1878C0]/50 ring-1 ring-[#1878C0]/20' : 'border-slate-200 hover:border-slate-300'}`}
                                 >
                                     <button 
+                                        type="button"
                                         onClick={() => setActiveAccordion(activeAccordion === (module._id || i) ? null : (module._id || i))}
-                                        className="w-full flex items-center justify-between p-8 md:p-10 text-left"
+                                        className="w-full flex items-center justify-between p-6 md:p-8 text-left"
                                     >
-                                        <div className="flex items-center gap-6">
-                                            <div className={`w-10 h-10 border rounded-lg flex items-center justify-center font-jetbrains text-[10px] transition-all duration-700
-                                                ${activeAccordion === (module._id || i) ? 'bg-amber-400 text-slate-950 border-amber-400 font-black' : 'bg-slate-50 border-slate-200 text-slate-500 group-hover:border-slate-300 group-hover:text-slate-700'}`}>
+                                        <div className="flex items-center gap-5">
+                                            <div className={`w-11 h-11 border rounded-xl flex items-center justify-center text-xs font-bold transition-all
+                                                ${activeAccordion === (module._id || i) ? 'bg-[#1878C0] text-white border-[#1878C0]' : 'bg-sky-50 border-sky-100 text-[#1878C0]'}`}>
                                                 {String(i + 1).padStart(2, '0')}
                                             </div>
                                             <div className="space-y-1">
-                                                <h3 className={`font-newsreader italic text-xl md:text-2xl lowercase tracking-tight transition-colors ${activeAccordion === (module._id || i) ? 'text-slate-900 font-semibold' : 'text-slate-700 group-hover:text-slate-900'}`}>
+                                                <h3 className={`text-lg md:text-xl font-semibold text-slate-900 tracking-tight capitalize`}>
                                                     {sanitizeDisplay(module.title)}
                                                 </h3>
-                                                <p className="font-jetbrains text-[8px] text-slate-500 uppercase tracking-widest">
-                                                    {module.lessons?.length || 0} Lessons Integrated
+                                                <p className="text-xs text-slate-500 font-medium">
+                                                    {module.lessons?.length || 0} {module.lessons?.length === 1 ? 'lesson' : 'lessons'}
                                                 </p>
                                             </div>
                                         </div>
-                                        <div className={`transition-transform duration-700 ${activeAccordion === (module._id || i) ? 'rotate-180 text-amber-500' : 'text-slate-400 group-hover:text-slate-600'}`}>
+                                        <div className={`transition-transform duration-300 ${activeAccordion === (module._id || i) ? 'rotate-180 text-[#1878C0]' : 'text-slate-400 group-hover:text-slate-600'}`}>
                                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="m18 15-6-6-6 6"/></svg>
                                         </div>
                                     </button>

@@ -109,12 +109,19 @@ const NotificationList: React.FC = () => {
     return new Date(dateString).toLocaleString();
   };
 
-  const getStatusBadge = (status: number) => {
-    switch(status) {
-      case 0:
-        return <span className="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-800">Unread</span>;
+  const getStatusBadge = (status: number, unreadCount?: number) => {
+    if (typeof unreadCount === 'number' && unreadCount > 0) {
+      return (
+        <span className="px-2 py-1 text-xs rounded-full bg-amber-100 text-amber-800">
+          {unreadCount} unread
+        </span>
+      );
+    }
+    switch (status) {
       case 1:
-        return <span className="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">Read</span>;
+        return <span className="px-2 py-1 text-xs rounded-full bg-amber-100 text-amber-800">Unread</span>;
+      case 0:
+        return <span className="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">All read</span>;
       default:
         return <span className="px-2 py-1 text-xs rounded-full bg-gray-100 text-gray-800">Unknown</span>;
     }
@@ -313,7 +320,7 @@ const NotificationList: React.FC = () => {
                       Status
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      User
+                      Recipients
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Sent Date
@@ -352,12 +359,14 @@ const NotificationList: React.FC = () => {
                           {getTypeBadge(notification.data?.type)}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
-                          {getStatusBadge(notification.status)}
+                          {getStatusBadge(notification.status, notification.unreadCount)}
                         </td>
                         <td className="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">
                           <div className="flex items-center">
                             <User className="w-4 h-4 mr-1" />
-                            {notification.user_id?.fullName || notification.user_id?.email || 'Unknown User'}
+                            {notification.grouped || notification.recipientCount
+                              ? `${notification.recipientCount ?? 1} user(s)`
+                              : notification.user_id?.fullName || notification.user_id?.email || 'Unknown User'}
                           </div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
