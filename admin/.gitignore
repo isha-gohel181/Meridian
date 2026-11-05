@@ -23,7 +23,7 @@ dist-ssr
 *.sln
 *.sw?
 
-# Environment variables
-# .env
-# .env.*
+# Environment variables (never commit secrets)
+.env
+.env.*
 !.env.example
