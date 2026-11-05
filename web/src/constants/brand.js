@@ -5,8 +5,22 @@ export const APP_SHORT_NAME = '32 Pearls';
 export const APP_TAGLINE = 'Professional Dental Education & Training';
 export const CERTIFICATE_ORGANIZATION_DEFAULT = '32 Pearls Dental Academy';
 export const LOGO_PATH = '/dental_acadmy/dental.jpeg';
+/** Faculty photo — add file at web/public/dental_acadmy/mentor.jpg */
+export const MENTOR_IMAGE_PATH = '/dental_acadmy/mentor.jpg';
 /** Default course certificate artwork (full design — overlays add name, course, date, serial) */
 export const CERTIFICATE_DEFAULT_IMAGE = '/dental_acadmy/certificate.png';
+
+export const MENTOR_NAME = 'Dr. Kataria';
+export const MENTOR_TITLE = 'Program Director & Orthodontic Mentor';
+export const MENTOR_CREDENTIALS = [
+  'Clinical orthodontics & aligner therapy',
+  'Hands-on mechanics and case finishing',
+  'Mentor-led treatment planning reviews',
+];
+export const MENTOR_STORY = [
+  'Programs at 32 Pearls Dental Academy are built around live demonstrations, supervised practice, and structured case reviews—so you build clinical judgment alongside technique.',
+  'From your first records to finishing mechanics, mentorship focuses on anticipating challenges, revising plans, and communicating clearly with patients.',
+];
 
 export const DEFAULT_SUPPORT_EMAIL = '32pearlsdentalacademy@gmail.com';
 export const SUPPORT_EMAIL =

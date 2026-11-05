@@ -1,33 +1,38 @@
+import { useEffect } from 'react'
+import { useDispatch } from 'react-redux'
+import { fetchCourses } from '../redux/slices/courseSlice'
 import Hero from '../components/Hero'
+import CourseFormatsSection from '../components/CourseFormatsSection'
+import LandingCoursesSection from '../components/LandingCoursesSection'
+import WhyPearlsSection from '../components/WhyPearlsSection'
+import LearningPathSection from '../components/LearningPathSection'
 import MentorSection from '../components/MentorSection'
-import InstituteSection from '../components/InstituteSection'
-import AboutSnapshot from '../components/AboutSnapshot'
-import CourseSlider from '../components/CourseSlider'
-import LogoMarquee from '../components/LogoMarquee'
-import EventHero from '../components/EventHero'
-import StackingBanners from '../components/StackingBanners'
+import AlumniCasesStrip from '../components/AlumniCasesStrip'
 import TestimonialsScroll from '../components/TestimonialsScroll'
-import GrowthSection from '../components/GrowthSection'
-import BrandFeatures from '../components/BrandFeatures'
-import { eventData } from '../constants/events'
+import LandingCertificateSection from '../components/LandingCertificateSection'
+import LandingPricingTeaser from '../components/LandingPricingTeaser'
+import HomeFAQSection from '../components/HomeFAQSection'
 
 const Home = ({ isLoaded }) => {
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(fetchCourses())
+  }, [dispatch])
+
   return (
     <div className="w-full">
       <Hero isLoaded={isLoaded} />
-      <CourseSlider />
-      <InstituteSection />
-      <AboutSnapshot />
+      <CourseFormatsSection />
+      <LandingCoursesSection />
+      <WhyPearlsSection />
+      <LearningPathSection />
       <MentorSection />
-
-      {/* Dynamic Event Showcase */}
-      {/* <EventHero events={eventData} /> */}
-      
-      <LogoMarquee />
-      <StackingBanners />
+      <AlumniCasesStrip />
       <TestimonialsScroll variant="landing" />
-      <BrandFeatures />
-      <GrowthSection />
+      <LandingCertificateSection />
+      <LandingPricingTeaser />
+      <HomeFAQSection />
     </div>
   )
 }

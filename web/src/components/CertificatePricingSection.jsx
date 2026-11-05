@@ -70,7 +70,7 @@ const CertificatePricingSection = ({ course }) => {
    }
 
    return (
-      <section ref={containerRef} className="max-w-7xl mx-auto py-10 lg:py-20 scroll-mt-24">
+      <section id="pricing" ref={containerRef} className="max-w-7xl mx-auto py-10 lg:py-20 scroll-mt-24">
 
          <div className="text-center mb-10 lg:mb-24 reveal-item">
             <h2 className="font-newsreader italic text-[clamp(3rem,8vw,5rem)] text-normal font-extralight tracking-tighter leading-tight">
