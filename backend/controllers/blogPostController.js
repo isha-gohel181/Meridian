@@ -1,5 +1,5 @@
 import BlogPostService from '../service/blogPostService.js';
-import { initRedis } from '../config/redisClient.js';
+import { getMemoryCache } from '../config/memoryCache.js';
 
 // Use the imported instance directly (no 'new')
 const blogPostService = BlogPostService;
@@ -16,8 +16,8 @@ export const createBlogPost = async (req, res) => {
 
     const blogPost = await blogPostService.create(blogPostData);
 
-    const redis = await initRedis();
-    await redis.del('blogposts:all*');
+    const cache = await getMemoryCache();
+    await cache.del('blogposts:all*');
 
     return res.status(201).json({
       success: true,
@@ -54,9 +54,9 @@ export const getAllBlogPosts = async (req, res) => {
       filter
     };
 
-    const redis = await initRedis();
+    const cache = await getMemoryCache();
     const cacheKey = `blogposts:all:${JSON.stringify(options)}`;
-    const cached = await redis.get(cacheKey);
+    const cached = await cache.get(cacheKey);
 
     if (cached) {
       return res.status(200).json({
@@ -68,7 +68,7 @@ export const getAllBlogPosts = async (req, res) => {
     }
 
     const blogPosts = await blogPostService.getAll(options);
-    await redis.setEx(cacheKey, 300, JSON.stringify(blogPosts));
+    await cache.setEx(cacheKey, 300, JSON.stringify(blogPosts));
 
     return res.status(200).json({
       success: true,
@@ -87,9 +87,9 @@ export const getAllBlogPosts = async (req, res) => {
 export const getBlogPostById = async (req, res) => {
   try {
     const { id } = req.params;
-    const redis = await initRedis();
+    const cache = await getMemoryCache();
     const cacheKey = `blogpost:${id}`;
-    const cached = await redis.get(cacheKey);
+    const cached = await cache.get(cacheKey);
 
     if (cached) {
       return res.status(200).json({
@@ -101,7 +101,7 @@ export const getBlogPostById = async (req, res) => {
     }
 
     const blogPost = await blogPostService.getById(id);
-    await redis.setEx(cacheKey, 300, JSON.stringify(blogPost));
+    await cache.setEx(cacheKey, 300, JSON.stringify(blogPost));
 
     return res.status(200).json({
       success: true,
@@ -129,9 +129,9 @@ export const updateBlogPost = async (req, res) => {
 
     const blogPost = await blogPostService.update(id, updateData);
 
-    const redis = await initRedis();
-    await redis.del('blogposts:all*');
-    await redis.del(`blogpost:${id}`);
+    const cache = await getMemoryCache();
+    await cache.del('blogposts:all*');
+    await cache.del(`blogpost:${id}`);
 
     return res.status(200).json({
       success: true,
@@ -152,9 +152,9 @@ export const deleteBlogPost = async (req, res) => {
     const { id } = req.params;
     await blogPostService.delete(id);
 
-    const redis = await initRedis();
-    await redis.del('blogposts:all*');
-    await redis.del(`blogpost:${id}`);
+    const cache = await getMemoryCache();
+    await cache.del('blogposts:all*');
+    await cache.del(`blogpost:${id}`);
 
     return res.status(200).json({
       success: true,

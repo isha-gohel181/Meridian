@@ -187,10 +187,15 @@ const News = () => {
               {t('archive2024') || 'Dispatch archive'}
             </p>
             <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
-              <h1 className="marketing-page-title max-w-2xl">
-                {t('latestTitle') || 'Latest'}{' '}
-                <span className="text-[#C96A1B]">{t('dispatchesTitle') || 'Dispatches & Insights'}</span>
-              </h1>
+              <div className="max-w-2xl">
+                <h1 className="marketing-page-title">
+                  {t('latestTitle') || 'Latest'}{' '}
+                  <span className="text-[#C96A1B]">{t('dispatchesTitle') || 'Dispatches & insights'}</span>
+                </h1>
+                <p className="font-inter text-sm md:text-base text-slate-600 mt-2">
+                  {t('newsSubtitle')}
+                </p>
+              </div>
               <div className="w-full lg:max-w-md group relative shrink-0">
                 <input
                   type="text"

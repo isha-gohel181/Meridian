@@ -1,5 +1,5 @@
 import fileService from "../service/file-service.js";
-import { initRedis } from "../config/redisClient.js";
+import { getMemoryCache } from "../config/memoryCache.js";
 
 export const createFile = async (req, res) => {
   //console.log("Creating file with data:", req.body);
@@ -27,8 +27,8 @@ export const createFile = async (req, res) => {
     });
 
     //console.log("File created with data:", file);
-    const redis = await initRedis();
-    await redis.del("files:all*");
+    const cache = await getMemoryCache();
+    await cache.del("files:all*");
 
     res
       .status(201)
@@ -65,8 +65,8 @@ export const getFiles = async (req, res) => {
     };
 
     const cacheKey = `files:all:${JSON.stringify(options)}`;
-    const redis = await initRedis();
-    const cached = await redis.get(cacheKey);
+    const cache = await getMemoryCache();
+    const cached = await cache.get(cacheKey);
 
     if (cached) {
       return res.status(200).json({
@@ -78,7 +78,7 @@ export const getFiles = async (req, res) => {
     }
 
     const files = await fileService.getAllFiles(options);
-    await redis.setEx(cacheKey, 300, JSON.stringify(files));
+    await cache.setEx(cacheKey, 300, JSON.stringify(files));
 
     res.status(200).json({ success: true, message: "Files fetched", ...files });
   } catch (err) {
@@ -90,8 +90,8 @@ export const getFileById = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const redis = await initRedis();
-    const cached = await redis.get(`file:${id}`);
+    const cache = await getMemoryCache();
+    const cached = await cache.get(`file:${id}`);
 
     if (cached) {
       return res.status(200).json({
@@ -110,7 +110,7 @@ export const getFileById = async (req, res) => {
         .status(404)
         .json({ success: false, message: "File not found" });
 
-    await redis.setEx(`file:${id}`, 300, JSON.stringify(file));
+    await cache.setEx(`file:${id}`, 300, JSON.stringify(file));
 
     res
       .status(200)
@@ -131,9 +131,9 @@ export const updateFile = async (req, res) => {
         .status(404)
         .json({ success: false, message: "File not found" });
 
-    const redis = await initRedis();
-    await redis.del("files:all*");
-    await redis.del(`file:${id}`);
+    const cache = await getMemoryCache();
+    await cache.del("files:all*");
+    await cache.del(`file:${id}`);
 
     res
       .status(200)
@@ -153,9 +153,9 @@ export const deleteFile = async (req, res) => {
         .status(404)
         .json({ success: false, message: "File not found" });
 
-    const redis = await initRedis();
-    await redis.del("files:all*");
-    await redis.del(`file:${id}`);
+    const cache = await getMemoryCache();
+    await cache.del("files:all*");
+    await cache.del(`file:${id}`);
 
     res
       .status(200)

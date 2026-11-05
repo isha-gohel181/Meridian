@@ -1,5 +1,5 @@
 import CourseFeedback from "../models/CourseFeedback.js";
-import { initRedis } from "../config/redisClient.js";
+import { getMemoryCache } from "../config/memoryCache.js";
 
 export const submitFeedback = async (req, res) => {
   try {
@@ -39,9 +39,9 @@ export const submitFeedback = async (req, res) => {
       await feedback.save();
     }
 
-    const redis = await initRedis();
-    await redis.del(`feedbacks:all`);
-    await redis.del(`feedback:${userId}:${courseId}`);
+    const cache = await getMemoryCache();
+    await cache.del(`feedbacks:all`);
+    await cache.del(`feedback:${userId}:${courseId}`);
 
     res.status(200).json({
       success: true,
@@ -59,8 +59,8 @@ export const getMyFeedback = async (req, res) => {
     const userId = req.user._id;
 
     const cacheKey = `feedback:${userId}:${courseId}`;
-    const redis = await initRedis();
-    const cached = await redis.get(cacheKey);
+    const cache = await getMemoryCache();
+    const cached = await cache.get(cacheKey);
 
     if (cached) {
       return res.status(200).json({
@@ -74,7 +74,7 @@ export const getMyFeedback = async (req, res) => {
     const feedback = await CourseFeedback.findOne({ user: userId, course: courseId }).populate('course', 'title');
     
     if (feedback) {
-      await redis.setEx(cacheKey, 300, JSON.stringify(feedback));
+      await cache.setEx(cacheKey, 300, JSON.stringify(feedback));
     }
 
     res.status(200).json({
@@ -94,8 +94,8 @@ export const getAllFeedbacks = async (req, res) => {
     const skip = (page - 1) * limit;
 
     const cacheKey = `feedbacks:all:page:${page}:limit:${limit}`;
-    const redis = await initRedis();
-    const cached = await redis.get(cacheKey);
+    const cache = await getMemoryCache();
+    const cached = await cache.get(cacheKey);
 
     if (cached) {
       return res.status(200).json({
@@ -125,7 +125,7 @@ export const getAllFeedbacks = async (req, res) => {
       }
     };
 
-    await redis.setEx(cacheKey, 300, JSON.stringify(responseData));
+    await cache.setEx(cacheKey, 300, JSON.stringify(responseData));
 
     res.status(200).json({
       success: true,

@@ -1,5 +1,5 @@
 import CourseCategoryService from '../service/CourseCategoryService.js';
-import { initRedis } from '../config/redisClient.js';
+import { getMemoryCache } from '../config/memoryCache.js';
 import { upload } from '../middlewares/upload-middleware.js'; // Import upload middleware
 import path from 'path';
 import fs from 'fs/promises'; // For file system operations
@@ -32,8 +32,8 @@ export const createCategory = async (req, res) => {
     const category = await categoryService.create(categoryData);
 
     try {
-      const redis = await initRedis();
-      if (redis) {
+      const cache = await getMemoryCache();
+      if (cache) {
         const categoryId = category._id.toString();
         const categoryCacheData = {
           _id: category._id,
@@ -46,7 +46,7 @@ export const createCategory = async (req, res) => {
           updatedAt: category.updatedAt
         };
 
-        await redis.setEx(`category:${categoryId}`, 3600, JSON.stringify(categoryCacheData));
+        await cache.setEx(`category:${categoryId}`, 3600, JSON.stringify(categoryCacheData));
         //console.log('🗂️ Redis cache updated for category:', categoryId);
       }
     } catch (cacheErr) {
@@ -101,8 +101,8 @@ export const getCategoryById = async (req, res) => {
       });
     }
 
-    // const redis = await initRedis();
-    // const cachedCategory = await redis.get(`category:${id}`);
+    // const cache = await getMemoryCache();
+    // const cachedCategory = await cache.get(`category:${id}`);
     // if (cachedCategory) {
     //   //console.log('🚀 Category data retrieved from Redis cache');
     //   const categoryData = JSON.parse(cachedCategory);
@@ -126,7 +126,7 @@ export const getCategoryById = async (req, res) => {
       updatedAt: category.updatedAt
     };
 
-    // await redis.setEx(`category:${id}`, 3600, JSON.stringify(categoryCacheData));
+    // await cache.setEx(`category:${id}`, 3600, JSON.stringify(categoryCacheData));
     //console.log('🗂️ Category data cached in Redis:', id);
 
     return res.status(200).json({
@@ -207,8 +207,8 @@ export const updateCategory = async (req, res) => {
     const updatedCategory = await categoryService.updateById(id, updateData);
 
     try {
-      const redis = await initRedis();
-      if (redis) {
+      const cache = await getMemoryCache();
+      if (cache) {
         const categoryId = updatedCategory._id.toString();
         const categoryCacheData = {
           _id: updatedCategory._id,
@@ -221,7 +221,7 @@ export const updateCategory = async (req, res) => {
           updatedAt: updatedCategory.updatedAt
         };
 
-        await redis.setEx(`category:${categoryId}`, 3600, JSON.stringify(categoryCacheData));
+        await cache.setEx(`category:${categoryId}`, 3600, JSON.stringify(categoryCacheData));
         //console.log('🗂️ Redis cache updated for category:', categoryId);
       }
     } catch (cacheErr) {
@@ -279,9 +279,9 @@ export const deleteCategory = async (req, res) => {
     const deletedCategory = await categoryService.softDeleteById(id);
 
     try {
-      const redis = await initRedis();
-      if (redis) {
-        await redis.del(`category:${id}`);
+      const cache = await getMemoryCache();
+      if (cache) {
+        await cache.del(`category:${id}`);
         //console.log('🗑️ Category cache cleared:', id);
       }
     } catch (cacheErr) {

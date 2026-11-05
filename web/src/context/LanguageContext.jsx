@@ -88,7 +88,7 @@ const translations = {
     uploadFile: 'UPLOAD FILE',
 
     // My Forum / Discourse
-    myDiscourse: 'My Discourse',
+    myDiscourse: 'My topics',
     discourseSub: 'Archive of your community contributions and topics',
     totalThreads: 'TOTAL THREADS',
     engagement: 'ENGAGEMENT',
@@ -113,7 +113,9 @@ const translations = {
 
     // Messages
     messagesTitle: 'Messages',
+    messagesSub: 'Chat with support or course groups.',
     activeChats: 'Active chats:',
+    backToDashboard: 'Back to dashboard',
     chatsTab: 'CHATS',
     groupsTab: 'GROUPS',
     searchMessages: 'Search messages...',
@@ -157,10 +159,10 @@ const translations = {
     totalTopicsLabel: 'TOTAL TOPICS',
     activeUsersLabel: 'ACTIVE USERS',
     thisWeekLabel: 'THIS WEEK',
-    recentDiscourse: 'RECENT DISCOURSE',
+    recentDiscourse: 'Recent topics',
     filterByIntelligence: 'FILTER BY INTELLIGENCE',
 
-    dispatchHub: 'DISPATCH HUB',
+    dispatchHub: 'News hub',
     // Job Posts
     jobPostingsHub: 'CAREER BOARD',
     manageJobOpps: 'MANAGE AND TRACK YOUR PUBLISHED JOB OPPORTUNITIES',
@@ -242,7 +244,19 @@ const translations = {
     confirmLogoutMessage: 'You are about to terminate your active session. You will be returned to the main portal shortly.',
     logOutNowBtn: 'LOG OUT NOW',
     welcomeBackTitle: 'Welcome back',
-    loginSubtitle: 'ENTER YOUR CREDENTIALS TO ACCESS YOUR ACCOUNT.',
+    loginSubtitle: 'Sign in to access your courses, live classes, and messages.',
+
+    authShowcaseEyebrow: '32 Pearls Dental Academy',
+    authShowcaseTitle: 'Clinical orthodontic training for everyday practice',
+    authShowcaseLead: 'Structured programs with mentor guidance—online, live, and hands-on.',
+    authShowcaseQuote:
+      'The training helped me plan cases and manage mechanics with much more confidence in my clinic.',
+    authShowcaseAuthor: 'Dr. Isha Patel',
+    authShowcaseRole: 'BDS · Ahmedabad',
+    authShowcasePill1: 'Live & recorded',
+    authShowcasePill2: 'Hands-on workshops',
+    authShowcasePill3: 'Mentor case reviews',
+    authShowcaseStatMentor: 'Mentor support',
     continueWithGoogle: 'CONTINUE WITH GOOGLE',
     joinTheCircleTitle: 'Join the circle',
     signupSubtitle: 'Start your dental education journey with 32 Pearls Dental Academy.',
@@ -292,7 +306,7 @@ const translations = {
     noGigsFound: 'No gigs found in this category',
 
     // News & Dispatches
-    archive2024: 'ARCHIVE 2024',
+    archive2024: 'Academy news',
     latestTitle: 'Latest',
     dispatchesTitle: 'Dispatches',
     searchNewsPlaceholder: 'Search news by topic...',
@@ -401,9 +415,9 @@ const translations = {
     likes: 'LIKES',
     replies: 'REPLIES',
     postReply: 'POST A REPLY',
-    forumStats: 'COMMUNITY STATS',
-    popularDiscourse: 'POPULAR DISCUSSIONS',
-    backToForum: 'BACK TO FORUM',
+    forumStats: 'Community stats',
+    popularDiscourse: 'Popular topics',
+    backToForum: 'Back to forum',
 
     // Catalog & Fallbacks
     failedToLoad: 'FAILED TO LOAD COURSES',
@@ -629,12 +643,12 @@ const translations = {
     viewDetails: "VIEW DETAILS",
     rating: "Rating",
     studentsEnrolled: "Students",
-    forumTitle: "COMMUNITY DISCUSSIONS",
-    forumSubtitle: "Ask questions, share insights, and connect with fellow developers.",
-    gigTitle: "JOB & FREELANCE OPPORTUNITIES",
-    gigSubtitle: "Discover hand-picked gigs and full-time tech roles tailored for your skill set.",
-    newsTitle: "TECH INSIGHTS & UPDATES",
-    newsSubtitle: "Stay updated with the latest trends in tech, design, and career growth.",
+    forumTitle: 'Community discussions',
+    forumSubtitle: 'Ask clinical questions, share case learnings, and connect with fellow dental practitioners.',
+    gigTitle: 'Job & freelance opportunities',
+    gigSubtitle: 'Discover roles and opportunities relevant to dental professionals.',
+    newsTitle: 'Insights & updates',
+    newsSubtitle: 'Course updates, clinical news, and announcements from 32 Pearls Dental Academy.',
     contactTitle: "Get in Touch with Us",
     contactSub: "We would love to hear from you. Send us a message and we will respond as soon as possible.",
   },
@@ -751,7 +765,9 @@ const translations = {
 
     // Messages
     messagesTitle: 'संदेश',
+    messagesSub: 'Support या course groups से chat करें।',
     activeChats: 'सक्रिय चैट:',
+    backToDashboard: 'Dashboard पर वापस',
     chatsTab: 'चैट',
     groupsTab: 'समूह',
     searchMessages: 'संदेश खोजें...',
@@ -880,7 +896,19 @@ const translations = {
     confirmLogoutMessage: 'आप अपना सक्रिय सत्र समाप्त करने वाले हैं। आपको जल्द ही मुख्य पोर्टल पर वापस भेज दिया जाएगा।',
     logOutNowBtn: 'अभी लॉगआउट करें',
     welcomeBackTitle: 'वापसी पर स्वागत है',
-    loginSubtitle: 'अपने खाते में प्रवेश करने के लिए विवरण दर्ज करें।',
+    loginSubtitle: 'कोर्स, live classes और messages के लिए sign in करें।',
+
+    authShowcaseEyebrow: '32 Pearls Dental Academy',
+    authShowcaseTitle: 'रोज़मर्रा के practice के लिए clinical orthodontic training',
+    authShowcaseLead: 'Mentor guidance के साथ structured programs—online, live और hands-on।',
+    authShowcaseQuote:
+      'Training se case plan aur mechanics clinic me zyada confidently handle kar paati hoon.',
+    authShowcaseAuthor: 'Dr. Isha Patel',
+    authShowcaseRole: 'BDS · Ahmedabad',
+    authShowcasePill1: 'Live & recorded',
+    authShowcasePill2: 'Hands-on workshops',
+    authShowcasePill3: 'Mentor case reviews',
+    authShowcaseStatMentor: 'Mentor support',
     continueWithGoogle: 'गूगल के साथ आगे बढ़ें',
     joinTheCircleTitle: 'समुदाय से जुड़ें',
     signupSubtitle: 'सुख, शांति और समृद्धि की अपनी यात्रा शुरू करें।',
@@ -1269,7 +1297,7 @@ const translations = {
     rating: "रेटिंग",
     studentsEnrolled: "छात्र",
     forumTitle: "समुदाय चर्चाएं",
-    forumSubtitle: "प्रश्न पूछें, विचार साझा करें और साथी डेवलपर्स के साथ जुड़ें।",
+    forumSubtitle: 'Clinical प्रश्न पूछें, case learnings साझा करें, और fellow dental practitioners से जुड़ें।',
     gigTitle: "नौकरी और फ्रीलांस अवसर",
     gigSubtitle: "अपने कौशल सेट के लिए तैयार किए गए हाथ से चुने गए गिग और पूर्णकालिक टेक भूमिकाओं की खोज करें।",
     newsTitle: "टेक अंतर्दृष्टि और अपडेट",

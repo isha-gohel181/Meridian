@@ -1,5 +1,5 @@
 import certificateService from "../service/certificateService.js";
-import { initRedis } from "../config/redisClient.js";
+import { getMemoryCache } from "../config/memoryCache.js";
 import courseProgressModel from "../models/Course.js";
 import quizSubmissionModel from "../models/QuizSubmission.js";
 import courseBundleModel from "../models/CourseBundle.js";
@@ -251,8 +251,8 @@ export const createCertificate = async (req, res) => {
       //console.log("No template found for certificate, skipping PDF generation");
     }
 
-    const redis = await initRedis();
-    await redis.del("certificates:all*");
+    const cache = await getMemoryCache();
+    await cache.del("certificates:all*");
 
     res.status(201).json({
       success: true,
@@ -283,9 +283,9 @@ export const getAllCertificates = async (req, res) => {
 
     const options = { page, limit, search, sortBy, sortOrder, filters };
 
-    const redis = await initRedis();
+    const cache = await getMemoryCache();
     const cacheKey = `certificates:all:${JSON.stringify(options)}`;
-    const cached = await redis.get(cacheKey);
+    const cached = await cache.get(cacheKey);
 
     if (cached) {
       return res.status(200).json({
@@ -297,7 +297,7 @@ export const getAllCertificates = async (req, res) => {
     }
 
     const data = await certificateService.getAllCertificates(options);
-    await redis.setEx(cacheKey, 300, JSON.stringify(data));
+    await cache.setEx(cacheKey, 300, JSON.stringify(data));
 
     res.status(200).json({
       success: true,
@@ -311,9 +311,9 @@ export const getAllCertificates = async (req, res) => {
 
 export const getCertificateById = async (req, res) => {
   try {
-    const redis = await initRedis();
+    const cache = await getMemoryCache();
     // const cacheKey = `certificate:${req.params.id}`;
-    // const cached = await redis.get(cacheKey);
+    // const cached = await cache.get(cacheKey);
 
     // if (cached) {
     //   return res.status(200).json({
@@ -333,7 +333,7 @@ export const getCertificateById = async (req, res) => {
         .json({ success: false, message: "Certificate not found" });
     }
 
-    // await redis.setEx(cacheKey, 300, JSON.stringify(certificate));
+    // await cache.setEx(cacheKey, 300, JSON.stringify(certificate));
     res.status(200).json({
       success: true,
       message: "Certificate fetched successfully",
@@ -367,9 +367,9 @@ export const updateCertificate = async (req, res) => {
       updateData
     );
 
-    const redis = await initRedis();
-    await redis.del("certificates:all*");
-    await redis.del(`certificate:${req.params.id}`);
+    const cache = await getMemoryCache();
+    await cache.del("certificates:all*");
+    await cache.del(`certificate:${req.params.id}`);
 
     res.status(200).json({
       success: true,
@@ -395,9 +395,9 @@ export const deleteCertificate = async (req, res) => {
 
     await certificateService.deleteCertificate(req.params.id);
 
-    const redis = await initRedis();
-    await redis.del("certificates:all*");
-    await redis.del(`certificate:${req.params.id}`);
+    const cache = await getMemoryCache();
+    await cache.del("certificates:all*");
+    await cache.del(`certificate:${req.params.id}`);
 
     res.status(200).json({
       success: true,

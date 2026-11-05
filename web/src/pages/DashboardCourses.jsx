@@ -6,6 +6,7 @@ import { fetchCourses } from '../redux/slices/courseSlice'
 import RollingText from '../components/RollingText'
 import CourseCard from '../components/CourseCard'
 import DashboardHeader from '../components/dashboard/DashboardHeader'
+import DashboardPageHeader from '../components/dashboard/DashboardPageHeader'
 import { useLanguage } from '../context/LanguageContext'
 
 import { resolveCourseThumbnail } from '../utils/courseThumbnail.js'
@@ -87,17 +88,14 @@ const DashboardCourses = () => {
       <main className="pt-12 pb-12 px-6 md:px-12">
         {/* 1. Page Header */}
         <div className="courses-hero max-w-[1600px] mx-auto mb-12 flex flex-col md:flex-row md:items-end justify-between items-start gap-8">
-          <div className="space-y-4">
-             <div className="flex items-center gap-3">
-                <div className="w-1.5 h-1.5 bg-accent rounded-full animate-pulse" />
-                <span className="font-jetbrains text-[10px] text-accent tracking-[0.4em] uppercase">{t('curatedCatalog')}</span>
-             </div>
-             <h1 className="font-newsreader italic text-4xl md:text-6xl text-slate-900 tracking-tighter">
-                {t('allCourses')}
-             </h1>
-          </div>
-          
-          <div className="flex gap-12 items-center self-end md:self-auto pb-2">
+          <DashboardPageHeader
+            className="mb-0 flex-1"
+            eyebrow={t('ourCourses')}
+            title={t('allCourses')}
+            subtitle={t('coursesSubtitle')}
+          />
+
+          <div className="flex gap-12 items-center self-end md:self-auto pb-2 shrink-0">
              <div className="text-right group relative">
                 <p className="font-jetbrains text-xs text-slate-500 uppercase tracking-[0.3em] mb-1 font-bold">{t('availableStat')}</p>
                 <p className="font-newsreader italic text-4xl text-slate-900 leading-none font-medium tracking-tighter">{String(availableCount).padStart(2, '0')}</p>

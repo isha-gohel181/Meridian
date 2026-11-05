@@ -1,12 +1,12 @@
 import faqService from "../service/faqService.js";
-import { initRedis } from "../config/redisClient.js";
+import { getMemoryCache } from "../config/memoryCache.js";
 
 export const createFAQ = async (req, res) => {
   try {
     const faq = await faqService.createFAQ(req.body);
 
-    const redis = await initRedis();
-    await redis.del("faqs:all*");
+    const cache = await getMemoryCache();
+    await cache.del("faqs:all*");
 
     res.status(201).json({
       success: true,
@@ -26,10 +26,10 @@ export const getAllFAQs = async (req, res) => {
     const filters = {};
     if (globalOnly === "true") filters.courseId = null;
 
-    const redis = await initRedis();
+    const cache = await getMemoryCache();
     const cacheKey = `faqs:all:${JSON.stringify(filters)}`;
 
-    const cached = await redis.get(cacheKey);
+    const cached = await cache.get(cacheKey);
     // if (cached) {
     //   return res.status(200).json({
     //     success: true,
@@ -40,7 +40,7 @@ export const getAllFAQs = async (req, res) => {
     // }
 
     const faqs = await faqService.getAllFAQs(filters);
-    await redis.setEx(cacheKey, 300, JSON.stringify(faqs));
+    await cache.setEx(cacheKey, 300, JSON.stringify(faqs));
 
     res.status(200).json({
       success: true,
@@ -56,10 +56,10 @@ export const getAllFAQs = async (req, res) => {
 export const getFAQById = async (req, res) => {
   try {
     const faqId = req.params.id;
-    const redis = await initRedis();
+    const cache = await getMemoryCache();
     const cacheKey = `faq:${faqId}`;
 
-    const cached = await redis.get(cacheKey);
+    const cached = await cache.get(cacheKey);
     if (cached) {
       return res.status(200).json({
         success: true,
@@ -74,7 +74,7 @@ export const getFAQById = async (req, res) => {
       return res.status(404).json({ success: false, message: "FAQ not found" });
     }
 
-    await redis.setEx(cacheKey, 300, JSON.stringify(faq));
+    await cache.setEx(cacheKey, 300, JSON.stringify(faq));
 
     res.status(200).json({
       success: true,
@@ -90,10 +90,10 @@ export const getFAQById = async (req, res) => {
 export const getCourseFAQs = async (req, res) => {
   try {
     const { courseId } = req.params;
-    const redis = await initRedis();
+    const cache = await getMemoryCache();
     const cacheKey = `faqs:course:${courseId}`;
 
-    // const cached = await redis.get(cacheKey);
+    // const cached = await cache.get(cacheKey);
     // if (cached) {
     //   return res.status(200).json({
     //     success: true,
@@ -104,7 +104,7 @@ export const getCourseFAQs = async (req, res) => {
     // }
 
     const faqs = await faqService.getFAQsByCourseId(courseId);
-    // await redis.setEx(cacheKey, 300, JSON.stringify(faqs));
+    // await cache.setEx(cacheKey, 300, JSON.stringify(faqs));
 
     res.status(200).json({
       success: true,
@@ -121,11 +121,11 @@ export const updateFAQ = async (req, res) => {
   try {
     const updated = await faqService.updateFAQ(req.params.id, req.body);
 
-    const redis = await initRedis();
-    await redis.del("faqs:all*");
-    await redis.del(`faq:${req.params.id}`);
+    const cache = await getMemoryCache();
+    await cache.del("faqs:all*");
+    await cache.del(`faq:${req.params.id}`);
     if (updated.courseId) {
-      await redis.del(`faqs:course:${updated.courseId}`);
+      await cache.del(`faqs:course:${updated.courseId}`);
     }
 
     res.status(200).json({
@@ -143,11 +143,11 @@ export const deleteFAQ = async (req, res) => {
   try {
     const deleted = await faqService.deleteFAQ(req.params.id);
 
-    const redis = await initRedis();
-    await redis.del("faqs:all*");
-    await redis.del(`faq:${req.params.id}`);
+    const cache = await getMemoryCache();
+    await cache.del("faqs:all*");
+    await cache.del(`faq:${req.params.id}`);
     if (deleted?.courseId) {
-      await redis.del(`faqs:course:${deleted.courseId}`);
+      await cache.del(`faqs:course:${deleted.courseId}`);
     }
 
     res

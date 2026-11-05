@@ -1,5 +1,5 @@
 import assignmentService from "../service/assignmentService.js";
-import { initRedis } from "../config/redisClient.js";
+import { getMemoryCache } from "../config/memoryCache.js";
 import NotificationService from "../service/notificationService.js";
 
 export const createAssignment = async (req, res) => {
@@ -47,8 +47,8 @@ export const createAssignment = async (req, res) => {
     };
     await NotificationService.notifyEnrolledUsers(assignment.courseId, notificationData);
 
-    const redis = await initRedis();
-    await redis.del("assignments:all*");
+    const cache = await getMemoryCache();
+    await cache.del("assignments:all*");
 
     res
       .status(201)
@@ -105,10 +105,10 @@ export const getAllAssignments = async (req, res) => {
 
 export const getAssignmentById = async (req, res) => {
   try {
-    const redis = await initRedis();
+    const cache = await getMemoryCache();
     const cacheKey = `assignment:${req.params.id}`;
 
-    const cached = await redis.get(cacheKey);
+    const cached = await cache.get(cacheKey);
     if (cached) {
       return res
         .status(200)
@@ -127,7 +127,7 @@ export const getAssignmentById = async (req, res) => {
         .json({ success: false, message: "Assignment not found" });
     }
 
-    await redis.setEx(cacheKey, 300, JSON.stringify(assignment));
+    await cache.setEx(cacheKey, 300, JSON.stringify(assignment));
     res
       .status(200)
       .json({
@@ -157,9 +157,9 @@ export const updateAssignment = async (req, res) => {
       updateData
     );
 
-    const redis = await initRedis();
-    await redis.del("assignments:all*");
-    await redis.del(`assignment:${req.params.id}`);
+    const cache = await getMemoryCache();
+    await cache.del("assignments:all*");
+    await cache.del(`assignment:${req.params.id}`);
     // //console.log("Redis updated successfully for assignment update");
 
     res
@@ -178,9 +178,9 @@ export const deleteAssignment = async (req, res) => {
   try {
     await assignmentService.deleteAssignment(req.params.id);
 
-    const redis = await initRedis();
-    await redis.del("assignments:all*");
-    await redis.del(`assignment:${req.params.id}`);
+    const cache = await getMemoryCache();
+    await cache.del("assignments:all*");
+    await cache.del(`assignment:${req.params.id}`);
     // //console.log("Redis updated successfully for assignment deletion");
 
     res

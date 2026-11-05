@@ -5,7 +5,7 @@ import User from '../models/user.js';
 import CertificateTemplate from '../models/CertificateTemplate.js';
 import CourseEnrollment from '../models/CourseEnrollment.js';
 import { generatePdfForCertificate } from '../controllers/certificateController.js';
-import { initRedis } from '../config/redisClient.js';
+import { getMemoryCache } from '../config/memoryCache.js';
 
 export const autoGenerateCertificate = async (userId, courseId, customTemplateId = null) => {
   try {
@@ -113,9 +113,9 @@ export const autoGenerateCertificate = async (userId, courseId, customTemplateId
 
     // 9. Clear cache
     try {
-      const redis = await initRedis();
-      if (redis) {
-        await redis.del("certificates:all*");
+      const cache = await getMemoryCache();
+      if (cache) {
+        await cache.del("certificates:all*");
       }
     } catch (cacheErr) {
       // ignore cache errors

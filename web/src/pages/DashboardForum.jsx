@@ -6,6 +6,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchThreads, fetchForumStats, likeThread, postReply, createThread } from '../redux/slices/forumSlice'
 import DashboardHeader from '../components/dashboard/DashboardHeader'
+import DashboardPageHeader from '../components/dashboard/DashboardPageHeader'
 import CreateTopicModal from '../components/dashboard/CreateTopicModal'
 import ForumFilterModal from '../components/dashboard/ForumFilterModal'
 import DashboardLoading from '../components/dashboard/DashboardLoading'
@@ -435,6 +436,12 @@ const DashboardForum = () => {
 
       <main className="pt-24 pb-16 px-4 md:px-8 max-w-[1600px] mx-auto">
         <div className="mx-auto">
+          <DashboardPageHeader
+            className="forum-dash-reveal"
+            eyebrow={t('forum')}
+            title={t('forumTitle')}
+            subtitle={t('forumSubtitle')}
+          />
 
           {/* Top Stats Protocol */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16 forum-dash-reveal">
@@ -451,7 +458,7 @@ const DashboardForum = () => {
             {/* Discussion List Area */}
             <div className="md:col-span-8 lg:col-span-8 flex flex-col gap-2">
               <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-8 forum-dash-reveal">
-                <h1 className="font-newsreader italic text-4xl text-slate-900 font-extralight tracking-tight uppercase">{t('recentDiscourse')}</h1>
+                <h2 className="font-montserrat text-base font-semibold text-slate-800">{t('recentDiscourse')}</h2>
                 <div className="flex items-center gap-4">
                   <button
                     type="button"

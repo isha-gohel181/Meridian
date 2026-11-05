@@ -1,5 +1,5 @@
 import TextLessonService from "../service/textLessonService.js";
-import { initRedis } from "../config/redisClient.js";
+import { getMemoryCache } from "../config/memoryCache.js";
 import NotificationService from "../service/notificationService.js"; // Import notification service
 
 /** Multipart forms may repeat keys; Mongoose needs a single ObjectId string. */
@@ -53,8 +53,8 @@ export const createTextLesson = async (req, res) => {
 
     const lesson = await TextLessonService.createTextLesson(lessonData);
 
-    const redis = await initRedis();
-    await redis.del("textlessons:all*");
+    const cache = await getMemoryCache();
+    await cache.del("textlessons:all*");
 
     // Notify enrolled students
     const notificationData = {
@@ -105,8 +105,8 @@ export const getAllTextLessons = async (req, res) => {
     };
 
     const cacheKey = `textlessons:all:${JSON.stringify(options)}`;
-    const redis = await initRedis();
-    const cached = await redis.get(cacheKey);
+    const cache = await getMemoryCache();
+    const cached = await cache.get(cacheKey);
 
     if (cached) {
       return res
@@ -120,7 +120,7 @@ export const getAllTextLessons = async (req, res) => {
     }
 
     const lessons = await TextLessonService.getAllTextLessons(options);
-    await redis.setEx(cacheKey, 300, JSON.stringify(lessons));
+    await cache.setEx(cacheKey, 300, JSON.stringify(lessons));
 
     res
       .status(200)
@@ -166,8 +166,8 @@ export const updateTextLesson = async (req, res) => {
         .json({ success: false, message: "Text lesson not found" });
     }
 
-    const redis = await initRedis();
-    await redis.del("textlessons:all*");
+    const cache = await getMemoryCache();
+    await cache.del("textlessons:all*");
 
     res.json({
       success: true,
@@ -189,8 +189,8 @@ export const deleteTextLesson = async (req, res) => {
         .json({ success: false, message: "Text lesson not found" });
     }
 
-    const redis = await initRedis();
-    await redis.del("textlessons:all*");
+    const cache = await getMemoryCache();
+    await cache.del("textlessons:all*");
 
     res.json({ success: true, message: "Text lesson deleted successfully" });
   } catch (error) {

@@ -1,11 +1,11 @@
 import pageService from "../service/pageService.js";
-import { initRedis } from "../config/redisClient.js";
+import { getMemoryCache } from "../config/memoryCache.js";
 
 export const createPage = async (req, res) => {
   try {
     const page = await pageService.createPage(req.body);
-    const redis = await initRedis();
-    await redis.del("pages:all*");
+    const cache = await getMemoryCache();
+    await cache.del("pages:all*");
 
     res.status(201).json({
       success: true,
@@ -19,9 +19,9 @@ export const createPage = async (req, res) => {
 
 export const getAllPages = async (req, res) => {
   try {
-    const redis = await initRedis();
+    const cache = await getMemoryCache();
     const cacheKey = `pages:all`;
-    const cached = await redis.get(cacheKey);
+    const cached = await cache.get(cacheKey);
 
     if (cached) {
       return res.status(200).json({
@@ -33,7 +33,7 @@ export const getAllPages = async (req, res) => {
     }
 
     const pages = await pageService.getAllPages();
-    await redis.setEx(cacheKey, 300, JSON.stringify(pages));
+    await cache.setEx(cacheKey, 300, JSON.stringify(pages));
 
     res.status(200).json({
       success: true,
@@ -75,9 +75,9 @@ export const updatePage = async (req, res) => {
       });
     }
 
-    const redis = await initRedis();
-    await redis.del("pages:all*");
-    await redis.del(`page:${req.params.id}`);
+    const cache = await getMemoryCache();
+    await cache.del("pages:all*");
+    await cache.del(`page:${req.params.id}`);
 
     res.status(200).json({
       success: true,
@@ -93,9 +93,9 @@ export const deletePage = async (req, res) => {
   try {
     await pageService.deletePage(req.params.id);
 
-    const redis = await initRedis();
-    await redis.del("pages:all*");
-    await redis.del(`page:${req.params.id}`);
+    const cache = await getMemoryCache();
+    await cache.del("pages:all*");
+    await cache.del(`page:${req.params.id}`);
 
     res.status(200).json({
       success: true,

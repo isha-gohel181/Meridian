@@ -1,5 +1,5 @@
 import LessonService from '../service/LessonService.js';
-import { initRedis } from '../config/redisClient.js';
+import { getMemoryCache } from '../config/memoryCache.js';
 import Lesson from '../models/Lesson.js';
 import NotificationService from "../service/notificationService.js";
 
@@ -31,8 +31,8 @@ export const createLesson = async (req, res) => {
     };
     await NotificationService.notifyEnrolledUsers(lesson.courseId, notificationData);
 
-    const redis = await initRedis();
-    await redis.del('lessons:all*');
+    const cache = await getMemoryCache();
+    await cache.del('lessons:all*');
 
     res.status(201).json({ success: true, message: 'Lesson created', data: lesson });
   } catch (err) {
@@ -64,15 +64,15 @@ export const getAllLessons = async (req, res) => {
     };
 
     const cacheKey = `lessons:all:${JSON.stringify(options)}`;
-    const redis = await initRedis();
-    const cached = await redis.get(cacheKey);
+    const cache = await getMemoryCache();
+    const cached = await cache.get(cacheKey);
 
     if (cached) {
       return res.status(200).json({ success: true, message: 'Lessons from cache', ...JSON.parse(cached), fromCache: true });
     }
 
     const lessons = await lessonService.getAllLessons(options);
-    await redis.setEx(cacheKey, 300, JSON.stringify(lessons));
+    await cache.setEx(cacheKey, 300, JSON.stringify(lessons));
 
     res.status(200).json({ success: true, message: 'Lessons fetched', ...lessons });
   } catch (err) {
@@ -83,8 +83,8 @@ export const getAllLessons = async (req, res) => {
 export const getLessonById = async (req, res) => {
   try {
     const { lessonId } = req.params;
-    const redis = await initRedis();
-    const cached = await redis.get(`lesson:${lessonId}`);
+    const cache = await getMemoryCache();
+    const cached = await cache.get(`lesson:${lessonId}`);
 
     if (cached) {
       return res.status(200).json({ success: true,  message:"data cached "  ,data: JSON.parse(cached), fromCache: true });
@@ -93,7 +93,7 @@ export const getLessonById = async (req, res) => {
     const lesson = await lessonService.getLessonById(lessonId);
     if (!lesson) return res.status(404).json({ success: false, message: 'Lesson not found' });
 
-    await redis.setEx(`lesson:${lessonId}`, 300, JSON.stringify(lesson));
+    await cache.setEx(`lesson:${lessonId}`, 300, JSON.stringify(lesson));
     res.status(200).json({ success: true,  message: "data get"   ,data: lesson });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
@@ -116,9 +116,9 @@ export const updateLesson = async (req, res) => {
 
     const updated = await lessonService.updateLesson(lessonId, lessonData);
 
-    const redis = await initRedis();
-    await redis.del('lessons:all*');
-    await redis.del(`lesson:${lessonId}`);
+    const cache = await getMemoryCache();
+    await cache.del('lessons:all*');
+    await cache.del(`lesson:${lessonId}`);
 
     res.status(200).json({ success: true, message: 'Lesson updated', data: updated });
   } catch (err) {
@@ -131,9 +131,9 @@ export const deleteLesson = async (req, res) => {
     const { lessonId } = req.params;
     const deleted = await lessonService.deleteLesson(lessonId);
 
-    const redis = await initRedis();
-    await redis.del('lessons:all*');
-    await redis.del(`lesson:${lessonId}`);
+    const cache = await getMemoryCache();
+    await cache.del('lessons:all*');
+    await cache.del(`lesson:${lessonId}`);
 
     res.status(200).json({ success: true, message: 'Lesson deleted', data: deleted });
   } catch (err) {

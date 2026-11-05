@@ -5,6 +5,7 @@ import { registerUser, googleLoginUser, clearAuthError, sendOtp, verifyOtp } fro
 import { useGoogleLogin } from '@react-oauth/google'
 import { useLanguage } from '../context/LanguageContext'
 
+import AuthShowcase from '../components/AuthShowcase'
 import './Signup.css'
 
 const Signup = () => {
@@ -312,52 +313,8 @@ const Signup = () => {
         </div>
       </div>
 
-      {/* Right Section: Visual/Info */}
       <div className="signup-right">
-        <div className="system-status">
-          <div className="status-dot"></div>
-          32 PEARLS DENTAL ACADEMY LEARNING PORTAL
-        </div>
-
-        <div className="bg-text-wrap">
-          <div className="bg-text">Learn.</div>
-          <div className="bg-text">Practice.</div>
-          <div className="bg-text">Excel.</div>
-        </div>
-
-        <div className="testimonial-card">
-          <p className="testimonial-quote">
-            "32 Pearls Dental Academy delivers practical orthodontic education—from case selection and treatment planning to hands-on mechanics and ongoing mentor guidance."
-          </p>
-        </div>
-
-        <div className="stats-wrap">
-          <div className="stat-item">
-            <span className="stat-value">25k+</span>
-            <span className="stat-label">{t('activeLearners')}</span>
-          </div>
-          <div className="stat-item">
-            <span className="stat-value">98.2%</span>
-            <span className="stat-label">{t('completionRate')}</span>
-          </div>
-        </div>
-
-        <p className="right-description">
-          Join a learning community focused on clinical orthodontic excellence—built for dental practitioners who want theory and practice aligned.
-        </p>
-
-        <div className="nav-arrows">
-          <button type="button" className="arrow-btn">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-              <path d="m15 18-6-6 6-6" />
-            </svg>
-          </button>
-          <button type="button" className="arrow-btn">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-              <path d="m9 18 6-6-6-6" />
-            </svg>
-          </button>
-        </div>
+        <AuthShowcase />
       </div>
     </div>
   )

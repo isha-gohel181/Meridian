@@ -541,6 +541,9 @@ const QuestionCard = ({ question }) => {
         <div className="mb-12">
           <p className="marketing-page-eyebrow mb-2">{t('forum') || 'Forum'}</p>
           <h1 className="marketing-page-title">{t('forumTitle') || 'Community discussions'}</h1>
+          <p className="font-inter text-sm md:text-base text-slate-600 mt-2 max-w-2xl">
+            {t('forumSubtitle') || 'Ask clinical questions, share case learnings, and connect with fellow dental practitioners.'}
+          </p>
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-20">
           

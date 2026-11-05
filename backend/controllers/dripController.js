@@ -1,6 +1,6 @@
 import DripRule from '../models/DripRule.js';
 import DripTarget from '../models/DripTarget.js';
-import { initRedis } from '../config/redisClient.js';
+import { getMemoryCache } from '../config/memoryCache.js';
 import mongoose from 'mongoose';
 
 // Create Drip Rule + Target (supports bulk targetId)
@@ -133,8 +133,8 @@ export const createDripRule = async (req, res) => {
         }
 
         // Invalidate Redis cache
-        const redis = await initRedis();
-        await redis.del('dripRules:all');
+        const cache = await getMemoryCache();
+        await cache.del('dripRules:all');
 
         // --- Return only the newly created dripTargets (with populated dripRule) ---
         const populatedTargets = await DripTarget.find({
@@ -156,9 +156,9 @@ export const createDripRule = async (req, res) => {
 // Get all drip rules with cache
 export const getAllDripRules = async (req, res) => {
     try {
-        const redis = await initRedis();
+        const cache = await getMemoryCache();
         const cacheKey = 'dripRules:all';
-        const cached = await redis.get(cacheKey);
+        const cached = await cache.get(cacheKey);
 
         if (cached) {
             return res.status(200).json({
@@ -181,7 +181,7 @@ export const getAllDripRules = async (req, res) => {
 
         const data = { rules, targets };
 
-        await redis.setEx(cacheKey, 300, JSON.stringify(data)); // cache for 5 minutes
+        await cache.setEx(cacheKey, 300, JSON.stringify(data)); // cache for 5 minutes
 
         res.json({
             success: true,
@@ -265,8 +265,8 @@ export const getDripForTarget = async (req, res) => {
 //         await DripRule.findByIdAndDelete(id);
 
 //         // Invalidate Redis cache
-//         const redis = await initRedis();
-//         await redis.del('dripRules:all');
+//         const cache = await getMemoryCache();
+//         await cache.del('dripRules:all');
 
 //         res.json({ success: true, message: 'Drip rule and associated targets deleted' });
 //     } catch (error) {
@@ -310,8 +310,8 @@ export const updateDripRuleByReferenceId = async (req, res) => {
         }
 
         // Invalidate Redis cache
-        const redis = await initRedis();
-        await redis.del('dripRules:all');
+        const cache = await getMemoryCache();
+        await cache.del('dripRules:all');
 
         res.status(200).json({
             success: true,
@@ -335,8 +335,8 @@ export const deleteDripRule = async (req, res) => {
         await DripRule.findByIdAndDelete(id);
 
         // Invalidate Redis cache
-        const redis = await initRedis();
-        await redis.del('dripRules:all');
+        const cache = await getMemoryCache();
+        await cache.del('dripRules:all');
 
         res.json({ success: true, message: 'Drip rule and associated targets deleted' });
     } catch (error) {

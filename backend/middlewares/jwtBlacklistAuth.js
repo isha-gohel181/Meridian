@@ -10,7 +10,7 @@ const jwtBlacklistAuth = async (req, res, next) => {
     }
     const token = authHeader.split(" ")[1];
 
-    // Check blacklist (await for Redis-based check)
+    // Check blacklist (MongoDB-backed)
     const blacklisted = await isAccessTokenBlacklisted(token, req.user);
     if (blacklisted) {
       res.clearCookie("accessToken");

@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchNews } from '../redux/slices/newsSlice'
 import DashboardHeader from '../components/dashboard/DashboardHeader'
+import DashboardPageHeader from '../components/dashboard/DashboardPageHeader'
 import DashboardLoading from '../components/dashboard/DashboardLoading'
 import { useLanguage } from '../context/LanguageContext'
 
@@ -147,17 +148,11 @@ const DashboardNews = () => {
 
       <main className="pt-24 pb-16 px-4 md:px-8 lg:px-12">
         <div className="max-w-7xl mx-auto">
-          <header className="mb-10 space-y-2">
-            <span className="font-jetbrains text-[10px] text-accent tracking-[0.4em] uppercase block">
-              {t('dispatchHub') || 'Dispatch hub'}
-            </span>
-            <h1 className="font-newsreader italic text-4xl md:text-6xl text-slate-900 tracking-tighter">
-              {t('news') || 'News'}
-            </h1>
-            <p className="font-montserrat text-sm text-slate-500 mt-2 max-w-xl">
-              Course updates, industry insights, and announcements for enrolled students.
-            </p>
-          </header>
+          <DashboardPageHeader
+            eyebrow={t('dispatchHub')}
+            title={t('news')}
+            subtitle={t('newsSubtitle')}
+          />
 
           {loading && newsList.length === 0 && (
             <div className="py-24 flex justify-center">

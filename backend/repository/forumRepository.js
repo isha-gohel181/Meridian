@@ -1,7 +1,7 @@
 import ForumThread from '../models/ForumThread.js';
 import ForumReply from '../models/ForumReply.js';
 import User from '../models/user.js';
-import { initRedis } from '../config/redisClient.js';
+import { getMemoryCache } from '../config/memoryCache.js';
 
 export default class ForumRepository {
   // Thread Repository Methods
@@ -20,15 +20,15 @@ export default class ForumRepository {
         .populate('courseId', 'title');
 
       if (populatedThread) {
-        const redis = await initRedis();
-        await redis.del(`forum:threads:${populatedThread.courseId}*`);
-        await redis.del(`forum:threads:*`);
+        const cache = await getMemoryCache();
+        await cache.del(`forum:threads:${populatedThread.courseId}*`);
+        await cache.del(`forum:threads:*`);
 
         // Clear tag cache
         const tagCacheKey = populatedThread.courseId
           ? `forum:tags:${populatedThread.courseId}`
           : 'forum:tags:all';
-        await redis.del(tagCacheKey);
+        await cache.del(tagCacheKey);
       }
 
       //console.log('ForumRepository.createThread success:', populatedThread);
@@ -60,17 +60,17 @@ export default class ForumRepository {
 
       // Clear Redis cache
       if (updatedThread) {
-        const redis = await initRedis();
-        await redis.del(`forum:thread:${id}`);
-        await redis.del(`forum:thread:admin:${id}`);
-        await redis.del(`forum:threads:${updatedThread.courseId}*`);
-        await redis.del(`forum:threads:*`);
+        const cache = await getMemoryCache();
+        await cache.del(`forum:thread:${id}`);
+        await cache.del(`forum:thread:admin:${id}`);
+        await cache.del(`forum:threads:${updatedThread.courseId}*`);
+        await cache.del(`forum:threads:*`);
 
         // Clear tag cache
         const tagCacheKey = updatedThread.courseId
           ? `forum:tags:${updatedThread.courseId}`
           : 'forum:tags:all';
-        await redis.del(tagCacheKey);
+        await cache.del(tagCacheKey);
       }
 
       //console.log('ForumRepository.updateThread success:', updatedThread);
@@ -150,11 +150,11 @@ export default class ForumRepository {
         .populate('courseId', 'title');
 
       if (updated) {
-        const redis = await initRedis();
-        await redis.del(`forum:thread:${id}`);
-        await redis.del(`forum:thread:admin:${id}`);
-        await redis.del(`forum:threads:${updated.courseId}*`);
-        await redis.del(`forum:threads:*`);
+        const cache = await getMemoryCache();
+        await cache.del(`forum:thread:${id}`);
+        await cache.del(`forum:thread:admin:${id}`);
+        await cache.del(`forum:threads:${updated.courseId}*`);
+        await cache.del(`forum:threads:*`);
       }
 
       return updated;
@@ -209,18 +209,18 @@ export default class ForumRepository {
 
       // Clear Redis cache
       if (threadToDelete) {
-        const redis = await initRedis();
-        await redis.del(`forum:thread:${id}`);
-        await redis.del(`forum:thread:admin:${id}`);
-        await redis.del(`forum:threads:${threadToDelete.courseId}*`);
-        await redis.del(`forum:threads:*`);
-        await redis.del(`forum:replies:${id}*`);
+        const cache = await getMemoryCache();
+        await cache.del(`forum:thread:${id}`);
+        await cache.del(`forum:thread:admin:${id}`);
+        await cache.del(`forum:threads:${threadToDelete.courseId}*`);
+        await cache.del(`forum:threads:*`);
+        await cache.del(`forum:replies:${id}*`);
 
         // Clear tag cache
         const tagCacheKey = threadToDelete.courseId
           ? `forum:tags:${threadToDelete.courseId}`
           : 'forum:tags:all';
-        await redis.del(tagCacheKey);
+        await cache.del(tagCacheKey);
       }
 
       //console.log('ForumRepository.deleteThread success:', deletedThread);
@@ -261,11 +261,11 @@ export default class ForumRepository {
 
       // Clear Redis cache
       if (updatedThread) {
-        const redis = await initRedis();
-        await redis.del(`forum:thread:${id}`);
-        await redis.del(`forum:thread:admin:${id}`);
-        await redis.del(`forum:threads:${updatedThread.courseId}*`);
-        await redis.del(`forum:threads:*`);
+        const cache = await getMemoryCache();
+        await cache.del(`forum:thread:${id}`);
+        await cache.del(`forum:thread:admin:${id}`);
+        await cache.del(`forum:threads:${updatedThread.courseId}*`);
+        await cache.del(`forum:threads:*`);
       }
 
       return {

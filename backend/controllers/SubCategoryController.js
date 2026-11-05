@@ -1,5 +1,5 @@
 import SubCategoryService from '../service/SubCategoryService.js';
-import { initRedis } from '../config/redisClient.js';
+import { getMemoryCache } from '../config/memoryCache.js';
 import mongoose from 'mongoose';
 import SubCategory from '../models/SubCategory.js';
 
@@ -12,8 +12,8 @@ export const createSubCategory = async (req, res) => {
     const subCategory = await subCategoryService.create(req.body);
 
     try {
-      const redis = await initRedis();
-      if (redis) {
+      const cache = await getMemoryCache();
+      if (cache) {
         const subCategoryId = subCategory._id.toString();
         const subCategoryCacheData = {
           _id: subCategory._id,
@@ -26,7 +26,7 @@ export const createSubCategory = async (req, res) => {
           updatedAt: subCategory.updatedAt,
         };
 
-        await redis.setEx(`subcategory:${subCategoryId}`, 3600, JSON.stringify(subCategoryCacheData));
+        await cache.setEx(`subcategory:${subCategoryId}`, 3600, JSON.stringify(subCategoryCacheData));
         //console.log('🗂️ Redis cache updated for subcategory:', subCategoryId);
       }
     } catch (cacheErr) {
@@ -77,9 +77,9 @@ export const getSubCategoryById = async (req, res) => {
     }
 
     try {
-      const redis = await initRedis();
-      if (redis) {
-        const cachedSubCategory = await redis.get(`subcategory:${id}`);
+      const cache = await getMemoryCache();
+      if (cache) {
+        const cachedSubCategory = await cache.get(`subcategory:${id}`);
         if (cachedSubCategory) {
           //console.log('🚀 SubCategory data retrieved from Redis cache');
           const subCategoryData = JSON.parse(cachedSubCategory);
@@ -97,8 +97,8 @@ export const getSubCategoryById = async (req, res) => {
 
     const subCategory = await subCategoryService.getById(id);
     try {
-      const redis = await initRedis();
-      if (redis) {
+      const cache = await getMemoryCache();
+      if (cache) {
         const subCategoryCacheData = {
           _id: subCategory._id,
           name: subCategory.name,
@@ -110,7 +110,7 @@ export const getSubCategoryById = async (req, res) => {
           updatedAt: subCategory.updatedAt,
         };
 
-        await redis.setEx(`subcategory:${id}`, 3600, JSON.stringify(subCategoryCacheData));
+        await cache.setEx(`subcategory:${id}`, 3600, JSON.stringify(subCategoryCacheData));
         //console.log('🗂️ SubCategory data cached in Redis:', id);
       }
     } catch (cacheErr) {
@@ -211,8 +211,8 @@ export const updateSubCategory = async (req, res) => {
     const updatedSubCategory = await subCategoryService.updateById(id, req.body);
 
     try {
-      const redis = await initRedis();
-      if (redis) {
+      const cache = await getMemoryCache();
+      if (cache) {
         const subCategoryId = updatedSubCategory._id.toString();
         const subCategoryCacheData = {
           _id: updatedSubCategory._id,
@@ -225,7 +225,7 @@ export const updateSubCategory = async (req, res) => {
           updatedAt: updatedSubCategory.updatedAt,
         };
 
-        await redis.setEx(`subcategory:${subCategoryId}`, 3600, JSON.stringify(subCategoryCacheData));
+        await cache.setEx(`subcategory:${subCategoryId}`, 3600, JSON.stringify(subCategoryCacheData));
         //console.log('🗂️ Redis cache updated for subcategory:', subCategoryId);
       }
     } catch (cacheErr) {
@@ -279,9 +279,9 @@ export const deleteSubCategory = async (req, res) => {
     const deletedSubCategory = await subCategoryService.softDeleteById(id);
 
     try {
-      const redis = await initRedis();
-      if (redis) {
-        await redis.del(`subcategory:${id}`);
+      const cache = await getMemoryCache();
+      if (cache) {
+        await cache.del(`subcategory:${id}`);
         //console.log('🗑️ SubCategory cache cleared:', id);
       }
     } catch (cacheErr) {

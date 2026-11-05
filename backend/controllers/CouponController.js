@@ -1,5 +1,5 @@
 import CouponService from '../service/CouponService.js';
-import { initRedis } from '../config/redisClient.js';
+import { getMemoryCache } from '../config/memoryCache.js';
 import jwt from 'jsonwebtoken';
 import { ServerConfig } from '../config/server.config.js';
 
@@ -11,7 +11,7 @@ export const createCoupon = async (req, res) => {
 
     const coupon = await couponService.create(req.body);
 
-    const redis = await initRedis();
+    const cache = await getMemoryCache();
     const couponId = coupon._id.toString();
     const couponCacheData = {
       _id: coupon._id,
@@ -31,8 +31,8 @@ export const createCoupon = async (req, res) => {
       updatedAt: coupon.updatedAt,
     };
 
-    await redis.setEx(`coupon:${couponId}`, 3600, JSON.stringify(couponCacheData));
-    await redis.setEx(`coupon:code:${coupon.code}`, 3600, JSON.stringify(couponCacheData));
+    await cache.setEx(`coupon:${couponId}`, 3600, JSON.stringify(couponCacheData));
+    await cache.setEx(`coupon:code:${coupon.code}`, 3600, JSON.stringify(couponCacheData));
     //console.log('🗂️ Redis cache updated for coupon:', couponId);
 
     return res.status(201).json({
@@ -79,8 +79,8 @@ export const getCouponById = async (req, res) => {
       });
     }
 
-    const redis = await initRedis();
-    const cachedCoupon = await redis.get(`coupon:${id}`);
+    const cache = await getMemoryCache();
+    const cachedCoupon = await cache.get(`coupon:${id}`);
     if (cachedCoupon) {
       //console.log('🚀 Coupon data retrieved from Redis cache');
       const couponData = JSON.parse(cachedCoupon);
@@ -112,7 +112,7 @@ export const getCouponById = async (req, res) => {
       updatedAt: coupon.updatedAt,
     };
 
-    await redis.setEx(`coupon:${id}`, 3600, JSON.stringify(couponCacheData));
+    await cache.setEx(`coupon:${id}`, 3600, JSON.stringify(couponCacheData));
     //console.log('🗂️ Coupon data cached in Redis:', id);
 
     return res.status(200).json({
@@ -222,7 +222,7 @@ export const updateCoupon = async (req, res) => {
 
     const updatedCoupon = await couponService.updateById(id, req.body);
 
-    const redis = await initRedis();
+    const cache = await getMemoryCache();
     const couponId = updatedCoupon._id.toString();
     const couponCacheData = {
       _id: updatedCoupon._id,
@@ -243,8 +243,8 @@ export const updateCoupon = async (req, res) => {
       updatedAt: updatedCoupon.updatedAt,
     };
 
-    await redis.setEx(`coupon:${couponId}`, 3600, JSON.stringify(couponCacheData));
-    await redis.setEx(`coupon:code:${updatedCoupon.code}`, 3600, JSON.stringify(couponCacheData));
+    await cache.setEx(`coupon:${couponId}`, 3600, JSON.stringify(couponCacheData));
+    await cache.setEx(`coupon:code:${updatedCoupon.code}`, 3600, JSON.stringify(couponCacheData));
     //console.log('🗂️ Redis cache updated for coupon:', couponId);
 
     return res.status(200).json({
@@ -293,9 +293,9 @@ export const deleteCoupon = async (req, res) => {
 
     const deletedCoupon = await couponService.softDeleteById(id);
 
-    const redis = await initRedis();
-    await redis.del(`coupon:${id}`);
-    await redis.del(`coupon:code:${deletedCoupon.code}`);
+    const cache = await getMemoryCache();
+    await cache.del(`coupon:${id}`);
+    await cache.del(`coupon:code:${deletedCoupon.code}`);
     //console.log('🗑️ Coupon cache cleared:', id);
 
     return res.status(200).json({

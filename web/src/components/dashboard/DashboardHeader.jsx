@@ -54,25 +54,25 @@ const DashboardHeader = () => {
   const avatarUrl = getProfileImage(currentUser?.profilePicture)
 
   const navItems = [
-    { key: 'dashboard', name: (t('dashboard') || 'DASHBOARD').toUpperCase(), path: '/dashboard' },
-    { key: 'liveClasses', name: (t('liveClasses') || 'LIVE CLASSES').toUpperCase(), path: '/dashboard/live-classes' },
-    { key: 'profile', name: (t('profile') || 'PROFILE').toUpperCase(), path: '/dashboard/profile' },
+    { key: 'dashboard', name: t('dashboard') || 'Dashboard', path: '/dashboard' },
+    { key: 'liveClasses', name: t('liveClasses') || 'Live classes', path: '/dashboard/live-classes' },
+    { key: 'profile', name: t('profile') || 'Profile', path: '/dashboard/profile' },
     {
       key: 'myActivity',
-      name: (t('myActivity') || 'MY ACTIVITY').toUpperCase(),
+      name: t('myActivity') || 'My activity',
       path: '#',
       subItems: [
-        { key: 'myForum', name: (t('myForum') || 'MY FORUM').toUpperCase(), path: '/dashboard/my-forum' },
-        { key: 'mySubmissions', name: (t('mySubmissions') || 'MY SUBMISSIONS').toUpperCase(), path: '/dashboard/my-submissions' },
-        { key: 'myResults', name: (t('myResults') || 'MY RESULTS').toUpperCase(), path: '/dashboard/my-results' },
+        { key: 'myForum', name: t('myForum') || 'My forum', path: '/dashboard/my-forum' },
+        { key: 'mySubmissions', name: t('mySubmissions') || 'My submissions', path: '/dashboard/my-submissions' },
+        { key: 'myResults', name: t('myResults') || 'My results', path: '/dashboard/my-results' },
       ]
     },
-    { key: 'myPurchases', name: (t('myPurchases') || 'MY PURCHASES').toUpperCase(), path: '/dashboard/purchases' },
-    { key: 'myCourses', name: (t('myCourses') || 'MY COURSES').toUpperCase(), path: '/dashboard/my-courses' },
-    { key: 'allCourses', name: (t('allCourses') || 'ALL COURSES').toUpperCase(), path: '/dashboard/courses' },
-    { key: 'forum', name: (t('forum') || 'FORUM').toUpperCase(), path: '/dashboard/forum' },
-    { key: 'news', name: (t('news') || 'NEWS').toUpperCase(), path: '/dashboard/news' },
-    { key: 'jobPostings', name: (t('jobPostings') || 'JOB POSTINGS').toUpperCase(), path: '/dashboard/job-posts' },
+    { key: 'myPurchases', name: t('myPurchases') || 'My purchases', path: '/dashboard/purchases' },
+    { key: 'myCourses', name: t('myCourses') || 'My courses', path: '/dashboard/my-courses' },
+    { key: 'allCourses', name: t('allCourses') || 'All courses', path: '/dashboard/courses' },
+    { key: 'forum', name: t('forum') || 'Forum', path: '/dashboard/forum' },
+    { key: 'news', name: t('news') || 'News', path: '/dashboard/news' },
+    { key: 'jobPostings', name: t('jobPostings') || 'Job postings', path: '/dashboard/job-posts' },
   ]
 
   const menuRef = useRef(null)

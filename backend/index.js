@@ -4,7 +4,7 @@ import app from './app.js';
 import dotenv from 'dotenv';
 import { connectToDatabase } from './db/connect.js';
 import { ServerConfig } from './config/server.config.js';
-import { initRedis, isRedisEnabled } from './config/redisClient.js';
+import { getMemoryCache } from './config/memoryCache.js';
 import { printServerBanner } from './utils/banner.js';
 import videoSocketHandler from './sockets/videoSocketHandler.js';
 import { setIO } from './utils/socketEmitter.js';
@@ -415,13 +415,13 @@ io.on('connection', (socket) => {
   });
 });
 
-// Start server and initialize DB + Redis
+// Start server and initialize DB
 const PORT = process.env.PORT || ServerConfig.port || 4000;
 
 server.listen(PORT, async () => {
   try {
     await connectToDatabase();
-    await initRedis();
+    await getMemoryCache();
     printServerBanner({ port: PORT });
   } catch (error) {
     console.error('❌ Error starting server:', error);

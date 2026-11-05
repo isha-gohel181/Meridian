@@ -3,6 +3,7 @@ import { gsap } from 'gsap'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchMyThreads } from '../redux/slices/forumSlice'
 import DashboardHeader from '../components/dashboard/DashboardHeader'
+import DashboardPageHeader from '../components/dashboard/DashboardPageHeader'
 import { Link } from 'react-router-dom'
 import { useLanguage } from '../context/LanguageContext'
 
@@ -60,14 +61,12 @@ const MyForum = () => {
       <main className="pt-24 pb-12 px-6 md:px-12">
         <div className="max-w-[1600px] mx-auto space-y-10">
           
-          {/* Page Header */}
-          <div className="flex flex-col gap-2 forum-reveal opacity-0">
-            <div className="flex items-center gap-4">
-              <h1 className="font-newsreader italic text-4xl md:text-6xl text-slate-900 font-bold tracking-tight">{t('myDiscourse') || 'My Discourse'}</h1>
-              <div className="h-[1px] flex-1 bg-slate-200" />
-            </div>
-            <p className="font-jetbrains text-xs text-amber-800 uppercase tracking-[0.4em] font-black italic">{t('discourseSub') || 'Archive of your community contributions and topics'}</p>
-          </div>
+          <DashboardPageHeader
+            className="forum-reveal opacity-0"
+            eyebrow={t('myForum')}
+            title={t('myDiscourse') || 'My topics'}
+            subtitle={t('discourseSub')}
+          />
 
           {/* Stats Protocol */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 forum-reveal opacity-0">

@@ -1,5 +1,5 @@
 import NewsService from "../service/newsService.js";
-import { initRedis } from "../config/redisClient.js";
+import { getMemoryCache } from "../config/memoryCache.js";
 import mongoose from "mongoose";
 
 // Helper function to generate image URL from file path
@@ -427,8 +427,8 @@ export const createNews = async (req, res) => {
     const news = await NewsService.create(newsData);
 
     // Clear cache
-    const redis = await initRedis();
-    await redis.del("news:*");
+    const cache = await getMemoryCache();
+    await cache.del("news:*");
 
     // Convert to plain object if needed
     let newsResponse = news;
@@ -641,9 +641,9 @@ export const getAllNews = async (req, res) => {
     };
 
     // Cache disabled - always fetch fresh data from database
-    // const redis = await initRedis();
+    // const cache = await getMemoryCache();
     // const cacheKey = `news:all:${JSON.stringify(options)}`;
-    // const cached = await redis.get(cacheKey);
+    // const cached = await cache.get(cacheKey);
 
     // if (cached) {
     //   const cachedData = JSON.parse(cached);
@@ -681,7 +681,7 @@ export const getAllNews = async (req, res) => {
     };
 
     // Cache disabled - no longer caching results
-    // await redis.setEx(cacheKey, 300, JSON.stringify(result)); // 5 minutes
+    // await cache.setEx(cacheKey, 300, JSON.stringify(result)); // 5 minutes
 
     return res.status(200).json({
       success: true,
@@ -706,16 +706,16 @@ export const getNewsById = async (req, res) => {
     const userId = req.user?._id;
 
     // Cache disabled - always fetch fresh data from database
-    // const redis = await initRedis();
+    // const cache = await getMemoryCache();
     // const cacheKey = `news:${id}`;
-    // const cached = await redis.get(cacheKey);
+    // const cached = await cache.get(cacheKey);
 
     let news;
     // if (cached) {
     //   news = JSON.parse(cached);
     // } else {
     news = await NewsService.getById(id);
-    // await redis.setEx(cacheKey, 300, JSON.stringify(news)); // Cache for 5 minutes
+    // await cache.setEx(cacheKey, 300, JSON.stringify(news)); // Cache for 5 minutes
     // }
 
     // Track view and add user interaction status if user is authenticated
@@ -732,7 +732,7 @@ export const getNewsById = async (req, res) => {
         news.userInteraction = interaction;
 
         // Cache disabled - no need to clear cache
-        // await redis.del(cacheKey);
+        // await cache.del(cacheKey);
       } catch (err) {
         console.error("Error tracking view or checking user interaction:", err);
 
@@ -774,16 +774,16 @@ export const getNewsBySlug = async (req, res) => {
     const userId = req.user?._id;
 
     // Cache disabled - always fetch fresh data from database
-    // const redis = await initRedis();
+    // const cache = await getMemoryCache();
     // const cacheKey = `news:slug:${slug}`;
-    // const cached = await redis.get(cacheKey);
+    // const cached = await cache.get(cacheKey);
 
     let news;
     // if (cached) {
     //   news = JSON.parse(cached);
     // } else {
     news = await NewsService.getBySlug(slug);
-    // await redis.setEx(cacheKey, 300, JSON.stringify(news)); // Cache for 5 minutes
+    // await cache.setEx(cacheKey, 300, JSON.stringify(news)); // Cache for 5 minutes
     // }
 
     // Increment views and track user if authenticated
@@ -812,7 +812,7 @@ export const getNewsBySlug = async (req, res) => {
     news = await NewsService.populateUserInteractions(news);
 
     // Cache disabled - no need to clear cache
-    // await redis.del(cacheKey);
+    // await cache.del(cacheKey);
 
     return res.status(200).json({
       success: true,
@@ -1103,10 +1103,10 @@ export const updateNews = async (req, res) => {
     const news = await NewsService.update(id, updateData);
 
     // Clear cache
-    const redis = await initRedis();
-    await redis.del(`news:${id}`);
-    await redis.del(`news:slug:${news.slug}`);
-    await redis.del("news:*");
+    const cache = await getMemoryCache();
+    await cache.del(`news:${id}`);
+    await cache.del(`news:slug:${news.slug}`);
+    await cache.del("news:*");
 
     // Convert to plain object if needed
     let newsResponse = news;
@@ -1137,12 +1137,12 @@ export const deleteNews = async (req, res) => {
     const news = await NewsService.delete(id);
 
     // Clear cache
-    const redis = await initRedis();
-    await redis.del(`news:${id}`);
+    const cache = await getMemoryCache();
+    await cache.del(`news:${id}`);
     if (news.slug) {
-      await redis.del(`news:slug:${news.slug}`);
+      await cache.del(`news:slug:${news.slug}`);
     }
-    await redis.del("news:*");
+    await cache.del("news:*");
 
     return res.status(200).json({
       success: true,
@@ -1245,10 +1245,10 @@ export const incrementNewsStats = async (req, res) => {
     }
 
     // Clear cache for this news item
-    const redis = await initRedis();
-    await redis.del(`news:${id}`);
+    const cache = await getMemoryCache();
+    await cache.del(`news:${id}`);
     if (news?.slug) {
-      await redis.del(`news:slug:${news.slug}`);
+      await cache.del(`news:slug:${news.slug}`);
     }
 
     return res.status(200).json({
@@ -1293,10 +1293,10 @@ export const likeNews = async (req, res) => {
     }
 
     // Clear cache
-    const redis = await initRedis();
-    await redis.del(`news:${id}`);
+    const cache = await getMemoryCache();
+    await cache.del(`news:${id}`);
     if (news?.slug) {
-      await redis.del(`news:slug:${news.slug}`);
+      await cache.del(`news:slug:${news.slug}`);
     }
 
     return res.status(200).json({
@@ -1342,10 +1342,10 @@ export const unlikeNews = async (req, res) => {
     }
 
     // Clear cache
-    const redis = await initRedis();
-    await redis.del(`news:${id}`);
+    const cache = await getMemoryCache();
+    await cache.del(`news:${id}`);
     if (news?.slug) {
-      await redis.del(`news:slug:${news.slug}`);
+      await cache.del(`news:slug:${news.slug}`);
     }
 
     return res.status(200).json({
@@ -1391,10 +1391,10 @@ export const toggleLike = async (req, res) => {
     news = await NewsService.populateUserInteractions(news);
 
     // Clear cache
-    const redis = await initRedis();
-    await redis.del(`news:${id}`);
+    const cache = await getMemoryCache();
+    await cache.del(`news:${id}`);
     if (news?.slug) {
-      await redis.del(`news:slug:${news.slug}`);
+      await cache.del(`news:slug:${news.slug}`);
     }
 
     return res.status(200).json({
@@ -1433,10 +1433,10 @@ export const viewNews = async (req, res) => {
     news = await NewsService.populateUserInteractions(news);
 
     // Clear cache
-    const redis = await initRedis();
-    await redis.del(`news:${id}`);
+    const cache = await getMemoryCache();
+    await cache.del(`news:${id}`);
     if (news?.slug) {
-      await redis.del(`news:slug:${news.slug}`);
+      await cache.del(`news:slug:${news.slug}`);
     }
 
     return res.status(200).json({
@@ -1473,10 +1473,10 @@ export const shareNews = async (req, res) => {
     news = await NewsService.populateUserInteractions(news);
 
     // Clear cache
-    const redis = await initRedis();
-    await redis.del(`news:${id}`);
+    const cache = await getMemoryCache();
+    await cache.del(`news:${id}`);
     if (news?.slug) {
-      await redis.del(`news:slug:${news.slug}`);
+      await cache.del(`news:slug:${news.slug}`);
     }
 
     return res.status(200).json({
@@ -1523,10 +1523,10 @@ export const likeNewsByUserId = async (req, res) => {
     }
 
     // Clear cache
-    const redis = await initRedis();
-    await redis.del(`news:${id}`);
+    const cache = await getMemoryCache();
+    await cache.del(`news:${id}`);
     if (news?.slug) {
-      await redis.del(`news:slug:${news.slug}`);
+      await cache.del(`news:slug:${news.slug}`);
     }
 
     return res.status(200).json({
@@ -1572,10 +1572,10 @@ export const viewNewsByUserId = async (req, res) => {
     }
 
     // Clear cache
-    const redis = await initRedis();
-    await redis.del(`news:${id}`);
+    const cache = await getMemoryCache();
+    await cache.del(`news:${id}`);
     if (news?.slug) {
-      await redis.del(`news:slug:${news.slug}`);
+      await cache.del(`news:slug:${news.slug}`);
     }
 
     return res.status(200).json({
@@ -1621,10 +1621,10 @@ export const shareNewsByUserId = async (req, res) => {
     }
 
     // Clear cache
-    const redis = await initRedis();
-    await redis.del(`news:${id}`);
+    const cache = await getMemoryCache();
+    await cache.del(`news:${id}`);
     if (news?.slug) {
-      await redis.del(`news:slug:${news.slug}`);
+      await cache.del(`news:slug:${news.slug}`);
     }
 
     return res.status(200).json({
@@ -1921,8 +1921,8 @@ export const fetchWordPressNews = async (req, res) => {
     const result = await NewsService.fetchFromWordPress(url, 500);
 
     // Clear cache
-    const redis = await initRedis();
-    await redis.del("news:*");
+    const cache = await getMemoryCache();
+    await cache.del("news:*");
 
     return res.status(200).json({
       success: true,

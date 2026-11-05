@@ -1,5 +1,5 @@
 import CourseService from "../service/CourseService.js";
-import { initRedis } from "../config/redisClient.js";
+import { getMemoryCache } from "../config/memoryCache.js";
 import Course from '../models/Course.js';
 import Module from '../models/Module.js';
 import Lesson from '../models/Lesson.js';
@@ -421,7 +421,7 @@ export const createCourse = async (req, res) => {
     //   updatedAt: course.updatedAt,
     // };
 
-    // await redis.setEx(`course:${courseId}`, 3600, JSON.stringify(courseCacheData));
+    // await cache.setEx(`course:${courseId}`, 3600, JSON.stringify(courseCacheData));
     // //console.log('🗂️ Redis cache updated for course:', courseId);
     // //console.log("Created course:", course);
     return res.status(201).json({
@@ -1661,10 +1661,10 @@ export const updateCourse = async (req, res) => {
     }
 
     try {
-      const redis = await initRedis();
-      if (redis) {
+      const cache = await getMemoryCache();
+      if (cache) {
         const courseId = updatedCourse._id.toString();
-        await redis.setEx(`course:${courseId}`, 3600, JSON.stringify(updatedCourse));
+        await cache.setEx(`course:${courseId}`, 3600, JSON.stringify(updatedCourse));
       }
     } catch (cacheErr) {
       console.warn("⚠️ Course cache update skipped:", cacheErr?.message);
@@ -1721,8 +1721,8 @@ export const deleteCourse = async (req, res) => {
 
     const deletedCourse = await courseService.softDeleteById(id, req.user);
 
-    const redis = await initRedis();
-    await redis.del(`course:${id}`);
+    const cache = await getMemoryCache();
+    await cache.del(`course:${id}`);
     // //console.log("🗑️ Course cache cleared:", id);
 
     return res.status(200).json({

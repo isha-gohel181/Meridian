@@ -1,6 +1,6 @@
 
 import AssignmentSubmissionService from "../service/assignmentSubmissionService.js";
-import { initRedis } from "../config/redisClient.js";
+import { getMemoryCache } from "../config/memoryCache.js";
 
 const service = new AssignmentSubmissionService();
 
@@ -15,9 +15,9 @@ export const submitAssignment = async (req, res) => {
 
     const submission = await service.submit(payload); // Fixed: Call submit on service instance
 
-    const redis = await initRedis();
-    await redis.del(`submissions:user:${req.user._id}`);
-    await redis.del(`submissions:assignment:${payload.assignmentId}`);
+    const cache = await getMemoryCache();
+    await cache.del(`submissions:user:${req.user._id}`);
+    await cache.del(`submissions:assignment:${payload.assignmentId}`);
 
     res.status(201).json({
       success: true,
@@ -47,8 +47,8 @@ export const getMySubmissionByAssignment = async (req, res) => {
   try {
     const { assignmentId } = req.params;
     // const cacheKey = `submission:${req.user._id}:${assignmentId}`;
-    // const redis = await initRedis();
-    // const cached = await redis.get(cacheKey);
+    // const cache = await getMemoryCache();
+    // const cached = await cache.get(cacheKey);
 
     // if (cached) {
     //   return res.status(200).json({
@@ -67,7 +67,7 @@ export const getMySubmissionByAssignment = async (req, res) => {
       });
     }
 
-    // await redis.setEx(cacheKey, 300, JSON.stringify(submission));
+    // await cache.setEx(cacheKey, 300, JSON.stringify(submission));
 
     res.status(200).json({
       success: true,
@@ -83,8 +83,8 @@ export const getAllSubmissionsForAssignment = async (req, res) => {
   try {
     const { assignmentId } = req.params;
     const cacheKey = `submissions:assignment:${assignmentId}`;
-    const redis = await initRedis();
-    const cached = await redis.get(cacheKey);
+    const cache = await getMemoryCache();
+    const cached = await cache.get(cacheKey);
 
     if (cached) {
       return res.status(200).json({
@@ -96,7 +96,7 @@ export const getAllSubmissionsForAssignment = async (req, res) => {
     }
 
     const submissions = await service.getAllByAssignment(assignmentId);
-    await redis.setEx(cacheKey, 300, JSON.stringify(submissions));
+    await cache.setEx(cacheKey, 300, JSON.stringify(submissions));
 
     res.status(200).json({
       success: true,
@@ -119,8 +119,8 @@ export const gradeSubmission = async (req, res) => {
       });
     }
 
-    const redis = await initRedis();
-    await redis.del("submissions:*");
+    const cache = await getMemoryCache();
+    await cache.del("submissions:*");
 
     res.status(200).json({
       success: true,
@@ -143,8 +143,8 @@ export const deleteSubmission = async (req, res) => {
       });
     }
 
-    const redis = await initRedis();
-    await redis.del("submissions:*");
+    const cache = await getMemoryCache();
+    await cache.del("submissions:*");
 
     res.status(200).json({
       success: true,
@@ -200,8 +200,8 @@ export const getSubmissionById = async (req, res) => {
   try {
     const { id } = req.params;
     const cacheKey = `submission:${id}`;
-    const redis = await initRedis();
-    const cached = await redis.get(cacheKey);
+    const cache = await getMemoryCache();
+    const cached = await cache.get(cacheKey);
 
     if (cached) {
       return res.status(200).json({
@@ -221,7 +221,7 @@ export const getSubmissionById = async (req, res) => {
       });
     }
 
-    await redis.setEx(cacheKey, 300, JSON.stringify(submission));
+    await cache.setEx(cacheKey, 300, JSON.stringify(submission));
     res.status(200).json({
       success: true,
       message: "Submission fetched successfully",

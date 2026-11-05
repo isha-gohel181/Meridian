@@ -19,16 +19,17 @@
 
 .login-right {
   flex: 1.2;
-  background-color: #F1F5F9;
+  background: linear-gradient(165deg, #fff9f3 0%, #fdebd5 42%, #f5ebe0 100%);
   position: sticky;
   top: 0;
   height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 4rem;
+  align-items: center;
+  padding: 2.5rem 3rem;
   overflow: hidden;
-  border-left: 1px solid rgba(15, 23, 42, 0.08);
+  border-left: 1px solid rgba(104, 39, 1, 0.08);
   align-self: flex-start;
 }
 
@@ -55,11 +56,12 @@
 }
 
 .login-subtitle {
-  font-size: 0.65rem;
-  letter-spacing: 0.2em;
+  font-family: var(--font-montserrat);
+  font-size: 0.875rem;
+  line-height: 1.55;
   color: var(--color-description);
   margin-bottom: 2.5rem;
-  text-transform: uppercase;
+  max-width: 22rem;
 }
 
 .google-btn {
