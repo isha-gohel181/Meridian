@@ -133,6 +133,46 @@ textarea,
   font-style: normal;
 }
 
+/* Course detail — Quill / rich description on cream background */
+.course-detail-prose {
+  font-family: var(--font-montserrat);
+  font-size: 0.9375rem;
+  line-height: 1.75;
+  color: var(--color-description);
+  max-width: 48rem;
+}
+
+.course-detail-prose p,
+.course-detail-prose li {
+  margin-bottom: 0.75rem;
+}
+
+.course-detail-prose p:last-child,
+.course-detail-prose ul:last-child,
+.course-detail-prose ol:last-child {
+  margin-bottom: 0;
+}
+
+.course-detail-prose strong {
+  color: var(--color-normal);
+  font-weight: 600;
+}
+
+.course-detail-prose h1,
+.course-detail-prose h2,
+.course-detail-prose h3 {
+  font-family: var(--font-newsreader);
+  color: var(--color-normal);
+  font-weight: 300;
+  margin-top: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.course-detail-prose ul,
+.course-detail-prose ol {
+  padding-left: 1.25rem;
+}
+
 @utility reveal-up {
   @apply opacity-0 translate-y-[60px] blur-[15px];
 }

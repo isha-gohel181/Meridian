@@ -9,7 +9,6 @@ import RollingText from '../components/RollingText'
 import LogoMarquee from '../components/LogoMarquee'
 import CourseHeroDetail from '../components/CourseHeroDetail'
 import ComparisonSection from '../components/ComparisonSection'
-import EasyMoneySection from '../components/EasyMoneySection'
 import BonusSection from '../components/BonusSection'
 import FAQSection from '../components/FAQSection'
 import CertificatePricingSection from '../components/CertificatePricingSection'
@@ -108,7 +107,10 @@ const CourseDetail = () => {
           metaDesc.setAttribute('name', 'description')
           document.head.appendChild(metaDesc)
         }
-        metaDesc.setAttribute('content', course.seoMetaDescription || course.subtitle || course.description || '')
+        const descPlain = typeof course.description === 'string'
+          ? course.description.replace(/<[^>]*>?/gm, '').trim()
+          : ''
+        metaDesc.setAttribute('content', course.seoMetaDescription || course.subtitle || descPlain || '')
       }
     }
   }, [course, id])
@@ -184,11 +186,25 @@ const CourseDetail = () => {
     };
   }) || []
 
+  const sortedLandingSections = (course.landingPageSections || [])
+    .slice()
+    .sort((a, b) => (a.order ?? a.sortOrder ?? 0) - (b.order ?? b.sortOrder ?? 0))
+
+  const visibleLandingSections = sortedLandingSections.filter((s) => s.data?.show !== false)
+  const hasVisibleOverview = visibleLandingSections.some((s) => s.type === 'overview')
+
+  const legacyOverview = course.overviewSection?.show ? course.overviewSection : undefined
+
   return (
     <div ref={containerRef} className="min-h-screen bg-dark pt-36 xl:pb-24 px-4 md:px-12 lg:px-20 overflow-x-clip cursor-default">
 
-      {/* Dynamic Sections from API */}
-      {course.landingPageSections?.length > 0 && course.landingPageSections.filter(s => s.data?.show !== false).map((section, idx) => {
+      {/* Course hero + description from admin (when landing overview is hidden) */}
+      {!hasVisibleOverview && (
+        <CourseHeroDetail course={course} section={legacyOverview} />
+      )}
+
+      {/* Dynamic landing sections (admin toggled visible) */}
+      {visibleLandingSections.map((section, idx) => {
           switch (section.type) {
             case 'overview':
               return <CourseHeroDetail key={section._id || idx} course={course} section={section.data} />
@@ -201,19 +217,11 @@ const CourseDetail = () => {
             case 'solution':
               return <SolutionSection key={section._id || idx} course={course} section={section.data} />
             case 'guarantee':
-              return null // Moved below testimonials
+              return null
             default:
               return null
           }
       })}
-
-      {!course.landingPageSections?.length && (
-        <>
-          <CourseHeroDetail course={course} />
-          <ComparisonSection course={course} />
-          <EasyMoneySection course={course} />
-        </>
-      )}
 
       {/* Always show Curriculum (The Blueprint) if modules exist */}
       {dynamicCurriculum.length > 0 && (
@@ -292,9 +300,11 @@ const CourseDetail = () => {
                                 <h4 className="font-newsreader italic text-3xl md:text-4xl text-normal font-extralight leading-none tracking-tight">
                                   {lesson.title}
                                 </h4>
+                                {lesson.description ? (
                                 <p className="font-montserrat text-description/70 text-sm md:text-base lg:text-lg leading-relaxed max-w-3xl break-words">
-                                  {lesson.description || "In-depth training session focused on mastering this core concept through practical application."}
+                                  {lesson.description}
                                 </p>
+                                ) : null}
                               </div>
                               
                               {displayImage && (

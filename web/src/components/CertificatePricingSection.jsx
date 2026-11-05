@@ -4,6 +4,7 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/all'
 import { CERTIFICATE_DEFAULT_IMAGE } from '../constants/brand'
 import { useLanguage } from '../context/LanguageContext'
+import { resolveCourseThumbnail } from '../utils/courseThumbnail'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -19,7 +20,7 @@ const CertificatePricingSection = ({ course }) => {
    const containerRef = useRef(null)
    const navigate = useNavigate()
 
-   const certificateSrc = CERTIFICATE_DEFAULT_IMAGE
+   const certificateSrc = resolveCourseThumbnail(course?.certificateImage) || CERTIFICATE_DEFAULT_IMAGE
 
    useEffect(() => {
       const ctx = gsap.context(() => {

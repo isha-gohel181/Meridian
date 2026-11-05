@@ -154,17 +154,6 @@ const courseSlice = createSlice({
           const price = priceNum ? String(priceNum) : null;
           const salePrice = (saleNum && (!priceNum || saleNum < priceNum)) ? String(saleNum) : null;
           
-          // Strip HTML from descriptions if they are strings
-          let description = course.description;
-          if (typeof description === 'string') {
-            description = description.replace(/<[^>]*>?/gm, '');
-          }
-          
-          let shortDescription = course.shortDescription;
-          if (typeof shortDescription === 'string') {
-            shortDescription = shortDescription.replace(/<[^>]*>?/gm, '');
-          }
-
           // Handle comparison section content if it's in EditorJS format
           const processEditorJS = (content) => {
             if (!content || !content.blocks) return '';
@@ -179,8 +168,6 @@ const courseSlice = createSlice({
             ...course,
             salePrice,
             price,
-            description,
-            shortDescription,
             comparisonText: processEditorJS(course.comparisonSection?.content),
             benefitsText: processEditorJS(course.benefitsSection?.content)
           };
