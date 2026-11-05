@@ -1,8 +1,9 @@
+import { getApiBase } from '../../utils/apiBase.js';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import authorizedFetch from '../../utils/apiClient';
 // socketService will be dynamically imported in thunks to avoid early evaluation
 
-const API_BASE = import.meta.env.VITE_BASE_URL || 'https://api.xpertqa.in';
+const API_BASE = getApiBase();
 
 export const connectSocket = createAsyncThunk('chat/connectSocket', async (_, { rejectWithValue, dispatch, getState }) => {
   try {

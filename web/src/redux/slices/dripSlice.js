@@ -65,7 +65,7 @@ export const fetchLessonsStatus = createAsyncThunk(
       }
 
       const unlocked = (checkResp?.canUnlock === true) || (checkResp?.unlocked === true) || (checkResp?.allowed === true) || (checkResp?.isLocked === false) || false;
-      const completed = progress >= 80 || progressResp?.data?.completed || false;
+      const completed = progress >= 95 || progressResp?.data?.completed || false;
 
       return { lessonId: targetId, progress, unlocked, completed };
     };

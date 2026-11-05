@@ -19,6 +19,8 @@ import {
 } from "../icons";
 import { useSidebar } from "../context/SidebarContext";
 import { Tag, UserCircle2Icon, Bell, MessageCircle, Search, X } from "lucide-react";
+import BrandLogo from "../components/common/BrandLogo";
+import { BRAND_SIDEBAR_CLASS } from "../constants/brand";
 
 type NavSubItem = {
   name: string;
@@ -122,7 +124,7 @@ const navItems: NavItem[] = [
   },
   {
     icon: <UserCircle2Icon />,
-    name: "Student Queries",
+    name: "Contact Queries",
     path: "/queries/all"
   },
   {
@@ -630,7 +632,7 @@ const AppSidebar: React.FC = () => {
 
   return (
     <aside
-      className={`fixed mt-16 flex flex-col lg:mt-0 top-0 px-4 left-0 bg-[#1878C0] text-white h-screen transition-all duration-300 ease-in-out z-50 border-r border-blue-400/20 shadow-xl
+      className={`fixed mt-16 flex flex-col lg:mt-0 top-0 px-4 left-0 ${BRAND_SIDEBAR_CLASS} text-white h-screen transition-all duration-300 ease-in-out z-50 border-r border-white/10 shadow-xl
         ${isExpanded || isMobileOpen
           ? "w-[290px]"
           : isHovered
@@ -646,19 +648,9 @@ const AppSidebar: React.FC = () => {
         className="py-5 flex items-center justify-center border-b border-white/15 mb-2"
       >
         <Link to="/" className="flex items-center justify-center w-full">
-          {isExpanded || isHovered || isMobileOpen ? (
-            <img
-              className="h-16 w-auto max-w-[200px] object-contain brightness-0 invert drop-shadow-md transition-transform duration-300 hover:scale-105"
-              src="/images/logo/osa_logo.png"
-              alt="Xpertqa Logo"
-            />
-          ) : (
-            <img
-              className="h-11 w-auto max-w-[48px] object-contain brightness-0 invert drop-shadow-md"
-              src="/images/logo/osa_logo.png"
-              alt="Xpertqa Logo"
-            />
-          )}
+          <BrandLogo
+            size={isExpanded || isHovered || isMobileOpen ? "md" : "sm"}
+          />
         </Link>
       </div>
 
@@ -674,7 +666,9 @@ const AppSidebar: React.FC = () => {
             />
             <input
               id="sidebar-menu-search"
-              type="search"
+              type="text"
+              role="searchbox"
+              autoComplete="off"
               value={menuSearch}
               onChange={(e) => setMenuSearch(e.target.value)}
               placeholder="Search menu..."

@@ -10,6 +10,7 @@ import Course from '../models/Course.js';
 import CourseService from "../service/CourseService.js";
 import { evaluateDripCondition, determineUnlockStatus, evaluateUnlockConditions } from './unlockConditionChecker.js';
 import mongoose from 'mongoose';
+import { emitCourseProgressRefresh } from '../utils/progressSocketNotify.js';
 
 const courseService = new CourseService();
 
@@ -71,6 +72,12 @@ export const updateLessonProgress = async (req, res) => {
     //console.log(`Updating progress for user ${userId}, lesson ${lessonId}`, updateData);
 
     const progress = await progressService.updateLessonProgress(userId, lessonId, courseId, updateData);
+
+    emitCourseProgressRefresh(userId, {
+      courseId,
+      lessonId,
+      progressPercentage: progress?.progressPercentage,
+    });
 
     res.status(200).json({
       success: true,

@@ -1,3 +1,4 @@
+import { getApiBase } from "../utils/apiBase";
 import React, { createContext, useContext, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 
@@ -23,7 +24,7 @@ interface TrackerContextType {
 
 const TrackerContext = createContext<TrackerContextType | null>(null);
 
-const rawBase = import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_BASE_URL || 'https://api.xpertqa.in';
+const rawBase = import.meta.env.VITE_API_BASE_URL || getApiBase();
 const BASE = rawBase.endsWith('/') ? rawBase.slice(0, -1) : rawBase;
 
 export const useAdminTracker = () => {

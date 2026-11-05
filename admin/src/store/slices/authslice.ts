@@ -12,12 +12,10 @@ import type {
   PasswordResetData,
 } from "../../types/auth";
 
+import { getApiBase } from "../../utils/apiBase";
+
 // API base URL
-const API_BASE_URL = (
-  import.meta.env.VITE_API_BASE_URL ||
-  import.meta.env.VITE_BASE_URL ||
-  "https://api.xpertqa.in"
-).replace(/\/+$/, "");
+const API_BASE_URL = getApiBase();
 
 // Helper function to handle API errors
 const handleApiError = (error: unknown): string => {

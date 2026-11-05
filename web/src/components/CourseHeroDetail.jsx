@@ -114,7 +114,7 @@ const CourseHeroDetail = ({ course, section }) => {
 
          {/* RIGHT: FLOATING MATRIX FORM */}
          <div className="lg:col-span-5 relative perspective-1000">
-            <div className="reveal-form relative z-10 bg-white/[0.01] border border-border backdrop-blur-3xl p-8 md:p-10 lg:p-12 rounded-none shadow-2xl relative overflow-hidden group">
+            <div className="reveal-form relative z-10 bg-white/[0.03] border border-white/10 backdrop-blur-3xl p-8 md:p-10 lg:p-12 rounded-2xl shadow-2xl relative overflow-hidden group">
                {/* Ambient inner glow */}
                <div className="absolute -top-20 -right-20 w-48 h-48 bg-accent/10 blur-[60px] rounded-full pointer-events-none" />
 
@@ -147,11 +147,11 @@ const CourseHeroDetail = ({ course, section }) => {
                            </div>
                         </div>
                         <div className="relative group/input pt-2">
-                           <textarea rows="2" placeholder="WHY DO YOU WANT TO JOIN?" className="w-full bg-white/[0.02] border border-white/10 p-4 font-jetbrains text-[9px] tracking-widest text-normal uppercase focus:outline-none focus:border-accent transition-all placeholder:text-description resize-none rounded-none" />
+                           <textarea rows="2" placeholder="WHY DO YOU WANT TO JOIN?" className="w-full bg-white/[0.02] border border-white/10 p-4 font-jetbrains text-[9px] tracking-widest text-normal uppercase focus:outline-none focus:border-accent transition-all placeholder:text-description resize-none rounded-xl" />
                         </div>
                      </div>
 
-                     <button className="w-full group/btn relative bg-accent py-5 overflow-hidden transition-all duration-700 hover:scale-[1.02] active:scale-95">
+                     <button className="w-full group/btn relative bg-accent py-5 rounded-xl overflow-hidden transition-all duration-700 hover:scale-[1.02] active:scale-95">
                         <div className="absolute inset-0 bg-white/20 translate-y-full group-hover/btn:translate-y-0 transition-transform duration-700" />
                         <span className="relative z-10 font-jetbrains text-dark text-[10px] font-black tracking-[0.5em] uppercase">
                            REQUEST CALLBACK

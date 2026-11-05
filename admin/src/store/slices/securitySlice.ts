@@ -1,7 +1,8 @@
+import { getApiBase } from "../../utils/apiBase";
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const API_URL = `${(import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_BASE_URL || 'https://api.xpertqa.in').replace(/\/+$/, '')}/security/incidents`;
+const API_URL = `${(import.meta.env.VITE_API_BASE_URL || getApiBase()).replace(/\/+$/, '')}/security/incidents`;
 
 export const fetchIncidents = createAsyncThunk(
   'security/fetchIncidents',

@@ -118,7 +118,7 @@ const Signup = () => {
       <div className="signup-left">
         <div className="flex items-center justify-between w-full mb-8">
           <Link to="/" className="signup-logo flex items-center gap-2.5">
-            <img src="/logo/osa_logo.png" alt="Xpertqa Logo" className="h-11 w-auto object-contain" />
+            <img src="/dental_acadmy/dental.jpeg" alt="32 Pearls Dental Academy" className="h-11 w-auto object-contain" />
           </Link>
         </div>
 
@@ -308,7 +308,7 @@ const Signup = () => {
         </div>
 
         <div className="signup-footer">
-          © {new Date().getFullYear()} XPERTQA. ALL RIGHTS RESERVED.
+          © {new Date().getFullYear()} 32 PEARLS DENTAL ACADEMY. ALL RIGHTS RESERVED.
         </div>
       </div>
 
@@ -316,18 +316,18 @@ const Signup = () => {
       <div className="signup-right">
         <div className="system-status">
           <div className="status-dot"></div>
-          XPERTQA LEARNING PORTAL
+          32 PEARLS DENTAL ACADEMY LEARNING PORTAL
         </div>
 
         <div className="bg-text-wrap">
-          <div className="bg-text">Build.</div>
-          <div className="bg-text">Test.</div>
+          <div className="bg-text">Learn.</div>
+          <div className="bg-text">Practice.</div>
           <div className="bg-text">Excel.</div>
         </div>
 
         <div className="testimonial-card">
           <p className="testimonial-quote">
-            "Xpertqa offers industry-standard computer programming, consultancy, and quality assurance education. It accelerated our career success."
+            "32 Pearls Dental Academy delivers practical orthodontic education—from case selection and treatment planning to hands-on mechanics and ongoing mentor guidance."
           </p>
         </div>
 
@@ -343,7 +343,7 @@ const Signup = () => {
         </div>
 
         <p className="right-description">
-          Unlock your life's true potential with personalized Kundli insights, space harmonization, and positive daily energy.
+          Join a learning community focused on clinical orthodontic excellence—built for dental practitioners who want theory and practice aligned.
         </p>
 
         <div className="nav-arrows">

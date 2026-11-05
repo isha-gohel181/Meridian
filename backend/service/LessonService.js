@@ -7,9 +7,9 @@ export default class LessonService {
 
   async createLesson(data) {
     try {
-      // Ensure ismobileOnly is true unless explicitly set to false
+      // Desktop + mobile by default; admin can mark phone-only in drip settings
       if (typeof data.ismobileOnly === 'undefined') {
-        data.ismobileOnly = true;
+        data.ismobileOnly = false;
       }
       const createdLesson = await this.lessonRepository.create(data);
       if (!createdLesson) {

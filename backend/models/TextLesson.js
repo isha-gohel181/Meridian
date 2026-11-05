@@ -27,6 +27,10 @@ const textLessonSchema = new mongoose.Schema({
       type: String,
       required: true
     },
+    file: {
+      type: String,
+      trim: true
+    },
     uploadedAt: {
       type: Date,
       default: Date.now
@@ -39,7 +43,7 @@ const textLessonSchema = new mongoose.Schema({
   content: {
     type: String,
     required: true,
-    minlength: 50
+    minlength: 1
   },
   course: {
     type: mongoose.Schema.Types.ObjectId,

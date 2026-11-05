@@ -1,3 +1,4 @@
+import { getApiBase } from '../utils/apiBase.js';
 import React, { useEffect, useRef, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
@@ -10,8 +11,6 @@ import CourseHeroDetail from '../components/CourseHeroDetail'
 import ComparisonSection from '../components/ComparisonSection'
 import EasyMoneySection from '../components/EasyMoneySection'
 import BonusSection from '../components/BonusSection'
-import TestimonialsScroll from '../components/TestimonialsScroll'
-import GuaranteeSection from '../components/GuaranteeSection'
 import FAQSection from '../components/FAQSection'
 import CertificatePricingSection from '../components/CertificatePricingSection'
 import BenefitsSection from '../components/BenefitsSection'
@@ -99,7 +98,7 @@ const CourseDetail = () => {
     if (course) {
       // Set dynamic page title
       if (course.title) {
-        document.title = `${course.title} | Xpertqa`
+        document.title = `${course.title} | 32 Pearls Dental Academy`
       }
       // Set dynamic SEO meta description for search engines
       if (course.seoMetaDescription || course.subtitle || course.description) {
@@ -146,7 +145,7 @@ const CourseDetail = () => {
         if (rawUrl.startsWith('http') || rawUrl.startsWith('blob:')) {
             apiImage = rawUrl;
         } else {
-            const rawBase = import.meta.env.VITE_IMAGE_URL || import.meta.env.VITE_BASE_URL || import.meta.env.VITE_API_BASE || 'https://api.xpertqa.in';
+            const rawBase = import.meta.env.VITE_IMAGE_URL || getApiBase();
             const baseUrl = rawBase.replace(/\/api\/v1\/?$/, '');
             apiImage = `${baseUrl}${rawUrl.startsWith('/') ? '' : '/'}${rawUrl}`;
         }
@@ -168,7 +167,7 @@ const CourseDetail = () => {
               if (rawUrl.startsWith('http') || rawUrl.startsWith('blob:')) {
                   lessonImage = rawUrl;
               } else {
-                  const rawBase = import.meta.env.VITE_IMAGE_URL || import.meta.env.VITE_BASE_URL || import.meta.env.VITE_API_BASE || 'https://api.xpertqa.in';
+                  const rawBase = import.meta.env.VITE_IMAGE_URL || getApiBase();
                   const baseUrl = rawBase.replace(/\/api\/v1\/?$/, '');
                   lessonImage = `${baseUrl}${rawUrl.startsWith('/') ? '' : '/'}${rawUrl}`;
               }
@@ -322,9 +321,9 @@ const CourseDetail = () => {
 
       {/* Global Static/Common Sections */}
       <BonusSection course={course} />
-      <TestimonialsScroll reviews={course.reviews} />
-      <GuaranteeSection />
-      <FAQSection course={course} />
+      {(course?.faqs?.length > 0 || course?.faq?.length > 0) && (
+        <FAQSection course={course} />
+      )}
       <div id="pricing-section" className="scroll-mt-32">
         <CertificatePricingSection course={course} />
       </div>

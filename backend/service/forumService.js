@@ -204,6 +204,15 @@ export default class ForumService {
       throw error;
     }
   }
+
+  async getForumStats() {
+    try {
+      return await this.forumRepository.getForumStats();
+    } catch (error) {
+      console.error('ForumService: Error in getForumStats:', error);
+      throw error;
+    }
+  }
 async getAllTags(courseId = null) {
   try {
     return await this.forumRepository.findAllTags(courseId);

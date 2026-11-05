@@ -44,12 +44,11 @@ router.delete(
   deleteFilter
 );
 
-// ✅ Public routes (no token needed)
+// ✅ Public routes (no token needed) — specific paths before /:id
 router.get('/', getAllFilters);
-router.get('/:id', getFilterById);
-
 router.get('/options/category/:categoryId', getFilterOptionsByCategory);
 router.get('/subcategories/by-category/:categoryId', getSubCategoriesByCategory);
+router.get('/:id', getFilterById);
 
 
 

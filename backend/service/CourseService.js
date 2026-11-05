@@ -134,14 +134,16 @@ class CourseService {
   }
 
   //updateCoursePlans
-  async updateCoursePlans(courseId, plans) {
+  async updateCoursePlans(courseId, plans = []) {
     try {
       if (!mongoose.Types.ObjectId.isValid(courseId)) {
         throw new Error("Invalid course ID format");
       }
-      // Validate each plan and update or create
+
+      const keptPlanIds = [];
+
       for (const plan of plans) {
-        if (!plan.name || !plan.price || !plan.duration || !plan.durationType) {
+        if (!plan.name || plan.price === undefined || plan.price === '' || !plan.duration || !plan.durationType) {
           throw new Error("Invalid course plan data");
         }
         if (!["Month", "Year", "Day"].includes(plan.durationType)) {
@@ -153,6 +155,7 @@ class CourseService {
         if (isNaN(plan.duration) || plan.duration <= 0) {
           throw new Error("Invalid duration in course plan");
         }
+
         const coursePlanData = {
           courseId,
           name: plan.name,
@@ -163,18 +166,30 @@ class CourseService {
           salePrice: plan.salePrice ? Number(plan.salePrice) : 0,
           status: plan.status || 'active'
         };
-        if (plan._id) {
-          // Update existing plan
-          await CoursePlan.findOneAndUpdate(
-            { _id: plan._id, courseId },
+
+        const planId =
+          plan._id && mongoose.Types.ObjectId.isValid(String(plan._id))
+            ? String(plan._id)
+            : null;
+
+        if (planId) {
+          const updated = await CoursePlan.findOneAndUpdate(
+            { _id: planId, courseId },
             { $set: coursePlanData },
             { new: true, runValidators: true }
           );
+          if (updated) keptPlanIds.push(updated._id);
         } else {
-          // Create new plan
-          await CoursePlan.create(coursePlanData);
+          const created = await CoursePlan.create(coursePlanData);
+          keptPlanIds.push(created._id);
         }
       }
+
+      const deleteQuery = { courseId };
+      if (keptPlanIds.length > 0) {
+        deleteQuery._id = { $nin: keptPlanIds };
+      }
+      await CoursePlan.deleteMany(deleteQuery);
     } catch (error) {
       console.error("Error updating course plans:", error);
       throw new Error("Failed to update course plans");
@@ -196,7 +211,6 @@ class CourseService {
   async getAll(options = {}) {
     try {
 
-      console?.log("ghjk", options)
       // If caller provided a top-level courseposition flag, forward into filter
       if (options.courseposition === true || options.courseposition === 'true') {
         options.filter = options.filter || {};

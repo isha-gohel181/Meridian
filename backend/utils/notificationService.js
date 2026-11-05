@@ -41,7 +41,7 @@ class NotificationService {
             },
             android: {
                 notification: {
-                    channelId: "Xpertqa",
+                    channelId: "32PearlsDental",
                 },
             },
             apns: {

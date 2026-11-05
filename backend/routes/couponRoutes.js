@@ -3,6 +3,7 @@ import {
   createCoupon,
   getCouponById,
   getAllCoupons,
+  getActiveCouponsForCheckout,
   updateCoupon,
   deleteCoupon,
   applyCoupon,
@@ -13,6 +14,9 @@ import passport from 'passport';
 import { isAdmin } from '../middlewares/isAdmin.js';
 
 const couponRouter = express.Router();
+
+// Public: active coupons for checkout (optional ?courseId=)
+couponRouter.get('/active', getActiveCouponsForCheckout);
 
 // Get all coupons (admin only) - must come before /:id route
 couponRouter.get(

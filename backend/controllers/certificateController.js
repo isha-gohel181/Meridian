@@ -10,6 +10,26 @@ import fs from "fs";
 import path from "path";
 import CourseEnrollment from "../models/CourseEnrollment.js";
 import { hasAdminRole } from "../middlewares/isAdmin.js";
+import { CERTIFICATE_ORGANIZATION_DEFAULT } from "../utils/appBrand.js";
+import {
+  getPearlsCertificateBackgroundHtml,
+  PEARLS_CERTIFICATE_BG_REL,
+} from "../utils/pearlsCertificateTheme.js";
+
+async function resolvePlatformNameForCertificate(certificate) {
+  let platformName = CERTIFICATE_ORGANIZATION_DEFAULT;
+  const courseId = certificate.course_id?._id || certificate.course_id;
+  if (courseId) {
+    const course = await courseProgressModel
+      .findById(courseId)
+      .select("certificateOrganization")
+      .lean();
+    if (course?.certificateOrganization?.trim()) {
+      platformName = course.certificateOrganization.trim();
+    }
+  }
+  return platformName;
+}
 
 export const createCertificate = async (req, res) => {
   try {
@@ -416,8 +436,23 @@ function renderTemplate(template, elements, data) {
         value = value
           .replace("[student_name]", data.student_name || "")
           .replace("[instructor_name]", data.instructor_name || "")
-          .replace("[platform_name]", "Anshul") // Hardcoded in old logic, keeping consistency
-          .replace("[date]", data.date ? new Date(data.date).toLocaleDateString() : new Date().toLocaleDateString());
+          .replace("[platform_name]", data.platform_name || CERTIFICATE_ORGANIZATION_DEFAULT)
+          .replace("[serial_number]", data.serial_number || "")
+          .replace(
+            "[date]",
+            data.date
+              ? new Date(data.date).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })
+              : new Date().toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })
+          )
+          .replace("[user_certificate_additional]", data.user_certificate_additional || "");
       }
 
       // Calculate positions as percentages to be resolution independent
@@ -469,10 +504,12 @@ function renderTemplate(template, elements, data) {
     });
   }
 
-  // Background Image Handling
-  const backgroundImageUrl = template.image
+  let backgroundImageUrl = template.image
     ? template.image.replace(/\\/g, "/")
-    : null;
+    : PEARLS_CERTIFICATE_BG_REL;
+  if (backgroundImageUrl.toLowerCase().endsWith(".svg")) {
+    backgroundImageUrl = PEARLS_CERTIFICATE_BG_REL;
+  }
 
   let backgroundImgTag = "";
   if (backgroundImageUrl) {
@@ -480,8 +517,7 @@ function renderTemplate(template, elements, data) {
     // Use file protocol to avoid server round-trip/deadlock
     backgroundImgTag = `<img src="file://${bgPath}" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0;" alt="Certificate Background" />`;
   } else {
-    // Fallback gradient if no image
-    backgroundImgTag = `<div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); z-index: 0;"></div>`;
+    backgroundImgTag = getPearlsCertificateBackgroundHtml();
   }
 
   const html = `
@@ -618,14 +654,24 @@ export async function generatePdfForCertificate(certificate) {
     studentName = student?.fullName || "Student";
   }
 
+  const platformName = await resolvePlatformNameForCertificate(certificate);
+
   // Render HTML
+  let courseTitle = certificate.user_certificate_additional || "";
+  if (!courseTitle && certificate.course_id) {
+    const courseId = certificate.course_id?._id || certificate.course_id;
+    const courseDoc = await courseProgressModel.findById(courseId).select("title").lean();
+    courseTitle = courseDoc?.title || "";
+  }
+
   const html = renderTemplate(template, template.elements, {
     ...(typeof certificate.toObject === 'function' ? certificate.toObject() : certificate),
     student_name: studentName,
     instructor_name: certificate.instructor_name,
     date: certificate.completion_date,
-    platform_name: "Anshul",
-    user_certificate_additional: certificate.user_certificate_additional || "",
+    platform_name: platformName,
+    serial_number: certificate.serial_number || "",
+    user_certificate_additional: courseTitle,
     platform_signature: template.elements.platform_signature?.content || "",
     stamp: template.elements.stamp?.content || "",
     qr_code: certificate.qr_code || "",
@@ -701,14 +747,23 @@ export const viewCertificatePdf = async (req, res) => {
     }
     //console.log("Rendering template with data:", certificate.user_id?.fullName);
 
+    const platformName = await resolvePlatformNameForCertificate(certificate);
+
+    let courseTitleView = certificate.user_certificate_additional || "";
+    if (!courseTitleView && certificate.course_id) {
+      const courseIdView = certificate.course_id?._id || certificate.course_id;
+      const courseDocView = await courseProgressModel.findById(courseIdView).select("title").lean();
+      courseTitleView = courseDocView?.title || "";
+    }
+
     const html = renderTemplate(template, template.elements, {
       ...certificate,
       student_name: certificate.user_id?.fullName || certificate.student_name,
       instructor_name: certificate.instructor_name,
       date: certificate.completion_date,
-      platform_name: "Your Platform Name",
-      user_certificate_additional:
-        certificate.user_certificate_additional || "",
+      platform_name: platformName,
+      serial_number: certificate.serial_number || "",
+      user_certificate_additional: courseTitleView,
       platform_signature: template.elements.platform_signature?.content || "",
       stamp: template.elements.stamp?.content || "",
       qr_code: certificate.qr_code || "",

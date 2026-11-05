@@ -1,3 +1,4 @@
+import { getApiBase } from '../../utils/apiBase.js';
 import React, { useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { updateUserProfile, fetchUserProfile } from '../../redux/slices/profileSlice'
@@ -16,7 +17,7 @@ const ProfileSidebar = ({ compact = false }) => {
   const getProfileImage = (pic) => {
     if (!pic || pic === 'default-profile.png') return null
     if (pic.startsWith('http') || pic.startsWith('blob:')) return pic
-    const rawBase = import.meta.env.VITE_BASE_URL || import.meta.env.VITE_API_BASE || 'https://api.xpertqa.in'
+    const rawBase = getApiBase()
     const baseUrl = rawBase.replace(/\/api\/v1\/?$/, '')
     const cleanPath = pic.startsWith('/') ? pic : `/uploads/${pic}`
     return `${baseUrl}${cleanPath}`

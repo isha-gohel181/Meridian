@@ -29,22 +29,49 @@ class ProgressRepository {
 
   async updateProgress(userId, lessonId, courseId, updateData) {
     try {
+      const query = { userId, lessonId, ...(courseId && { courseId }) };
+      const existing = await LessonProgress.findOne(query).lean();
+
+      const merged = { ...updateData };
+      if (existing) {
+        if (merged.progressPercentage != null) {
+          merged.progressPercentage = Math.max(
+            existing.progressPercentage || 0,
+            Number(merged.progressPercentage) || 0
+          );
+        }
+        if (merged.watchTime != null) {
+          merged.watchTime = Math.max(existing.watchTime || 0, Number(merged.watchTime) || 0);
+        }
+        const pos = merged.currentPosition ?? merged.lastPosition;
+        if (pos != null) {
+          const safePos = Math.max(existing.lastPosition || 0, Number(pos) || 0);
+          merged.currentPosition = safePos;
+          merged.lastPosition = safePos;
+        }
+        // Do not mark complete unless playback reached ~90% or already completed
+        const pct = merged.progressPercentage ?? existing.progressPercentage ?? 0;
+        if (merged.completed && pct < 90 && !existing.completed) {
+          merged.completed = false;
+        }
+      }
+
       // Set last video played and update enrollment
       if (courseId) {
         await CourseEnrollment.findOneAndUpdate(
           { userId, courseId },
           { 
             lastVideoPlayed: lessonId,
-            ...(updateData.completed && { $addToSet: { completedLessons: lessonId } })
+            ...(merged.completed && { $addToSet: { completedLessons: lessonId } })
           },
           { new: true }
         ).catch(() => {});
       }
 
       const progress = await LessonProgress.findOneAndUpdate(
-        { userId, lessonId, ...(courseId && { courseId }) },
+        query,
         { 
-          ...updateData,
+          ...merged,
           lastUpdatedAt: new Date()
         },
         { 
@@ -55,7 +82,7 @@ class ProgressRepository {
       );
 
       // If lesson completed, award XP
-      if (updateData.completed || (updateData.progressPercentage && updateData.progressPercentage >= 80)) {
+      if (merged.completed || (merged.progressPercentage && merged.progressPercentage >= 90)) {
         try {
           const { updateLeaderboard } = await import('../service/leaderboardService.js');
           await updateLeaderboard({

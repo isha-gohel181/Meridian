@@ -55,7 +55,7 @@ const GrowthSection = () => {
     >
       <div
         ref={cardRef}
-        className="growth-card group max-w-7xl mx-auto rounded-2xl md:rounded-3xl relative overflow-hidden border border-[#1878C0]/25 shadow-[0_20px_50px_-12px_rgba(24,120,192,0.35)] p-8 sm:p-10 md:p-10 lg:px-12 lg:py-12 min-h-[320px] sm:min-h-[340px] md:min-h-[360px] flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-10"
+        className="growth-card group max-w-7xl mx-auto rounded-2xl md:rounded-3xl relative overflow-hidden border border-[#682701]/20 shadow-accent-large p-8 sm:p-10 md:p-10 lg:px-12 lg:py-12 min-h-[320px] sm:min-h-[340px] md:min-h-[360px] flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-10"
       >
         <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
           <img
@@ -64,13 +64,12 @@ const GrowthSection = () => {
             aria-hidden
             className="w-full h-full object-cover object-center opacity-[0.12] mix-blend-overlay group-hover:scale-105 transition-transform duration-1000 ease-out"
           />
-          {/* Brand light-blue gradient (matches site #1878C0 theme) */}
-          <div className="absolute inset-0 bg-gradient-to-br from-[#1878C0] via-[#2a8fd4] to-[#6ec4f5]" />
+          <div className="absolute inset-0 bg-gradient-to-br from-[#C96A1B] via-[#a85614] to-[#682701]" />
           <div className="absolute inset-0 bg-gradient-to-r from-white/10 via-transparent to-white/5" />
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(255,255,255,0.35),transparent_55%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(255,255,255,0.28),transparent_55%)]" />
 
-          <div className="absolute -top-20 -right-20 w-72 h-72 bg-white/25 blur-[90px] rounded-full" />
-          <div className="absolute -bottom-24 -left-16 w-64 h-64 bg-sky-200/40 blur-[80px] rounded-full" />
+          <div className="absolute -top-20 -right-20 w-72 h-72 bg-white/20 blur-[90px] rounded-full" />
+          <div className="absolute -bottom-24 -left-16 w-64 h-64 bg-[#682701]/35 blur-[80px] rounded-full" />
 
           <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/50 to-transparent" />
           <div className="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent" />
@@ -142,7 +141,7 @@ const GrowthSection = () => {
             {/* Primary Action Button */}
             <Link
               to="/courses"
-              className="w-full min-h-[48px] px-6 py-3.5 md:py-4 bg-white hover:bg-slate-50 text-[#1878C0] font-inter font-bold text-sm tracking-wide rounded-xl shadow-lg shadow-[#1464a0]/25 hover:shadow-xl hover:scale-[1.01] active:scale-[0.98] transition-all duration-300 flex items-center justify-center gap-2 group/btn"
+              className="w-full min-h-[48px] px-6 py-3.5 md:py-4 bg-white hover:bg-[#FFF9F3] text-accent font-inter font-bold text-sm tracking-wide rounded-xl shadow-lg shadow-black/15 hover:shadow-xl hover:scale-[1.01] active:scale-[0.98] transition-all duration-300 flex items-center justify-center gap-2 group/btn"
             >
               <span>{t('growthCtaPrimary')}</span>
               <svg
@@ -161,7 +160,7 @@ const GrowthSection = () => {
             {/* Secondary Action Button */}
             <Link
               to="/forum"
-              className="w-full min-h-[48px] px-6 py-3.5 md:py-4 bg-[#1464a0]/30 hover:bg-[#1464a0]/45 text-white border border-white/45 hover:border-white/60 font-inter font-semibold text-sm tracking-wide rounded-xl backdrop-blur-md hover:scale-[1.01] active:scale-[0.98] transition-all duration-300 flex items-center justify-center gap-2"
+              className="w-full min-h-[48px] px-6 py-3.5 md:py-4 bg-white/15 hover:bg-white/25 text-white border border-white/45 hover:border-white/60 font-inter font-semibold text-sm tracking-wide rounded-xl backdrop-blur-md hover:scale-[1.01] active:scale-[0.98] transition-all duration-300 flex items-center justify-center gap-2"
             >
               <svg
                 className="w-3.5 h-3.5 text-white"

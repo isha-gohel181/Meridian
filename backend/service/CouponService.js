@@ -389,6 +389,48 @@ class CouponService {
     }
   }
 
+  async getActiveForCheckout(courseId = null) {
+    try {
+      const activeCoupons = await this.repository.getActiveCoupons();
+      if (!courseId) {
+        return activeCoupons.map((c) => ({
+          _id: c._id,
+          code: c.code,
+          description: c.description,
+          discountType: c.discountType,
+          discountAmount: c.discountAmount,
+          discountPercent: c.discountPercent,
+          maxDiscountValue: c.maxDiscountValue,
+          minOrderAmount: c.minOrderAmount,
+          applicableCourses: c.applicableCourses,
+        }));
+      }
+
+      const courseIdStr = courseId.toString();
+      return activeCoupons
+        .filter((c) => {
+          if (!c.applicableCourses?.length) return true;
+          return c.applicableCourses.some((course) => {
+            const id = course?._id || course;
+            return id && id.toString() === courseIdStr;
+          });
+        })
+        .map((c) => ({
+          _id: c._id,
+          code: c.code,
+          description: c.description,
+          discountType: c.discountType,
+          discountAmount: c.discountAmount,
+          discountPercent: c.discountPercent,
+          maxDiscountValue: c.maxDiscountValue,
+          minOrderAmount: c.minOrderAmount,
+          applicableCourses: c.applicableCourses,
+        }));
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async applyCoupon(code, orderAmount, email, courseId = null) {
     try {
       // First validate the coupon

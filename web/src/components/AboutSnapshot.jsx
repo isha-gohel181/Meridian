@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Link } from 'react-router-dom';
+import { ABOUT_US_PARAGRAPH } from '../constants/brand';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -53,7 +54,7 @@ const AboutSnapshot = () => {
                <div className="relative rounded-3xl overflow-hidden shadow-2xl aspect-[4/3] bg-slate-100">
                   <img 
                      src="/hero_section.png" 
-                     alt="Bankers Grade Platform" 
+                     alt="32 Pearls Dental Academy orthodontic training" 
                      className="w-full h-full object-cover"
                      onError={(e) => {
                         e.target.src = "https://images.unsplash.com/photo-1556761175-5973dc0f32d7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80";
@@ -83,18 +84,18 @@ const AboutSnapshot = () => {
                </div>
                
                <h2 className="snapshot-text text-4xl md:text-5xl font-black text-slate-900 leading-[1.1] mb-6">
-                  Your Ultimate Guide to <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1878C0] to-sky-700">QA & Testing Mastery.</span>
+                  About <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#C96A1B] to-[#682701]">32 Pearls Dental Academy</span>
                </h2>
                
                <p className="snapshot-text text-lg text-slate-600 mb-8 leading-relaxed font-medium">
-                  Xpertqa is a premier online platform designed to empower learners with industry-standard computer programming, consultancy, and quality assurance education. Transform your skill set and advance your career with confidence.
+                  {ABOUT_US_PARAGRAPH}
                </p>
 
                <ul className="snapshot-text space-y-4 mb-10">
                   {[
-                     "Comprehensive Banking Domain QA & UAT frameworks",
-                     "Live interactive workshops & masterclasses by Manoj Saxena",
-                     "Verified certifications, personalized mentorship & interview tracks"
+                     'Diagnosis, planning, and case management from basics to advanced mechanics',
+                     'Hands-on workshops and real-case discussions with mentor feedback',
+                     'Continuous clinical guidance that bridges theory and practice',
                   ].map((item, index) => (
                      <li key={index} className="flex items-center gap-3 text-slate-700 font-medium">
                         <div className="flex-shrink-0 w-6 h-6 rounded-full bg-green-100 text-green-600 flex items-center justify-center">

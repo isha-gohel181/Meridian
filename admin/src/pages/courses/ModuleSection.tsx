@@ -66,7 +66,7 @@ import { useAppDispatch } from "../../hooks/redux";
 import PopupAlert from "../../components/popUpAlert";
 import { useParams } from "react-router";
 
-const maxWidthClasses: Record<string, string> = {
+const maxWidthClasses = {
   sm: "max-w-sm",
   md: "max-w-md",
   lg: "max-w-lg",
@@ -77,6 +77,16 @@ const maxWidthClasses: Record<string, string> = {
   "5xl": "max-w-5xl",
   "6xl": "max-w-6xl",
   full: "max-w-full",
+} as const;
+
+type ModalProps = {
+  isOpen: boolean;
+  onClose: () => void;
+  title?: string;
+  children: React.ReactNode;
+  maxWidth?: keyof typeof maxWidthClasses;
+  showCloseButton?: boolean;
+  footer?: React.ReactNode;
 };
 
 const Modal = ({
@@ -104,8 +114,8 @@ const Modal = ({
           maxWidthClasses[maxWidth] || "max-w-4xl"
         }`}
       >
-        {/* Modal Body */}
-        <div className="flex-1 overflow-hidden flex flex-col rounded-2xl">
+        {/* Modal Body — scroll when content (e.g. quiz) is taller than viewport */}
+        <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden flex flex-col rounded-2xl">
           {children}
         </div>
 
@@ -1208,7 +1218,13 @@ const LessonEditor = ({
           setOpenLessonData(null);
         }}
         showCloseButton={false}
-        className="max-w-4xl w-full mx-auto p-0 overflow-hidden !rounded-2xl bg-transparent shadow-none"
+        maxWidth={
+          lesson?.type === "quiz"
+            ? "6xl"
+            : lesson?.type === "text" || lesson?.type === "assignment"
+              ? "5xl"
+              : "4xl"
+        }
       >
         <div className="w-full">
           {/* Content Form */}
@@ -1624,6 +1640,9 @@ const ModuleSection = ({
     lessonIndex: number,
     updatedLesson: any
   ) => {
+    if (updatedLesson == null || typeof updatedLesson !== "object") {
+      return;
+    }
     const updatedModules = savedModules.map((module, idx) =>
       idx === moduleIndex
         ? {

@@ -219,14 +219,14 @@
   gap: 0.8rem;
   font-size: 0.65rem;
   letter-spacing: 0.2em;
-  color: #1878C0;
+  color: #C96A1B;
   font-weight: 800;
 }
 
 .status-dot {
   width: 8px;
   height: 8px;
-  background-color: #1878C0;
+  background-color: #C96A1B;
   border-radius: 50%;
   box-shadow: 0 0 10px rgba(24, 120, 192, 0.6);
   animation: pulse 2s infinite;
@@ -297,7 +297,7 @@
 .stat-value {
   font-size: 3rem;
   font-weight: 800;
-  color: #1878C0;
+  color: #C96A1B;
   margin-bottom: 0.3rem;
   font-family: var(--font-newsreader);
 }
@@ -477,7 +477,7 @@
 
 .forgot-modal__eyebrow {
   margin: 0 0 0.35rem;
-  color: #1878C0;
+  color: #C96A1B;
   font-size: 0.65rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
@@ -509,11 +509,22 @@
 }
 
 .forgot-modal__copy {
-  margin: 1rem 0 1.5rem;
+  margin: 1rem 0 0.75rem;
   color: #475569;
   line-height: 1.6;
   font-size: 0.875rem;
   font-weight: 400;
+}
+
+.forgot-modal__brand-note {
+  margin: 0 0 1.5rem;
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  background: #f0f9ff;
+  border: 1px solid #bae6fd;
+  color: #0369a1;
+  font-size: 0.8rem;
+  line-height: 1.5;
 }
 
 .forgot-modal__status {
@@ -563,7 +574,7 @@
 
 .forgot-modal__input:focus {
   outline: none;
-  border-color: #1878C0;
+  border-color: #C96A1B;
 }
 
 .forgot-modal__input::placeholder {
@@ -602,7 +613,7 @@
 }
 
 .forgot-modal__primary {
-  background: #1878C0;
+  background: #C96A1B;
   color: #ffffff;
   box-shadow: 0 4px 12px rgba(24, 120, 192, 0.25);
 }

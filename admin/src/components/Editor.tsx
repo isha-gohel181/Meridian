@@ -1,3 +1,4 @@
+import { getApiBase } from "../utils/apiBase";
 import React, { useEffect, useRef, useMemo } from "react";
 // Editor.js and its tools often have ESM/CJS compatibility issues
 import _EditorJS from "@editorjs/editorjs";
@@ -36,7 +37,7 @@ const Delimiter = getTool(_Delimiter);
 const Underline = getTool(_Underline);
 
 const API_BASE_URL =
-  (import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_BASE_URL || "https://api.xpertqa.in").replace(/\/$/, "");
+  (import.meta.env.VITE_API_BASE_URL || getApiBase()).replace(/\/$/, "");
 
 import ComparisonTool from "./ComparisonTool";
 import SimpleVideo from "./SimpleVideo";

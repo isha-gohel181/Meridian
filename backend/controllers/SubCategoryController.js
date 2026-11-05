@@ -1,5 +1,7 @@
 import SubCategoryService from '../service/SubCategoryService.js';
 import { initRedis } from '../config/redisClient.js';
+import mongoose from 'mongoose';
+import SubCategory from '../models/SubCategory.js';
 
 const subCategoryService = new SubCategoryService();
 
@@ -136,6 +138,38 @@ export const getSubCategoryById = async (req, res) => {
       message: err.message,
       data: {},
       err: err.message,
+    });
+  }
+};
+
+export const getSubCategoriesByCategory = async (req, res) => {
+  try {
+    const { categoryId } = req.params;
+    if (!categoryId || !mongoose.Types.ObjectId.isValid(categoryId)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid categoryId',
+        data: [],
+      });
+    }
+
+    const subCategories = await SubCategory.find({
+      categoryId,
+      isDeleted: false,
+      status: 'active',
+    }).sort({ name: 1 });
+
+    return res.status(200).json({
+      success: true,
+      message: 'Subcategories fetched successfully',
+      data: subCategories,
+    });
+  } catch (err) {
+    console.error('❌ Get SubCategories By Category Error:', err);
+    return res.status(500).json({
+      success: false,
+      message: err.message,
+      data: [],
     });
   }
 };

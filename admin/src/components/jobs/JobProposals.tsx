@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../store';
 import { updateJobStatus } from '../../store/slices/job';
 import axiosInstance from '../../services/axiosConfig';
+import { getImageBase } from '../../utils/apiBase';
 
 interface ProposalUser {
   _id: string;
@@ -85,7 +86,7 @@ const JobProposals: React.FC<JobProposalsProps> = ({ proposals, isOpen, onClose,
     });
   };
 
-  const BASE_URL = import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_BASE_URL || 'https://api.xpertqa.in/';
+  const BASE_URL = `${getImageBase()}/`;
   
   return (
     <div className="fixed inset-0 bg-white/70 backdrop-blur-md z-50 flex items-center justify-center p-4">

@@ -332,7 +332,7 @@ const CourseAccordion = ({ courseId }) => {
     <>
       <div className="max-w-full mx-auto min-h-fit">
         {/* Course Stats Header */}
-        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-white/[0.03] dark:to-white/[0.03] rounded-lg border border-blue-100 p-6 mb-6">
+        <div className="bg-gradient-to-r from-brand-50 to-brand-100 dark:from-white/[0.03] dark:to-white/[0.03] rounded-lg border border-brand-100 p-6 mb-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="flex items-center space-x-3">
               <div className="p-2 bg-blue-100 rounded-lg">
@@ -591,7 +591,7 @@ const CourseAccordion = ({ courseId }) => {
                               modalData.lesson.accessSettings?.platform ===
                                 "phone"
                             }
-                            className="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
+                            className="w-4 h-4 text-brand-600 border-gray-300 focus:ring-brand-500"
                             disabled={savingSettings}
                           />
                           <label
@@ -619,7 +619,7 @@ const CourseAccordion = ({ courseId }) => {
                                 modalData.lesson.accessSettings?.platform ===
                                   "both")
                             }
-                            className="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
+                            className="w-4 h-4 text-brand-600 border-gray-300 focus:ring-brand-500"
                             disabled={savingSettings}
                           />
                           <label

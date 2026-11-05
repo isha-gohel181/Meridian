@@ -14,6 +14,7 @@ import AssignmentSubmission from '../models/assignmentSubmission.js';
 import CourseBundle from '../models/CourseBundle.js';
 import CoursePlan from '../models/CoursePlan.js';
 import mongoose from 'mongoose';
+import { getOverallProgressByCourseId } from '../service/courseProgressAggregationService.js';
 
 const assignmentService = new AssignmentSubmissionService();
 
@@ -97,52 +98,10 @@ class DashboardController {
         courseMap.set(fc._id.toString(), fc);
       }
 
-      // 3. Batch fetch completed items for this user across all enrolled courses
+      // 3–4. Weighted progress (partial video watch counts toward course %)
       const courseObjectIds = enrolledCourseIds.map(id => new mongoose.Types.ObjectId(id));
+      const progressByCourseId = await getOverallProgressByCourseId(userId, enrolledCourseIds);
 
-      const [completedLessonsDocs, passedQuizzesDocs, gradedAssignmentsDocs] = await Promise.all([
-        courseObjectIds.length > 0
-          ? LessonProgress.find({ userId, courseId: { $in: courseObjectIds }, completed: true }).lean()
-          : [],
-        courseObjectIds.length > 0
-          ? QuizSubmission.find({ user: userId, courseId: { $in: courseObjectIds }, is_completed: true, passed: true }).lean()
-          : [],
-        courseObjectIds.length > 0
-          ? AssignmentSubmission.find({ submittedBy: userId, courseId: { $in: courseObjectIds }, is_complete: true, status: 'graded' }).lean()
-          : []
-      ]);
-
-      const completedLessonsByCourse = new Map();
-      completedLessonsDocs.forEach(lp => {
-        const cid = lp.courseId?.toString();
-        if (cid) {
-          const set = completedLessonsByCourse.get(cid) || new Set();
-          set.add(lp.lessonId?.toString());
-          completedLessonsByCourse.set(cid, set);
-        }
-      });
-
-      const passedQuizzesByCourse = new Map();
-      passedQuizzesDocs.forEach(qs => {
-        const cid = qs.courseId?.toString();
-        if (cid) {
-          const set = passedQuizzesByCourse.get(cid) || new Set();
-          set.add((qs.quiz || qs.lessonId || qs._id)?.toString());
-          passedQuizzesByCourse.set(cid, set);
-        }
-      });
-
-      const gradedAssignmentsByCourse = new Map();
-      gradedAssignmentsDocs.forEach(as => {
-        const cid = as.courseId?.toString();
-        if (cid) {
-          const set = gradedAssignmentsByCourse.get(cid) || new Set();
-          set.add((as.assignmentId || as.lessonId || as._id)?.toString());
-          gradedAssignmentsByCourse.set(cid, set);
-        }
-      });
-
-      // 4. Calculate dynamic progress per course
       const activeCourses = [];
       let totalCompletedCourses = 0;
 
@@ -151,30 +110,8 @@ class DashboardController {
         if (!course) continue;
 
         const enrollment = enrollmentMap.get(cidStr);
-        let totalItems = 0;
-
-        if (course.modules && Array.isArray(course.modules)) {
-          for (const mod of course.modules) {
-            if (mod && Array.isArray(mod.lessons)) {
-              for (const l of mod.lessons) {
-                if (['video', 'video-lesson', 'text', 'quiz', 'assignment', 'external_link'].includes(l.type) || l.type) {
-                  totalItems++;
-                }
-              }
-            }
-          }
-        }
-
-        const compLessonsCount = (completedLessonsByCourse.get(cidStr) || new Set()).size;
-        const compQuizzesCount = (passedQuizzesByCourse.get(cidStr) || new Set()).size;
-        const compAssignmentsCount = (gradedAssignmentsByCourse.get(cidStr) || new Set()).size;
-        const totalCompletedItems = compLessonsCount + compQuizzesCount + compAssignmentsCount;
-
-        const dynamicProgress = totalItems > 0
-          ? Math.min(100, Math.round((totalCompletedItems / totalItems) * 100))
-          : (enrollment?.progressPercentage || 0);
-
-        const iscompleted = dynamicProgress >= 100 || enrollment?.iscompleted || false;
+        const dynamicProgress = progressByCourseId.get(cidStr) ?? enrollment?.progressPercentage ?? 0;
+        const iscompleted = dynamicProgress >= 100;
         if (iscompleted) totalCompletedCourses++;
 
         // Lazy update CourseEnrollment progress if changed

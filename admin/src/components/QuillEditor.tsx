@@ -388,7 +388,7 @@ const QuillEditor = ({
 
   return (
     <div
-      className={`relative ${isFullscreen ? "fixed inset-0 z-50 bg-white " : ""
+      className={`relative w-full max-w-full min-w-0 ${isFullscreen ? "fixed inset-0 z-50 bg-white " : ""
         } ${className}`}
     >
       <style>
@@ -447,12 +447,25 @@ const QuillEditor = ({
             padding: 12px !important;
             border-radius: 4px !important;
             font-family: monospace !important;
-            overflow: auto !important;
+            overflow-x: auto !important;
+            overflow-y: hidden !important;
+            white-space: pre-wrap !important;
+            word-break: break-word !important;
+            max-width: 100% !important;
             margin: 16px 0 !important;
+          }
+
+          [contenteditable],
+          .quill-editor-preview {
+            word-break: break-word !important;
+            overflow-wrap: anywhere !important;
+            white-space: pre-wrap !important;
+            max-width: 100% !important;
+            overflow-x: hidden !important;
           }
         `}
       </style>
-      <div className="border border-gray-200 rounded-xl overflow-hidden bg-white dark:bg-white/[0.03] shadow-lg">
+      <div className="w-full max-w-full min-w-0 border border-gray-200 rounded-xl overflow-hidden bg-white dark:bg-white/[0.03] shadow-lg">
         {/* Toolbar */}
         <div className="border-b bg-gray-50 dark:bg-white/[0.05] p-3 flex flex-wrap gap-2 items-center justify-between">
           <div className="flex flex-wrap gap-2">
@@ -512,14 +525,14 @@ const QuillEditor = ({
         {/* Editor Content */}
         {isPreview ? (
           <div
-            className="p-6 prose max-w-none bg-gray-50 dark:bg-white/[0.03] overflow-y-auto"
+            className="quill-editor-preview p-6 prose max-w-none bg-gray-50 dark:bg-white/[0.03] overflow-y-auto overflow-x-hidden break-words"
             style={{ height: editorHeight }}
             dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(value) }}
           />
         ) : (
           <div
             ref={editorRef}
-            className="p-6 outline-none prose max-w-none bg-white dark:bg-white/[0.03] dark:text-white/90 text-black dark:placeholder:text-white/60 placeholder:text-black/80 overflow-y-auto focus:ring-2 focus:ring-blue-500 focus:ring-inset"
+            className="p-6 outline-none prose max-w-none bg-white dark:bg-white/[0.03] dark:text-white/90 text-black dark:placeholder:text-white/60 placeholder:text-black/80 overflow-y-auto overflow-x-hidden break-words [overflow-wrap:anywhere] focus:ring-2 focus:ring-brand-500 focus:ring-inset"
             style={{
               height: editorHeight,
             }}

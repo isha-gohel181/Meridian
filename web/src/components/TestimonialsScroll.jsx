@@ -1,142 +1,59 @@
+import { getApiBase, getImageBase } from '../utils/apiBase.js';
 import React, { useEffect, useRef, useState, useMemo } from 'react'
+import { useLanguage } from '../context/LanguageContext'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/all'
 
 gsap.registerPlugin(ScrollTrigger)
 
+/** Stable default — avoid `reviews = []` in props (new array every render breaks useEffect). */
+const EMPTY_REVIEWS = Object.freeze([])
+
 const staticTestimonials = [
   {
-    name: "Rajesh Kumar",
-    role: "Lead QA Engineer",
-    company: "Tier-1 Multinational Bank",
-    tag: "BANKING DOMAIN QA",
-    outcome: "Promoted to QA Lead",
-    text: "Manoj Saxena's banking domain testing guidance helped me master core banking workflows, RTGS/NEFT settlement systems, and secure a Lead QA position. The practical simulation of live transaction cycles was unlike any other training.",
+    name: 'Dr. Ananya K.',
+    role: 'General Dentist',
+    company: 'Private Practice',
+    tag: 'ORTHODONTIC TRAINING',
+    outcome: 'Started first aligner cases',
+    text: 'The case-selection framework and mentor reviews gave me clarity before I ever bonded a bracket. I finally feel structured—not guessing my way through treatment.',
     rating: 5,
-    avatarGradient: "from-blue-600 to-cyan-500",
-    initials: "RK"
+    avatarGradient: 'from-amber-500 to-orange-500',
+    initials: 'AK',
   },
   {
-    name: "Pooja Mishra",
-    role: "Senior QA Analyst",
-    company: "FinTech Banking Solutions",
-    tag: "SECOND INNINGS IN QA",
-    outcome: "Career Restart After 5 Years",
-    text: "Transitioning to QA for my second innings after a multi-year break was intimidating until I learned under Manoj Sir. His deep industry depth and patient mentorship gave me the exact domain vocabulary and confidence to crack senior interviews.",
+    name: 'Dr. Rohit M.',
+    role: 'Clinical Associate',
+    company: 'Multi-specialty Clinic',
+    tag: 'HANDS-ON WORKSHOP',
+    outcome: 'Confident with wire sequencing',
+    text: 'Hands-on mechanics sessions translated directly to chairside. Troubleshooting loops and finishing steps were explained in a way textbooks never matched.',
     rating: 5,
-    avatarGradient: "from-purple-600 to-indigo-500",
-    initials: "PM"
+    avatarGradient: 'from-emerald-600 to-teal-500',
+    initials: 'RM',
   },
   {
-    name: "Vikram Sharma",
-    role: "Automation QA Specialist",
-    company: "APAC Banking Services",
-    tag: "AUTOMATION & UAT",
-    outcome: "DBS & Citi Standard Frameworks",
-    text: "The hands-on frameworks and enterprise UAT methodologies taught here reflect real standards used at DBS and Citi. Writing robust automation suites for financial workflows separated me from generic web testers.",
+    name: 'Dr. Priya S.',
+    role: 'Practicing Dentist',
+    company: 'Independent Clinic',
+    tag: 'CASE DISCUSSIONS',
+    outcome: 'Improved treatment planning',
+    text: 'Live case discussions helped me revise plans mid-treatment instead of hoping things work out. The mentorship tone is practical and supportive.',
     rating: 5,
-    avatarGradient: "from-emerald-600 to-teal-500",
-    initials: "VS"
+    avatarGradient: 'from-rose-500 to-amber-400',
+    initials: 'PS',
   },
   {
-    name: "Priya Verma",
-    role: "Core Banking UAT Consultant",
-    company: "Leading Private Bank",
-    tag: "CBS MIGRATION",
-    outcome: "100% Interview Success Rate",
-    text: "Learning real banking migration scenarios and reconciliation testing gave me massive confidence during technical interviews. The end-to-end Finacle migration modules were absolute gold. Truly transformative mentorship!",
+    name: 'Dr. Karan V.',
+    role: 'Dental Surgeon',
+    company: 'Group Practice',
+    tag: 'CONTINUING GUIDANCE',
+    outcome: 'Better patient communication',
+    text: 'Beyond mechanics, I learned how to set expectations and document progress—patients trust the process more when the plan is clear from day one.',
     rating: 5,
-    avatarGradient: "from-rose-500 to-orange-400",
-    initials: "PV"
+    avatarGradient: 'from-[#C96A1B] to-[#682701]',
+    initials: 'KV',
   },
-  {
-    name: "Amitabh Ghosh",
-    role: "Senior QA Lead & Strategist",
-    company: "Global Financial Technology",
-    tag: "QA LEADERSHIP",
-    outcome: "Enterprise Governance Mastery",
-    text: "Manoj sir's 25+ years of experience shines in every module. Clear, actionable, and laser-focused on enterprise QA governance, defect lifecycle management, and audit-ready banking documentation.",
-    rating: 5,
-    avatarGradient: "from-sky-600 to-blue-700",
-    initials: "AG"
-  },
-  {
-    name: "Ananya Sen",
-    role: "FinTech Domain Specialist",
-    company: "Payment Rails Corporation",
-    tag: "FINTECH & PAYMENTS",
-    outcome: "Transitioned from Support to QA",
-    text: "His practical coaching on payment gateways, ISO20022 message formats, and test management made my career switch seamless and rewarding. Landed a 45% salary hike within months of completing the curriculum.",
-    rating: 5,
-    avatarGradient: "from-amber-500 to-pink-500",
-    initials: "AS"
-  },
-  {
-    name: "Ramesh Patel",
-    role: "UAT & Migration Specialist",
-    company: "Universal Banking Systems",
-    tag: "LARGE-SCALE MIGRATION",
-    outcome: "Enterprise Test Consultant",
-    text: "The deep dive into payment rails, debit/credit settlement, and enterprise migration testing was pure gold. Invaluable real-world training with hands-on artefacts and real defect templates.",
-    rating: 5,
-    avatarGradient: "from-cyan-600 to-blue-600",
-    initials: "RP"
-  },
-  {
-    name: "Divya Nair",
-    role: "SDET - Core Banking",
-    company: "Financial Software Conglomerate",
-    tag: "SDET TRACK",
-    outcome: "High-Impact Enterprise Role",
-    text: "Practical, industry-grade test automation and QA strategy directly from someone who led teams across India and APAC. The best career investment I made for mastering complex financial architectures.",
-    rating: 5,
-    avatarGradient: "from-violet-600 to-fuchsia-500",
-    initials: "DN"
-  },
-  {
-    name: "Suresh Rao",
-    role: "Senior QA Specialist",
-    company: "Investment Banking Tech",
-    tag: "SECOND INNINGS IN QA",
-    outcome: "Shifted from Branch Ops to QA",
-    text: "Manoj Saxena's structured second innings approach is what makes Xpertqa unique. Coming from branch banking operations, he showed me how my domain expertise was my greatest superpower in software testing.",
-    rating: 5,
-    avatarGradient: "from-teal-600 to-cyan-500",
-    initials: "SR"
-  },
-  {
-    name: "Meera Tiwari",
-    role: "QA Engineer - API & Security",
-    company: "Digital Payment Gateway",
-    tag: "API & MICROSERVICES",
-    outcome: "Zero Defect Release Lead",
-    text: "Xpertqa and Manoj Saxena provided genuine direction to our testing roadmap. The API validation, mock banking servers, and compliance testing workflows are second to none in this industry.",
-    rating: 5,
-    avatarGradient: "from-indigo-600 to-blue-500",
-    initials: "MT"
-  },
-  {
-    name: "Karthik Nambiar",
-    role: "Lead Automation Architect",
-    company: "Corporate Banking Solutions",
-    tag: "ENTERPRISE AUTOMATION",
-    outcome: "Framework Architect Promotion",
-    text: "The architecture walkthroughs for data-driven testing with Selenium, Playwright, and banking API test harnesses gave our team an unfair advantage. Manoj Sir's insights are unmatched.",
-    rating: 5,
-    avatarGradient: "from-blue-700 to-emerald-500",
-    initials: "KN"
-  },
-  {
-    name: "Swati Deshmukh",
-    role: "Banking UAT Lead",
-    company: "Global Payment Network",
-    tag: "BANKING DOMAIN QA",
-    outcome: "Hired via 1-on-1 Mentorship",
-    text: "The 1-on-1 resume transformation, mock banking interviews, and domain-deep Q&A sessions with Manoj Sir helped me clear 3 offers in a row. Truly the most practical QA academy in India.",
-    rating: 5,
-    avatarGradient: "from-pink-600 to-rose-500",
-    initials: "SD"
-  }
 ]
 
 // Render 5 Golden Stars
@@ -158,7 +75,7 @@ const StarRating = ({ rating = 5 }) => (
 const mapApiTestimonial = (r, idx) => {
   let avatar = null;
   if (r.image) {
-    const rawBase = import.meta.env.VITE_IMAGE_URL || import.meta.env.VITE_BASE_URL || 'https://api.xpertqa.in';
+    const rawBase = getImageBase();
     const baseUrl = rawBase.replace(/\/api\/v1\/?$/, '');
     avatar = `${baseUrl}${r.image.startsWith('/') ? '' : '/'}${r.image}`;
   }
@@ -166,8 +83,8 @@ const mapApiTestimonial = (r, idx) => {
   const initials = name.split(' ').map(n => n[0]).slice(0, 2).join('').toUpperCase() || 'ST';
   return {
     name,
-    role: r.role || 'Software Quality Engineer',
-    company: r.company || 'Enterprise Banking',
+    role: r.role || 'Dental Professional',
+    company: r.company || 'Clinical Practice',
     tag: r.tag || 'VERIFIED ALUMNI',
     outcome: r.outcome || 'Career Growth',
     text: r.message || r.reviewText || r.text || '',
@@ -178,7 +95,9 @@ const mapApiTestimonial = (r, idx) => {
   };
 };
 
-const TestimonialsScroll = ({ reviews = [], variant = 'default' }) => {
+const TestimonialsScroll = ({ reviews, variant = 'default' }) => {
+  const { t } = useLanguage()
+  const propReviews = Array.isArray(reviews) ? reviews : EMPTY_REVIEWS
   const ref = useRef(null)
   const colRefs = useRef([])
   const [columns, setColumns] = useState([])
@@ -186,47 +105,59 @@ const TestimonialsScroll = ({ reviews = [], variant = 'default' }) => {
   const [apiTestimonials, setApiTestimonials] = useState([])
   const [loadingReviews, setLoadingReviews] = useState(variant === 'landing')
   const isLanding = variant === 'landing'
+  const propReviewCount = propReviews.length
 
   // Fetch approved testimonials from backend (landing page uses ?landing=true)
   useEffect(() => {
-    if (reviews && Array.isArray(reviews) && reviews.length > 0) return;
+    if (propReviewCount > 0) {
+      setLoadingReviews(false)
+      return
+    }
 
-    let isMounted = true;
+    const controller = new AbortController()
+    const timeoutId = window.setTimeout(() => controller.abort(), 15000)
+
     const fetchLiveTestimonials = async () => {
-      if (isLanding) setLoadingReviews(true);
+      if (isLanding) setLoadingReviews(true)
       try {
-        const rawBase = import.meta.env.VITE_BASE_URL || 'https://api.xpertqa.in';
-        const baseUrl = rawBase.replace(/\/api\/v1\/?$/, '');
-        const query = isLanding ? '?landing=true' : '';
-        const res = await fetch(`${baseUrl}/testimonials${query}`);
+        const rawBase = getApiBase()
+        const baseUrl = rawBase.replace(/\/api\/v1\/?$/, '')
+        const query = isLanding ? '?landing=true' : ''
+        const res = await fetch(`${baseUrl}/testimonials${query}`, {
+          signal: controller.signal,
+        })
         if (res.ok) {
-          const json = await res.json();
-          const items = Array.isArray(json?.data) ? json.data : (Array.isArray(json) ? json : []);
-          if (isMounted) {
-            setApiTestimonials(items);
-          }
+          const json = await res.json()
+          const items = Array.isArray(json?.data) ? json.data : (Array.isArray(json) ? json : [])
+          setApiTestimonials(items)
+        } else {
+          setApiTestimonials([])
         }
-      } catch {
-        if (isMounted) setApiTestimonials([]);
+      } catch (err) {
+        if (err?.name !== 'AbortError') setApiTestimonials([])
       } finally {
-        if (isMounted && isLanding) setLoadingReviews(false);
+        window.clearTimeout(timeoutId)
+        if (!controller.signal.aborted) setLoadingReviews(false)
       }
-    };
+    }
 
-    fetchLiveTestimonials();
-    return () => { isMounted = false; };
-  }, [reviews, isLanding]);
+    fetchLiveTestimonials()
+    return () => {
+      controller.abort()
+      window.clearTimeout(timeoutId)
+    }
+  }, [isLanding, propReviewCount])
 
   // Harmonize testimonials from props, API, or rich static fallback
   const displayTestimonials = useMemo(() => {
     // 1. If explicit reviews prop passed with valid items (e.g. from CourseDetail)
-    if (Array.isArray(reviews) && reviews.length > 0) {
-      const valid = reviews.filter(r => r && (r.reviewText || r.text || r.message));
+    if (propReviewCount > 0) {
+      const valid = propReviews.filter(r => r && (r.reviewText || r.text || r.message));
       if (valid.length > 0) {
         return valid.map((r, idx) => {
           let avatar = null;
           if (r.image) {
-            const rawBase = import.meta.env.VITE_IMAGE_URL || import.meta.env.VITE_BASE_URL || 'https://api.xpertqa.in';
+            const rawBase = getImageBase();
             const baseUrl = rawBase.replace(/\/api\/v1\/?$/, '');
             avatar = `${baseUrl}${r.image.startsWith('/') ? '' : '/'}${r.image}`;
           }
@@ -234,8 +165,8 @@ const TestimonialsScroll = ({ reviews = [], variant = 'default' }) => {
           const initials = name.split(' ').map(n => n[0]).slice(0, 2).join('').toUpperCase() || "ST";
           return {
             name,
-            role: r.designation || r.role || "QA Professional",
-            company: r.company || "Enterprise Banking",
+            role: r.designation || r.role || 'Dental Professional',
+            company: r.company || 'Clinical Practice',
             tag: r.tag || "VERIFIED REVIEW",
             outcome: "Course Alum",
             text: r.reviewText || r.text || r.message || "",
@@ -263,7 +194,7 @@ const TestimonialsScroll = ({ reviews = [], variant = 'default' }) => {
 
     // Default home/course fallback when API is empty
     return staticTestimonials;
-  }, [reviews, apiTestimonials, isLanding]);
+  }, [propReviews, propReviewCount, apiTestimonials, isLanding]);
 
   // Handle responsive column grouping and repetition for infinite scroll effect
   useEffect(() => {
@@ -351,9 +282,9 @@ const TestimonialsScroll = ({ reviews = [], variant = 'default' }) => {
 
   if (loadingReviews) {
     return (
-      <section className="w-full bg-slate-50 py-20 md:py-28 px-4 md:px-8 border-t border-slate-200/60">
-        <div className="max-w-7xl mx-auto flex justify-center py-16">
-          <div className="h-10 w-10 border-4 border-slate-200 border-t-[#1878C0] rounded-full animate-spin" />
+      <section className="w-full bg-gradient-to-b from-[#FFF9F3] to-[#f8fafc] py-16 md:py-20 px-4 md:px-8 border-t border-[#682701]/10">
+        <div className="max-w-7xl mx-auto flex justify-center py-12">
+          <div className="h-10 w-10 border-4 border-brand-brown/20 border-t-accent rounded-full animate-spin" />
         </div>
       </section>
     );
@@ -361,13 +292,10 @@ const TestimonialsScroll = ({ reviews = [], variant = 'default' }) => {
 
   if (isLanding && displayTestimonials.length === 0) {
     return (
-      <section className="w-full bg-slate-50 py-20 md:py-28 px-4 md:px-8 border-t border-slate-200/60">
-        <div className="max-w-2xl mx-auto text-center space-y-3">
-          <h2 className="text-2xl md:text-3xl font-semibold text-slate-900">Student Success Stories</h2>
-          <p className="text-slate-600 text-sm md:text-base">
-            Reviews will appear here once published from the admin panel (Testimonials → Approved + Show on landing).
-          </p>
-        </div>
+      <section className="w-full bg-gradient-to-b from-[#FFF9F3] to-[#f8fafc] py-16 md:py-24 px-4 md:px-8 border-t border-[#682701]/10">
+        <p className="text-center py-12 font-montserrat text-sm font-medium uppercase tracking-[0.15em] text-description">
+          {t('noReviewsAvailable')}
+        </p>
       </section>
     );
   }
@@ -379,7 +307,7 @@ const TestimonialsScroll = ({ reviews = [], variant = 'default' }) => {
       className="relative w-full bg-slate-50 py-20 md:py-28 px-4 md:px-8 lg:px-12 overflow-hidden select-none border-t border-slate-200/60"
     >
       {/* Ambient background glows */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-[#1878C0]/6 rounded-full blur-[140px] pointer-events-none -z-0" />
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-[#C96A1B]/6 rounded-full blur-[140px] pointer-events-none -z-0" />
       <div className="absolute bottom-10 right-10 w-80 h-80 bg-sky-200/40 rounded-full blur-3xl pointer-events-none -z-0" />
       <div className="absolute top-10 left-10 w-72 h-72 bg-emerald-100/50 rounded-full blur-3xl pointer-events-none -z-0" />
 
@@ -387,36 +315,35 @@ const TestimonialsScroll = ({ reviews = [], variant = 'default' }) => {
         
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-14 md:mb-16 space-y-4">
-          <div className="ts-heading inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-[#1878C0]/10 border border-[#1878C0]/20 text-[#1878C0]">
-            <span className="w-2 h-2 rounded-full bg-[#1878C0] animate-pulse" />
+          <div className="ts-heading inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-[#C96A1B]/10 border border-[#C96A1B]/20 text-[#C96A1B]">
+            <span className="w-2 h-2 rounded-full bg-[#C96A1B] animate-pulse" />
             <span className="font-jetbrains text-[10px] tracking-[0.35em] uppercase font-bold">
               Student Success Stories
             </span>
           </div>
 
           <h2 className="ts-heading font-inter text-3xl sm:text-4xl md:text-5xl lg:text-[3.2rem] text-slate-900 leading-[1.12] tracking-[-0.02em] font-light">
-            Real Careers Transformed,{' '}
-            <span className="font-semibold text-[#1878C0]">Real Banking Impact</span>
+            Voices from{' '}
+            <span className="font-semibold text-[#C96A1B]">clinical learners</span>
           </h2>
 
           <p className="ts-heading text-sm md:text-base text-slate-600 leading-relaxed max-w-2xl mx-auto">
-            Discover how our practical banking domain testing, core banking UAT, and second-innings mentorship helped students secure high-impact QA roles at leading financial institutions.
+            How hands-on orthodontic training, mentor-led case reviews, and structured programs help practitioners treat with more confidence.
           </p>
 
-          {/* Trust stats pill bar */}
           <div className="ts-heading pt-2 flex flex-wrap items-center justify-center gap-4 md:gap-8 text-xs font-medium text-slate-600">
             <div className="flex items-center gap-2 bg-white px-3.5 py-1.5 rounded-full border border-slate-200 shadow-xs">
               <span className="text-amber-500 font-bold">★ 5.0 / 5.0</span>
               <span className="text-slate-400">|</span>
-              <span className="text-slate-700">Student Satisfaction</span>
+              <span className="text-slate-700">Learner satisfaction</span>
             </div>
             <div className="flex items-center gap-2 bg-white px-3.5 py-1.5 rounded-full border border-slate-200 shadow-xs">
-              <span className="text-[#1878C0] font-bold">1,200+</span>
-              <span className="text-slate-700">Engineers Trained</span>
+              <span className="text-[#C96A1B] font-bold">Case-based</span>
+              <span className="text-slate-700">Curriculum</span>
             </div>
             <div className="flex items-center gap-2 bg-white px-3.5 py-1.5 rounded-full border border-slate-200 shadow-xs">
-              <span className="text-emerald-600 font-bold">Top Banks</span>
-              <span className="text-slate-700">DBS, Citi, ANZ, HSBC</span>
+              <span className="text-emerald-600 font-bold">Mentor-led</span>
+              <span className="text-slate-700">Guidance</span>
             </div>
           </div>
         </div>
@@ -454,19 +381,19 @@ const TestimonialsScroll = ({ reviews = [], variant = 'default' }) => {
                   <div
                     key={ti}
                     className="group relative bg-white rounded-2xl p-6 md:p-7 border border-slate-200/90 shadow-[0_4px_16px_rgba(15,23,42,0.04)]
-                               hover:shadow-[0_16px_36px_-6px_rgba(24,120,192,0.16)] hover:border-[#1878C0]/40
+                               hover:shadow-[0_16px_36px_-6px_rgba(24,120,192,0.16)] hover:border-[#C96A1B]/40
                                transition-all duration-300 hover:-translate-y-1.5"
                   >
                     {/* Top Ocean Accent Line on Hover */}
-                    <div className="absolute top-0 left-6 right-6 h-[2px] bg-gradient-to-r from-[#1878C0] via-sky-400 to-[#1878C0] opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full" />
+                    <div className="absolute top-0 left-6 right-6 h-[2px] bg-gradient-to-r from-[#C96A1B] via-sky-400 to-[#C96A1B] opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full" />
 
                     {/* Tag badge and Quotation icon */}
                     <div className="flex items-center justify-between gap-2 mb-4">
-                      <span className="font-jetbrains text-[9px] font-bold tracking-wider px-2.5 py-1 rounded-full bg-[#1878C0]/10 text-[#1878C0] border border-[#1878C0]/15">
+                      <span className="font-jetbrains text-[9px] font-bold tracking-wider px-2.5 py-1 rounded-full bg-[#C96A1B]/10 text-[#C96A1B] border border-[#C96A1B]/15">
                         {t.tag}
                       </span>
                       <svg
-                        className="w-6 h-6 text-slate-200 group-hover:text-[#1878C0]/30 transition-colors duration-300"
+                        className="w-6 h-6 text-slate-200 group-hover:text-[#C96A1B]/30 transition-colors duration-300"
                         fill="currentColor"
                         viewBox="0 0 24 24"
                       >
@@ -490,7 +417,7 @@ const TestimonialsScroll = ({ reviews = [], variant = 'default' }) => {
                         {/* Avatar */}
                         <div
                           className={`w-10 h-10 rounded-xl overflow-hidden flex items-center justify-center shrink-0 font-jetbrains text-xs font-bold text-white shadow-xs ${
-                            t.image ? 'bg-slate-100' : `bg-gradient-to-tr ${t.avatarGradient || 'from-[#1878C0] to-sky-400'}`
+                            t.image ? 'bg-slate-100' : `bg-gradient-to-tr ${t.avatarGradient || 'from-[#C96A1B] to-sky-400'}`
                           }`}
                         >
                           {t.image ? (
@@ -502,7 +429,7 @@ const TestimonialsScroll = ({ reviews = [], variant = 'default' }) => {
 
                         {/* Name and Designation */}
                         <div className="min-w-0">
-                          <h4 className="font-inter text-sm font-bold text-slate-900 truncate group-hover:text-[#1878C0] transition-colors">
+                          <h4 className="font-inter text-sm font-bold text-slate-900 truncate group-hover:text-[#C96A1B] transition-colors">
                             {t.name}
                           </h4>
                           <p className="font-jetbrains text-[10px] text-slate-500 truncate">
@@ -523,7 +450,7 @@ const TestimonialsScroll = ({ reviews = [], variant = 'default' }) => {
                     {/* Bottom Company Outcome Pill */}
                     {t.company && (
                       <div className="mt-3 pt-2 text-[10px] font-mono text-slate-400 flex items-center gap-1.5">
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#1878C0]/50" />
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#C96A1B]/50" />
                         <span className="truncate">{t.company}</span>
                       </div>
                     )}

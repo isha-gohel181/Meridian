@@ -1,3 +1,4 @@
+import { getApiBase } from "../../utils/apiBase";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axiosInstance from "../../services/axiosConfig";
 
@@ -49,7 +50,7 @@ interface FetchDeleteRequestsParams {
   sort?: Record<string, any>;
 }
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_BASE_URL || "https://api.xpertqa.in";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || getApiBase();
 
 // Fetch delete requests with pagination and filters
 export const fetchDeleteRequests = createAsyncThunk(

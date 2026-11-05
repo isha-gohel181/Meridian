@@ -1,3 +1,4 @@
+import { getApiBase } from "../../utils/apiBase";
 import React, { useState, useEffect, useRef } from 'react';
 import { Bot, Settings, BookOpen, Send, X, Plus, Trash2, Upload, FileText, Link as LinkIcon } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
@@ -107,7 +108,7 @@ const AITool: React.FC = () => {
 
     try {
       const token = localStorage.getItem('accessToken');
-      const baseUrl = import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_BASE_URL || 'https://api.xpertqa.in';
+      const baseUrl = import.meta.env.VITE_API_BASE_URL || getApiBase();
       // Remove trailing slash if present, then add /ai/chat
       const apiUrl = `${baseUrl.replace(/\/$/, '')}/ai/chat`;
       const response = await fetch(

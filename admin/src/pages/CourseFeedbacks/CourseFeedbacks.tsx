@@ -1,3 +1,4 @@
+import { getImageBase } from "../../utils/apiBase";
 import React, { useState, useEffect } from "react";
 import PageMeta from "../../components/common/PageMeta";
 import PageBreadcrumb from "../../components/common/PageBreadCrumb";
@@ -133,7 +134,7 @@ export default function CourseFeedbacks() {
                     <td className="px-6 py-4">
                       {fb.attachment ? (
                         <a
-                          href={fb.attachment.startsWith('http') ? fb.attachment : `${(import.meta.env.VITE_IMAGE_URL || import.meta.env.VITE_BASE_URL || 'https://api.xpertqa.in').replace(/\/+$/, '')}/${fb.attachment.replace(/^\/+/, '')}`}
+                          href={fb.attachment.startsWith('http') ? fb.attachment : `${(getImageBase()).replace(/\/+$/, '')}/${fb.attachment.replace(/^\/+/, '')}`}
                           target="_blank"
                           rel="noreferrer"
                           className="text-brand-500 hover:underline"

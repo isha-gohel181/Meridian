@@ -247,22 +247,43 @@ const TextLessonEditor = ({
 
   const handleSave = async () => {
     try {
+      if (!formData.title?.trim()) {
+        setPopup({ isVisible: true, message: "Lesson title is required.", type: "error" });
+        return;
+      }
+      if (!formData.summary?.trim()) {
+        setPopup({ isVisible: true, message: "Lesson summary is required.", type: "error" });
+        return;
+      }
+      const plainContent = (formData.content || "").replace(/<[^>]+>/g, "").trim();
+      if (!plainContent) {
+        setPopup({ isVisible: true, message: "Lesson content is required.", type: "error" });
+        return;
+      }
+      if (!isEditMode && (!courseId || !lessonId)) {
+        setPopup({ isVisible: true, message: "Missing course or lesson context. Re-open this lesson from the module.", type: "error" });
+        return;
+      }
+
       // Create FormData object for multipart/form-data
       const apiFormData = new FormData();
 
       // Append basic form fields
       apiFormData.append("language", formData.language);
-      apiFormData.append("title", formData.title);
+      apiFormData.append("title", formData.title.trim());
       apiFormData.append("subTitle", formData.bookTitle);
-      apiFormData.append("accessibility", formData.accessibility);
-      apiFormData.append("summary", formData.summary);
+      apiFormData.append(
+        "accessibility",
+        formData.accessibility === "paid" ? "Paid" : "Free"
+      );
+      apiFormData.append("summary", formData.summary.trim());
       apiFormData.append("content", formData.content);
       apiFormData.append("archive", archive.toString());
       apiFormData.append("dropContent", dropContent.toString());
 
       if (!isEditMode) {
-        apiFormData.append("course", courseId);
-        apiFormData.append("lessonId", lessonId);
+        apiFormData.append("course", String(courseId));
+        apiFormData.append("lesson", String(lessonId));
       }
       // Append file attachments
       formData.attachments.forEach((file, index) => {
@@ -272,25 +293,47 @@ const TextLessonEditor = ({
       });
 
       // Dispatch the async thunk
+      let saveResult: { data?: Record<string, unknown> } & Record<string, unknown>;
       if (isEditMode) {
-        await dispatch(
+        saveResult = await dispatch(
           updateTextLesson({ lessonId: textLessonId, formData: apiFormData })
         ).unwrap();
       } else {
-        await dispatch(createTextLesson(apiFormData)).unwrap();
+        saveResult = await dispatch(createTextLesson(apiFormData)).unwrap();
       }
-      // Show success popup
 
-      onClose();
+      const savedTextLesson = (saveResult?.data ?? saveResult) as {
+        _id?: string;
+      };
+      if (onChange && lesson && savedTextLesson?._id) {
+        onChange({
+          ...lesson,
+          _id: lesson._id || lessonId,
+          id: lesson.id || lessonId,
+          type: lesson.type || "text",
+          textLessons: [savedTextLesson],
+        });
+      }
+
       setPopup({
         isVisible: true,
-        message: "Text Lesson created successfully!",
+        message: isEditMode
+          ? "Text lesson updated successfully!"
+          : "Text lesson created successfully!",
         type: "success",
       });
-    } catch (err) {
+      setTimeout(() => {
+        onClose?.();
+      }, 1200);
+    } catch (err: any) {
+      const apiMessage =
+        err?.message ||
+        err?.error ||
+        err?.data?.message ||
+        "Failed to save text lesson. Please try again.";
       setPopup({
         isVisible: true,
-        message: "Failed to create Text Lesson. Please try again.",
+        message: apiMessage,
         type: "error",
       });
       console.error("Failed to save lesson:", err);

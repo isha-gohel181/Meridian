@@ -7,6 +7,7 @@ import DashboardHeader from '../components/dashboard/DashboardHeader'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchPersonalityResults } from '../redux/slices/personalitySlice'
 import { useLanguage } from '../context/LanguageContext'
+import { resolveMediaUrl } from '../utils/apiBase.js'
 
 const resultData = {
   type: 'ENFP',
@@ -173,7 +174,7 @@ const DashboardPersonality = () => {
         category: c.categoryId?.name?.toUpperCase() || "SKILL",
         title: c.title,
         description: c.description,
-        image: c.thumbnail ? (c.thumbnail.startsWith('http') ? c.thumbnail : `https://api.xpertqa.in/${c.thumbnail}`) : "/news_placeholder.png"
+        image: c.thumbnail ? (c.thumbnail.startsWith('http') ? c.thumbnail : resolveMediaUrl(c.thumbnail)) : "/news_placeholder.png"
     })) || resultData.recommendedCourses
   }
 

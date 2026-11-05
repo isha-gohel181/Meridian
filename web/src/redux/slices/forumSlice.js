@@ -1,6 +1,7 @@
+import { getApiBase } from '../../utils/apiBase.js';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-const BASE_URL = import.meta.env.VITE_BASE_URL || 'https://api.xpertqa.in';
+const BASE_URL = getApiBase();
 
 export const fetchMyThreads = createAsyncThunk(
   'forum/fetchMyThreads',
@@ -27,6 +28,25 @@ export const fetchMyThreads = createAsyncThunk(
       }
       const data = await response.json();
       return data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const fetchForumStats = createAsyncThunk(
+  'forum/fetchForumStats',
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await fetch(`${BASE_URL}/forum/stats`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+      });
+      if (!response.ok) {
+        throw new Error('Failed to fetch forum stats');
+      }
+      const data = await response.json();
+      return data?.data || data;
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -174,7 +194,7 @@ export const createThread = createAsyncThunk(
         attachments.forEach(file => formData.append('attachments', file));
       }
 
-      const response = await fetch(`https://api.xpertqa.in/forum/create`, {
+      const response = await fetch(`${BASE_URL}/forum/create`, {
         method: 'POST',
         headers,
         body: formData
@@ -203,6 +223,12 @@ const forumSlice = createSlice({
     totalPages: 1,
     loading: false,
     myLoading: false,
+    forumStats: {
+      totalTopics: 0,
+      activeParticipants: 0,
+      topicsThisWeek: 0,
+    },
+    statsLoading: false,
     error: null,
   },
   reducers: {},
@@ -220,6 +246,20 @@ const forumSlice = createSlice({
       .addCase(fetchMyThreads.rejected, (state, action) => {
         state.myLoading = false;
         state.error = action.payload;
+      })
+      .addCase(fetchForumStats.pending, (state) => {
+        state.statsLoading = true;
+      })
+      .addCase(fetchForumStats.fulfilled, (state, action) => {
+        state.statsLoading = false;
+        state.forumStats = {
+          totalTopics: action.payload?.totalTopics ?? 0,
+          activeParticipants: action.payload?.activeParticipants ?? 0,
+          topicsThisWeek: action.payload?.topicsThisWeek ?? 0,
+        };
+      })
+      .addCase(fetchForumStats.rejected, (state) => {
+        state.statsLoading = false;
       })
       .addCase(fetchThreads.pending, (state) => {
         state.loading = true;
@@ -277,6 +317,7 @@ const forumSlice = createSlice({
         if (action.payload?.data) {
           state.threads = [action.payload.data, ...state.threads];
           state.total += 1;
+          state.forumStats.topicsThisWeek += 1;
         }
       })
       .addCase(createThread.rejected, (state, action) => {

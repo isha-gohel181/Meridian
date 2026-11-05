@@ -1,6 +1,7 @@
 import Hero from '../components/Hero'
 import MentorSection from '../components/MentorSection'
 import InstituteSection from '../components/InstituteSection'
+import AboutSnapshot from '../components/AboutSnapshot'
 import CourseSlider from '../components/CourseSlider'
 import LogoMarquee from '../components/LogoMarquee'
 import EventHero from '../components/EventHero'
@@ -16,6 +17,7 @@ const Home = ({ isLoaded }) => {
       <Hero isLoaded={isLoaded} />
       <CourseSlider />
       <InstituteSection />
+      <AboutSnapshot />
       <MentorSection />
 
       {/* Dynamic Event Showcase */}

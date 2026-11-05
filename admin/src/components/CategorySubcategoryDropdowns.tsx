@@ -51,8 +51,8 @@ export default function CategorySubcategoryDropdowns({
   } = useAppSelector((state) => state.courseCategory);
   const {
     data: filterData,
-    loading: subcategoriesLoading,
-    error: subcategoriesError,
+    subcategoriesLoading,
+    subcategoriesError,
   } = useAppSelector((state) => state.filter);
   const subcategories: SubCategory[] = filterData?.subcategories || [];
   const [data, setData] = React.useState({
@@ -322,7 +322,7 @@ export default function CategorySubcategoryDropdowns({
         </select>
         {subcategoriesError && (
           <p className="mt-1 text-sm text-red-600 dark:text-red-400">
-            Error loading subcategories: {subcategoriesError}
+            Could not load subcategories. Please try again.
           </p>
         )}
       </div>

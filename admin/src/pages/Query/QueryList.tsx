@@ -158,16 +158,27 @@ const QueryList: React.FC = () => {
     setModalLoading(true);
     setModalError(null);
     try {
-      await dispatch(
+      const result = await dispatch(
         updateQuery({
           queryId: selectedQuery._id,
           queryData: { status: modalStatus },
           token,
         }) as any
       ).unwrap();
+      const updated = result?.data ?? result;
+      if (updated?._id && updated.status) {
+        setSelectedQuery((prev) => (prev ? { ...prev, status: updated.status } : prev));
+      }
       setModalOpen(false);
+      if (token) {
+        dispatch(getAllQueries(token) as any);
+      }
     } catch (err: any) {
-      setModalError(err?.message || "Failed to update status");
+      const msg =
+        typeof err === "string"
+          ? err
+          : err?.message || err?.payload?.message || "Failed to update status";
+      setModalError(msg);
     } finally {
       setModalLoading(false);
     }

@@ -6,8 +6,8 @@ export default function SignUp() {
   return (
     <>
       <PageMeta
-        title="Sign Up | Xpertqa Admin"
-        description="Sign up for Xpertqa Admin Dashboard"
+        title="Sign Up | 32 Pearls Dental Academy Admin"
+        description="Sign up for 32 Pearls Dental Academy Admin Dashboard"
       />
       <AuthLayout>
         <SignUpForm />

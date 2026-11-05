@@ -170,7 +170,7 @@ const FreeContent = () => {
               Free <span className="italic font-normal text-amber-600">Knowledge Hub</span>
             </h1>
             <p className="mt-3 text-slate-600 max-w-2xl text-sm sm:text-base leading-relaxed">
-              Discover industry-grade Software Testing, QA leadership, and banking technology resources with our curated repository of downloadable guides, video masterclasses by Manoj Saxena, and technical quizzes.
+              Explore free orthodontic learning resources—downloadable guides, video sessions, and quizzes from 32 Pearls Dental Academy.
             </p>
           </div>
 
@@ -807,7 +807,7 @@ const FreeContent = () => {
 
             {/* Modal Footer */}
             <div className="p-4 px-6 border-t border-slate-100 bg-slate-50 flex items-center justify-between">
-              <span className="text-xs text-slate-500">Free open lecture provided by Xpertqa</span>
+              <span className="text-xs text-slate-500">Free open lecture provided by 32 Pearls Dental Academy</span>
               <button
                 onClick={() => setActiveClassModal(null)}
                 className="px-6 py-2.5 bg-slate-900 hover:bg-amber-600 text-white font-mono text-xs font-bold uppercase tracking-wider rounded-xl transition-colors"

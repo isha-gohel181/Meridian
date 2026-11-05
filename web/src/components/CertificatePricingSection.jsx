@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useSelector } from 'react-redux'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/all'
-import certificateImg from '../assets/images/xpertqa_certificate.png'
+import { CERTIFICATE_DEFAULT_IMAGE } from '../constants/brand'
 import { useLanguage } from '../context/LanguageContext'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -16,22 +15,11 @@ const plans = [
 
 const CertificatePricingSection = ({ course }) => {
    const { t } = useLanguage()
-   const { user: authUser } = useSelector(state => state.auth)
-   const { user: profileUser } = useSelector(state => state.profile)
-
-   const user = authUser || profileUser
-   const displayName = user?.fullName || user?.name || "John Doe"
-
-   const formattedDate = new Date().toLocaleDateString('en-US', {
-      month: 'long',
-      day: 'numeric',
-      year: 'numeric'
-   });
-   const courseTitle = course?.title || "Masterclass";
-
    const [selectedPlanId, setSelectedPlanId] = useState(null)
    const containerRef = useRef(null)
    const navigate = useNavigate()
+
+   const certificateSrc = CERTIFICATE_DEFAULT_IMAGE
 
    useEffect(() => {
       const ctx = gsap.context(() => {
@@ -50,7 +38,6 @@ const CertificatePricingSection = ({ course }) => {
       return () => ctx.revert()
    }, [])
 
-   // Use API plans if available, otherwise dynamically resolve from course pricing
    const dynamicCoursePrice = (course?.salePrice && Number(course.salePrice) > 0)
       ? Number(course.salePrice)
       : (course?.price && Number(course.price) > 0 ? Number(course.price) : 1999);
@@ -85,7 +72,6 @@ const CertificatePricingSection = ({ course }) => {
    return (
       <section ref={containerRef} className="max-w-7xl mx-auto py-10 lg:py-20 scroll-mt-24">
 
-         {/* 1. Header Area with fixed overlap */}
          <div className="text-center mb-10 lg:mb-24 reveal-item">
             <h2 className="font-newsreader italic text-[clamp(3rem,8vw,5rem)] text-normal font-extralight tracking-tighter leading-tight">
                Get Started with the <span className="text-accent underline decoration-accent/20">Perfect Plan.</span>
@@ -94,45 +80,20 @@ const CertificatePricingSection = ({ course }) => {
 
          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-start">
 
-            {/* 2. Certificate Showcase (Left - 5 cols) */}
             <div className="lg:col-span-6 reveal-item lg:mb-32 md:mb-0 relative group lg:sticky lg:top-32">
                <div className="absolute -inset-4 bg-amber-400/10 blur-2xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
-               <div className="relative border-8 border-slate-200 bg-white p-2 shadow-2xl overflow-hidden rounded-xl">
+               <div className="relative bg-white p-1 shadow-2xl overflow-hidden rounded-xl">
                   <img
-                     src={(() => {
-                        if (!course?.certificateImage) return certificateImg;
-                        if (course.certificateImage.startsWith('http') || course.certificateImage.startsWith('blob:')) return course.certificateImage;
-                        const rawBase = import.meta.env.VITE_IMAGE_URL || import.meta.env.VITE_BASE_URL || import.meta.env.VITE_API_BASE || 'https://api.xpertqa.in';
-                        const baseUrl = rawBase.replace(/\/api\/v1\/?$/, '');
-                        return `${baseUrl}${course.certificateImage.startsWith('/') ? '' : '/'}${course.certificateImage}`;
-                     })()}
-                     alt="Xpertqa Academy Certificate"
+                     src={certificateSrc}
+                     alt="32 Pearls Dental Academy Certificate of Completion"
                      className="w-full h-auto transition-all duration-1000"
                   />
-
-                  {/* USER NAME OVERLAY */}
-                  <div className="absolute top-[49%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-full text-center pointer-events-none px-8">
-                     <span className="font-newsreader font-semibold italic text-[#1a2e4c] text-[clamp(1.1rem,2.2vw,1.8rem)] leading-none drop-shadow-xs tracking-wide">
-                        {displayName}
-                     </span>
-                  </div>
-
-                  {/* COURSE INFO OVERLAY */}
-                  {/* <div className="absolute top-[60.5%] left-1/2 -translate-x-1/2 w-full text-center pointer-events-none px-12">
-                      <p className="font-montserrat font-bold text-[#1a2e4c] text-[clamp(0.45rem,1vw,0.75rem)] leading-tight uppercase tracking-wider">
-                         {courseTitle}
-                      </p>
-                      <p className="font-montserrat text-[#4a5568] text-[clamp(0.35rem,0.75vw,0.55rem)] mt-0.5 font-medium tracking-wide">
-                         Awarded on {formattedDate}
-                      </p>
-                   </div> */}
                </div>
                <div className="mt-8 space-y-4">
-                  <p className="font-jetbrains text-[9px] text-amber-700 tracking-[0.5em] uppercase text-center md:text-left font-bold">{course?.certificateTitle || "Certification Protocol Available Upon Completion"}</p>
+                  <p className="font-jetbrains text-[9px] text-amber-700 tracking-[0.5em] uppercase text-center md:text-left font-bold">{course?.certificateTitle || "Certificate of Completion"}</p>
                </div>
             </div>
 
-            {/* 3. Multi-Plan Selection */}
             <div className="lg:col-span-6 reveal-item space-y-6">
                <div className="space-y-4">
                   {apiPlans.map((plan) => (
@@ -142,7 +103,6 @@ const CertificatePricingSection = ({ course }) => {
                         className={`relative cursor-pointer p-8 md:p-10 border rounded-2xl transition-all duration-500 overflow-hidden group
                        ${selectedPlanId === plan.id ? 'border-amber-400 bg-amber-50/70 ring-2 ring-amber-400/40 shadow-lg' : 'border-slate-200 bg-white hover:border-slate-300'}`}
                      >
-                        {/* Selection Glow */}
                         {selectedPlanId === plan.id && (
                            <div className="absolute top-0 right-0 w-32 h-32 bg-amber-400/20 blur-[60px]" />
                         )}
@@ -163,7 +123,6 @@ const CertificatePricingSection = ({ course }) => {
                                  <span className="font-jetbrains text-[7px] text-slate-400 uppercase tracking-widest">Single Access</span>
                               </div>
 
-                              {/* Custom Selection Circle */}
                               <div className={`w-10 h-10 rounded-full border-2 flex items-center justify-center transition-all duration-500
                               ${selectedPlanId === plan.id ? 'border-amber-400 bg-accent' : 'border-slate-300 group-hover:border-amber-400'}`}>
                                  {selectedPlanId === plan.id && (
@@ -178,7 +137,6 @@ const CertificatePricingSection = ({ course }) => {
                   ))}
                </div>
 
-               {/* 4. Continue Access Button */}
                <div className={`transition-all duration-700 ease-[expo.out]
               ${selectedPlanId ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6 pointer-events-none'}`}>
                   <button

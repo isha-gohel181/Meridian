@@ -1,0 +1,28 @@
+Quiz bulk upload — supported formats
+=====================================
+
+1) CSV or XLSX (recommended)
+   Use these exact column headers (first row):
+
+   Question, Option A, Option B, Option C, Option D, Correct Answer, Explanation
+
+   - Correct Answer: A, B, C, or D (or a/b/c/d)
+   - One question per row
+   - Sample file: quiz-bulk-upload-sample.csv (same folder)
+
+2) DOCX
+   Use numbered questions and options like:
+
+   1. What is 2 + 2?
+   a) 3
+   b) 4
+   c) 5
+   d) 6
+   The correct answer is: b)
+   Explanation:
+   Two plus two equals four.
+
+   2. Next question...
+
+   After upload, add a section first OR use Bulk Upload on empty quiz to create
+   "Bulk Imported Questions" section automatically.

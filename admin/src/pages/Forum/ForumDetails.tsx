@@ -1,3 +1,4 @@
+import { getImageBase } from "../../utils/apiBase";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
@@ -17,7 +18,7 @@ import {
 } from "lucide-react";
 import { RootState } from "../../store";
 
-const BASE_URL = import.meta.env.VITE_IMAGE_URL || import.meta.env.VITE_BASE_URL || "https://api.xpertqa.in";
+const BASE_URL = getImageBase();
 
 const ForumDetails: React.FC = () => {
   const { threadId } = useParams<{ threadId: string }>();

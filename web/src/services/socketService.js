@@ -1,9 +1,10 @@
+import { getSocketBase } from '../utils/apiBase.js';
 // Dynamically import socket.io-client inside connect() to avoid importing
 // engine.io-client at module-evaluation time (prevents browser/Node mismatch errors).
 
 const getBaseUrl = () => {
   const env = (typeof import.meta !== 'undefined' && import.meta.env) || {};
-  let url = env.VITE_SOCKET_URL || env.VITE_API_BASE || env.VITE_BASE_URL || 'https://api.xpertqa.in';
+  let url = getSocketBase();
   // Ensure we don't have double slashes if the env var ends with one
   return url.replace(/\/$/, '');
 };
@@ -92,6 +93,10 @@ class SocketService {
         this.socket.on('user_stopped_typing', (data) => this._emitLocal('user_stopped_typing', data));
         this.socket.on('user_online', (data) => this._emitLocal('user_online', data));
         this.socket.on('user_offline', (data) => this._emitLocal('user_offline', data));
+        this.socket.on('progress-updated', (data) => this._emitLocal('progress-updated', data));
+        this.socket.on('course-progress-updated', (data) =>
+          this._emitLocal('course-progress-updated', data)
+        );
 
       } catch (error) {
         this.cleanup();

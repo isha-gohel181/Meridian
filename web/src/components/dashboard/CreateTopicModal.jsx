@@ -1,7 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
+import { useSelector } from 'react-redux'
 
 const CreateTopicModal = ({ isOpen, onClose, onSubmit }) => {
+  const user = useSelector((state) => state.auth?.user)
+  const avatarInitials =
+    user?.fullName
+      ?.split(/\s+/)
+      .filter(Boolean)
+      .slice(0, 2)
+      .map((p) => p[0]?.toUpperCase())
+      .join('') || 'U'
   const modalRef = useRef(null)
   const overlayRef = useRef(null)
   const contentRef = useRef(null)
@@ -73,37 +82,37 @@ const CreateTopicModal = ({ isOpen, onClose, onSubmit }) => {
   if (!isOpen) return null
 
   return (
-    <div ref={modalRef} className="fixed inset-0 z-[10000] flex items-center justify-center p-4 md:p-8 overflow-y-auto py-20">
+    <div ref={modalRef} className="fixed inset-0 z-[10000] flex items-start justify-center overflow-y-auto px-4 pb-12 pt-24 md:px-8 md:pt-28">
       {/* Backdrop Overlay */}
       <div 
         ref={overlayRef}
         onClick={handleClose}
-        className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm opacity-0 pointer-events-none"
+        className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm opacity-0"
       />
       
       {/* Modal Content container */}
       <div 
         ref={contentRef}
-        className="relative w-full max-w-3xl h-[95vh] bg-card border border-border rounded-none overflow-hidden shadow-2xl opacity-0 flex flex-col text-normal"
+        className="relative w-full max-w-3xl max-h-[min(88vh,920px)] bg-white border border-slate-200 rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl opacity-0 flex flex-col text-slate-900"
       >
         {/* Header Terminal */}
-        <div className="flex-shrink-0 flex items-center justify-between p-5 border-b border-border bg-card">
+        <div className="flex-shrink-0 flex items-center justify-between px-6 py-6 md:px-8 md:py-7 border-b border-slate-100 bg-white">
            <div className="flex items-center gap-4">
-              <div className="w-10 h-10 rounded-none bg-accent text-white flex items-center justify-center font-jetbrains text-sm font-bold">
-                 AS
+              <div className="w-11 h-11 rounded-xl bg-accent text-white flex items-center justify-center font-jetbrains text-sm font-bold shadow-sm">
+                 {avatarInitials}
               </div>
-              <span className="font-newsreader italic text-xl text-normal font-bold">Create Discourse Topic</span>
+              <span className="font-newsreader italic text-xl md:text-2xl text-slate-900 font-bold">Create Discourse Topic</span>
            </div>
             <button 
               onClick={handleClose}
-              className="w-10 h-10 rounded-xl border border-border flex items-center justify-center text-description hover:text-accent hover:border-accent transition-all duration-300 cursor-pointer"
+              className="w-10 h-10 rounded-xl border border-slate-200 flex items-center justify-center text-slate-500 hover:text-accent hover:border-accent transition-all duration-300 cursor-pointer"
             >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
            </button>
         </div>
 
         {/* Intelligence Form Area */}
-        <div className="flex-1 p-6 md:px-10 md:py-10 space-y-10 overflow-y-auto custom-scrollbar" data-lenis-prevent>
+        <div className="flex-1 px-6 py-8 md:px-10 md:py-10 space-y-10 overflow-y-auto custom-scrollbar" data-lenis-prevent>
            
            {/* Section: Title Input */}
            <div className="space-y-3">
@@ -117,9 +126,9 @@ const CreateTopicModal = ({ isOpen, onClose, onSubmit }) => {
                    value={title}
                    onChange={(e) => setTitle(e.target.value.substring(0, 100))}
                    placeholder="e.g., Google Ads vs Meta Ads, which works better for eCommerce?"
-                   className="w-full bg-dark border border-border rounded-none px-5 py-4 font-jetbrains text-sm text-normal placeholder:text-description/60 focus:outline-none focus:border-accent transition-all"
+                   className="w-full bg-slate-50 border border-slate-200 rounded-xl px-5 py-4 font-montserrat text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 transition-all"
                  />
-                 <span className="absolute right-4 top-1/2 -translate-y-1/2 font-jetbrains text-[9px] text-description/60 uppercase tracking-widest">{title.length}/100</span>
+                 <span className="absolute right-4 top-1/2 -translate-y-1/2 font-jetbrains text-[9px] text-slate-400 uppercase tracking-widest">{title.length}/100</span>
               </div>
            </div>
 
@@ -134,9 +143,9 @@ const CreateTopicModal = ({ isOpen, onClose, onSubmit }) => {
                    value={content}
                    onChange={(e) => setContent(e.target.value.substring(0, 2000))}
                    placeholder="Describe your question or topic in detail..."
-                   className="w-full bg-dark border border-border rounded-none px-5 py-5 font-jetbrains text-sm text-normal placeholder:text-description/60 focus:outline-none focus:border-accent transition-all min-h-[180px] resize-none"
+                   className="w-full bg-slate-50 border border-slate-200 rounded-xl px-5 py-5 font-montserrat text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 transition-all min-h-[180px] resize-none"
                  />
-                 <span className="absolute right-4 bottom-4 font-jetbrains text-[9px] text-description/60 uppercase tracking-widest">{content.length}/2000</span>
+                 <span className="absolute right-4 bottom-4 font-jetbrains text-[9px] text-slate-400 uppercase tracking-widest">{content.length}/2000</span>
               </div>
            </div>
 
@@ -152,7 +161,7 @@ const CreateTopicModal = ({ isOpen, onClose, onSubmit }) => {
                       key={tag}
                       onClick={() => toggleTag(tag)}
                       className={`px-4 py-2 border font-jetbrains text-[9px] font-bold uppercase tracking-widest transition-all duration-300 rounded-xl cursor-pointer
-                        ${selectedTags.includes(tag) ? 'bg-accent border-accent text-white shadow-sm' : 'border-border text-description hover:border-accent hover:text-normal bg-card'}`}
+                        ${selectedTags.includes(tag) ? 'bg-accent border-accent text-white shadow-sm' : 'border-slate-200 text-slate-600 hover:border-accent hover:text-slate-900 bg-white'}`}
                     >
                        #{tag}
                     </button>
@@ -180,14 +189,14 @@ const CreateTopicModal = ({ isOpen, onClose, onSubmit }) => {
 
               <div 
                 onClick={() => fileInputRef.current?.click()}
-                className="border-2 border-dashed border-border bg-dark rounded-none p-10 flex flex-col items-center justify-center gap-3 group cursor-pointer hover:border-accent transition-colors"
+                className="border-2 border-dashed border-slate-200 bg-slate-50 rounded-2xl p-10 flex flex-col items-center justify-center gap-3 group cursor-pointer hover:border-accent transition-colors"
               >
-                 <div className="w-12 h-12 rounded-none bg-accent/10 border border-accent/20 flex items-center justify-center text-accent group-hover:scale-110 transition-transform duration-300">
+                 <div className="w-12 h-12 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center text-accent group-hover:scale-110 transition-transform duration-300">
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
                  </div>
                  <div className="flex flex-col items-center gap-1">
-                    <span className="font-montserrat text-xs font-bold uppercase tracking-wider text-normal">Click to upload files or drag and drop</span>
-                    <span className="font-jetbrains text-[9px] text-description uppercase tracking-wider">Images, PDFs, Documents (Max 10MB each)</span>
+                    <span className="font-montserrat text-xs font-bold uppercase tracking-wider text-slate-800">Click to upload files or drag and drop</span>
+                    <span className="font-jetbrains text-[9px] text-slate-500 uppercase tracking-wider">Images, PDFs, Documents (Max 10MB each)</span>
                  </div>
               </div>
 
@@ -195,8 +204,8 @@ const CreateTopicModal = ({ isOpen, onClose, onSubmit }) => {
               {attachments.length > 0 && (
                 <div className="flex flex-wrap gap-3 pt-2">
                   {attachments.map((file, idx) => (
-                    <div key={idx} className="flex items-center gap-3 px-4 py-2 bg-dark border border-border rounded-none group/file">
-                      <span className="font-jetbrains text-[10px] text-normal truncate max-w-[150px]">{file.name}</span>
+                    <div key={idx} className="flex items-center gap-3 px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl group/file">
+                      <span className="font-jetbrains text-[10px] text-slate-800 truncate max-w-[150px]">{file.name}</span>
                       <button 
                         onClick={(e) => {
                           e.stopPropagation();
@@ -214,10 +223,10 @@ const CreateTopicModal = ({ isOpen, onClose, onSubmit }) => {
         </div>
 
         {/* Footer Terminal Actions */}
-        <div className="flex-shrink-0 p-5 border-t border-border flex items-center justify-end gap-6 bg-card">
+        <div className="flex-shrink-0 px-6 py-5 md:px-8 border-t border-slate-100 flex items-center justify-end gap-6 bg-white">
             <button 
               onClick={handleClose}
-              className="font-jetbrains text-[11px] font-bold text-description hover:text-normal uppercase tracking-[0.3em] transition-colors py-3 px-2 cursor-pointer"
+              className="font-jetbrains text-[11px] font-bold text-slate-500 hover:text-slate-900 uppercase tracking-[0.3em] transition-colors py-3 px-2 cursor-pointer rounded-xl"
             >
                Cancel
             </button>

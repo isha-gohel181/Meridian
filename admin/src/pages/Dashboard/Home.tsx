@@ -33,7 +33,7 @@ const Home: React.FC = () => {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-50">
         <div className="flex items-center space-x-2">
-          <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+          <div className="w-8 h-8 border-4 border-brand-500 border-t-transparent rounded-full animate-spin"></div>
           <span className="text-gray-600">Loading dashboard...</span>
         </div>
       </div>
@@ -216,7 +216,7 @@ const Home: React.FC = () => {
             </div>
           </div>
 
-          <div className="bg-[#1878C0] rounded-xl shadow-sm p-6 text-white">
+          <div className="bg-brand-500 rounded-xl shadow-sm p-6 text-white">
             <div className="flex sm:flex-row items-center sm:items-center justify-between gap-4 mb-4">
               <h3 className="text-lg font-semibold">Platform Revenue</h3>
               <IndianRupee className="w-5 h-5 text-white/90" />
@@ -225,7 +225,7 @@ const Home: React.FC = () => {
               <p className="text-3xl font-bold">
                 {formatCurrency(counts?.platformIncome)}
               </p>
-              <p className="text-blue-100 text-sm mt-1">
+              <p className="text-white/80 text-sm mt-1">
                 Total Revenue Generated
               </p>
             </div>
@@ -285,7 +285,7 @@ const Home: React.FC = () => {
               {latest?.supportTickets?.slice(0, 3).map((ticket) => (
                 <div
                   key={ticket?._id}
-                  className="border-l-4 border-blue-500 pl-4"
+                  className="border-l-4 border-brand-500 pl-4"
                 >
                   <div className="flex sm:flex-row items-center sm:items-center justify-between gap-4 mb-1">
                     <p className="text-sm font-medium text-gray-900 truncate">

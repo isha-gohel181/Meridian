@@ -1,4 +1,5 @@
 import nodemailer from 'nodemailer';
+import { APP_DISPLAY_NAME } from './appBrand.js';
 
 const transporter = nodemailer.createTransport({
   host: process.env.MAIL_HOST,
@@ -13,7 +14,7 @@ const transporter = nodemailer.createTransport({
 const sendEmail = async (to, text, subject) => {
   try {
     await transporter.sendMail({
-      from: `"${process.env.MAIL_FROM_NAME}" <${process.env.MAIL_FROM_ADDRESS}>`,
+      from: `"${process.env.MAIL_FROM_NAME || APP_DISPLAY_NAME}" <${process.env.MAIL_FROM_ADDRESS}>`,
       to,
       subject,
       text,

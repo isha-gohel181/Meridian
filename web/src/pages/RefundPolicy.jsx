@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import gsap from 'gsap';
+import { SUPPORT_EMAIL, getSupportEmailDisplay } from '../constants/brand';
 
 const RefundPolicy = () => {
   useEffect(() => {
@@ -16,7 +17,7 @@ const RefundPolicy = () => {
         
         <div className="refund-animate space-y-6 text-base leading-relaxed">
           <p>
-            Thank you for enrolling in Xpertqa courses and services. We strive to provide the highest quality computer programming, consultancy, and technical training. Please read our refund policy carefully.
+            Thank you for enrolling in 32 Pearls Dental Academy courses and services. We strive to provide the highest quality orthodontic education and clinical training. Please read our refund policy carefully.
           </p>
           
           <h2 className="text-xl font-bold text-amber-600 mt-6">1. Digital Products</h2>
@@ -36,8 +37,8 @@ const RefundPolicy = () => {
           <h2 className="text-xl font-bold text-amber-600 mt-6">3. How to Request a Refund</h2>
           <p>
             If you believe you are eligible for a refund, please contact our support team at{' '}
-            <a href="mailto:xsmartqa.com@gmail.com" className="text-amber-600 font-bold hover:underline">
-              xsmartqa.com@gmail.com
+            <a href={`mailto:${SUPPORT_EMAIL}`} className="text-amber-600 font-bold hover:underline">
+              {getSupportEmailDisplay()}
             </a>{' '}
             within 48 hours of purchase with your transaction details and a clear explanation of the issue.
           </p>

@@ -1,3 +1,4 @@
+import { getApiBase } from '../../utils/apiBase.js';
 import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -186,7 +187,7 @@ const ChatMessage = ({ msg, isSent, onReply, isSupportChat }) => {
         if (rawUrl.startsWith('http') || rawUrl.startsWith('blob:')) {
             return rawUrl;
         }
-        const rawBase = import.meta.env.VITE_IMAGE_URL || import.meta.env.VITE_BASE_URL || import.meta.env.VITE_API_BASE || 'https://api.xpertqa.in';
+        const rawBase = import.meta.env.VITE_IMAGE_URL || getApiBase();
         const baseUrl = rawBase.replace(/\/api\/v1\/?$/, '');
         return `${baseUrl}${rawUrl.startsWith('/') ? '' : '/'}${rawUrl}`;
     };

@@ -222,8 +222,7 @@ const Navbar = ({ isLoaded }) => {
         ref={navContainerRef}
         className="fixed z-[120] will-change-[transform,top,width] opacity-0 pointer-events-none"
       >
-        {/* Ambient Ocean Blue Glow Halo behind Navbar */}
-        <div className="absolute -inset-1.5 bg-accent/15 rounded-full blur-xl pointer-events-none" />
+        <div className="absolute -inset-1.5 bg-accent/10 rounded-full blur-xl pointer-events-none" />
 
         <div
           ref={innerNavRef}
@@ -231,7 +230,7 @@ const Navbar = ({ isLoaded }) => {
         >
 
           <Link to="/" ref={logoRef} className="flex items-center hover:opacity-80 transition-opacity gap-2.5">
-            <img src="/logos/osa_logo.png" alt="Xpertqa Logo" className="h-9 md:h-11 w-auto object-contain" />
+            <img src="/dental_acadmy/dental.jpeg" alt="32 Pearls Dental Academy" className="h-9 md:h-11 w-auto object-contain" />
           </Link>
 
           <div
@@ -296,7 +295,7 @@ const Navbar = ({ isLoaded }) => {
           {/* Internal Menu Header */}
           <header className="menu-header absolute top-0 left-0 w-full px-8 md:px-12 py-8 md:py-10 flex items-center justify-between z-50">
             <Link to="/" onClick={toggleMenu} className="flex items-center gap-3 hover:opacity-80 transition-opacity">
-              <img src="/logos/osa_logo.png" alt="Xpertqa Logo" className="h-10 md:h-12 w-auto object-contain" />
+              <img src="/dental_acadmy/dental.jpeg" alt="32 Pearls Dental Academy" className="h-10 md:h-12 w-auto object-contain" />
             </Link>
 
             <button
@@ -367,7 +366,7 @@ const Navbar = ({ isLoaded }) => {
                 </div>
                 <div className="flex flex-col gap-2 items-center text-center w-full">
                   <p className="font-jetbrains text-[9px] tracking-[0.3em] sm:tracking-[0.6em] text-slate-500 uppercase italic whitespace-normal">Where Ambition Meets Execution</p>
-                  <p className="font-jetbrains text-[8px] tracking-[0.1em] sm:tracking-[0.2em] text-slate-400 uppercase whitespace-normal">© 2026 XPERTQA. ALL RIGHTS RESERVED.</p>
+                  <p className="font-jetbrains text-[8px] tracking-[0.1em] sm:tracking-[0.2em] text-slate-400 uppercase whitespace-normal">© 2026 32 PEARLS DENTAL ACADEMY. ALL RIGHTS RESERVED.</p>
                 </div>
               </div>
             </div>

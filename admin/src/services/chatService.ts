@@ -1,6 +1,7 @@
+import { getApiBase } from "../utils/apiBase";
 import { io, Socket } from "socket.io-client";
 
-const SOCKET_URL = (import.meta.env.VITE_SOCKET_URL || import.meta.env.VITE_BASE_URL || "https://api.xpertqa.in").replace(/\/+$/, '');
+const SOCKET_URL = (import.meta.env.VITE_SOCKET_URL || getApiBase()).replace(/\/+$/, '');
 
 class ChatService {
   private socket: Socket | null = null;

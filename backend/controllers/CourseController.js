@@ -12,8 +12,7 @@ import Assignment from '../models/Assignment.js';
 import axios from 'axios';
 import CourseEnrollment from "../models/CourseEnrollment.js";
 import CoursePlan from "../models/CoursePlan.js";
-
-
+import { CERTIFICATE_ORGANIZATION_DEFAULT } from "../utils/appBrand.js";
 
 const courseService = new CourseService();
 
@@ -283,7 +282,9 @@ export const createCourse = async (req, res) => {
       certificateRecipientName: req.body.certificateRecipientName,
       certificateIssuerName: req.body.certificateIssuerName,
       certificateIssuerTitle: req.body.certificateIssuerTitle,
-      certificateOrganization: req.body.certificateOrganization,
+      certificateOrganization:
+        (req.body.certificateOrganization && String(req.body.certificateOrganization).trim()) ||
+        CERTIFICATE_ORGANIZATION_DEFAULT,
       certificateDescription: req.body.certificateDescription,
 
       // Enhanced Landing Page Sections
@@ -625,7 +626,11 @@ export const getCourseById = async (req, res) => {
     }
     if (course.landingPageSections) {
       clean.landingPageSections = course.landingPageSections.map(s => ({
-        _id: s._id, type: s.type, data: s.data,
+        _id: s._id,
+        type: s.type,
+        order: s.order ?? s.sortOrder ?? 0,
+        sortOrder: s.sortOrder ?? s.order ?? 0,
+        data: s.data,
       }));
     }
     if (course.reviews) {
@@ -647,7 +652,10 @@ export const getCourseById = async (req, res) => {
     }
     if (course.faqs || course.faq) {
       clean.faqs = (course.faqs || course.faq).map(f => ({
-        category: f.category, question: f.question, answer: f.answer,
+        _id: f._id,
+        category: f.category,
+        question: f.question,
+        answer: f.answer,
       }));
     }
     if (course.plans) {
@@ -1570,7 +1578,9 @@ export const updateCourse = async (req, res) => {
       // Certificate fields
       certificateIssuerName: req.body.certificateIssuerName,
       certificateIssuerTitle: req.body.certificateIssuerTitle,
-      certificateOrganization: req.body.certificateOrganization,
+      certificateOrganization:
+        (req.body.certificateOrganization && String(req.body.certificateOrganization).trim()) ||
+        CERTIFICATE_ORGANIZATION_DEFAULT,
       certificateDescription: req.body.certificateDescription,
 
       // Enhanced Landing Page Sections
@@ -1630,7 +1640,13 @@ export const updateCourse = async (req, res) => {
         .map(idx => planMap[idx]);
     }
 
-    if (plansArray.length > 0) {
+    const plansPresentInRequest =
+      req.body.plansSync === 'true' ||
+      req.body.plansSync === true ||
+      Array.isArray(req.body.plans) ||
+      Object.keys(req.body).some((key) => /^plans\[\d+\]/.test(key));
+
+    if (plansPresentInRequest) {
       const formattedPlans = plansArray.map(plan => ({
         _id: plan._id,
         name: plan.name,

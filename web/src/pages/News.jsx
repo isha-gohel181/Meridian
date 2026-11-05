@@ -1,3 +1,4 @@
+import { getApiBase } from '../utils/apiBase.js';
 import React, { useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { Link } from 'react-router-dom'
@@ -13,7 +14,7 @@ const NewsCard = ({ article, variant = 'standard' }) => {
       <Link 
         to={`/news/${article.id || 'featured'}`}
         ref={cardRef}
-        className="news-reveal col-span-1 lg:col-span-8 group cursor-pointer block relative h-[420px] md:h-[550px] overflow-hidden rounded-none border border-border shadow-sm hover:shadow-md hover:border-accent transition-all bg-card"
+        className="news-reveal col-span-1 lg:col-span-8 group cursor-pointer block relative h-[420px] md:h-[550px] overflow-hidden rounded-2xl border border-border shadow-sm hover:shadow-md hover:border-accent transition-all bg-card"
       >
         <div className="absolute inset-0 z-0">
           <img 
@@ -26,7 +27,7 @@ const NewsCard = ({ article, variant = 'standard' }) => {
         </div>
         
         <div className="relative z-10 h-full p-8 md:p-12 flex flex-col justify-end">
-          <span className="font-jetbrains text-xs font-bold text-white bg-accent tracking-wider uppercase mb-4 px-3.5 py-1 rounded-none w-fit shadow-sm">
+          <span className="font-jetbrains text-xs font-bold text-white bg-accent tracking-wider uppercase mb-4 px-3.5 py-1 rounded-full w-fit shadow-sm">
             {article.category}
           </span>
           <h2 className="marketing-card-title text-2xl md:text-4xl leading-tight text-white transition-colors group-hover:text-accent mb-4 max-w-3xl">
@@ -50,9 +51,9 @@ const NewsCard = ({ article, variant = 'standard' }) => {
       <Link 
         to={`/news/${article.id || 'featured-side'}`}
         ref={cardRef}
-        className="news-reveal col-span-1 lg:col-span-4 group cursor-pointer flex flex-col justify-between bg-card border border-border hover:border-accent p-6 md:p-8 rounded-none shadow-sm hover:shadow-md transition-all duration-300"
+        className="news-reveal col-span-1 lg:col-span-4 group cursor-pointer flex flex-col justify-between bg-card border border-border hover:border-accent p-6 md:p-8 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300"
       >
-        <div className="relative aspect-square overflow-hidden bg-black/5 dark:bg-white/5 rounded-none border border-border mb-6">
+        <div className="relative aspect-[16/10] overflow-hidden bg-black/5 dark:bg-white/5 rounded-xl border border-border mb-6">
           <img 
             src={article.image} 
             alt={article.title}
@@ -61,7 +62,7 @@ const NewsCard = ({ article, variant = 'standard' }) => {
           />
         </div>
         <div className="flex flex-col gap-4">
-          <span className="font-jetbrains text-[10px] font-bold text-accent bg-accent/10 border border-accent/20 tracking-wider uppercase px-3 py-1 rounded-none w-fit">
+          <span className="font-jetbrains text-[10px] font-bold text-accent bg-accent/10 border border-accent/20 tracking-wider uppercase px-3 py-1 rounded-full w-fit">
             {article.category}
           </span>
           <h2 className="marketing-card-title text-xl md:text-2xl leading-snug transition-colors group-hover:text-accent">
@@ -69,7 +70,7 @@ const NewsCard = ({ article, variant = 'standard' }) => {
           </h2>
           <div className="flex items-center gap-4 pt-4 border-t border-border">
             <span className="font-jetbrains text-xs text-description font-medium uppercase tracking-wider">{article.date}</span>
-            <span className="font-jetbrains text-xs text-description font-medium uppercase tracking-wider ml-auto">5.1K VIEWS</span>
+            <span className="font-jetbrains text-xs text-description font-medium uppercase tracking-wider ml-auto">{article.views} views</span>
           </div>
         </div>
       </Link>
@@ -80,10 +81,9 @@ const NewsCard = ({ article, variant = 'standard' }) => {
       <Link 
         to={`/news/${article.id}`}
         ref={cardRef}
-        className="news-reveal col-span-1 md:col-span-6 lg:col-span-4 group cursor-pointer block bg-card border border-border hover:border-accent p-6 rounded-none shadow-sm hover:shadow-md transition-all duration-300"
+        className="news-reveal col-span-1 md:col-span-6 lg:col-span-4 group cursor-pointer block bg-card border border-border hover:border-accent p-6 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300"
       >
-        {/* Square Image Container */}
-        <div className="relative aspect-square overflow-hidden rounded-none bg-black/5 dark:bg-white/5 border border-border mb-5">
+        <div className="relative aspect-[16/10] overflow-hidden rounded-xl bg-black/5 dark:bg-white/5 border border-border mb-5">
           <img 
             src={article.image} 
             alt={article.title}
@@ -92,7 +92,7 @@ const NewsCard = ({ article, variant = 'standard' }) => {
           />
         </div>
         <div className="flex flex-col gap-3">
-          <span className="font-jetbrains text-[10px] font-bold text-accent bg-accent/10 border border-accent/20 tracking-wider uppercase px-3 py-1 rounded-none w-fit">
+          <span className="font-jetbrains text-[10px] font-bold text-accent bg-accent/10 border border-accent/20 tracking-wider uppercase px-3 py-1 rounded-full w-fit">
             {article.category}
           </span>
           <h3 className="marketing-card-title text-lg md:text-xl leading-snug transition-colors group-hover:text-accent line-clamp-2">
@@ -142,7 +142,7 @@ const News = () => {
     image: (() => {
         const url = n.imageUrl || n.coverImage || n.image;
         if (!url) return '/news_placeholder.png';
-        const rawBase = import.meta.env.VITE_BASE_URL || import.meta.env.VITE_API_BASE || 'https://api.xpertqa.in';
+        const rawBase = getApiBase();
         const baseUrl = rawBase.replace(/\/api\/v1\/?$/, '');
         const finalUrl = url.startsWith('http') ? url : `${baseUrl}/uploads/news/${url}`;
         return encodeURI(finalUrl);
@@ -189,7 +189,7 @@ const News = () => {
             <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
               <h1 className="marketing-page-title max-w-2xl">
                 {t('latestTitle') || 'Latest'}{' '}
-                <span className="text-[#1878C0]">{t('dispatchesTitle') || 'Dispatches & Insights'}</span>
+                <span className="text-[#C96A1B]">{t('dispatchesTitle') || 'Dispatches & Insights'}</span>
               </h1>
               <div className="w-full lg:max-w-md group relative shrink-0">
                 <input

@@ -1,3 +1,4 @@
+import { getApiBase } from "../../utils/apiBase";
 import React, { useEffect, useState, useRef } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { enrollStudent, fetchAllStudents } from "../../store/slices/students";
@@ -11,7 +12,7 @@ interface EnrollStudentPopupProps {
   studentId?: string;
 }
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_BASE_URL || "https://api.xpertqa.in";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || getApiBase();
 
 const EnrollStudentPopup: React.FC<EnrollStudentPopupProps> = ({ open, onClose, studentId }) => {
   const dispatch = useAppDispatch<any>();

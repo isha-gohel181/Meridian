@@ -1,3 +1,4 @@
+import { getImageBase } from "../../utils/apiBase";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import PageBreadcrumb from "../../components/common/PageBreadCrumb";
@@ -49,7 +50,7 @@ export default function AddEditFreeContent() {
       if (data.success) {
         setFormData(data.data);
         if (data.data.thumbnail) {
-          const imgBase = (import.meta.env.VITE_IMAGE_URL || import.meta.env.VITE_BASE_URL || 'https://api.xpertqa.in').replace(/\/+$/, '');
+          const imgBase = (getImageBase()).replace(/\/+$/, '');
           setThumbnailPreview(data.data.thumbnail.startsWith('http') ? data.data.thumbnail : `${imgBase}${data.data.thumbnail.startsWith('/') ? '' : '/'}${data.data.thumbnail}`);
         }
         if (data.data.freeQuiz) {
@@ -129,7 +130,7 @@ export default function AddEditFreeContent() {
   return (
     <>
       <PageMeta
-        title={`${isEdit ? "Edit" : "Add"} Free Content | Xpertqa`}
+        title={`${isEdit ? "Edit" : "Add"} Free Content | 32 Pearls Dental Academy`}
         description="Manage Free Content."
       />
       <PageBreadcrumb pageTitle={`${isEdit ? "Edit" : "Add"} Free Content`} />
@@ -187,7 +188,7 @@ export default function AddEditFreeContent() {
               <FileInput onChange={handlePdfFileChange} accept=".pdf" />
               {formData.fileUrl && !pdfFile && (
                 <p className="text-sm text-gray-500 mt-2">
-                  Current File: <a href={formData.fileUrl.startsWith('http') ? formData.fileUrl : `${(import.meta.env.VITE_IMAGE_URL || import.meta.env.VITE_BASE_URL || 'https://api.xpertqa.in').replace(/\/+$/, '')}${formData.fileUrl.startsWith('/') ? '' : '/'}${formData.fileUrl}`} target="_blank" rel="noreferrer" className="text-brand-500 underline">View PDF</a>
+                  Current File: <a href={formData.fileUrl.startsWith('http') ? formData.fileUrl : `${(getImageBase()).replace(/\/+$/, '')}${formData.fileUrl.startsWith('/') ? '' : '/'}${formData.fileUrl}`} target="_blank" rel="noreferrer" className="text-brand-500 underline">View PDF</a>
                 </p>
               )}
             </div>

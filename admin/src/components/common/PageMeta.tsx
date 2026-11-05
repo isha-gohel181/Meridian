@@ -1,4 +1,7 @@
 import { HelmetProvider, Helmet } from "react-helmet-async";
+import { APP_DISPLAY_NAME, APP_SHORT_NAME } from "../../constants/brand";
+
+const ADMIN_TITLE_SUFFIX = `${APP_SHORT_NAME} Admin`;
 
 const PageMeta = ({
   title,
@@ -7,22 +10,28 @@ const PageMeta = ({
   title: string;
   description: string;
 }) => {
-  let cleanTitle = title || "Xpertqa Admin";
+  let cleanTitle = title || ADMIN_TITLE_SUFFIX;
   if (cleanTitle.includes("TailAdmin") || cleanTitle.includes("React.js")) {
     cleanTitle = cleanTitle
       .replace(/React\.js\s*/gi, "")
-      .replace(/\s*Dashboard\s*\|\s*TailAdmin.*$/gi, " | Xpertqa Admin")
-      .replace(/\|\s*TailAdmin.*$/gi, "| Xpertqa Admin")
-      .replace(/TailAdmin/gi, "Xpertqa Admin")
+      .replace(/\s*Dashboard\s*\|\s*TailAdmin.*$/gi, ` | ${ADMIN_TITLE_SUFFIX}`)
+      .replace(/\|\s*TailAdmin.*$/gi, `| ${ADMIN_TITLE_SUFFIX}`)
+      .replace(/TailAdmin/gi, ADMIN_TITLE_SUFFIX)
       .trim();
-    if (!cleanTitle.includes("Xpertqa Admin")) {
-      cleanTitle = `${cleanTitle} | Xpertqa Admin`;
+    if (!cleanTitle.includes(ADMIN_TITLE_SUFFIX)) {
+      cleanTitle = `${cleanTitle} | ${ADMIN_TITLE_SUFFIX}`;
     }
   }
 
+  cleanTitle = cleanTitle
+    .replace(/Xpertqa/gi, APP_SHORT_NAME)
+    .replace(/XpertQA/gi, APP_SHORT_NAME);
+
   const cleanDescription = (description || "")
-    .replace(/TailAdmin/gi, "Xpertqa Admin")
-    .replace(/React\.js\s*/gi, "");
+    .replace(/TailAdmin/gi, ADMIN_TITLE_SUFFIX)
+    .replace(/React\.js\s*/gi, "")
+    .replace(/Xpertqa/gi, APP_DISPLAY_NAME)
+    .replace(/XpertQA/gi, APP_DISPLAY_NAME);
 
   return (
     <Helmet>

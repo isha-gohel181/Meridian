@@ -1,28 +1,17 @@
-import React, { useEffect, useRef, useState, useMemo } from 'react'
+import React, { useEffect, useRef, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchCourses } from '../redux/slices/courseSlice'
 import sanitizeDisplay from '../utils/textSanitize'
 import RollingText from './RollingText'
-
-const fallbackCourses = [
-  { id: '1', title: 'Banking Domain QA & Financial Systems Testing', tag: 'BANKING QA', thumbnail: '/courses/curator.png' },
-  { id: '2', title: 'Core Banking UAT & System Migration Masterclass', tag: 'UAT & MIGRATION', thumbnail: '/courses/motion.png' },
-  { id: '3', title: 'End-to-End Automation Testing (Selenium & Playwright)', tag: 'AUTOMATION', thumbnail: '/courses/workshop.png' },
-  { id: '4', title: 'Enterprise QA Leadership & Agile Transformation', tag: 'QA LEADERSHIP', thumbnail: '/courses/architecture.png' },
-  { id: '5', title: 'Second Innings: From Banking Operations to Senior QA', tag: 'CAREER TRACK', thumbnail: '/courses/narrative.png' },
-  { id: '6', title: 'API Testing & Microservices Validation with Postman', tag: 'API TESTING', thumbnail: '/courses/pricing.png' },
-  { id: '7', title: 'Payment Gateways & FinTech Transaction Security Testing', tag: 'FINTECH QA', thumbnail: '/courses/typography.png' },
-  { id: '8', title: 'Performance Engineering & Load Testing with JMeter', tag: 'PERFORMANCE', thumbnail: '/digital_curator_card_v1.png' },
-  { id: '9', title: 'ISTQB Certified Tester Foundation & Advanced Guide', tag: 'CERTIFICATION', thumbnail: '/gig_tech.png' },
-  { id: '10', title: 'Test Strategy, Defect Lifecycle & Test Management', tag: 'TEST STRATEGY', thumbnail: '/gig_vis.png' },
-  { id: '11', title: 'DevOps QA: CI/CD Pipelines with Jenkins & GitHub Actions', tag: 'DEVOPS QA', thumbnail: '/gig_motion.png' }
-]
+import { resolveCourseThumbnail } from '../utils/courseThumbnail.js'
+import { useLanguage } from '../context/LanguageContext'
 
 const CourseSlider = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const { courses: apiCourses } = useSelector((state) => state.courses)
+  const { t } = useLanguage()
+  const { courses: apiCourses, loading } = useSelector((state) => state.courses)
 
   const sectionRef = useRef(null)
   const trackRef = useRef(null)
@@ -37,34 +26,26 @@ const CourseSlider = () => {
   const dragStartPosRef = useRef(0)
   const hasMovedRef = useRef(false)
 
-  // Use API courses or fallback data
-  const baseCourses = useMemo(() => {
-    if (apiCourses && apiCourses.length > 0) {
-      return apiCourses
-    }
-    return fallbackCourses
-  }, [apiCourses])
+  const baseCourses = useMemo(() => apiCourses ?? [], [apiCourses])
 
-  // Multiply items to create infinite marquee buffer
   const items = useMemo(() => {
+    if (baseCourses.length === 0) return []
     let combined = [...baseCourses]
     while (combined.length < 16) {
       combined = [...combined, ...baseCourses]
     }
-    // Duplicate 3x for seamless infinite wraparound
     return [...combined, ...combined, ...combined]
   }, [baseCourses])
 
   useEffect(() => {
-    if (!apiCourses || apiCourses.length === 0) {
-      dispatch(fetchCourses())
-    }
-  }, [dispatch, apiCourses])
+    dispatch(fetchCourses())
+  }, [dispatch])
 
-  // Continuous Marquee & Center-Proximity Scaling Engine
   useEffect(() => {
+    if (items.length === 0) return undefined
+
     let lastTime = performance.now()
-    const autoSpeed = 48 // pixels per second
+    const autoSpeed = 48
 
     const updateSlider = (now) => {
       const delta = (now - lastTime) / 1000
@@ -74,75 +55,49 @@ const CourseSlider = () => {
         const speed = isHoveredRef.current ? autoSpeed * 0.25 : autoSpeed
         posRef.current -= speed * delta
 
-        // Compute single set width (1/3 of total track width)
         const totalWidth = trackRef.current.scrollWidth
         const setWidth = totalWidth / 3
-
         if (setWidth > 0) {
-          if (posRef.current <= -setWidth * 2) {
-            posRef.current += setWidth
-          } else if (posRef.current > -setWidth) {
-            posRef.current -= setWidth
-          }
+          if (posRef.current <= -setWidth * 2) posRef.current += setWidth
+          if (posRef.current > 0) posRef.current -= setWidth
         }
-      }
 
-      // Apply track translation
-      if (trackRef.current) {
-        trackRef.current.style.transform = `translate3d(${posRef.current}px, 0px, 0px)`
-      }
+        trackRef.current.style.transform = `translateX(${posRef.current}px)`
 
-      // Apply real-time proximity scaling, opacity, and active border to all cards
-      if (sectionRef.current) {
         const sectionRect = sectionRef.current.getBoundingClientRect()
         const centerX = sectionRect.left + sectionRect.width / 2
 
         cardsRef.current.forEach((cardEl, idx) => {
           if (!cardEl) return
-          const cardRect = cardEl.getBoundingClientRect()
-          const cardCenterX = cardRect.left + cardRect.width / 2
-          const dist = Math.abs(cardCenterX - centerX)
-
-          // Proximity calculation with smooth falloff
-          const maxRadius = 360
-          const t = Math.min(1, dist / maxRadius)
-
-          // Center: 1.15 scale down to 0.85 scale
-          const scale = 1.15 - 0.30 * Math.pow(t, 1.2)
-          // Center: 1.0 opacity down to 0.50 opacity
-          const opacity = 1.0 - 0.50 * Math.pow(t, 0.9)
-          // Center: border opacity 1 within 75px radius
+          const rect = cardEl.getBoundingClientRect()
+          const cardCenter = rect.left + rect.width / 2
+          const dist = Math.abs(cardCenter - centerX)
+          const scale = dist < 200 ? 1 + (1 - dist / 200) * 0.12 : 0.85
+          const opacity = dist < 200 ? 0.5 + (1 - dist / 200) * 0.5 : 0.5
           const borderOpacity = dist < 75 ? Math.max(0, 1 - dist / 75) : 0
 
           cardEl.style.transform = `scale(${scale.toFixed(3)}, ${scale.toFixed(3)})`
           cardEl.style.opacity = opacity.toFixed(3)
 
           const borderEl = bordersRef.current[idx]
-          if (borderEl) {
-            borderEl.style.opacity = borderOpacity.toFixed(3)
-          }
+          if (borderEl) borderEl.style.opacity = borderOpacity.toFixed(3)
         })
       }
 
       animRef.current = requestAnimationFrame(updateSlider)
     }
 
-    // Set initial middle offset
     if (trackRef.current) {
       const setWidth = trackRef.current.scrollWidth / 3
-      if (setWidth > 0) {
-        posRef.current = -setWidth
-      }
+      if (setWidth > 0) posRef.current = -setWidth
     }
 
     animRef.current = requestAnimationFrame(updateSlider)
-
     return () => {
       if (animRef.current) cancelAnimationFrame(animRef.current)
     }
   }, [items])
 
-  // Mouse / Touch Dragging Handlers
   const handleMouseDown = (e) => {
     isDraggingRef.current = true
     hasMovedRef.current = false
@@ -153,9 +108,7 @@ const CourseSlider = () => {
   const handleMouseMove = (e) => {
     if (!isDraggingRef.current) return
     const dx = e.clientX - dragStartXRef.current
-    if (Math.abs(dx) > 4) {
-      hasMovedRef.current = true
-    }
+    if (Math.abs(dx) > 4) hasMovedRef.current = true
     posRef.current = dragStartPosRef.current + dx
   }
 
@@ -175,9 +128,7 @@ const CourseSlider = () => {
   const handleTouchMove = (e) => {
     if (!isDraggingRef.current || e.touches.length !== 1) return
     const dx = e.touches[0].clientX - dragStartXRef.current
-    if (Math.abs(dx) > 4) {
-      hasMovedRef.current = true
-    }
+    if (Math.abs(dx) > 4) hasMovedRef.current = true
     posRef.current = dragStartPosRef.current + dx
   }
 
@@ -191,20 +142,38 @@ const CourseSlider = () => {
   }
 
   const getImageUrl = (course) => {
-    const imgPath = course.thumbnail || course.coverImage || course.horizontalCarouselImage || course.verticalCarouselImage
-    if (!imgPath || imgPath === '/herocard.png') return '/courses/curator.png'
-    if (imgPath.startsWith('http://') || imgPath.startsWith('https://') || imgPath.startsWith('data:') || imgPath.startsWith('/courses/') || imgPath.startsWith('/gig_') || imgPath.startsWith('/digital_')) {
-      return imgPath
-    }
-    const rawBase = import.meta.env.VITE_IMAGE_URL || import.meta.env.VITE_BASE_URL || import.meta.env.VITE_API_BASE || 'https://api.xpertqa.in'
-    const baseUrl = rawBase.replace(/\/api\/v1\/?$/, '')
-    return `${baseUrl}${imgPath.startsWith('/') ? '' : '/'}${imgPath}`
+    const imgPath =
+      course.thumbnail ||
+      course.coverImage ||
+      course.horizontalCarouselImage ||
+      course.verticalCarouselImage
+    return resolveCourseThumbnail(imgPath)
+  }
+
+  if (loading && baseCourses.length === 0) {
+    return (
+      <section className="relative w-full py-12 md:py-16 bg-gradient-to-b from-[#FFF9F3] to-[#f8fafc]">
+        <p className="text-center py-12 font-montserrat text-sm font-medium uppercase tracking-[0.15em] text-description">
+          {t('loadingCourses')}
+        </p>
+      </section>
+    )
+  }
+
+  if (baseCourses.length === 0) {
+    return (
+      <section className="relative w-full py-12 md:py-16 px-6 bg-gradient-to-b from-[#FFF9F3] to-[#f8fafc]">
+        <p className="text-center py-20 font-montserrat text-sm font-medium uppercase tracking-[0.15em] text-description">
+          {t('noCoursesAvailable')}
+        </p>
+      </section>
+    )
   }
 
   return (
     <section
       ref={sectionRef}
-      className="relative w-full py-8 md:py-14 pb-16 md:pb-24 overflow-hidden select-none bg-gradient-to-b from-[#eef7fe] via-[#e4f1fb]/60 to-[#f8fafc]"
+      className="relative w-full py-8 md:py-14 pb-16 md:pb-24 overflow-hidden select-none bg-gradient-to-b from-[#FFF9F3] via-[#FFF9F3]/60 to-[#f8fafc]"
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
       onMouseLeave={() => {
@@ -214,11 +183,9 @@ const CourseSlider = () => {
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
-      {/* Edge Gradient Masks for Smooth Fade */}
-      <div className="absolute top-0 left-0 z-20 w-[14vw] md:w-[18vw] h-full bg-gradient-to-r from-[#eef7fe] to-transparent pointer-events-none" />
-      <div className="absolute top-0 right-0 z-20 w-[14vw] md:w-[18vw] h-full bg-gradient-to-l from-[#eef7fe] to-transparent pointer-events-none" />
+      <div className="absolute top-0 left-0 z-20 w-[14vw] md:w-[18vw] h-full bg-gradient-to-r from-[#FFF9F3] to-transparent pointer-events-none" />
+      <div className="absolute top-0 right-0 z-20 w-[14vw] md:w-[18vw] h-full bg-gradient-to-l from-[#FFF9F3] to-transparent pointer-events-none" />
 
-      {/* Marquee Track with ample padding so cards are fully displayed */}
       <div
         ref={trackRef}
         className="flex items-center gap-7 md:gap-9 lg:gap-11 will-change-transform cursor-grab active:cursor-grabbing py-6"
@@ -228,34 +195,37 @@ const CourseSlider = () => {
             key={`${course._id || course.id}-${idx}`}
             ref={(el) => (cardsRef.current[idx] = el)}
             onClick={() => handleCardClick(course)}
+            onMouseDown={handleMouseDown}
+            onTouchStart={handleTouchStart}
             onMouseEnter={() => (isHoveredRef.current = true)}
             onMouseLeave={() => (isHoveredRef.current = false)}
             className="slider-card relative flex-shrink-0 w-[185px] md:w-[200px] cursor-pointer group"
-            style={{
-              opacity: 0.5,
-              transform: 'scale(0.85, 0.85)',
-            }}
+            style={{ opacity: 0.5, transform: 'scale(0.85, 0.85)' }}
           >
-            {/* Glowing Blue Border for Center Card */}
             <div
               ref={(el) => (bordersRef.current[idx] = el)}
               className="card-border absolute -inset-[2px] rounded-lg border-2 border-accent shadow-accent-large opacity-0 pointer-events-none transition-opacity duration-300"
               style={{ opacity: 0 }}
             />
 
-            {/* Inner Card Container */}
             <div className="relative border border-slate-200/90 p-2.5 flex flex-col gap-2 overflow-hidden transition-colors duration-500 group-hover:border-accent/50 bg-white rounded-md shadow-md">
-              {/* Aspect Ratio 4:5 Image */}
-              <div className="relative aspect-[4/5] overflow-hidden bg-slate-100 rounded-sm">
-                <img
-                  alt={sanitizeDisplay(course.title)}
-                  className="w-full h-full object-cover opacity-95 transition-transform duration-700 group-hover:scale-105"
-                  src={getImageUrl(course)}
-                  loading="lazy"
-                />
+              <div className="relative aspect-[4/5] overflow-hidden bg-[#FFF9F3] rounded-sm border border-[#682701]/10">
+                {getImageUrl(course) ? (
+                  <img
+                    alt={sanitizeDisplay(course.title)}
+                    className="w-full h-full object-cover opacity-95 transition-transform duration-700 group-hover:scale-105"
+                    src={getImageUrl(course)}
+                    loading="lazy"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center px-2">
+                    <span className="font-jetbrains text-[7px] uppercase tracking-widest text-[#682701]/35 text-center">
+                      {t('noPreview') || 'No preview'}
+                    </span>
+                  </div>
+                )}
               </div>
 
-              {/* Course Meta Info */}
               <div className="flex flex-col gap-1.5 px-1 pb-1">
                 <div className="flex items-center gap-2 text-accent justify-between border-b border-slate-100 pb-1.5">
                   <RollingText

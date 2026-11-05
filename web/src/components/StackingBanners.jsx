@@ -1,42 +1,13 @@
+import { getApiBase } from '../utils/apiBase.js';
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import RollingText from './RollingText'
 import authorizedFetch from '../utils/apiClient'
 import { useLanguage } from '../context/LanguageContext'
 
-const DEFAULT_SELECTIONS = [
-  {
-    id: 'banking_domain_qa',
-    title: 'Banking Domain Testing & UAT',
-    subtitle: 'Core Banking, Payment Rails & Regulatory Workflows',
-    image: '/courses/architecture.png',
-    type: 'all_courses'
-  },
-  {
-    id: 'enterprise_qa_transformation',
-    title: 'Enterprise QA Transformation',
-    subtitle: 'Large-scale Migration, Automation & Leadership',
-    image: '/courses/motion.png',
-    type: 'all_courses'
-  },
-  {
-    id: 'second_innings_qa',
-    title: 'Second Innings in QA',
-    subtitle: 'Transforming Domain Professionals into QA Leaders',
-    image: '/courses/typography.png',
-    type: 'all_courses'
-  },
-  {
-    id: 'hands_on_automation',
-    title: 'Hands-on QA & Automation',
-    subtitle: 'Industry-Grade Frameworks, API & Real-World Projects',
-    image: '/courses/curator.png',
-    type: 'all_courses'
-  }
-]
-
 const StackingBanners = () => {
   const [featured, setFeatured] = useState([])
+  const [bannersLoaded, setBannersLoaded] = useState(false)
   const navigate = useNavigate()
   const { t } = useLanguage()
 
@@ -48,7 +19,7 @@ const StackingBanners = () => {
       if (!path.startsWith('/') && !path.startsWith('uploads/')) {
         path = `uploads/${path}`
       }
-      const rawBase = import.meta.env.VITE_BASE_URL || 'https://api.xpertqa.in'
+      const rawBase = getApiBase()
       const baseUrl = rawBase.replace(/\/api\/v1\/?$/, '')
       return `${baseUrl}${path.startsWith('/') ? '' : '/'}${path}`
     } catch {
@@ -72,22 +43,22 @@ const StackingBanners = () => {
         }
       } catch (e) {
         console.error('Failed to load featured banners', e)
+      } finally {
+        if (mounted) setBannersLoaded(true)
       }
     }
     load()
     return () => { mounted = false }
   }, [])
 
-  const bannerItems = featured.length > 0 
-    ? featured.slice(0, 6).map((c) => ({
-        id: c._id || c.id,
-        title: c.title,
-        description: stripHTML(c.description || ''),
-        image: getImageUrl(c.image),
-        type: c.type,
-        referenceId: c.referenceId,
-      }))
-    : DEFAULT_SELECTIONS
+  const bannerItems = featured.slice(0, 6).map((c) => ({
+    id: c._id || c.id,
+    title: c.title,
+    description: stripHTML(c.description || ''),
+    image: getImageUrl(c.image),
+    type: c.type,
+    referenceId: c.referenceId,
+  }))
 
   const handleCardClick = (item) => {
     if (item.type === 'course' && item.referenceId) {
@@ -155,6 +126,18 @@ const StackingBanners = () => {
 
         {/* ── Right Column: Sticky Stacking Cards Deck ── */}
         <div className="md:w-[65%] relative">
+          {!bannersLoaded && (
+            <div className="h-[40vh] flex items-center justify-center font-montserrat text-sm text-description/70">
+              {t('loadingCourses') || 'Loading…'}
+            </div>
+          )}
+          {bannersLoaded && bannerItems.length === 0 && (
+            <div className="h-[40vh] md:h-[50vh] flex items-center justify-center rounded-[2rem] border border-dashed border-[#682701]/20 bg-[#FFF9F3] px-8">
+              <p className="text-center font-montserrat text-sm font-medium uppercase tracking-[0.15em] text-description">
+                {t('selectionEmptyTitle')}
+              </p>
+            </div>
+          )}
           {bannerItems.map((card, idx) => (
             <div 
               key={card.id || idx} 
@@ -169,12 +152,20 @@ const StackingBanners = () => {
               >
                 {/* Background Image Container */}
                 <div className="relative w-full h-full overflow-hidden group">
-                  <div className="w-full h-full transition-transform duration-700 group-hover:scale-105">
-                    <img 
-                      alt={card.title || "Module"} 
-                      className="w-full h-full object-cover object-center block" 
-                      src={card.image} 
-                    />
+                  <div className="w-full h-full transition-transform duration-700 group-hover:scale-105 bg-[#FFF9F3]">
+                    {card.image ? (
+                      <img
+                        alt={card.title || 'Module'}
+                        className="w-full h-full object-cover object-center block"
+                        src={card.image}
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center">
+                        <span className="font-jetbrains text-[10px] uppercase tracking-widest text-[#682701]/35">
+                          {t('noPreview') || 'No preview'}
+                        </span>
+                      </div>
+                    )}
                   </div>
 
                   {/* Deep Gradient Overlay on Bottom */}

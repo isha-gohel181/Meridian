@@ -593,10 +593,10 @@ const Quiz = ({
 
   return (
     <>
-      <div className="w-full mx-auto">
+      <div className="w-full mx-auto max-h-[88vh] flex flex-col min-h-0">
         {/* Enhanced Header - Responsive */}
-        <div className="bg-white  dark:bg-[#182131] rounded-xl md:rounded-2xl shadow-lg md:shadow-xl border border-gray-100">
-          <div className="bg-blue-500 p-4 sm:p-6 text-white sticky top-0 z-50 rounded-t-xl md:rounded-t-2xl">
+        <div className="bg-white dark:bg-[#182131] rounded-xl md:rounded-2xl shadow-lg md:shadow-xl border border-gray-100 flex flex-col min-h-0 max-h-[88vh] overflow-hidden">
+          <div className="bg-blue-500 p-4 sm:p-6 text-white shrink-0 rounded-t-xl md:rounded-t-2xl">
             <div className="flex sm:flex-row items-center sm:items-center justify-between gap-4">
               <div className="flex items-center gap-3 sm:gap-4">
                 <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white bg-opacity-20 rounded-lg sm:rounded-xl flex items-center justify-center">
@@ -622,8 +622,8 @@ const Quiz = ({
             </div>
           </div>
 
-          {/* Content - Responsive */}
-          <div className="p-4 sm:p-6 lg:p-8 space-y-6 !pb-36 sm:space-y-8">
+          {/* Content - scrollable */}
+          <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain p-4 sm:p-6 lg:p-8 space-y-6 sm:space-y-8">
             {/* Basic Quiz Information */}
             <div className=" rounded-xl p-4 sm:p-6 border-2 border-indigo-200 shadow-sm">
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white/90 mb-4 flex items-center">
@@ -852,6 +852,20 @@ const Quiz = ({
                     </p>
                   </div>
                   <div className="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
+                    <a
+                      href="/samples/quiz-bulk-upload-sample.csv"
+                      download
+                      className="w-full sm:w-auto px-3 py-2 text-xs font-medium text-indigo-700 bg-indigo-50 border border-indigo-200 rounded-lg hover:bg-indigo-100 text-center"
+                    >
+                      Sample CSV
+                    </a>
+                    <a
+                      href="/samples/quiz-bulk-upload-sample.xlsx"
+                      download
+                      className="w-full sm:w-auto px-3 py-2 text-xs font-medium text-indigo-700 bg-indigo-50 border border-indigo-200 rounded-lg hover:bg-indigo-100 text-center"
+                    >
+                      Sample XLSX
+                    </a>
                     <label className={`w-full sm:w-auto px-4 py-2 border border-green-500 text-green-600 dark:text-green-400 dark:border-green-400 bg-green-50 dark:bg-green-900/20 rounded-lg hover:bg-green-100 dark:hover:bg-green-900/40 transition-colors flex items-center justify-center gap-2 cursor-pointer ${isUploading ? 'opacity-50 pointer-events-none' : ''}`}>
                       {isUploading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
                       Bulk Upload (.docx, .csv, .xlsx)
@@ -955,6 +969,8 @@ const Quiz = ({
                           setActiveQuestionSectionIndex(sectionIndex);
                           setShowQuestionBuilder(true);
                         }}
+                        onBulkUpload={(file) => handleBulkUpload(file, sectionIndex)}
+                        isUploading={isUploading}
                       />
                     ))}
                   </div>

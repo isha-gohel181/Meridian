@@ -51,51 +51,44 @@ textarea,
   --font-jetbrains: "JetBrains Mono", monospace;
   --font-signature: "Mrs Saint Delafield", cursive;
 
-  /* Ocean Blue Palette (#1878C0) & Crisp Light Theme */
-  --color-accent: #1878C0;
-  /* Primary Ocean Blue */
-  --color-accent-secondary: #48A848;
-  /* Fresh Green Accent (from logo) */
-  --color-dark: #f8fafc;
-  /* Crisp Light Background */
-  --color-normal: #0F172A;
-  /* Slate 900 High Contrast Text */
-  --color-description: #475569;
-  /* Slate 600 Body Text */
-  --color-border: rgba(24, 120, 192, 0.12);
-  /* Subtle blue border */
+  /* 32 Pearls Dental Academy — warm brown & orange theme */
+  --color-brand-brown: #682701;
+  --color-accent: #C96A1B;
+  --color-accent-secondary: #E89A52;
+  --color-dark: #FFF9F3;
+  --color-normal: #2B1A12;
+  --color-description: #5c4034;
+  --color-border: rgba(104, 39, 1, 0.14);
   --color-card: #FFFFFF;
-  /* Pure White Card */
-  --color-card-border: rgba(24, 120, 192, 0.08);
+  --color-card-border: rgba(104, 39, 1, 0.08);
 
-  --shadow-accent-large: 0 10px 30px -5px rgba(24, 120, 192, 0.45), 0 0 20px rgba(24, 120, 192, 0.25);
-  --shadow-accent-soft: 0 4px 20px -2px rgba(24, 120, 192, 0.3);
+  --shadow-accent-large: 0 10px 30px -5px rgba(201, 106, 27, 0.35), 0 0 20px rgba(201, 106, 27, 0.2);
+  --shadow-accent-soft: 0 4px 20px -2px rgba(201, 106, 27, 0.25);
 
-  /* Override color palettes dynamically */
-  --color-amber-50: #eef7fe;
-  --color-amber-100: #d9edfc;
-  --color-amber-200: #b3daf8;
-  --color-amber-300: #82c3f2;
-  --color-amber-400: #1878C0;
-  --color-amber-500: #1468a8;
-  --color-amber-600: #11598f;
-  --color-amber-700: #0f4a76;
-  --color-amber-800: #0d3d62;
-  --color-amber-900: #0a2b46;
+  --color-amber-50: #fff9f3;
+  --color-amber-100: #fdebd5;
+  --color-amber-200: #f9d4a8;
+  --color-amber-300: #f0b574;
+  --color-amber-400: #C96A1B;
+  --color-amber-500: #a85614;
+  --color-amber-600: #8a460f;
+  --color-amber-700: #6d380c;
+  --color-amber-800: #502a09;
+  --color-amber-900: #3a1e06;
 
-  --color-yellow-50: #eef7fe;
-  --color-yellow-100: #d9edfc;
-  --color-yellow-200: #b3daf8;
-  --color-yellow-300: #82c3f2;
-  --color-yellow-400: #1878C0;
-  --color-yellow-500: #1468a8;
-  --color-yellow-600: #11598f;
-  --color-yellow-700: #0f4a76;
-  --color-yellow-800: #0d3d62;
-  --color-yellow-900: #0a2b46;
+  --color-yellow-50: #fff9f3;
+  --color-yellow-100: #fdebd5;
+  --color-yellow-200: #f9d4a8;
+  --color-yellow-300: #f0b574;
+  --color-yellow-400: #C96A1B;
+  --color-yellow-500: #a85614;
+  --color-yellow-600: #8a460f;
+  --color-yellow-700: #6d380c;
+  --color-yellow-800: #502a09;
+  --color-yellow-900: #3a1e06;
 
-  --color-slate-50: #f8fafc;
-  --color-slate-100: #f1f5f9;
+  --color-slate-50: #fff9f3;
+  --color-slate-100: #f5ebe0;
 
   --shadow-card: 0 10px 25px -5px rgba(15, 23, 42, 0.06), 0 4px 6px -2px rgba(15, 23, 42, 0.04);
 
@@ -437,6 +430,49 @@ button {
   @apply border-l-2 border-accent/30 bg-accent/5 p-8 italic text-lg text-accent/80 my-10;
 }
 
+/* News article body — light dashboard / detail pages */
+.news-content-html--light {
+  @apply flex flex-col gap-4 font-montserrat text-sm md:text-base;
+}
+
+.news-content-html--light p {
+  @apply leading-relaxed text-slate-600 mb-4;
+}
+
+.news-content-html--light h2,
+.news-content-html--light h3 {
+  @apply font-newsreader text-2xl text-slate-900 mt-8 mb-3;
+}
+
+.news-content-html--light hr {
+  @apply border-slate-200 my-8;
+}
+
+.news-content-html--light ul,
+.news-content-html--light ol {
+  @apply flex flex-col gap-2 mb-6 pl-5 list-disc text-slate-600;
+}
+
+.news-content-html--light li {
+  @apply leading-relaxed;
+}
+
+.news-content-html--light strong {
+  @apply text-slate-900 font-semibold;
+}
+
+.news-content-html--light a {
+  @apply text-[#C96A1B] underline underline-offset-2;
+}
+
+.news-content-html--light img {
+  @apply rounded-xl max-w-full h-auto my-6;
+}
+
+.news-content-html--light blockquote {
+  @apply border-l-4 border-[#C96A1B] bg-slate-50 p-4 italic text-slate-600 my-6 rounded-r-lg;
+}
+
 /* Custom contrast helper overrides for the Ocean Blue theme */
 .bg-accent,
 .bg-amber-400,
@@ -486,7 +522,7 @@ select:focus {
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: #1878c0;
+  color: #C96A1B;
 }
 
 .marketing-page-title {

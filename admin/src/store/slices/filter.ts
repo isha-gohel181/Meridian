@@ -1,18 +1,24 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 import axiosInstance from '../../services/axiosConfig';
-const baseUrl = import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_BASE_URL || "https://api.xpertqa.in/";
+import { getImageBase } from "../../utils/apiBase";
+
+const baseUrl = `${getImageBase()}/`;
 
 interface FilterState {
     data: any;
     loading: boolean;
     error: string | null;
+    subcategoriesLoading: boolean;
+    subcategoriesError: string | null;
 }
 
 const initialState: FilterState = {
     data: null,
     loading: false,
     error: null,
+    subcategoriesLoading: false,
+    subcategoriesError: null,
 };
 
 interface FilterPayload {
@@ -91,13 +97,29 @@ export const fetchSubcategoriesByCategory = createAsyncThunk<
     any[],
     string
 >('filter/fetchSubcategoriesByCategory', async (categoryId, { rejectWithValue }) => {
+    if (!categoryId) {
+        return [];
+    }
     try {
         const response = await axiosInstance.get(
-            `${baseUrl}/filter/subcategories/by-category/${categoryId}`
+            `/filter/subcategories/by-category/${encodeURIComponent(categoryId)}`
         );
-        return response.data?.data || [];
-    } catch (error: any) {
-        return rejectWithValue(error.response?.data?.message || error.message);
+        const payload = response.data?.data;
+        return Array.isArray(payload) ? payload : [];
+    } catch (filterErr: any) {
+        try {
+            const fallback = await axiosInstance.get(
+                `/subcategories/by-category/${encodeURIComponent(categoryId)}`
+            );
+            const payload = fallback.data?.data;
+            return Array.isArray(payload) ? payload : [];
+        } catch (fallbackErr: any) {
+            const message =
+                fallbackErr.response?.data?.message ||
+                filterErr.response?.data?.message ||
+                fallbackErr.message;
+            return rejectWithValue(message);
+        }
     }
 });
 
@@ -225,20 +247,24 @@ const filterSlice = createSlice({
                 state.error = action.payload as string;
             })
             .addCase(fetchSubcategoriesByCategory.pending, (state) => {
-                state.loading = true;
-                state.error = null;
+                state.subcategoriesLoading = true;
+                state.subcategoriesError = null;
             })
             .addCase(fetchSubcategoriesByCategory.fulfilled, (state, action: PayloadAction<any[]>) => {
-                state.loading = false;
-                // Optionally handle the fetched subcategories data
+                state.subcategoriesLoading = false;
+                state.subcategoriesError = null;
                 state.data = {
                     ...state.data,
                     subcategories: action.payload,
                 };
             })
             .addCase(fetchSubcategoriesByCategory.rejected, (state, action) => {
-                state.loading = false;
-                state.error = action.payload as string;
+                state.subcategoriesLoading = false;
+                state.subcategoriesError = action.payload as string;
+                state.data = {
+                    ...state.data,
+                    subcategories: [],
+                };
             });
 
     },

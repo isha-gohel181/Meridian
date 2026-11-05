@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/all'
+import { getSupportEmailDisplay } from '../constants/brand'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -79,7 +80,7 @@ const GuaranteeSection = () => {
                   <div className="space-y-4">
                      <p className="font-jetbrains text-[9px] text-accent font-black tracking-[0.5em] uppercase italic">System Refund Path</p>
                      <p className="font-jetbrains text-[9px] text-description/80 leading-relaxed uppercase tracking-widest">
-                        Initiate support via <span className="text-normal underline decoration-accent/20">xsmartqa.com@gmail.com</span> for any inquiries.
+                        Initiate support via <span className="text-normal underline decoration-accent/20">{getSupportEmailDisplay()}</span> for any inquiries.
                      </p>
                   </div>
                   <div className="space-y-4">

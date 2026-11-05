@@ -661,7 +661,7 @@ export default class ForumRepository {
 
   async findAllThreadsWithReplies(query) {
     try {
-      const { page = 1, limit = 10, filters = "{}", search = "", sort = "{}", isApproved } = query;
+      const { page = 1, limit = 10, filters = "{}", search = "", sort = "{}", isApproved, viewerUserId } = query;
       let pageNum = parseInt(page);
       const limitNum = parseInt(limit);
       if (isNaN(pageNum) || pageNum < 1) pageNum = 1;
@@ -696,8 +696,13 @@ export default class ForumRepository {
         ];
       }
 
-      // Add isApproved filter if provided
-      if (typeof isApproved !== 'undefined') {
+      // Approved threads for everyone; logged-in students also see their own pending posts
+      if (viewerUserId && isApproved === true) {
+        matchConditions.$or = [
+          { isApproved: true },
+          { isApproved: false, createdBy: viewerUserId },
+        ];
+      } else if (typeof isApproved !== 'undefined') {
         matchConditions.isApproved = isApproved;
       }
 
@@ -766,6 +771,36 @@ export default class ForumRepository {
       console.error('Repository Error:', err);
       throw err;
     }
+  }
+
+  async getForumStats() {
+    const approvedMatch = { isApproved: true };
+    const weekAgo = new Date();
+    weekAgo.setDate(weekAgo.getDate() - 7);
+
+    const [totalTopics, topicsThisWeek, threadAuthorIds, approvedThreads] = await Promise.all([
+      ForumThread.countDocuments(approvedMatch),
+      ForumThread.countDocuments({ ...approvedMatch, createdAt: { $gte: weekAgo } }),
+      ForumThread.distinct('createdBy', approvedMatch),
+      ForumThread.find(approvedMatch).select('_id').lean(),
+    ]);
+
+    const threadIds = approvedThreads.map((t) => t._id);
+    let replyAuthorIds = [];
+    if (threadIds.length > 0) {
+      replyAuthorIds = await ForumReply.distinct('repliedBy', { threadId: { $in: threadIds } });
+    }
+
+    const participantIds = new Set([
+      ...threadAuthorIds.map((id) => id?.toString()).filter(Boolean),
+      ...replyAuthorIds.map((id) => id?.toString()).filter(Boolean),
+    ]);
+
+    return {
+      totalTopics,
+      topicsThisWeek,
+      activeParticipants: participantIds.size,
+    };
   }
 
 

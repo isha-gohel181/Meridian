@@ -1,5 +1,7 @@
 import CertificateAssignRepository from '../repository/certificateAssignRepository.js';
 import { generateCertificatePDF } from '../utils/certificateGenerator.js';
+import { CERTIFICATE_ORGANIZATION_DEFAULT } from '../utils/appBrand.js';
+import { PEARLS_CERTIFICATE_BG_REL } from '../utils/pearlsCertificateTheme.js';
 import User from '../models/user.js';
 import Course from '../models/Course.js'; // Updated to lowercase
 import path from 'path';
@@ -120,7 +122,9 @@ class CertificateAssignService {
         course_name: course.title,
         completion_date: new Date(completionDate),
         instructor_name: instructor.fullName,
-        platform_name: elements.platform_name?.content?.replace('[platform_name]', 'Your Platform') || 'Your Platform',
+        platform_name:
+          elements.platform_name?.content?.replace('[platform_name]', CERTIFICATE_ORGANIZATION_DEFAULT) ||
+          CERTIFICATE_ORGANIZATION_DEFAULT,
       };
 
       // Log certificate data for debugging
@@ -128,7 +132,7 @@ class CertificateAssignService {
 
       // Generate certificate PDF
       const certificateUrl = await generateCertificatePDF({
-        template,
+        template: { image: template.image || PEARLS_CERTIFICATE_BG_REL },
         certificateData,
       });
 
@@ -268,11 +272,13 @@ class CertificateAssignService {
           course_name: course.title,
           completion_date: data.completion_date ? new Date(data.completion_date) : existingAssignment.certificate_data.completion_date,
           instructor_name: instructor.fullName,
-          platform_name: elements.platform_name?.content?.replace('[platform_name]', 'Your Platform') || 'Your Platform',
+          platform_name:
+          elements.platform_name?.content?.replace('[platform_name]', CERTIFICATE_ORGANIZATION_DEFAULT) ||
+          CERTIFICATE_ORGANIZATION_DEFAULT,
         };
 
         updateData.certificate_url = await generateCertificatePDF({
-          template,
+          template: { image: template.image || PEARLS_CERTIFICATE_BG_REL },
           certificateData,
         });
 

@@ -36,7 +36,7 @@ export default function NotFound() {
         </div>
         {/* <!-- Footer --> */}
         <p className="absolute text-sm text-center text-gray-500 -translate-x-1/2 bottom-6 left-1/2 dark:text-gray-400">
-          &copy; {new Date().getFullYear()} - Xpertqa
+          &copy; {new Date().getFullYear()} - 32 Pearls Dental Academy
         </p>
       </div>
     </>

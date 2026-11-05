@@ -1,5 +1,7 @@
+import { getImageBase } from "../../utils/apiBase";
 import React, { useState, useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { CERTIFICATE_ORGANIZATION_DEFAULT, CERTIFICATE_DEFAULT_IMAGE } from "../../constants/brand";
 import { fetchCourseById, updateCourse } from "../../store/slices/course";
 import CategorySubcategoryDropdowns from "../../components/CategorySubcategoryDropdowns";
 import { RootState, AppDispatch } from "../../store";
@@ -42,7 +44,7 @@ import Editor from "../../components/Editor";
 import LandingPageSections from "./LandingPageSections";
 import AddReview from "./AddReview";
 
-const baseUrl = import.meta.env.VITE_IMAGE_URL || import.meta.env.VITE_BASE_URL || "https://api.xpertqa.in/";
+const baseUrl = getImageBase() + "/";
 
 // Success Popup Component (unchanged)
 const SuccessPopup = ({
@@ -436,7 +438,7 @@ const EditCourse = () => {
     certificateRecipientName: "Student Name",
     certificateIssuerName: "",
     certificateIssuerTitle: "",
-    certificateOrganization: "Xpertqa Academy",
+    certificateOrganization: CERTIFICATE_ORGANIZATION_DEFAULT,
     certificateDescription: "",
     // Enhanced Landing Page Sections
     landingPageSections: [],
@@ -651,7 +653,7 @@ const EditCourse = () => {
         certificateRecipientName: course.certificateRecipientName || "Student Name",
         certificateIssuerName: course.certificateIssuerName || "",
         certificateIssuerTitle: course.certificateIssuerTitle || "",
-        certificateOrganization: course.certificateOrganization || "Xpertqa Academy",
+        certificateOrganization: course.certificateOrganization || CERTIFICATE_ORGANIZATION_DEFAULT,
         certificateDescription: course.certificateDescription || "",
         // Enhanced Landing Page Sections
         landingPageSections: (course.landingPageSections && course.landingPageSections.length > 0)
@@ -862,12 +864,14 @@ const EditCourse = () => {
     setPlanFormError("");
   };
 
-  // Remove plan
+  // Remove plan (persisted after "Update Course" — backend syncs deletions)
   const handleRemovePlan = (idx: number) => {
-    setPlans(plans.filter((_, i) => i !== idx));
+    setPlans((prev) => prev.filter((_, i) => i !== idx));
     if (editingPlanIdx === idx) {
       setPlanForm({ name: "", price: "", description: "", durationType: "Month", duration: "", salePrice: "", status: "active", _id: undefined });
       setEditingPlanIdx(null);
+    } else if (editingPlanIdx !== null && editingPlanIdx > idx) {
+      setEditingPlanIdx(editingPlanIdx - 1);
     }
   };
 
@@ -1022,14 +1026,17 @@ const EditCourse = () => {
     if (coverImageFile) submitFormData.set("coverImage", coverImageFile);
 
     // --- FLATTEN PLANS IN PAYLOAD WITHOUT QUOTES ---
+    submitFormData.set("plansSync", "true");
     plans.forEach((plan, idx) => {
       Object.entries(plan).forEach(([key, value]) => {
-        if (key !== "_id") {
-          submitFormData.append(`plans[${idx}][${key}]`, value);
+        if (key === "_id") {
+          if (value !== undefined && value !== null && value !== "") {
+            submitFormData.append(`plans[${idx}][_id]`, String(value));
+          }
+          return;
         }
-        // Optionally, send _id for existing plans if backend supports updating by _id
-        if (key === "_id" && value) {
-          submitFormData.append(`plans[${idx}][_id]`, value);
+        if (value !== undefined && value !== null) {
+          submitFormData.append(`plans[${idx}][${key}]`, String(value));
         }
       });
     });
@@ -1139,7 +1146,7 @@ const EditCourse = () => {
         isVisible={popup.isVisible}
         onClose={() => setPopup({ ...popup, isVisible: false })}
       />
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex">
+      <div className="min-h-screen w-full max-w-full overflow-x-hidden bg-gray-50 dark:bg-gray-900 flex min-w-0">
         {/* Sidebar */}
         <aside
           className={`fixed inset-y-0 left-0 z-50 w-64 bg-white dark:bg-gray-800 shadow-lg transform transition-transform duration-300 ease-in-out ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"
@@ -1181,7 +1188,7 @@ const EditCourse = () => {
         </aside>
 
         {/* Main Content */}
-        <div className="flex-1 p-4 lg:p-8">
+        <div className="flex-1 min-w-0 max-w-full overflow-x-hidden p-4 lg:p-8">
           {/* Mobile Sidebar Toggle */}
           <button
             className="lg:hidden mb-4 p-2 bg-blue-600 text-white rounded-lg"
@@ -1725,7 +1732,7 @@ const EditCourse = () => {
                             </thead>
                             <tbody>
                               {plans.map((plan, idx) => (
-                                <tr key={idx}>
+                                <tr key={plan._id ? String(plan._id) : `new-plan-${idx}`}>
                                   <td className="p-2">{plan.name}</td>
                                   <td className="p-2">{plan.price}</td>
                                   <td className="p-2">{plan.description}</td>
@@ -2186,71 +2193,18 @@ const EditCourse = () => {
                   <div className="space-y-6">
                     <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Certificate Settings</h3>
 
-                    {/* Certificate Preview */}
                     {!formData.certificateImage && (
                       <div className="mb-6">
                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
                           Certificate Preview
                         </label>
-                        <div className="w-full max-w-4xl mx-auto bg-gradient-to-br from-amber-50 to-amber-100 rounded-lg shadow-2xl p-8 border-4 border-amber-400">
-                          {/* Certificate Header */}
-                          <div className="bg-gradient-to-r from-[#0f172a] via-[#1e3a8a] to-[#0f172a] text-white py-5 px-6 rounded-t-lg mb-6 text-center border-b-2 border-amber-400">
-                            <span className="text-[10px] font-bold text-amber-300 uppercase tracking-[0.3em]">XPERTQA ACADEMY</span>
-                            <h3 className="text-2xl font-bold mt-1 text-white">
-                              {(formData as any).certificateTitle || "Certificate of Completion"}
-                            </h3>
-                            <p className="text-amber-200 text-xs mt-1 tracking-wider uppercase">
-                              {(formData as any).certificateSubtitle || "Awarded for Excellence"}
-                            </p>
-                          </div>
-
-                          {/* Certificate Body */}
-                          <div className="py-8 px-6 text-center">
-                            <p className="text-gray-800 text-lg leading-relaxed mb-8">
-                              {(() => {
-                                const recipientName = (formData as any).certificateRecipientName || "Student Name";
-                                const rawDesc = (formData as any).certificateDescription;
-                                let description = (typeof rawDesc === "string" && rawDesc)
-                                  ? rawDesc
-                                  : `This certificate is awarded to **${recipientName}** for successfully completing the course.`;
-
-                                // Replace any instance of "Student Name" (with or without **) with the actual recipient name
-                                description = description.replace(/Student Name/g, recipientName);
-
-                                return description.split('**').map((part: string, index: number) =>
-                                  index % 2 === 1 ? (
-                                    <strong key={index} className="text-[#1e3a8a] font-bold">
-                                      {part || recipientName}
-                                    </strong>
-                                  ) : (
-                                    <span key={index}>{part}</span>
-                                  )
-                                );
-                              })()}
-                            </p>
-
-                            {/* Certificate Footer */}
-                            <div className="mt-12 flex justify-between items-end border-t-2 border-amber-300 pt-6 text-left">
-                              <div>
-                                <p className="font-bold text-gray-800">
-                                  {(formData as any).certificateIssuerName || (formData as any).mentorName || "Authorized Instructor"}
-                                </p>
-                                {((formData as any).certificateIssuerTitle || (formData as any).mentorTitle) && (
-                                  <p className="text-sm text-gray-600">
-                                    {(formData as any).certificateIssuerTitle || (formData as any).mentorTitle}
-                                  </p>
-                                )}
-                              </div>
-                              <div className="text-right">
-                                <p className="font-bold text-[#1e3a8a]">
-                                  {(formData as any).certificateOrganization || "Xpertqa Academy"}
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
+                        <img
+                          src={CERTIFICATE_DEFAULT_IMAGE}
+                          alt="32 Pearls Dental Academy certificate"
+                          className="w-full max-w-3xl rounded-lg shadow-lg border border-amber-200/80"
+                        />
                         <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">
-                          This preview shows how the certificate will look with your current settings. The recipient name shown is the placeholder value.
+                          Default certificate design. Student name, course, date, and serial are added when the certificate is issued.
                         </p>
                       </div>
                     )}
@@ -2349,10 +2303,10 @@ const EditCourse = () => {
                         <input
                           type="text"
                           name="certificateOrganization"
-                          value={formData.certificateOrganization || "Xpertqa Academy"}
+                          value={formData.certificateOrganization || CERTIFICATE_ORGANIZATION_DEFAULT}
                           onChange={handleInputChange}
                           className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-3 dark:text-gray-200 focus:ring-2 focus:ring-blue-500"
-                          placeholder="Xpertqa Academy"
+                          placeholder={CERTIFICATE_ORGANIZATION_DEFAULT}
                         />
                       </div>
                     </div>

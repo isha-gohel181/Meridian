@@ -86,7 +86,6 @@ class CourseRepository extends CrudRepository {
       // Support explicit coursePosition sorting when `courseposition` or `coursePosition` flag is passed in filter
       let useCoursePositionSort = false;
 
-      console?.log("fghjikol", filter)
       if (
         filter &&
         (

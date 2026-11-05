@@ -1,7 +1,8 @@
+import { getApiBase } from '../../utils/apiBase.js';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import authorizedFetch from '../../utils/apiClient';
 
-const BASE_URL = import.meta.env.VITE_BASE_URL || 'https://api.xpertqa.in';
+const BASE_URL = getApiBase();
 
 // ── Thunks ───────────────────────────────────────────────────────────────────
 export const fetchMyEnrollments = createAsyncThunk(

@@ -18,15 +18,11 @@ export const createTextLesson = createAsyncThunk(
   "textLesson/create",
   async (formData: FormData, { rejectWithValue }) => {
     try {
-      if (formData.has("lessonId")) {
-        formData.append("lesson", formData.get("lessonId") as string);
-      }
       const response = await axiosInstance.post("/text-lesson", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
-      window.location.reload();
 
       return response.data;
     } catch (err: any) {
@@ -64,7 +60,6 @@ export const updateTextLesson = createAsyncThunk(
         `/text-lesson/${lessonId}`,
         formData
       );
-      window.location.reload();
 
       return response.data;
     } catch (err: any) {

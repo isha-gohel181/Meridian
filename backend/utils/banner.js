@@ -1,4 +1,5 @@
 import { isRedisEnabled } from '../config/redisClient.js';
+import { APP_DISPLAY_NAME, APP_SHORT_NAME, APP_TAGLINE } from './appBrand.js';
 
 export const printServerBanner = ({ port }) => {
   const c = {
@@ -7,8 +8,8 @@ export const printServerBanner = ({ port }) => {
     yellow: '\x1b[33m',
     green: '\x1b[32m',
     magenta: '\x1b[35m',
+    brown: '\x1b[33m',
     blue: '\x1b[34m',
-    red: '\x1b[31m',
     gray: '\x1b[90m',
     bold: '\x1b[1m',
     reset: '\x1b[0m',
@@ -19,14 +20,15 @@ export const printServerBanner = ({ port }) => {
     ? `${c.green}ENABLED ${c.gray}(${process.env.REDIS_HOST || '127.0.0.1'}:${process.env.REDIS_PORT || '6379'})${c.reset}`
     : `${c.yellow}DISABLED ${c.gray}(In-Memory Fallback Active)${c.reset}`;
 
+  const titleLine = APP_DISPLAY_NAME.toUpperCase();
+  const subtitle = `${APP_SHORT_NAME} · LMS Backend`;
+
   const banner = `
-${c.cyan}  ██╗  ██╗██████╗ ███████╗██████╗ ████████╗ ██████╗   █████╗ 
-  ╚██╗██╔╝██╔══██╗██╔════╝██╔══██╗╚══██╔══╝██╔═══██╗ ██╔══██╗
-   ╚███╔╝ ██████╔╝█████╗  ██████╔╝   ██║   ██║   ██║ ███████║
-   ██╔██╗ ██╔═══╝ ██╔══╝  ██╔══██╗   ██║   ██║   ██║ ██╔══██║
-  ██╔╝ ██╗██║     ███████╗██║  ██║   ██║   ╚██████╔╝ ██║  ██║
-  ╚═╝  ╚═╝╚═╝     ╚══════╝╚═╝  ╚═╝   ╚═╝    ╚═════╝  ╚═╝  ╚═╝${c.reset}
-       ${c.bold}${c.magenta}E X P E R T Q A${c.reset}  ${c.gray}|${c.reset}  ${c.bold}L M S   B A C K E N D   E N G I N E${c.reset}
+${c.bold}${c.magenta}  ╔══════════════════════════════════════════════════════════════════╗${c.reset}
+${c.bold}${c.magenta}  ║${c.reset}  ${c.bold}${c.cyan}${titleLine.padEnd(62)}${c.reset}${c.bold}${c.magenta}║${c.reset}
+${c.bold}${c.magenta}  ║${c.reset}  ${c.gray}${subtitle.padEnd(62)}${c.reset}${c.bold}${c.magenta}║${c.reset}
+${c.bold}${c.magenta}  ╚══════════════════════════════════════════════════════════════════╝${c.reset}
+       ${c.gray}${APP_TAGLINE}${c.reset}
 
 ${c.gray}┌────────────────────────────────────────────────────────────────────────┐${c.reset}
 ${c.gray}│${c.reset}  ${c.bold}🚀 Server Status${c.reset}  : ${c.green}ONLINE (HTTP + WebSocket Engine)${c.reset}

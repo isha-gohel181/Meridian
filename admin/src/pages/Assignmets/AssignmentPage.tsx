@@ -1,3 +1,4 @@
+import { getImageBase } from "../../utils/apiBase";
 import React, { useEffect, useState } from "react";
 import DOMPurify from "dompurify";
 import {
@@ -92,7 +93,7 @@ const AssignmentPage = () => {
     if (!filePath) return;
 
     // Create a proper download link
-    const baseUrl = import.meta.env.VITE_IMAGE_URL || import.meta.env.VITE_BASE_URL || "https://api.xpertqa.in";
+    const baseUrl = getImageBase();
     const fullUrl = `${baseUrl}/${filePath}`;
 
     // Create a temporary anchor element for download

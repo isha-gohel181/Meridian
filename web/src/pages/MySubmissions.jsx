@@ -5,6 +5,7 @@ import { fetchMySubmissions } from '../redux/slices/assignmentSlice'
 import DashboardHeader from '../components/dashboard/DashboardHeader'
 import DashboardLoading from '../components/dashboard/DashboardLoading'
 import { useLanguage } from '../context/LanguageContext'
+import { resolveMediaUrl } from '../utils/apiBase.js'
 
 const MySubmissions = () => {
    const containerRef = useRef(null)
@@ -171,14 +172,14 @@ const MySubmissions = () => {
                            <div className="flex items-center gap-4">
                               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-accent"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>
                               <button
-                                 onClick={() => handleDownload(`https://api.xpertqa.in/${selectedSub.submissionFile}`, selectedSub.submissionFile?.split('/').pop())}
+                                 onClick={() => handleDownload(resolveMediaUrl(selectedSub.submissionFile), selectedSub.submissionFile?.split('/').pop())}
                                  className="font-jetbrains text-sm text-accent hover:underline decoration-accent/30"
                               >
                                  Download File
                               </button>
                            </div>
                            <button
-                              onClick={() => window.open(`https://api.xpertqa.in/${selectedSub.submissionFile}`, '_blank')}
+                              onClick={() => window.open(resolveMediaUrl(selectedSub.submissionFile), '_blank')}
                               className="flex items-center gap-2 font-jetbrains text-[10px] text-normal uppercase tracking-widest hover:text-accent transition-colors"
                            >
                               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></svg>
@@ -196,7 +197,7 @@ const MySubmissions = () => {
                                  <span className="font-jetbrains text-sm text-normal">Reference Document</span>
                               </div>
                               <button
-                                 onClick={() => window.open(`https://api.xpertqa.in/${selectedSub.assignmentId.documentFile}`, '_blank')}
+                                 onClick={() => window.open(resolveMediaUrl(selectedSub.assignmentId.documentFile), '_blank')}
                                  className="flex items-center gap-2 font-jetbrains text-[10px] text-accent font-bold uppercase tracking-widest hover:brightness-125 transition-all"
                               >
                                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" /><polyline points="15 3 21 3 21 9" /><line x1="10" y1="14" x2="21" y2="3" /></svg>

@@ -1,3 +1,4 @@
+import { getApiBase } from '../../utils/apiBase.js';
 import React, { useState, useEffect, useRef } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
@@ -9,9 +10,11 @@ import RollingText from '../RollingText'
 import ConfirmModal from '../profile/ConfirmModal'
 import { useTheme } from '../../context/ThemeContext'
 import { useLanguage } from '../../context/LanguageContext'
+import useEnrollmentProgressSync from '../../hooks/useEnrollmentProgressSync'
 
 
 const DashboardHeader = () => {
+  useEnrollmentProgressSync();
   const location = useLocation()
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -42,7 +45,7 @@ const DashboardHeader = () => {
   const getProfileImage = (pic) => {
     if (!pic || pic === 'default-profile.png') return null
     if (pic.startsWith('http') || pic.startsWith('blob:')) return pic
-    const rawBase = import.meta.env.VITE_BASE_URL || import.meta.env.VITE_API_BASE || 'https://api.xpertqa.in'
+    const rawBase = getApiBase()
     const baseUrl = rawBase.replace(/\/api\/v1\/?$/, '')
     const cleanPath = pic.startsWith('/') ? pic : `/uploads/${pic}`
     return `${baseUrl}${cleanPath}`
@@ -161,7 +164,7 @@ const DashboardHeader = () => {
 
         <div className="dash-menu-item absolute top-0 left-0 w-full p-6 flex items-center justify-between z-20">
           <div className="flex items-center gap-2.5">
-            <img src="/logos/osa_logo.png" alt="Xpertqa Logo" className="h-8 md:h-9 w-auto object-contain" />
+            <img src="/dental_acadmy/dental.jpeg" alt="32 Pearls Dental Academy" className="h-8 md:h-9 w-auto object-contain" />
           </div>
           <button
             onClick={toggleMenu}
@@ -244,7 +247,7 @@ const DashboardHeader = () => {
       <div className="flex items-center gap-6">
         {/* DASHBOARD LOGO */}
         <Link to="/" className="flex items-center gap-2.5 hover:opacity-80 transition-opacity text-slate-900">
-          <img src="/logos/osa_logo.png" alt="Xpertqa Logo" className="h-8 md:h-9 w-auto object-contain" />
+          <img src="/dental_acadmy/dental.jpeg" alt="32 Pearls Dental Academy" className="h-8 md:h-9 w-auto object-contain" />
         </Link>
 
         <nav className="hidden [@media(min-width:1300px)]:flex items-center gap-6">

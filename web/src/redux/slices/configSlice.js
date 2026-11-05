@@ -1,6 +1,7 @@
+import { getApiBase } from '../../utils/apiBase.js';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-const BASE_URL = import.meta.env.VITE_BASE_URL || 'https://api.xpertqa.in';
+const BASE_URL = getApiBase();
 
 export const fetchSettings = createAsyncThunk(
   'config/fetchSettings',
@@ -16,11 +17,13 @@ export const fetchSettings = createAsyncThunk(
   }
 );
 
+/** Public checkout list — optional courseId filters applicable coupons */
 export const fetchAllCoupons = createAsyncThunk(
   'config/fetchAllCoupons',
-  async (_, { rejectWithValue }) => {
+  async (courseId, { rejectWithValue }) => {
     try {
-      const response = await fetch(`${BASE_URL}/coupons/`);
+      const qs = courseId ? `?courseId=${encodeURIComponent(courseId)}` : '';
+      const response = await fetch(`${BASE_URL}/coupons/active${qs}`);
       if (!response.ok) throw new Error('Failed to fetch coupons');
       const data = await response.json();
       return data;
@@ -32,11 +35,22 @@ export const fetchAllCoupons = createAsyncThunk(
 
 export const validateCoupon = createAsyncThunk(
   'config/validateCoupon',
-  async (code, { rejectWithValue }) => {
+  async ({ code, orderAmount, email, courseId }, { rejectWithValue }) => {
     try {
-      const response = await fetch(`${BASE_URL}/coupons/?code=${code}`);
-      if (!response.ok) throw new Error('Failed to validate coupon');
+      const response = await fetch(`${BASE_URL}/checkout/validate-coupon`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          couponCode: code,
+          amount: orderAmount,
+          email: email || undefined,
+          courseId: courseId || undefined,
+        }),
+      });
       const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data?.message || 'Failed to validate coupon');
+      }
       return data;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -68,7 +82,6 @@ const configSlice = createSlice({
       })
       .addCase(fetchSettings.fulfilled, (state, action) => {
         state.settingsLoading = false;
-        // API may return settings under `settings` or `data` or root — normalize
         state.settings = action.payload?.settings || action.payload?.data || action.payload;
       })
       .addCase(fetchSettings.rejected, (state, action) => {
@@ -94,9 +107,14 @@ const configSlice = createSlice({
       .addCase(validateCoupon.fulfilled, (state, action) => {
         state.couponLoading = false;
         if (action.payload?.success) {
-          state.couponData = action.payload.data;
+          const result = action.payload.data || {};
+          const coupon = result.coupon || result;
+          state.couponData = {
+            ...coupon,
+            appliedDiscount: result.discountAmount,
+          };
         } else {
-          state.couponError = action.payload?.message || 'Invalid Coupon Protocol';
+          state.couponError = action.payload?.message || 'Invalid coupon code';
           state.couponData = null;
         }
       })

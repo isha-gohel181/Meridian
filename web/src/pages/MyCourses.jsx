@@ -1,3 +1,4 @@
+import { getApiBase } from '../utils/apiBase.js';
 import React, { useEffect, useState, useLayoutEffect, useMemo } from 'react'
 import DashboardHeader from '../components/dashboard/DashboardHeader'
 import { useNavigate } from 'react-router-dom'
@@ -17,6 +18,17 @@ const MyCourses = () => {
 
   useEffect(() => {
     dispatch(fetchMyEnrollments())
+  }, [dispatch])
+
+  useEffect(() => {
+    const refresh = () => dispatch(fetchMyEnrollments())
+    window.addEventListener('focus', refresh)
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') refresh()
+    })
+    return () => {
+      window.removeEventListener('focus', refresh)
+    }
   }, [dispatch])
 
   // Filter Logic
@@ -153,7 +165,7 @@ const MyCourses = () => {
                             const thumb = item.course?.thumbnail;
                             if (!thumb) return '/news_placeholder.png';
                             if (thumb.startsWith('http')) return thumb;
-                            const rawBase = import.meta.env.VITE_BASE_URL || import.meta.env.VITE_API_BASE || 'https://api.xpertqa.in';
+                            const rawBase = getApiBase();
                             const baseUrl = rawBase.replace(/\/api\/v1\/?$/, '');
                             return `${baseUrl}${thumb.startsWith('/') ? '' : '/'}${thumb}`;
                         })()} 

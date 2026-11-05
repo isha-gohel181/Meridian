@@ -1,3 +1,4 @@
+import { getApiBase } from '../../utils/apiBase.js';
 import React, { useRef, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { updateUserProfile, deleteDocument, deleteEducation } from '../../redux/slices/profileSlice'
@@ -174,7 +175,7 @@ const AcademicInfo = () => {
                               <a 
                                  href={(() => {
                                     if (doc.Doc.startsWith('http')) return doc.Doc;
-                                    const rawBase = import.meta.env.VITE_BASE_URL || import.meta.env.VITE_API_BASE || 'https://api.xpertqa.in';
+                                    const rawBase = getApiBase();
                                     const baseUrl = rawBase.replace(/\/api\/v1\/?$/, '');
                                     return `${baseUrl}/uploads/${doc.Doc}`;
                                  })()} 

@@ -5,6 +5,7 @@ import { gsap } from 'gsap'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchMyEnrollments } from '../redux/slices/enrollmentSlice'
 import { useLanguage } from '../context/LanguageContext'
+import { resolveMediaUrl } from '../utils/apiBase.js'
 
 const Purchases = () => {
   const dispatch = useDispatch()
@@ -67,7 +68,7 @@ const Purchases = () => {
                </h1>
             </div>
             <p className="max-w-md font-jetbrains text-xs text-slate-600 font-medium leading-relaxed uppercase tracking-[0.15em] text-left md:text-right">
-               {t('purchasesLedgerSub') || 'Persistent record of course enrollments, service packages, and transaction receipts across Xpertqa.'}
+               {t('purchasesLedgerSub') || 'Persistent record of course enrollments, service packages, and transaction receipts across 32 Pearls Dental Academy.'}
             </p>
           </div>
 
@@ -156,7 +157,7 @@ const Purchases = () => {
                         {/* <div className="col-span-2 flex justify-end gap-3 transition-all duration-500">
                            {item.certificate ? (
                               <a 
-                                href={`https://api.xpertqa.in/${item.certificate.certificate_url}`} 
+                                href={resolveMediaUrl(item.certificate.certificate_url)} 
                                 target="_blank" 
                                 rel="noreferrer"
                                 className="font-jetbrains text-xs font-bold text-amber-700 hover:text-slate-950 uppercase tracking-wider transition-colors bg-amber-100 px-3 py-1.5 rounded-full border border-amber-300/60"

@@ -1,9 +1,10 @@
+import { getApiBase, resolveMediaUrl } from '../utils/apiBase.js';
 import React, { useEffect, useRef, useState } from 'react'
 import EmojiPicker from 'emoji-picker-react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchThreads, createThread } from '../redux/slices/forumSlice'
+import { fetchThreads, fetchForumStats, createThread } from '../redux/slices/forumSlice'
 import CreateTopicModal from '../components/dashboard/CreateTopicModal'
 import { useLanguage } from '../context/LanguageContext'
 
@@ -16,7 +17,7 @@ const Forum = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [fullImageUrl, setFullImageUrl] = useState(null)
   const [showSuccessMessage, setShowSuccessMessage] = useState(false)
-  const { threads, loading, total, currentPage, totalPages } = useSelector((state) => state.forum)
+  const { threads, loading, total, currentPage, totalPages, forumStats } = useSelector((state) => state.forum)
   const user = useSelector((state) => state.auth?.user)
   const loaderRef = useRef(null)
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false)
@@ -24,7 +25,14 @@ const Forum = () => {
 
   useEffect(() => {
     dispatch(fetchThreads({ page: 1, limit: 10 }))
+    dispatch(fetchForumStats())
   }, [dispatch])
+
+  const formatStat = (n) => {
+    const num = Number(n)
+    if (Number.isNaN(num)) return '0'
+    return num.toLocaleString()
+  }
 
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
@@ -119,9 +127,9 @@ const Forum = () => {
 
   const tags = ['#Mindset', '#Feedback', '#Paid Ads', '#SEO', '#Client Acquisition', '#Operations']
   const stats = [
-    { label: 'TOTAL TOPICS', value: total || '0' },
-    { label: 'ACTIVE USERS', value: '1423' },
-    { label: 'THIS WEEK', value: '47' }
+    { label: t('totalTopicsLabel'), value: formatStat(forumStats?.totalTopics ?? total ?? 0) },
+    { label: t('activeUsersLabel'), value: formatStat(forumStats?.activeParticipants ?? 0) },
+    { label: t('thisWeekLabel'), value: formatStat(forumStats?.topicsThisWeek ?? 0) },
   ]
   const discourseTags = ['#TYPOGRAPHY', '#EDITORIAL', '#GRIDSYSTEMS', '#UXDESIGN', '#ASYMMETRY']
 
@@ -236,7 +244,7 @@ const QuestionCard = ({ question }) => {
                     const pic = question.profilePicture;
                     if (!pic) return '/news_placeholder.png';
                     if (pic.startsWith('http')) return pic;
-                    const rawBase = import.meta.env.VITE_BASE_URL || import.meta.env.VITE_API_BASE || 'https://api.xpertqa.in';
+                    const rawBase = getApiBase();
                     const baseUrl = rawBase.replace(/\/api\/v1\/?$/, '');
                     return `${baseUrl}/uploads/profiles/${pic}`;
                 })()} 
@@ -286,7 +294,8 @@ const QuestionCard = ({ question }) => {
                   return /\.(jpg|jpeg|png|gif|webp|svg)$/i.test(path);
                 }).map((att, idx) => {
                   const path = typeof att === 'string' ? att : (att.type || '');
-                  const fullUrl = path.startsWith('http') ? path : `https://api.xpertqa.in/${path.startsWith('uploads/') ? path : `uploads/forum/${path}`}`;
+                  const rel = path.startsWith('uploads/') ? path : `uploads/forum/${path}`;
+                  const fullUrl = path.startsWith('http') ? path : resolveMediaUrl(rel);
                   
                   return (
                     <div key={idx} className="attachment-item relative aspect-video bg-dark border border-border rounded-none overflow-hidden group/img shadow-sm">
@@ -383,7 +392,7 @@ const QuestionCard = ({ question }) => {
                             const pic = reply.profilePicture;
                             if (!pic) return '/news_placeholder.png';
                             if (pic.startsWith('http')) return pic;
-                            const rawBase = import.meta.env.VITE_BASE_URL || import.meta.env.VITE_API_BASE || 'https://api.xpertqa.in';
+                            const rawBase = getApiBase();
                             const baseUrl = rawBase.replace(/\/api\/v1\/?$/, '');
                             return `${baseUrl}/uploads/profiles/${pic}`;
                         })()} 
@@ -427,7 +436,7 @@ const QuestionCard = ({ question }) => {
                                   const pic = nested.profilePicture;
                                   if (!pic) return '/news_placeholder.png';
                                   if (pic.startsWith('http')) return pic;
-                                  const rawBase = import.meta.env.VITE_BASE_URL || import.meta.env.VITE_API_BASE || 'https://api.xpertqa.in';
+                                  const rawBase = getApiBase();
                                   const baseUrl = rawBase.replace(/\/api\/v1\/?$/, '');
                                   return `${baseUrl}/uploads/profiles/${pic}`;
                               })()} 
@@ -638,14 +647,14 @@ const QuestionCard = ({ question }) => {
                            height="26" 
                            viewBox="0 0 24 24" 
                            fill="none" 
-                           stroke="#1878C0" 
+                           stroke="#C96A1B" 
                            strokeWidth="3.5" 
                            strokeLinecap="round" 
                            strokeLinejoin="round" 
-                           style={{ stroke: '#1878C0', color: '#1878C0' }}
+                           style={{ stroke: '#C96A1B', color: '#C96A1B' }}
                          >
-                           <line x1="12" y1="5" x2="12" y2="19" style={{ stroke: '#1878C0' }} />
-                           <line x1="5" y1="12" x2="19" y2="12" style={{ stroke: '#1878C0' }} />
+                           <line x1="12" y1="5" x2="12" y2="19" style={{ stroke: '#C96A1B' }} />
+                           <line x1="5" y1="12" x2="19" y2="12" style={{ stroke: '#C96A1B' }} />
                          </svg>
                       </div>
                       <span className="text-white font-black tracking-[0.35em] text-[12px]">{t('startNewTopic')}</span>

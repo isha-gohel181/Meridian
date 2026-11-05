@@ -4,6 +4,7 @@ import CourseEnrollment from "../models/CourseEnrollment.js";
 import Course from "../models/Course.js";
 import CourseBundle from "../models/CourseBundle.js";
 import Coupon from "../models/Coupon.js";
+import CouponService from "../service/CouponService.js";
 import { generateOrderNumber } from "../utils/generateOrderNo.js";
 import LessonProgress from "../models/LessonProgress.js";
 import Certificate from "../models/Certificate.js";
@@ -33,6 +34,8 @@ import QuizSubmission from "../models/QuizSubmission.js";
 import AssignmentSubmission from "../models/assignmentSubmission.js";
 import CourseChatRoom from "../models/CourseChatRoom.js"; // Added import for CourseChatRoom
 import { runInTransaction } from "../utils/db/runInTransaction.js";
+import { getOverallProgressByCourseId } from "../service/courseProgressAggregationService.js";
+import { APP_DISPLAY_NAME, APP_TAGLINE } from "../utils/appBrand.js";
 
 
 const userService = new UserService();
@@ -44,7 +47,7 @@ function renderInvoiceHtml(order, guestUser, company) {
   <html>
   <head>
     <meta charset="UTF-8" />
-    <title>Xpertqa Invoice</title>
+    <title>${APP_DISPLAY_NAME} Invoice</title>
     <style>
       * { 
         box-sizing: border-box; 
@@ -483,8 +486,8 @@ function renderInvoiceHtml(order, guestUser, company) {
       <header class="invoice-header">
         <div class="header-content">
           <div class="company-info">
-            <h1>Xpertqa</h1>
-            <p class="company-tagline">Computer Programming, Consultancy and Related Services</p>
+            <h1>${APP_DISPLAY_NAME}</h1>
+            <p class="company-tagline">${APP_TAGLINE}</p>
           </div>
           <div class="invoice-details">
             <div class="invoice-number">Invoice #${order.orderNo}</div>
@@ -614,13 +617,13 @@ function renderInvoiceHtml(order, guestUser, company) {
       <footer class="invoice-footer">
         <div class="footer-content">
           <div class="footer-left">
-            <div class="footer-text">Thank you for choosing Xpertqa! 🎓</div>
+            <div class="footer-text">Thank you for choosing ${APP_DISPLAY_NAME}! 🎓</div>
             <div class="support-info">Your trusted learning partner</div>
           </div>
           <div class="footer-right">
             <div class="footer-text">Need Support?</div>
             <div class="support-info">
-              Contact us at <a href="mailto:${process.env.SupportEmail || 'xsmartqa.com@gmail.com'}" class="support-email">${process.env.SupportEmail || 'xsmartqa.com@gmail.com'}</a>
+              Contact us at <a href="mailto:${process.env.SupportEmail || 'support@example.com'}" class="support-email">${process.env.SupportEmail || 'support@example.com'}</a>
             </div>
           </div>
         </div>
@@ -1157,95 +1160,27 @@ export const getMyEnrollments = async (req, res) => {
       videos.filter((v) => v.lessonId).map((v) => v.lessonId.toString())
     )];
 
-    // Aggregation pipelines do NOT auto-cast, so convert ids explicitly.
-    const userObjectId = new mongoose.Types.ObjectId(String(userId));
-    const progressCourseObjectIds = progressCourseIds.map((id) => new mongoose.Types.ObjectId(id));
-
     const [
       responseCourses,
-      totalsCourses,
-      lessonCounts,
-      quizCounts,
-      assignmentCounts,
       lastProgressDocs,
       certificates,
+      progressByCourseIdMap,
     ] = await Promise.all([
       responseCourseIds.length ? Course.find({ _id: { $in: responseCourseIds } }).lean() : [],
-      // Per-course content totals — the same modules→lessons tree the old
-      // per-enrollment checkCourseCompletion fetched, but once for all courses
-      // and trimmed to the lesson `type` field.
-      progressCourseIds.length
-        ? Course.find({ _id: { $in: progressCourseIds } })
-          .select('modules')
-          .populate({ path: 'modules', select: 'lessons', populate: { path: 'lessons', select: 'type' } })
-          .lean()
-        : [],
-      // Completed counts — one aggregation per collection, grouped by courseId
-      // (filters identical to CourseCompletionService.checkCourseCompletion).
-      progressCourseIds.length
-        ? LessonProgress.aggregate([
-          { $match: { userId: userObjectId, courseId: { $in: progressCourseObjectIds }, completed: true } },
-          { $group: { _id: '$courseId', count: { $sum: 1 } } },
-        ])
-        : [],
-      progressCourseIds.length
-        ? QuizSubmission.aggregate([
-          { $match: { user: userObjectId, courseId: { $in: progressCourseObjectIds }, is_completed: true, passed: true } },
-          { $group: { _id: '$courseId', count: { $sum: 1 } } },
-        ])
-        : [],
-      progressCourseIds.length
-        ? AssignmentSubmission.aggregate([
-          { $match: { submittedBy: userObjectId, courseId: { $in: progressCourseObjectIds }, is_complete: true, status: 'graded' } },
-          { $group: { _id: '$courseId', count: { $sum: 1 } } },
-        ])
-        : [],
       lessonIds.length
         ? LessonProgress.find({ userId, lessonId: { $in: lessonIds } }).lean()
         : [],
       responseCourseIds.length
         ? Certificate.find({ user_id: userId, course_id: { $in: responseCourseIds } }).lean()
         : [],
+      progressCourseIds.length
+        ? getOverallProgressByCourseId(userId, progressCourseIds)
+        : Promise.resolve(new Map()),
     ]);
 
     const courseMap = new Map(responseCourses.map((c) => [c._id.toString(), c]));
 
-    // Total content items per course, by lesson type (same counting rules as
-    // checkCourseCompletion: only when the course doc and its modules exist).
-    const totalsMap = new Map();
-    for (const c of totalsCourses) {
-      if (!c.modules) continue; // missing modules -> treated as 100% below
-      let totalItems = 0;
-      for (const module of c.modules) {
-        if (!module || !module.lessons) continue;
-        for (const lesson of module.lessons) {
-          if (['video-lesson', 'video', 'text', 'quiz', 'assignment', 'external_link'].includes(lesson.type) || lesson.type) {
-            totalItems++;
-          }
-        }
-      }
-      totalsMap.set(c._id.toString(), totalItems);
-    }
-
-    const countsToMap = (rows) => new Map(rows.map((r) => [String(r._id), r.count]));
-    const lessonCountMap = countsToMap(lessonCounts);
-    const quizCountMap = countsToMap(quizCounts);
-    const assignmentCountMap = countsToMap(assignmentCounts);
-
-    // Same math as CourseCompletionService.checkCourseCompletion, computed from
-    // the batched counts. (The persisted enrollment.progressPercentage is NOT
-    // used here because no cron keeps it fresh.)
-    const overallProgressFor = (courseIdStr) => {
-      if (!totalsMap.has(courseIdStr)) return 100; // course/modules missing
-      const totalItems = totalsMap.get(courseIdStr);
-      if (totalItems <= 0) return 100;
-      const completedItems =
-        (lessonCountMap.get(courseIdStr) || 0) +
-        (quizCountMap.get(courseIdStr) || 0) +
-        (assignmentCountMap.get(courseIdStr) || 0);
-      const overallProgress = Math.min((completedItems / totalItems) * 100, 100);
-      return Math.round(overallProgress * 100) / 100;
-    };
+    const overallProgressFor = (courseIdStr) => progressByCourseIdMap.get(courseIdStr) ?? 0;
 
     // First-match-wins to mirror the old per-item findOne() lookups.
     const lastProgressMap = new Map();
@@ -1279,12 +1214,12 @@ export const getMyEnrollments = async (req, res) => {
         if (courseDoc && courseDoc._id) {
           const courseIdStr = courseDoc._id.toString();
           const progress = overallProgressFor(courseIdStr);
-          
+
           let certificate = certificateMap.get(courseIdStr) || null;
-          let iscompleted = enrollment.iscompleted;
+          let iscompleted = progress >= 100;
 
           // If the course is completed on-the-fly, but not in DB or no certificate is generated
-          if (progress === 100 && (!iscompleted || !certificate)) {
+          if (iscompleted && !certificate) {
             try {
               const { autoGenerateCertificate } = await import('../utils/certificateGeneratorHelper.js');
               const newCert = await autoGenerateCertificate(userId, courseDoc._id);
@@ -1348,14 +1283,15 @@ export const getMyEnrollments = async (req, res) => {
           const courseDoc = courseMap.get(plan.courseId.toString());
           let course = null;
           let certificate = null;
-          let iscompleted = enrollment.iscompleted;
+          let iscompleted = false;
           if (courseDoc && courseDoc._id) {
             const courseIdStr = courseDoc._id.toString();
             const progress = overallProgressFor(courseIdStr);
             certificate = certificateMap.get(courseIdStr) || null;
+            iscompleted = progress >= 100;
 
             // If the course plan is completed on-the-fly, but not in DB or no certificate is generated
-            if (progress === 100 && (!iscompleted || !certificate)) {
+            if (iscompleted && !certificate) {
               try {
                 const { autoGenerateCertificate } = await import('../utils/certificateGeneratorHelper.js');
                 const newCert = await autoGenerateCertificate(userId, courseDoc._id);
@@ -1416,18 +1352,24 @@ export const getMyEnrollments = async (req, res) => {
 
 export const checkCoupon = async (req, res) => {
   try {
-    const { couponCode, amount, email } = req.body;
-    if (!couponCode || !amount) {
+    const { couponCode, amount, email, courseId } = req.body;
+    if (!couponCode || amount == null) {
       return res.status(400).json({ success: false, message: "Coupon code and amount are required" });
     }
 
-    let userId = null;
-    if (email) {
-      const user = await User.findOne({ email });
-      if (user) userId = user._id;
+    const orderAmount = Number(amount);
+    if (!Number.isFinite(orderAmount) || orderAmount < 0) {
+      return res.status(400).json({ success: false, message: "Invalid order amount" });
     }
 
-    const result = await validateCoupon(couponCode, amount, userId);
+    const couponService = new CouponService();
+    const result = await couponService.validateCoupon(
+      couponCode,
+      orderAmount,
+      email || null,
+      courseId || null
+    );
+
     return res.status(200).json({
       success: true,
       data: result

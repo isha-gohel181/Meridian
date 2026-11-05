@@ -80,10 +80,10 @@ const EasyMoneySection = () => {
         </div>
         {/* Bottom HUD */}
         <div className="absolute bottom-0 left-0 right-0 z-30 flex items-center justify-between px-5 py-3 bg-gradient-to-t from-dark/90 to-transparent pointer-events-none">
-          <span className="font-Montserrat text-[8px] text-description/80 tracking-widest italic">Learning Framework / Xpertqa</span>
+          <span className="font-Montserrat text-[8px] text-description/80 tracking-widest italic">Learning Framework / 32 Pearls Dental Academy</span>
           <div className="flex items-center gap-2">
             <div className="w-1 h-1 bg-accent rounded-full" />
-            <span className="font-Montserrat text-[8px] text-accent tracking-[0.4em] uppercase">Xpertqa</span>
+            <span className="font-Montserrat text-[8px] text-accent tracking-[0.4em] uppercase">32 Pearls Dental Academy</span>
           </div>
         </div>
         {/* Scanline */}
@@ -92,7 +92,7 @@ const EasyMoneySection = () => {
         <div className="relative w-full overflow-hidden border border-white/10 group-hover:border-accent/30 transition-colors duration-700" style={{ paddingTop: '56.25%' }}>
           <iframe
             src="https://www.youtube.com/embed/-ijlKuChjuk?controls=0&modestbranding=1&rel=0&showinfo=0&fs=0&enablejsapi=1"
-            title="Xpertqa Masterclass Session"
+            title="32 Pearls Dental Academy Masterclass Session"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen className="absolute inset-0 w-full h-full" style={{ border: 'none' }}
           />

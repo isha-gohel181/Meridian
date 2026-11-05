@@ -5,6 +5,7 @@ import { useSidebar } from "../context/SidebarContext";
 import { ThemeToggleButton } from "../components/common/ThemeToggleButton";
 import NotificationDropdown from "../components/header/NotificationDropdown";
 import UserDropdown from "../components/header/UserDropdown";
+import BrandLogo from "../components/common/BrandLogo";
 
 const AppHeader: React.FC = () => {
   const [isApplicationMenuOpen, setApplicationMenuOpen] = useState(false);
@@ -84,16 +85,7 @@ const AppHeader: React.FC = () => {
           </button>
 
           <Link to="/" className="lg:hidden">
-            <img
-              className="dark:hidden h-9 w-auto object-contain"
-              src="/images/logo/osa_logo.png"
-              alt="Xpertqa Logo"
-            />
-            <img
-              className="hidden dark:block h-9 w-auto object-contain"
-              src="/images/logo/osa_logo.png"
-              alt="Xpertqa Logo"
-            />
+            <BrandLogo size="sm" />
           </Link>
 
           <button

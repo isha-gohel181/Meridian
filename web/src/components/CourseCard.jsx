@@ -20,12 +20,20 @@ const CourseCard = ({ item, className = '', variant = 'course', onRegister }) =>
   const CardContent = (
     <div className={`catalog-card flex flex-col h-full group ${className}`}>
       {/* Image Wrapper */}
-      <div className="relative overflow-hidden mb-8 aspect-square bg-black/5 dark:bg-white/5 rounded-none">
-        <img 
-          src={item.image} 
-          alt={sanitizeDisplay(item.title)}
-          className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-        />
+      <div className="relative overflow-hidden mb-8 aspect-square bg-[#FFF9F3] border border-[#682701]/10 rounded-none">
+        {item.image ? (
+          <img
+            src={item.image}
+            alt={sanitizeDisplay(item.title)}
+            className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center px-4">
+            <span className="font-jetbrains text-[9px] uppercase tracking-[0.2em] text-[#682701]/40 text-center">
+              {t('noPreview') || 'No preview'}
+            </span>
+          </div>
+        )}
         {item.isNew && (
           <div className="absolute top-4 right-4 bg-accent/90 text-white px-2 py-0.5 font-jetbrains text-[8px] font-bold tracking-tighter z-30">
             {t('newBadge') || 'NEW'}

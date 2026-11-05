@@ -1,3 +1,4 @@
+import { getApiBase } from '../utils/apiBase.js';
 import React, { useEffect, useRef, useState, useMemo } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { gsap } from 'gsap'
@@ -8,7 +9,7 @@ import CourseCard from '../components/CourseCard'
 import EventHero from '../components/EventHero'
 import { fetchEvents } from '../redux/slices/eventSlice'
 import { useLanguage } from '../context/LanguageContext'
-import { dummyCourses, testSeriesData, buyBooksData } from '../data/coursesData'
+import { resolveCourseThumbnail } from '../utils/courseThumbnail.js'
 
 const Courses = () => {
   const dispatch = useDispatch()
@@ -166,10 +167,9 @@ const Courses = () => {
     }
   }
 
-  // Filter dynamic & fallback courses
+  // Filter API courses only (no dummy fallback)
   const filteredCourses = useMemo(() => {
-    const apiAvailable = courses && courses.length > 0
-    let listToFilter = apiAvailable ? courses : dummyCourses
+    let listToFilter = courses ?? []
 
     // Dynamic Category Filtering
     if (activeFilter !== 'ALL COURSES' && activeFilter !== 'TEST SERIES' && activeFilter !== 'BUY BOOKS') {
@@ -178,27 +178,20 @@ const Courses = () => {
       const targetName = (matchedCat?.name || activeFilter).toUpperCase()
       const targetSlug = (matchedCat?.slug || '').toLowerCase()
 
-      if (apiAvailable) {
-        listToFilter = courses.filter(item => {
-          const itemCatId = item.categoryId?._id || item.categoryId || item.category?._id || ''
-          if (itemCatId && String(itemCatId) === String(targetId)) return true
+      listToFilter = listToFilter.filter(item => {
+        const itemCatId = item.categoryId?._id || item.categoryId || item.category?._id || ''
+        if (itemCatId && String(itemCatId) === String(targetId)) return true
 
-          const itemCatName = (item.categoryId?.name || item.category?.name || item.category || '').toUpperCase()
-          if (itemCatName && (itemCatName === targetName || itemCatName.includes(targetName) || targetName.includes(itemCatName))) return true
+        const itemCatName = (item.categoryId?.name || item.category?.name || item.category || '').toUpperCase()
+        if (itemCatName && (itemCatName === targetName || itemCatName.includes(targetName) || targetName.includes(itemCatName))) return true
 
-          const itemCatSlug = (item.categoryId?.slug || item.category?.slug || '').toLowerCase()
-          if (targetSlug && itemCatSlug && itemCatSlug === targetSlug) return true
+        const itemCatSlug = (item.categoryId?.slug || item.category?.slug || '').toLowerCase()
+        if (targetSlug && itemCatSlug && itemCatSlug === targetSlug) return true
 
-          const title = (item.title || '').toUpperCase()
-          const tags = Array.isArray(item.tags) ? item.tags.join(' ').toUpperCase() : (typeof item.tags === 'string' ? item.tags.toUpperCase() : '')
-          return title.includes(targetName) || tags.includes(targetName)
-        })
-      } else {
-        listToFilter = dummyCourses.filter(c => {
-          const cat = (c.category || '').toUpperCase()
-          return cat.includes(targetName) || targetName.includes(cat)
-        })
-      }
+        const title = (item.title || '').toUpperCase()
+        const tags = Array.isArray(item.tags) ? item.tags.join(' ').toUpperCase() : (typeof item.tags === 'string' ? item.tags.toUpperCase() : '')
+        return title.includes(targetName) || tags.includes(targetName)
+      })
     }
 
     return listToFilter.filter(item => {
@@ -280,13 +273,7 @@ const Courses = () => {
     return () => ctx.revert()
   }, [])
 
-  const getImageUrl = (thumb) => {
-    if (!thumb) return '/herocard.png'
-    const normalized = String(thumb).replace(/\\/g, '/')
-    if (/^https?:\/\//i.test(normalized)) return normalized
-    const baseUrl = import.meta.env.VITE_BASE_URL || 'https://api.xpertqa.in'
-    return normalized.startsWith('/') ? `${baseUrl}${normalized}` : `${baseUrl}/${normalized}`
-  }
+  const getImageUrl = (thumb) => resolveCourseThumbnail(thumb)
 
   // Quiz Handling
   const startQuiz = (test) => {
@@ -384,7 +371,7 @@ const Courses = () => {
     setEventRegisterLoading(true)
     setEventRegisterError('')
 
-    const BASE_URL = import.meta.env.VITE_BASE_URL || 'https://api.xpertqa.in'
+    const BASE_URL = getApiBase()
     const token = localStorage.getItem('edrilla_token') || localStorage.getItem('token')
     const headers = { 'Content-Type': 'application/json' }
     if (token) headers['Authorization'] = `Bearer ${token}`
@@ -429,7 +416,7 @@ const Courses = () => {
             key: checkData.razorpay.key || import.meta.env.VITE_RAZORPAY_KEY_ID,
             amount: checkData.razorpay.order?.amount || Math.round((checkData.razorpay.amount || 0) * 100),
             currency: checkData.razorpay.currency || 'INR',
-            name: 'Xpertqa',
+            name: '32 Pearls Dental Academy',
             description: `Registration: ${activeEventModal.title}`,
             order_id: checkData.razorpay.order?.id,
             prefill: {
@@ -882,7 +869,7 @@ const Courses = () => {
                 );
               })
             ) : (
-              <div className="col-span-full text-center py-20 text-description font-montserrat">{t('noCoursesAvailable')}</div>
+              <div className="col-span-full text-center py-20 text-description font-montserrat text-sm font-medium uppercase tracking-[0.15em]">{t('noCoursesAvailable')}</div>
             )}
           </div>
         )}

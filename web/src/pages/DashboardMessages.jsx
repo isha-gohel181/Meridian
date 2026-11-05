@@ -1,3 +1,4 @@
+import { getApiBase } from '../utils/apiBase.js';
 import React, { useState, useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import DashboardHeader from '../components/dashboard/DashboardHeader';
@@ -65,7 +66,8 @@ const DashboardMessages = () => {
                 || participants[0]
                 || { fullName: 'Conversation' };
 
-            const isSupportParticipant = other.role === 'admin' || other.role === 'super_admin' || other.email === 'xsmartqa.com@gmail.com' || other.email === 'support@xpertqa.in';
+            const supportEmail = (import.meta.env.VITE_SUPPORT_EMAIL || '').toLowerCase();
+            const isSupportParticipant = other.role === 'admin' || other.role === 'super_admin' || (supportEmail && other.email?.toLowerCase() === supportEmail);
             const isSupportRoom = !!r.isSupport || /support/i.test(r.name || '') || isSupportParticipant;
 
             let displayName = r.courseId?.title || r.name || other.fullName || other.email || 'Conversation';
@@ -267,7 +269,7 @@ const DashboardMessages = () => {
         } else if (isSupportContext) {
             try {
                 const token = localStorage.getItem('edrilla_token') || '';
-                const rawBase = import.meta.env.VITE_BASE_URL || 'https://api.xpertqa.in';
+                const rawBase = getApiBase();
                 const baseUrl = rawBase.endsWith('/') ? rawBase.slice(0, -1) : rawBase;
                 
                 const response = await fetch(`${baseUrl}/chat/room`, {

@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { gsap } from 'gsap'
+import { getApiBase } from '../utils/apiBase.js';
+import React, { useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchNews } from '../redux/slices/newsSlice'
@@ -7,222 +7,196 @@ import DashboardHeader from '../components/dashboard/DashboardHeader'
 import DashboardLoading from '../components/dashboard/DashboardLoading'
 import { useLanguage } from '../context/LanguageContext'
 
-const NewsCard = ({ article, variant = 'standard' }) => {
-  const cardRef = useRef(null)
-
-  if (variant === 'featured-main') {
-    return (
-      <Link 
-        to={`/news/${article.id || 'featured'}`}
-        ref={cardRef}
-        className="news-dash-reveal col-span-12 lg:col-span-8 group cursor-pointer block relative h-[500px] md:h-[600px] overflow-hidden rounded-3xl"
-      >
-        <div className="absolute inset-0 z-0">
-          <img 
-            src={article.image} 
-            alt={article.title}
-            referrerPolicy="no-referrer"
-            className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 opacity-40 group-hover:opacity-60"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-dark via-dark/20 to-transparent" />
-        </div>
-        
-        <div className="relative z-10 h-full p-8 md:p-14 flex flex-col justify-end">
-          <span className="font-jetbrains text-[9px] font-black text-accent tracking-[0.4em] uppercase mb-4 inline-block">
-            {article.category}
-          </span>
-          <h2 className="font-newsreader text-[clamp(2.5rem,5vw,4.5rem)] leading-[0.85] font-extralight transition-colors group-hover:text-accent mb-8 max-w-[90%] uppercase">
-            {article.title}
-          </h2>
-          <div className="flex items-center gap-8 pt-8 border-t border-white/5 mt-8">
-             <span className="font-jetbrains text-[8px] text-description/80 font-medium uppercase tracking-[0.2em]">{article.date}</span>
-             <span className="font-jetbrains text-[8px] text-description/80 font-medium uppercase tracking-[0.2em] uppercase">CALIBRATED UPDATE</span>
-          </div>
-        </div>
-      </Link>
-    )
-  }
-
-  return (
-      <Link 
-        to={`/news/${article.id}`}
-        ref={cardRef}
-        className="news-dash-reveal col-span-12 md:col-span-6 lg:col-span-4 group cursor-pointer block bg-white/[0.02] border border-white/5 p-8 hover:bg-white/[0.04] transition-all duration-500"
-      >
-        <div className="relative aspect-video overflow-hidden mb-8 rounded-xl">
-          <img 
-            src={article.image} 
-            alt={article.title}
-            referrerPolicy="no-referrer"
-            className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 opacity-70 group-hover:opacity-100"
-          />
-        </div>
-        <div className="flex flex-col gap-4">
-          <span className="font-jetbrains text-[9px] font-black text-accent tracking-[0.3em] uppercase">
-            {article.category}
-          </span>
-          <h3 className="font-newsreader text-[22px] leading-tight text-normal transition-colors group-hover:text-accent uppercase">
-            {article.title}
-          </h3>
-          <p className="font-montserrat text-[14px] leading-relaxed text-description/80 tracking-wide line-clamp-3">
-            {article.description}
-          </p>
-          <div className="flex items-center justify-between pt-8 border-t border-white/5 mt-6">
-            <span className="font-jetbrains text-[8px] text-description/80 font-medium uppercase tracking-[0.2em]">{article.date}</span>
-            <span className="font-jetbrains text-[8px] text-accent/40 font-black tracking-widest uppercase flex items-center gap-2">
-              <div className="w-1.5 h-1.5 bg-accent/40 rounded-full animate-pulse" />
-              Intelligence Dossier
-            </span>
-          </div>
-        </div>
-      </Link>
-  )
+const buildImageUrl = (n) => {
+  const url = n.imageUrl || n.coverImage || n.image
+  if (!url) return '/news_placeholder.png'
+  const rawBase = getApiBase()
+  const baseUrl = rawBase.replace(/\/api\/v1\/?$/, '')
+  const finalUrl = url.startsWith('http') ? url : `${baseUrl}/uploads/news/${url}`
+  return encodeURI(finalUrl)
 }
 
+const formatArticle = (n) => ({
+  id: n.slug || n._id,
+  category: n.categories?.[0]?.toUpperCase() || 'GENERAL',
+  title: n.title,
+  description: n.summary?.replace(/<[^>]*>?/gm, '')?.replace('[&hellip;]', '...'),
+  date: new Date(n.publishedAt || n.createdAt).toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  }).toUpperCase(),
+  views: n.stats?.views >= 1000 ? `${(n.stats.views / 1000).toFixed(1)}K` : String(n.stats?.views || '0'),
+  image: buildImageUrl(n),
+})
+
+const FeaturedCard = ({ article }) => (
+  <Link
+    to={`/dashboard/news/${article.id}`}
+    className="group block col-span-1 lg:col-span-8 relative min-h-[320px] md:min-h-[420px] overflow-hidden rounded-2xl border border-slate-200 bg-slate-900 shadow-sm hover:shadow-md transition-shadow"
+  >
+    <img
+      src={article.image}
+      alt=""
+      referrerPolicy="no-referrer"
+      className="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-60 group-hover:scale-105 transition-all duration-700"
+    />
+    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-950/50 to-slate-950/20" />
+    <div className="relative z-10 h-full flex flex-col justify-end p-8 md:p-10">
+      <span className="font-jetbrains inline-flex w-fit px-3 py-1 rounded-full bg-accent text-dark text-[10px] font-black uppercase tracking-[0.2em] mb-4">
+        {article.category}
+      </span>
+      <h2 className="marketing-card-title text-2xl md:text-4xl text-white leading-snug mb-3 line-clamp-3 group-hover:text-accent transition-colors">
+        {article.title}
+      </h2>
+      {article.description && (
+        <p className="font-montserrat text-xs leading-relaxed text-slate-200 tracking-wide line-clamp-2 max-w-2xl mb-4">
+          {article.description}
+        </p>
+      )}
+      <div className="flex items-center gap-4 font-jetbrains text-[10px] text-slate-300 font-medium uppercase tracking-[0.15em] pt-4 border-t border-white/15">
+        <span>{article.date}</span>
+        <span>{article.views} views</span>
+      </div>
+    </div>
+  </Link>
+)
+
+const SideCard = ({ article }) => (
+  <Link
+    to={`/dashboard/news/${article.id}`}
+    className="group flex flex-col col-span-1 lg:col-span-4 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm hover:border-accent/40 hover:shadow-md transition-all h-full"
+  >
+    <div className="aspect-[16/10] overflow-hidden rounded-xl bg-slate-100 mb-5">
+      <img
+        src={article.image}
+        alt=""
+        referrerPolicy="no-referrer"
+        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+      />
+    </div>
+    <span className="font-jetbrains text-[10px] font-bold text-accent uppercase tracking-[0.2em] mb-2">{article.category}</span>
+    <h3 className="marketing-card-title text-xl leading-snug group-hover:text-accent transition-colors line-clamp-2 mb-2">
+      {article.title}
+    </h3>
+    <p className="font-montserrat text-xs leading-relaxed text-slate-500 line-clamp-2 flex-1">{article.description}</p>
+    <span className="font-jetbrains text-[10px] text-slate-400 uppercase tracking-wider mt-4 pt-4 border-t border-slate-100">{article.date}</span>
+  </Link>
+)
+
+const GridCard = ({ article }) => (
+  <Link
+    to={`/dashboard/news/${article.id}`}
+    className="group flex flex-col rounded-2xl border border-slate-200 bg-white p-5 shadow-sm hover:border-accent/40 hover:shadow-md transition-all"
+  >
+    <div className="aspect-[16/10] overflow-hidden rounded-xl bg-slate-100 mb-4">
+      <img
+        src={article.image}
+        alt=""
+        referrerPolicy="no-referrer"
+        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+      />
+    </div>
+    <span className="font-jetbrains text-[10px] font-bold text-accent uppercase tracking-[0.2em] mb-2">{article.category}</span>
+    <h3 className="marketing-card-title text-lg leading-snug group-hover:text-accent line-clamp-2 mb-2">
+      {article.title}
+    </h3>
+    <p className="font-montserrat text-xs leading-relaxed text-slate-500 line-clamp-2 flex-1">{article.description}</p>
+    <div className="flex justify-between items-center font-jetbrains text-[10px] uppercase tracking-wider text-slate-400 mt-4 pt-3 border-t border-slate-100">
+      <span>{article.date}</span>
+      <span>{article.views} views</span>
+    </div>
+  </Link>
+)
+
 const DashboardNews = () => {
-  const containerRef = useRef(null)
   const dispatch = useDispatch()
   const { t } = useLanguage()
   const { newsList, loading, currentPage, totalPages } = useSelector((state) => state.news)
+  const observerTarget = useRef(null)
 
   useEffect(() => {
     dispatch(fetchNews({ page: 1, limit: 12, status: 'active' }))
   }, [dispatch])
 
-  // Map API data to our existing structure
-  const formattedArticles = newsList.map(n => ({
-    id: n.slug || n._id,
-    category: n.categories?.[0]?.toUpperCase() || 'GENERAL',
-    title: n.title,
-    description: n.summary?.replace(/<[^>]*>?/gm, '')?.replace('[&hellip;]', '...'),
-    date: new Date(n.publishedAt || n.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).toUpperCase(),
-    image: (() => {
-        const url = n.imageUrl || n.coverImage || n.image;
-        if (!url) return '/news_placeholder.png';
-        const rawBase = import.meta.env.VITE_BASE_URL || import.meta.env.VITE_API_BASE || 'https://api.xpertqa.in';
-        const baseUrl = rawBase.replace(/\/api\/v1\/?$/, '');
-        const finalUrl = url.startsWith('http') ? url : `${baseUrl}/uploads/news/${url}`;
-        return encodeURI(finalUrl);
-    })()
-  }))
-
+  const formattedArticles = newsList.map(formatArticle)
   const featuredMain = formattedArticles[0]
-  const gridArticles = formattedArticles.slice(1)
-
-  // Infinite Scroll Logic
-  const observerTarget = useRef(null)
+  const featuredSide = formattedArticles[1]
+  const gridArticles = formattedArticles.slice(2)
 
   useEffect(() => {
     const observer = new IntersectionObserver(
-      entries => {
+      (entries) => {
         if (entries[0].isIntersecting && !loading && currentPage < totalPages) {
           dispatch(fetchNews({ page: currentPage + 1, limit: 12, status: 'active' }))
         }
       },
       { threshold: 0.1 }
     )
-
-    if (observerTarget.current) {
-      observer.observe(observerTarget.current)
-    }
-
+    if (observerTarget.current) observer.observe(observerTarget.current)
     return () => observer.disconnect()
   }, [dispatch, currentPage, totalPages, loading])
 
   useEffect(() => {
-    if (loading) return
-
     window.scrollTo(0, 0)
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        '.news-dash-reveal',
-        { y: 30, autoAlpha: 0 },
-        { y: 0, autoAlpha: 1, duration: 0.8, ease: 'power3.out', stagger: 0.08 }
-      )
-    }, containerRef)
-    return () => ctx.revert()
-  }, [loading, formattedArticles.length])
+  }, [])
 
   return (
-    <div ref={containerRef} className="min-h-screen bg-slate-50 selection:bg-accent/30 overflow-x-clip">
+    <div className="min-h-screen bg-slate-50">
       <DashboardHeader />
-      
-      <main className="pt-24 pb-16 px-4 md:px-12">
-        <div className="max-w-[1600px] mx-auto">
-          
-          <div className="mb-12 news-dash-reveal space-y-4">
-             <div className="flex items-center gap-3">
-               <div className="w-1.5 h-1.5 bg-accent rounded-full animate-pulse" />
-               <span className="font-jetbrains text-[10px] text-accent tracking-[0.4em] uppercase">
-                 {t('dispatchHub') || 'DISPATCH HUB'}
-               </span>
-             </div>
-             <h1 className="font-newsreader italic text-4xl md:text-6xl text-slate-900 tracking-tighter">
-                {t('news')}
-             </h1>
-          </div>
 
-          {featuredMain && (
-          <div className="grid grid-cols-12 gap-12 mb-32">
-             <NewsCard article={featuredMain} variant="featured-main" />
-             <div className="col-span-12 lg:col-span-4 flex flex-col gap-10">
-                <div className="bg-accent/5 border border-accent/10 p-10 flex flex-col items-center justify-center gap-6 text-center group transition-all news-dash-reveal">
-                   <div className="w-14 h-14 bg-accent/10 rounded-full flex items-center justify-center text-accent animate-pulse group-hover:scale-110 transition-transform">
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                   </div>
-                   <h4 className="font-montserrat text-[14px] font-black text-accent tracking-[0.4em] uppercase">Intelligence Integrity</h4>
-                   <p className="font-jetbrains text-[9px] text-description leading-relaxed uppercase opacity-60">Verified updates for premium dashboard carriers. calibrated daily at 0400 PST.</p>
-                </div>
-                <div className="bg-white/[0.01] border border-white/5 p-10 h-full flex flex-col justify-end news-dash-reveal">
-                   <span className="font-jetbrains text-[9px] font-black text-description/20 tracking-[0.4em] uppercase mb-4">Tactical Feed</span>
-                   <p className="font-newsreader italic text-3xl text-normal leading-tight">Decentralized protocols and the future of creative labor.</p>
-                </div>
-             </div>
-          </div>
-          )}
+      <main className="pt-24 pb-16 px-4 md:px-8 lg:px-12">
+        <div className="max-w-7xl mx-auto">
+          <header className="mb-10 space-y-2">
+            <span className="font-jetbrains text-[10px] text-accent tracking-[0.4em] uppercase block">
+              {t('dispatchHub') || 'Dispatch hub'}
+            </span>
+            <h1 className="font-newsreader italic text-4xl md:text-6xl text-slate-900 tracking-tighter">
+              {t('news') || 'News'}
+            </h1>
+            <p className="font-montserrat text-sm text-slate-500 mt-2 max-w-xl">
+              Course updates, industry insights, and announcements for enrolled students.
+            </p>
+          </header>
 
-          {!loading && formattedArticles.length === 0 && (
-            <div className="news-dash-reveal py-24 flex flex-col items-center justify-center gap-4 text-center border border-dashed border-slate-200 rounded-2xl bg-white">
-              <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center text-slate-400">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                  <path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2" />
-                  <path d="M18 14h-8" /><path d="M15 18h-5" /><path d="M10 6h8v4h-8V6Z" />
-                </svg>
-              </div>
-              <h3 className="font-newsreader italic text-2xl text-slate-600 font-bold">No dispatches yet</h3>
-              <p className="font-jetbrains text-[10px] text-slate-400 uppercase tracking-widest max-w-md">
-                News and updates will appear here when your team publishes them.
-              </p>
+          {loading && newsList.length === 0 && (
+            <div className="py-24 flex justify-center">
+              <DashboardLoading />
             </div>
           )}
 
-          {formattedArticles.length > 0 && (
-            <div className="grid grid-cols-12 gap-12 mb-10">
+          {!loading && formattedArticles.length === 0 && (
+            <div className="py-20 text-center border border-dashed border-slate-200 rounded-2xl bg-white">
+              <h3 className="font-newsreader italic text-2xl text-slate-700 mb-2">No articles yet</h3>
+              <p className="font-montserrat text-sm text-slate-500">Check back when your team publishes news.</p>
+            </div>
+          )}
+
+          {featuredMain && (
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-10">
+              <FeaturedCard article={featuredMain} />
+              {featuredSide && <SideCard article={featuredSide} />}
+            </div>
+          )}
+
+          {gridArticles.length > 0 && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {gridArticles.map((article) => (
-                <NewsCard key={article.id} article={article} />
+                <GridCard key={article.id} article={article} />
               ))}
             </div>
           )}
 
-          {/* Scroll Sentinel */}
-          <div ref={observerTarget} className="py-20 flex flex-col items-center justify-center gap-4">
-              {loading ? (
-                  <DashboardLoading />
-              ) : currentPage < totalPages ? (
-                  <span className="font-jetbrains text-[8px] text-description/20 tracking-[0.4em] uppercase animate-pulse">Scanning Archive...</span>
-              ) : (
-                  <div className="flex items-center gap-4 opacity-10">
-                      <div className="h-[1px] w-10 bg-description" />
-                      <span className="font-jetbrains text-[8px] text-description tracking-[0.4em] uppercase">Archive Fully Synched</span>
-                      <div className="h-[1px] w-10 bg-description" />
-                  </div>
-              )}
+          <div ref={observerTarget} className="py-12 flex justify-center">
+            {loading && newsList.length > 0 && <DashboardLoading />}
+            {!loading && currentPage >= totalPages && formattedArticles.length > 0 && (
+              <span className="font-jetbrains text-[10px] text-slate-400 uppercase tracking-[0.3em]">End of archive</span>
+            )}
           </div>
-
         </div>
       </main>
     </div>
   )
 }
 
-export default DashboardNews;
+export default DashboardNews

@@ -1,5 +1,6 @@
+import { getApiBase } from "../utils/apiBase";
 const API_BASE_URL = (
-  import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_BASE_URL || "https://api.xpertqa.in"
+  import.meta.env.VITE_API_BASE_URL || getApiBase()
 ).replace(/\/$/, "");
 
 interface VideoData {

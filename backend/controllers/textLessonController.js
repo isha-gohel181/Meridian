@@ -2,6 +2,16 @@ import TextLessonService from "../service/textLessonService.js";
 import { initRedis } from "../config/redisClient.js";
 import NotificationService from "../service/notificationService.js"; // Import notification service
 
+/** Multipart forms may repeat keys; Mongoose needs a single ObjectId string. */
+const scalarField = (value) => {
+  if (value == null || value === "") return undefined;
+  if (Array.isArray(value)) {
+    const last = value[value.length - 1];
+    return last != null && last !== "" ? String(last) : undefined;
+  }
+  return String(value);
+};
+
 // Create a new text lesson
 export const createTextLesson = async (req, res) => {
   try {
@@ -9,14 +19,20 @@ export const createTextLesson = async (req, res) => {
     //console.log("Uploaded files:", req.files);
     let attachments = [];
 
+    const uploadedFiles = (req.files || []).filter(
+      (f) => f.fieldname && String(f.fieldname).startsWith("attachments")
+    );
+
     if (req.file) {
       attachments.push({
         fileName: req.file.originalname,
+        file: (req.file.path || req.file.filename || "").replace(/\\/g, "/"),
         uploadedAt: new Date(),
       });
-    } else if (req.files && req.files.length > 0) {
-      attachments = req.files.map((file) => ({
+    } else if (uploadedFiles.length > 0) {
+      attachments = uploadedFiles.map((file) => ({
         fileName: file.originalname,
+        file: (file.path || file.filename || "").replace(/\\/g, "/"),
         uploadedAt: new Date(),
       }));
     }
@@ -25,6 +41,15 @@ export const createTextLesson = async (req, res) => {
       ...req.body,
       attachments,
     };
+
+    lessonData.lesson =
+      scalarField(lessonData.lesson) || scalarField(lessonData.lessonId);
+    delete lessonData.lessonId;
+
+    lessonData.course = scalarField(lessonData.course);
+    if (lessonData.course) {
+      lessonData.courseId = lessonData.course;
+    }
 
     const lesson = await TextLessonService.createTextLesson(lessonData);
 
@@ -36,7 +61,10 @@ export const createTextLesson = async (req, res) => {
       title: 'New File Available',
       body: `A new file titled "${lesson.title}" has been added to your course.`,
     };
-    await NotificationService.notifyEnrolledUsers(lesson.courseId, notificationData);
+    const notifyCourseId = lesson.course || lesson.courseId;
+    if (notifyCourseId) {
+      await NotificationService.notifyEnrolledUsers(notifyCourseId, notificationData);
+    }
 
     res
       .status(201)

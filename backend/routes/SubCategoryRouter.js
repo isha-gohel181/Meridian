@@ -1,5 +1,5 @@
 import express from 'express';
-import { createSubCategory, getSubCategoryById, getAllSubCategories, updateSubCategory, deleteSubCategory } from '../controllers/SubCategoryController.js';
+import { createSubCategory, getSubCategoryById, getAllSubCategories, getSubCategoriesByCategory, updateSubCategory, deleteSubCategory } from '../controllers/SubCategoryController.js';
 import accessTokenAutoRefresh from '../middlewares/accessTokenAutoRefresh.js';
 import passport from 'passport';
 import { isAdmin } from '../middlewares/isAdmin.js';
@@ -17,6 +17,9 @@ subCategoryRouter.post(
 
 // Get all subcategories (public)
 subCategoryRouter.get('/', getAllSubCategories);
+
+// By parent category (must be before /:id)
+subCategoryRouter.get('/by-category/:categoryId', getSubCategoriesByCategory);
 
 // Get a subcategory by ID (public)
 subCategoryRouter.get('/:id', getSubCategoryById);

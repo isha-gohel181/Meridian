@@ -170,7 +170,7 @@ const DashboardSupport = () => {
                                 <div className="space-y-10 support-reveal opacity-0">
                                     <div className="space-y-2">
                                        <p className="font-jetbrains text-[9px] text-amber-800 uppercase tracking-[0.4em] font-black italic">{t('infoArchitectureTag')}</p>
-                                       <h3 className="font-newsreader italic text-3xl text-slate-900 font-bold tracking-tight uppercase leading-none">{t('contactInfo')}</h3>
+                                       <h3 className="font-newsreader italic text-xl md:text-2xl text-slate-900 tracking-tighter leading-none">{t('contactInfo')}</h3>
                                     </div>
                                     
                                     <div className="space-y-6">

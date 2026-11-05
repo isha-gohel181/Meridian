@@ -241,6 +241,7 @@ class CouponRepository extends CrudRepository {
       const now = new Date();
       const activeCoupons = await Coupon.find({
         isActive: true,
+        isDeleted: { $ne: true },
         startDate: { $lte: now },
         endDate: { $gte: now }
       })

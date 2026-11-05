@@ -1,3 +1,4 @@
+import { getApiBase } from '../utils/apiBase.js';
 import React, { useState, useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import RollingText from './RollingText'
@@ -7,7 +8,7 @@ const getImageUrl = (thumb) => {
   if (!thumb) return bannerImg
   const normalized = String(thumb).replace(/\\/g, '/')
   if (/^https?:\/\//i.test(normalized)) return normalized
-  const baseUrl = import.meta.env.VITE_BASE_URL || 'https://api.xpertqa.in'
+  const baseUrl = getApiBase()
   return normalized.startsWith('/') ? `${baseUrl}${normalized}` : `${baseUrl}/${normalized}`
 }
 

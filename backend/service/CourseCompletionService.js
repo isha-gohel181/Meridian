@@ -32,9 +32,9 @@ class CourseCompletionService {
         populate: { path: 'lessons' }
       });
 
-      if (!course || !course.modules) {
+      if (!course || !course.modules || course.modules.length === 0) {
         console.log(`No course or modules found for ${courseId}`);
-        return { isCompleted: true, overallProgress: 100 }; // If no content, consider completed
+        return { isCompleted: false, overallProgress: 0 };
       }
 
       // Count total content by type
@@ -75,15 +75,16 @@ class CourseCompletionService {
       if (totalItems > 0) {
         overallProgress = (completedItems / totalItems) * 100;
       } else {
-        overallProgress = 100;
+        overallProgress = 0;
       }
 
       // Cap at 100
       overallProgress = Math.min(overallProgress, 100);
       overallProgress = Math.round(overallProgress * 100) / 100; // Round to 2 decimal places
 
-      // Check if all are completed
-      const allCompleted = (completedLessons >= totalVideoLessons) &&
+      // Check if all are completed (empty courses are never "completed")
+      const allCompleted = totalItems > 0 &&
+        (completedLessons >= totalVideoLessons) &&
         (completedQuizzes >= totalQuizzes) &&
         (completedAssignments >= totalAssignments);
 

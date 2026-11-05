@@ -70,8 +70,8 @@ const EditFilterModal: React.FC<{
   } = useAppSelector((state) => state.courseCategory);
   const {
     data: filterData,
-    loading: subcategoriesLoading,
-    error: subcategoriesError,
+    subcategoriesLoading,
+    subcategoriesError,
   } = useAppSelector((state) => state.filter);
   const subcategories: SubCategory[] = filterData?.subcategories || [];
 

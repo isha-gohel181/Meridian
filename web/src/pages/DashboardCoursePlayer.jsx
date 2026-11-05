@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useMemo } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { gsap } from 'gsap';
 import DashboardHeader from '../components/dashboard/DashboardHeader';
@@ -53,6 +53,8 @@ const DashboardCoursePlayer = () => {
     const containerRef = useRef(null);
     const syncProgressRef = useRef(null);
     const lastVideoSyncTimeRef = useRef(0);
+    const isPlaybackActiveRef = useRef(false);
+    const COMPLETE_THRESHOLD = 95;
     const { trackEvent } = useTracker();
 
     console.log('Current Course Data:', currentCourse);
@@ -248,34 +250,38 @@ const DashboardCoursePlayer = () => {
             }
         }
 
-        if (lesson.ismobileOnly && lesson.type !== 'quiz') {
+        const isPhoneViewport =
+            typeof window !== 'undefined' &&
+            window.matchMedia('(max-width: 767px)').matches;
+
+        if (lesson.ismobileOnly && isPhoneViewport && lesson.type !== 'quiz') {
             setIsMobileModalOpen(true);
-        } else {
-            // Log lesson play event
-            trackEvent('play_lesson', {
-                lessonId: lesson._id || lesson.id,
-                title: lesson.title,
-                type: lesson.type || 'video',
-                courseId: currentCourse?._id || id,
-            });
+            return;
+        }
 
-            // notify server about last played video (include tokens)
-            try {
-                const videoId = lesson.videoLessons?.[0]?._id || lesson.videoLessons?.[0]?.id || lesson.videoLessonId || lesson.videoId || null;
-                if (videoId) {
-                    const body = JSON.stringify({ courseId: currentCourse._id || id, videoLessonId: videoId });
-                    const r = await authorizedFetch('/course-completion/update-last-video', { method: 'POST', body });
-                    if (r.status === 401) {
-                        console.warn('update-last-video returned 401');
-                    }
-                } else {
-                    console.warn('update-last-video skipped: no video id available for lesson', lesson._id || lesson.id);
+        trackEvent('play_lesson', {
+            lessonId: lesson._id || lesson.id,
+            title: lesson.title,
+            type: lesson.type || 'video',
+            courseId: currentCourse?._id || id,
+        });
+
+        try {
+            const videoId = lesson.videoLessons?.[0]?._id || lesson.videoLessons?.[0]?.id || lesson.videoLessonId || lesson.videoId || null;
+            if (videoId) {
+                const body = JSON.stringify({ courseId: currentCourse._id || id, videoLessonId: videoId });
+                const r = await authorizedFetch('/course-completion/update-last-video', { method: 'POST', body });
+                if (r.status === 401) {
+                    console.warn('update-last-video returned 401');
                 }
-            } catch (e) {
-                console.warn('update-last-video error', e);
+            } else {
+                console.warn('update-last-video skipped: no video id available for lesson', lesson._id || lesson.id);
             }
+        } catch (e) {
+            console.warn('update-last-video error', e);
+        }
 
-            if (lesson?.type === 'assignment') {
+        if (lesson?.type === 'assignment') {
             navigate(`/dashboard/assignment/${id}/${lesson._id || lesson.id}`);
             return;
         }
@@ -285,14 +291,22 @@ const DashboardCoursePlayer = () => {
             return;
         }
 
+        const hasVideoContent =
+            (lesson.videoLessons?.length > 0) ||
+            lesson.type === 'video-lesson' ||
+            (lesson.fileUrl && !lesson.files?.length);
+        if (lesson?.files?.length > 0 && !hasVideoContent) {
+            navigate(`/dashboard/file/${id}/${lesson._id || lesson.id}`);
+            return;
+        }
+
         if (lesson?.type === 'quiz') {
             navigate(`/dashboard/quiz/${id}/${lesson._id || lesson.id}`);
             return;
         }
 
         setSelectedLesson(lesson);
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     const isDirectVideoUrl = (url) => {
@@ -358,42 +372,73 @@ const DashboardCoursePlayer = () => {
 
     const videoSrc = getVideoSrc(selectedLesson);
 
-    // Automatic video progress sync effect (Handles YouTube, Vimeo, VdoCipher postMessages & active watching ticker)
+    const flatLessons = useMemo(() => {
+        const list = [];
+        (currentCourse?.modules || []).forEach((module) => {
+            (module.lessons || []).forEach((lesson) => list.push(lesson));
+        });
+        return list;
+    }, [currentCourse]);
+
+    const selectedLessonIndex = useMemo(() => {
+        if (!selectedLesson) return -1;
+        const sid = selectedLesson._id || selectedLesson.id;
+        return flatLessons.findIndex((l) => (l._id || l.id) === sid);
+    }, [flatLessons, selectedLesson]);
+
+    const goToAdjacentLesson = (delta) => {
+        const nextIndex = selectedLessonIndex + delta;
+        if (nextIndex < 0 || nextIndex >= flatLessons.length) return;
+        handleLessonPlay(flatLessons[nextIndex]);
+    };
+
+    // Video progress: only from real playback (HTML5 timeupdate / iframe postMessage), not idle timers
     useEffect(() => {
         if (!selectedLesson || !user) return;
         const lid = selectedLesson._id || selectedLesson.id;
         if (!lid) return;
 
-        const lessonDuration = (selectedLesson.duration ? Number(selectedLesson.duration) * 60 : 0) || 
-                               selectedLesson.videoLessons?.[0]?.duration || 
-                               300;
+        isPlaybackActiveRef.current = false;
 
-        let accumulatedTime = 0;
-        const currentInitialProgress = dripStatuses[lid]?.progress || 0;
-        if (currentInitialProgress > 0) {
-            accumulatedTime = (currentInitialProgress / 100) * lessonDuration;
-        }
+        const lessonDuration =
+            (selectedLesson.duration ? Number(selectedLesson.duration) * 60 : 0) ||
+            selectedLesson.videoLessons?.[0]?.duration ||
+            300;
 
-        const syncProgress = async (pct, currentTime, duration, isComplete = false) => {
+        const syncProgress = async (pct, currentTime, duration, isComplete = false, options = {}) => {
+            const { allowWhenPaused = false } = options;
+            if (!allowWhenPaused && !isComplete && !isPlaybackActiveRef.current) {
+                return;
+            }
+
             const roundedPct = Math.min(100, Math.max(0, Math.round(pct * 10) / 10));
             const prevProgress = dripStatuses[lid]?.progress || 0;
-
             if (roundedPct < prevProgress && !isComplete) return;
 
-            // 1. Instant Redux update for real-time progress bar UI in curriculum index
+            const markComplete = isComplete || roundedPct >= COMPLETE_THRESHOLD;
+
             dispatch(setLessonStatus({
                 lessonId: lid,
                 status: {
                     progress: Math.max(prevProgress, roundedPct),
                     unlocked: true,
-                    completed: isComplete || roundedPct >= 80
-                }
+                    completed: markComplete,
+                },
             }));
 
-            // 2. Sync to Backend
+            const now = Date.now();
+            if (!markComplete && now - lastVideoSyncTimeRef.current < 4000) {
+                return;
+            }
+            lastVideoSyncTimeRef.current = now;
+
             try {
                 const targetCourseId = currentCourse?._id || id;
-                const videoId = selectedLesson?.videoLessons?.[0]?._id || selectedLesson?.videoLessons?.[0]?.id || selectedLesson?.videoId || lid;
+                const videoId =
+                    selectedLesson?.videoLessons?.[0]?._id ||
+                    selectedLesson?.videoLessons?.[0]?.id ||
+                    selectedLesson?.videoId ||
+                    lid;
 
                 await authorizedFetch(`/courses/${targetCourseId}/lessons/${lid}/progress`, {
                     method: 'PATCH',
@@ -402,8 +447,8 @@ const DashboardCoursePlayer = () => {
                         currentTime: Math.round(currentTime),
                         duration: Math.round(duration),
                         watchTime: Math.round(currentTime),
-                        completed: isComplete || roundedPct >= 80
-                    })
+                        completed: markComplete,
+                    }),
                 });
 
                 if (socketService?.socket?.connected) {
@@ -413,11 +458,11 @@ const DashboardCoursePlayer = () => {
                         currentTime: Math.round(currentTime),
                         duration: Math.round(duration),
                         courseId: targetCourseId,
-                        lessonId: lid
+                        lessonId: lid,
                     });
                 }
 
-                if ((isComplete || roundedPct >= 80) && !dripStatuses[lid]?.completed) {
+                if (markComplete && !dripStatuses[lid]?.completed) {
                     await authorizedFetch(`/${targetCourseId}/${lid}/complete`, { method: 'POST' });
                     refreshStatuses();
                 }
@@ -426,63 +471,64 @@ const DashboardCoursePlayer = () => {
             }
         };
 
-        syncProgressRef.current = syncProgress;
+        syncProgressRef.current = (pct, cur, dur, done) =>
+            syncProgress(pct, cur, dur, done, { allowWhenPaused: false });
 
-        // Window message listener for YouTube / Vimeo / VdoCipher postMessage events
         const handlePostMessage = (event) => {
             try {
                 let data = event.data;
                 if (typeof data === 'string') {
-                    try { data = JSON.parse(data); } catch (e) {}
+                    try {
+                        data = JSON.parse(data);
+                    } catch (e) {
+                        return;
+                    }
                 }
                 if (!data) return;
 
-                // YouTube IFrame API messages
                 if (data.event === 'infoDelivery' && data.info) {
                     const { currentTime, duration, playerState } = data.info;
-                    if (duration && currentTime !== undefined) {
+                    if (playerState === 1) isPlaybackActiveRef.current = true;
+                    if (playerState === 2 || playerState === 0) isPlaybackActiveRef.current = false;
+                    if (duration && currentTime !== undefined && isPlaybackActiveRef.current) {
                         const pct = (currentTime / duration) * 100;
-                        syncProgress(pct, currentTime, duration, playerState === 0 || pct >= 95);
+                        syncProgress(pct, currentTime, duration, playerState === 0 || pct >= COMPLETE_THRESHOLD);
                     }
                 }
 
-                // Vimeo messages
-                if (data.event === 'timeupdate' && data.data) {
+                if (data.event === 'play') isPlaybackActiveRef.current = true;
+                if (data.event === 'pause') isPlaybackActiveRef.current = false;
+
+                if (data.event === 'timeupdate' && data.data && isPlaybackActiveRef.current) {
                     const { percent, seconds, duration } = data.data;
                     const dur = duration || lessonDuration;
-                    const pct = (percent != null ? percent * 100 : (seconds / dur) * 100);
-                    syncProgress(pct, seconds, dur, pct >= 95);
+                    const pct = percent != null ? percent * 100 : (seconds / dur) * 100;
+                    syncProgress(pct, seconds, dur, pct >= COMPLETE_THRESHOLD);
                 }
                 if (data.event === 'ended') {
-                    syncProgress(100, lessonDuration, lessonDuration, true);
+                    syncProgress(100, lessonDuration, lessonDuration, true, { allowWhenPaused: true });
                 }
 
-                // VdoCipher messages
-                if (data.type === 'timeupdate' && data.currentTime !== undefined) {
+                if (data.type === 'play') isPlaybackActiveRef.current = true;
+                if (data.type === 'pause') isPlaybackActiveRef.current = false;
+                if (data.type === 'timeupdate' && data.currentTime !== undefined && isPlaybackActiveRef.current) {
                     const { currentTime, duration } = data;
                     const dur = duration || lessonDuration;
                     const pct = (currentTime / dur) * 100;
-                    syncProgress(pct, currentTime, dur, pct >= 95);
+                    syncProgress(pct, currentTime, dur, pct >= COMPLETE_THRESHOLD);
                 }
-                if (data.type === 'ended' || data.event === 'ended') {
-                    syncProgress(100, lessonDuration, lessonDuration, true);
+                if (data.type === 'ended') {
+                    syncProgress(100, lessonDuration, lessonDuration, true, { allowWhenPaused: true });
                 }
             } catch (e) {}
         };
 
         window.addEventListener('message', handlePostMessage);
 
-        // Fallback ticker: smoothly increments progress as student watches the video
-        const intervalId = setInterval(() => {
-            if (document.hidden) return; // Only tick when user is actively on the tab
-            accumulatedTime += 5;
-            const computedPct = Math.min(100, (accumulatedTime / lessonDuration) * 100);
-            syncProgress(computedPct, accumulatedTime, lessonDuration, computedPct >= 95);
-        }, 5000);
-
         return () => {
             window.removeEventListener('message', handlePostMessage);
-            clearInterval(intervalId);
+            isPlaybackActiveRef.current = false;
+            syncProgressRef.current = null;
         };
     }, [selectedLesson?._id || selectedLesson?.id, currentCourse?._id, user?._id]);
 
@@ -514,39 +560,39 @@ const DashboardCoursePlayer = () => {
     if (!currentCourse) return null;
 
     return (
-        <div ref={containerRef} className="min-h-screen bg-dark text-white selection:bg-accent/40 relative overflow-x-hidden">
+        <div ref={containerRef} className="min-h-screen bg-slate-50 text-slate-900 selection:bg-accent/20 relative overflow-x-hidden">
             <DashboardHeader />
             
-            <main className="pt-20 pb-4 px-4">
-                <div className="space-y-12">
+            <main className="pt-24 pb-12 px-4 md:px-8 max-w-[1600px] mx-auto">
+                <div className="space-y-8">
                     {/* Header Section */}
-                    <div className="flex flex-col md:flex-row md:items-end justify-between items-start gap-8 player-reveal opacity-0">
+                    <div className="flex flex-col md:flex-row md:items-end justify-between items-start gap-6 player-reveal opacity-0">
                         <div className="space-y-4">
-                           <Link to="/dashboard/my-courses" className="font-jetbrains text-[8px] text-accent/40 uppercase tracking-[0.4em] hover:text-accent transition-colors flex items-center gap-2">
+                           <Link to="/dashboard/my-courses" className="font-jetbrains text-[10px] text-accent uppercase tracking-[0.3em] hover:text-slate-700 transition-colors flex items-center gap-2">
                                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="m15 18-6-6 6-6"/></svg>
                                Return to Curriculum
                            </Link>
-                           <h1 className="font-newsreader italic text-3xl md:text-6xl text-normal font-extralight tracking-tight leading-none uppercase">
+                           <h1 className="font-newsreader italic text-3xl md:text-5xl text-slate-900 tracking-tighter leading-tight">
                                {sanitizeDisplay(currentCourse.title)}
                            </h1>
-                           <div className="flex items-center gap-6 pt-2">
-                               <div className="flex items-center gap-2">
-                                   <div className="w-1.5 h-1.5 bg-accent rounded-full animate-pulse shadow-[0_0_10px_rgba(139, 92, 246,0.5)]" />
-                                   <span className="font-jetbrains text-[9px] text-accent font-black uppercase tracking-widest leading-none">
-                                       {selectedLesson ? `Viewing: ${selectedLesson.title}` : 'Session Protocol Active'}
-                                   </span>
-                                </div>
-                               <span className="font-jetbrains text-[8px] text-description/20 uppercase tracking-[0.4em] leading-none">
-                                   {currentCourse.modules?.length || 0} Modules Curated
+                           <div className="flex items-center gap-3">
+                               <div className="w-1.5 h-1.5 bg-accent rounded-full animate-pulse" />
+                               <span className="font-jetbrains text-[10px] text-accent uppercase tracking-[0.35em]">
+                                   {selectedLesson ? sanitizeDisplay(selectedLesson.title) : 'Select a lesson to begin'}
+                               </span>
+                               <span className="font-jetbrains text-[10px] text-slate-400 uppercase tracking-[0.2em]">
+                                   · {currentCourse.modules?.length || 0} modules
                                </span>
                            </div>
                         </div>
                     </div>
 
+                    <div className={`grid grid-cols-1 gap-8 ${selectedLesson ? 'xl:grid-cols-12' : ''}`}>
                     {/* Dashboard Video Area */}
                     {selectedLesson && (
+                        <div className={`space-y-4 ${selectedLesson ? 'xl:col-span-8' : ''}`}>
                         <div 
-                            className="animate-in fade-in duration-700 w-full aspect-video bg-[#0d0d0d] border border-white/5 relative overflow-hidden flex items-center justify-center group shadow-2xl mb-8"
+                            className="animate-in fade-in duration-700 w-full aspect-video bg-black border border-slate-200 rounded-2xl relative overflow-hidden flex items-center justify-center shadow-lg"
                             onContextMenu={(e) => e.preventDefault()}
                         >
                             <div className="w-full h-full bg-black relative flex items-center justify-center overflow-hidden">
@@ -558,24 +604,19 @@ const DashboardCoursePlayer = () => {
                                                 controls
                                                 playsInline
                                                 className={`w-full h-full object-contain absolute inset-0 z-0 transition-all duration-300 ${isObscured ? 'opacity-0 pointer-events-none filter blur-xl' : 'opacity-100'}`}
+                                                onPlay={() => {
+                                                    isPlaybackActiveRef.current = true;
+                                                }}
+                                                onPause={() => {
+                                                    isPlaybackActiveRef.current = false;
+                                                }}
                                                 onTimeUpdate={(e) => {
+                                                    if (e.target.paused) return;
                                                     const cur = e.target.currentTime;
                                                     const dur = e.target.duration || ((selectedLesson.duration ? selectedLesson.duration * 60 : 0) || 300);
-                                                    if (dur > 0) {
+                                                    if (dur > 0 && syncProgressRef.current) {
                                                         const pct = (cur / dur) * 100;
-                                                        const lid = selectedLesson._id || selectedLesson.id;
-                                                        dispatch(setLessonStatus({
-                                                            lessonId: lid,
-                                                            status: { progress: Math.round(pct), unlocked: true }
-                                                        }));
-
-                                                        const now = Date.now();
-                                                        if (now - lastVideoSyncTimeRef.current > 4000) {
-                                                            lastVideoSyncTimeRef.current = now;
-                                                            if (syncProgressRef.current) {
-                                                                syncProgressRef.current(pct, cur, dur, pct >= 95);
-                                                            }
-                                                        }
+                                                        syncProgressRef.current(pct, cur, dur, pct >= COMPLETE_THRESHOLD);
                                                     }
                                                 }}
                                                 onEnded={async () => {
@@ -644,29 +685,51 @@ const DashboardCoursePlayer = () => {
                                 )}
                             </div>
                         </div>
-                    )}
 
-                    {/* DRM Troubleshooting Note */}
-                    {selectedLesson?.videoLessons?.[0]?.sourcePlatform === 'videocypher' && (
-                        <div className="player-reveal opacity-0 py-2 border-l-2 border-accent/20 pl-4">
-                            <p className="font-jetbrains text-[8px] text-description/80 uppercase tracking-[0.4em] leading-relaxed">
-                                Security Protocol: If feed decryption fails, ensure <span className="text-accent/60 font-black">Incognito Mode</span> is disabled and <span className="text-accent/60 font-black">Protected Content</span> is allowed in system settings.
+                        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-white border border-slate-200 rounded-xl px-4 py-3 shadow-sm">
+                            <button
+                                type="button"
+                                disabled={selectedLessonIndex <= 0}
+                                onClick={() => goToAdjacentLesson(-1)}
+                                className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border border-slate-200 text-sm font-semibold text-slate-700 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-slate-50"
+                            >
+                                ← Previous
+                            </button>
+                            <p className="text-sm text-slate-600 text-center truncate px-2">
+                                {sanitizeDisplay(selectedLesson.title)}
                             </p>
+                            <button
+                                type="button"
+                                disabled={selectedLessonIndex < 0 || selectedLessonIndex >= flatLessons.length - 1}
+                                onClick={() => goToAdjacentLesson(1)}
+                                className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-accent text-white text-sm font-semibold disabled:opacity-40 disabled:cursor-not-allowed hover:opacity-90"
+                            >
+                                Next →
+                            </button>
+                        </div>
+
+                        {selectedLesson?.videoLessons?.[0]?.sourcePlatform === 'videocypher' && (
+                            <div className="py-2 border-l-2 border-accent/30 pl-4">
+                                <p className="font-jetbrains text-[10px] text-slate-500 uppercase tracking-wider leading-relaxed">
+                                    If playback fails, disable incognito and allow protected content in browser settings.
+                                </p>
+                            </div>
+                        )}
                         </div>
                     )}
 
-                    {/* Curated Curriculum Accordion */}
-                    <div className="player-reveal opacity-0 space-y-4">
+                    {/* Course curriculum */}
+                    <div className={`player-reveal opacity-0 space-y-4 ${selectedLesson ? 'xl:col-span-4 xl:sticky xl:top-24 xl:self-start max-h-[calc(100vh-7rem)] xl:overflow-y-auto' : 'xl:col-span-12'}`}>
                         <div className="flex items-center gap-4 mb-2">
-                           <p className="font-jetbrains text-[8px] text-accent uppercase tracking-[0.6em] font-black italic underline decoration-accent/20 underline-offset-4">Dossier Index</p>
-                           <div className="h-[1px] bg-white/5 flex-1" />
+                           <p className="font-jetbrains text-[10px] text-accent uppercase tracking-[0.35em] font-bold">Course content</p>
+                           <div className="h-[1px] bg-slate-200 flex-1" />
                         </div>
 
                         {(dripLoading || dripError) && (
                             <p className="text-xs text-slate-400 mb-2">
                                 {dripLoading ? 'Updating lesson progress…' : 'Could not refresh lesson progress.'}
                                 {!dripLoading && (
-                                    <button type="button" onClick={refreshStatuses} className="ml-2 text-[#1878C0] font-semibold hover:underline">
+                                    <button type="button" onClick={refreshStatuses} className="ml-2 text-[#C96A1B] font-semibold hover:underline">
                                         Retry
                                     </button>
                                 )}
@@ -678,7 +741,7 @@ const DashboardCoursePlayer = () => {
                                 <div 
                                     key={module._id || i}
                                     className={`group border transition-all duration-300 overflow-hidden bg-white rounded-2xl shadow-sm
-                                        ${activeAccordion === (module._id || i) ? 'border-[#1878C0]/50 ring-1 ring-[#1878C0]/20' : 'border-slate-200 hover:border-slate-300'}`}
+                                        ${activeAccordion === (module._id || i) ? 'border-[#C96A1B]/50 ring-1 ring-[#C96A1B]/20' : 'border-slate-200 hover:border-slate-300'}`}
                                 >
                                     <button 
                                         type="button"
@@ -687,7 +750,7 @@ const DashboardCoursePlayer = () => {
                                     >
                                         <div className="flex items-center gap-5">
                                             <div className={`w-11 h-11 border rounded-xl flex items-center justify-center text-xs font-bold transition-all
-                                                ${activeAccordion === (module._id || i) ? 'bg-[#1878C0] text-white border-[#1878C0]' : 'bg-sky-50 border-sky-100 text-[#1878C0]'}`}>
+                                                ${activeAccordion === (module._id || i) ? 'bg-[#C96A1B] text-white border-[#C96A1B]' : 'bg-sky-50 border-sky-100 text-[#C96A1B]'}`}>
                                                 {String(i + 1).padStart(2, '0')}
                                             </div>
                                             <div className="space-y-1">
@@ -699,7 +762,7 @@ const DashboardCoursePlayer = () => {
                                                 </p>
                                             </div>
                                         </div>
-                                        <div className={`transition-transform duration-300 ${activeAccordion === (module._id || i) ? 'rotate-180 text-[#1878C0]' : 'text-slate-400 group-hover:text-slate-600'}`}>
+                                        <div className={`transition-transform duration-300 ${activeAccordion === (module._id || i) ? 'rotate-180 text-[#C96A1B]' : 'text-slate-400 group-hover:text-slate-600'}`}>
                                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="m18 15-6-6-6 6"/></svg>
                                         </div>
                                     </button>
@@ -728,6 +791,7 @@ const DashboardCoursePlayer = () => {
                                 </div>
                             ))}
                         </div>
+                    </div>
                     </div>
                 </div>
             </main>

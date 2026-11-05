@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { CERTIFICATE_ORGANIZATION_DEFAULT } from "../../constants/brand";
 import {
   BookOpen,
   FileText,
@@ -24,7 +25,6 @@ import {
   Type,
   CheckCircle,
   ArrowRight,
-  Sparkles,
   Target,
   BookOpenCheck,
   PlayCircle,
@@ -136,89 +136,96 @@ const SuccessPopup = ({ isVisible, onClose, onAddContent, courseId }: { isVisibl
     }
   };
 
+  const nextSteps = [
+    {
+      icon: Layers,
+      title: "Create Modules",
+      description: "Organize your course into logical sections",
+    },
+    {
+      icon: FileEdit,
+      title: "Add Lessons",
+      description: "Create engaging lessons with videos and content",
+    },
+    {
+      icon: PlayCircle,
+      title: "Upload Videos",
+      description: "Add video content to your lessons",
+    },
+  ];
+
   return (
-    <div className="fixed inset-0 bg-transparent backdrop-blur-sm flex items-center justify-center z-[100] p-4">
-      <div className="bg-white dark:bg-gray-800 rounded-3xl max-h-[90vh] max-w-lg w-full mx-4 overflow-hidden transform transition-all duration-300 scale-100">
-        <div className="bg-gradient-to-r from-blue-500 to-blue-600 p-8 text-center relative overflow-hidden">
-          <div className="absolute inset-0 bg-white opacity-10 transform rotate-12 scale-150"></div>
-          <div className="relative z-10">
-            <div className="inline-flex items-center justify-center w-20 h-20 bg-white bg-opacity-20 rounded-full mb-4">
-              <CheckCircle className="w-12 h-12 text-white" />
-            </div>
-            <h2 className="text-2xl font-bold text-white mb-2">
-              Course Created Successfully! 🎉
-            </h2>
-            <p className="text-emerald-100 text-lg">
-              Your course has been created and is ready for content
-            </p>
+    <div
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/30 p-4 backdrop-blur-sm"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="course-success-title"
+    >
+      <div className="flex max-h-[min(90vh,640px)] w-full max-w-lg flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-xl dark:border-gray-700 dark:bg-gray-900">
+        <div className="bg-brand-500 px-8 py-8 text-center">
+          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-white/15">
+            <CheckCircle className="h-9 w-9 text-white" strokeWidth={1.5} />
           </div>
-          <Sparkles className="absolute top-4 right-4 w-6 h-6 text-white opacity-30" />
-          <Sparkles className="absolute bottom-4 left-4 w-4 h-4 text-white opacity-30" />
+          <p className="mb-2 text-[10px] font-bold uppercase tracking-[0.35em] text-white/70">
+            Course created
+          </p>
+          <h2
+            id="course-success-title"
+            className="text-2xl font-semibold text-white"
+          >
+            Successfully created
+          </h2>
+          <p className="mt-2 text-sm text-white/85">
+            Your course is ready for modules, lessons, and media.
+          </p>
         </div>
-        <div className="p-8 mb-96 overflow-auto">
-          <div className="text-center mb-8">
-            <h3 className="text-xl font-semibold dark:text-gray-100 mb-2">
-              What's Next?
+
+        <div className="flex-1 overflow-y-auto px-8 py-6">
+          <div className="mb-6 text-center">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+              What&apos;s next?
             </h3>
-            <p className="text-gray-600 dark:text-gray-300">
-              Add modules and lessons to make your course complete
+            <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+              Add modules and lessons to complete your course
             </p>
           </div>
-          <div className="space-y-4 mb-8 max-h-[200px] overflow-scroll">
-            <div className="flex items-center gap-4 p-4 bg-blue-50 dark:bg-blue-900/30 rounded-xl">
-              <div className="flex-shrink-0 w-10 h-10 bg-blue-100 dark:bg-blue-800 rounded-full flex items-center justify-center">
-                <Layers className="w-5 h-5 text-blue-600 dark:text-blue-300" />
-              </div>
-              <div>
-                <h4 className="font-semibold dark:text-gray-100">
-                  Create Modules
-                </h4>
-                <p className="text-sm text-gray-600 dark:text-gray-300">
-                  Organize your course into logical sections
-                </p>
-              </div>
-            </div>
-            <div className="flex items-center gap-4 p-4 bg-purple-50 dark:bg-purple-900/30 rounded-xl">
-              <div className="flex-shrink-0 w-10 h-10 bg-purple-100 dark:bg-purple-800 rounded-full flex items-center justify-center">
-                <FileEdit className="w-5 h-5 text-purple-600 dark:text-purple-300" />
-              </div>
-              <div>
-                <h4 className="font-semibold dark:text-gray-100">
-                  Add Lessons
-                </h4>
-                <p className="text-sm text-gray-600 dark:text-gray-300">
-                  Create engaging lessons with videos and content
-                </p>
-              </div>
-            </div>
-            <div className="flex items-center gap-4 p-4 bg-green-50 dark:bg-green-900/30 rounded-xl">
-              <div className="flex-shrink-0 w-10 h-10 bg-green-100 dark:bg-green-800 rounded-full flex items-center justify-center">
-                <PlayCircle className="w-5 h-5 text-green-600 dark:text-green-300" />
-              </div>
-              <div>
-                <h4 className="font-semibold dark:text-gray-100">
-                  Upload Videos
-                </h4>
-                <p className="text-sm text-gray-600 dark:text-gray-300">
-                  Add video content to your lessons
-                </p>
-              </div>
-            </div>
-          </div>
+          <ul className="space-y-3">
+            {nextSteps.map(({ icon: Icon, title, description }) => (
+              <li
+                key={title}
+                className="flex items-center gap-4 rounded-xl border border-gray-200 bg-gray-50/80 p-4 dark:border-gray-700 dark:bg-gray-800/60"
+              >
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-50 dark:bg-brand-950/40">
+                  <Icon className="h-5 w-5 text-brand-600 dark:text-brand-300" />
+                </div>
+                <div className="min-w-0 text-left">
+                  <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+                    {title}
+                  </h4>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                    {description}
+                  </p>
+                </div>
+              </li>
+            ))}
+          </ul>
         </div>
-        <div className="flex gap-3 fixed w-full pt-10 bottom-4 px-8 bg-white dark:bg-gray-800">
+
+        <div className="flex gap-3 border-t border-gray-200 px-8 py-5 dark:border-gray-700">
           <button
+            type="button"
             onClick={onClose}
-            className="flex-1 py-3 px-4 border border-gray-200 dark:border-gray-600 rounded-xl text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200 font-medium"
+            className="flex-1 rounded-xl border border-gray-200 px-4 py-3 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
           >
             Close
           </button>
           <button
+            type="button"
             onClick={handleAddContent}
-            className="flex-1 py-3 px-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all duration-200 font-medium flex items-center justify-center gap-2"
+            className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-brand-500 px-4 py-3 text-sm font-medium text-white shadow-sm shadow-brand-500/25 transition-colors hover:bg-brand-600"
           >
-            Add Content
-            <ArrowRight className="w-4 h-4" />
+            Add content
+            <ArrowRight className="h-4 w-4" />
           </button>
         </div>
       </div>
@@ -562,7 +569,7 @@ const AddCourse = () => {
     certificateRecipientName: "Student Name",
     certificateIssuerName: "",
     certificateIssuerTitle: "",
-    certificateOrganization: "Xpertqa Academy",
+    certificateOrganization: CERTIFICATE_ORGANIZATION_DEFAULT,
     certificateDescription: "",
     // Enhanced Landing Page Sections
     landingPageSections: [
@@ -702,7 +709,7 @@ const AddCourse = () => {
 
   // Remove plan
   const handleRemovePlan = (idx: number) => {
-    setPlans(plans.filter((_, i) => i !== idx));
+    setPlans((prev) => prev.filter((_, i) => i !== idx));
   };
 
   const handleSubmit = async (e: React.FormEvent, isDraft = false) => {
@@ -905,7 +912,7 @@ const AddCourse = () => {
         certificateRecipientName: "Student Name",
         certificateIssuerName: "",
         certificateIssuerTitle: "",
-        certificateOrganization: "Xpertqa Academy",
+        certificateOrganization: CERTIFICATE_ORGANIZATION_DEFAULT,
         certificateDescription: "",
         // Enhanced Landing Page Sections
         overviewSection: { show: false, title: "", subtitle: "", description: null, images: [] },
@@ -998,7 +1005,7 @@ const AddCourse = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex">
+    <div className="min-h-screen w-full max-w-full overflow-x-hidden bg-gray-50 dark:bg-gray-900 flex min-w-0">
       <SuccessPopup
         isVisible={successPopup}
         onClose={() => setSuccessPopup(false)}
@@ -1058,7 +1065,7 @@ const AddCourse = () => {
           ))}
         </nav>
       </aside>
-      <div className="flex-1 p-4 lg:p-8">
+      <div className="flex-1 min-w-0 max-w-full overflow-x-hidden p-4 lg:p-8">
         <button
           className="lg:hidden mb-4 p-2 bg-blue-600 text-white rounded-lg"
           onClick={() => setIsSidebarOpen(true)}

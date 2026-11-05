@@ -1,7 +1,7 @@
+import { getApiBase } from '../../utils/apiBase.js';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-const BASE_URL = import.meta.env.VITE_BASE_URL || 'https://api.xpertqa.in';
-const LAPAAS_TICKET_URL = import.meta.env.VITE_LAPAAS_TICKET_URL || `${BASE_URL}/lapaas-ticket`;
+const BASE_URL = getApiBase();
 
 export const createSupportTicket = createAsyncThunk(
   'support/createTicket',
@@ -30,23 +30,24 @@ export const createSupportTicket = createAsyncThunk(
   }
 );
 
-export const submitLapaasTicket = createAsyncThunk(
-  'support/submitLapaasTicket',
+/** Public contact form → stored in admin Student Queries */
+export const submitContactQuery = createAsyncThunk(
+  'support/submitContactQuery',
   async (payload, { rejectWithValue }) => {
     try {
-      const response = await fetch(LAPAAS_TICKET_URL, {
+      const response = await fetch(`${BASE_URL}/queries`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload),
       });
 
-      const data = await response.json();
+      const data = await response.json().catch(() => ({}));
       if (!response.ok) {
-        throw new Error(data.error || data.message || 'Failed to submit enquiry');
+        throw new Error(data.message || 'Failed to submit your message');
       }
       return data;
     } catch (error) {
-      return rejectWithValue(error.message);
+      return rejectWithValue(error.message || 'Failed to submit your message');
     }
   }
 );
@@ -108,16 +109,16 @@ const supportSlice = createSlice({
         state.submitting = false;
         state.error = action.payload;
       })
-      .addCase(submitLapaasTicket.pending, (state) => {
+      .addCase(submitContactQuery.pending, (state) => {
         state.submitting = true;
         state.error = null;
         state.success = false;
       })
-      .addCase(submitLapaasTicket.fulfilled, (state) => {
+      .addCase(submitContactQuery.fulfilled, (state) => {
         state.submitting = false;
         state.success = true;
       })
-      .addCase(submitLapaasTicket.rejected, (state, action) => {
+      .addCase(submitContactQuery.rejected, (state, action) => {
         state.submitting = false;
         state.error = action.payload;
       })

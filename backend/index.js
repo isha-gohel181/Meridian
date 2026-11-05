@@ -7,6 +7,7 @@ import { ServerConfig } from './config/server.config.js';
 import { initRedis, isRedisEnabled } from './config/redisClient.js';
 import { printServerBanner } from './utils/banner.js';
 import videoSocketHandler from './sockets/videoSocketHandler.js';
+import { setIO } from './utils/socketEmitter.js';
 import jwt from 'jsonwebtoken';
 import Message from './models/Message.js';
 import GroupMessage from './models/GroupMessage.js';
@@ -34,9 +35,6 @@ const io = new Server(server, {
       if (origin.endsWith('.vercel.app') || origin.endsWith('.onrender.com')) return callback(null, true);
       
       const allowedOrigins = [
-        "https://xpertqa.in",
-        "https://www.xpertqa.in",
-        "https://api.xpertqa.in",
         process.env.FRONTEND_URL,
         process.env.ADMIN_URL,
         "http://localhost:5173",
@@ -53,6 +51,8 @@ const io = new Server(server, {
   },
   transports: ['websocket', 'polling']
 });
+
+setIO(io);
 
 // make io available to controllers via req.app.locals.io
 app.locals.io = io;

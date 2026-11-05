@@ -2,6 +2,15 @@ import React, { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { Link } from 'react-router-dom'
+import {
+  LOGO_PATH,
+  SUPPORT_EMAIL,
+  ABOUT_US_FOOTER_EXCERPT,
+  SUPPORT_PHONE_TEL,
+  WHATSAPP_URL,
+  getSupportEmailDisplay,
+  getSupportPhoneDisplay,
+} from '../constants/brand'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -34,7 +43,7 @@ const Footer = () => {
   return (
     <footer
       ref={footerRef}
-      className="relative w-full bg-gradient-to-b from-[#1878C0] to-[#11598f] text-white border-t border-white/15 overflow-hidden select-none"
+      className="relative w-full bg-gradient-to-b from-[#C96A1B] to-[#682701] text-white border-t border-white/15 overflow-hidden select-none"
     >
       {/* Decorative Ambient Background Soft Glows */}
       <div className="absolute inset-0 pointer-events-none opacity-25">
@@ -48,21 +57,17 @@ const Footer = () => {
           
           {/* Column 1: Brand & Bio (4 cols) */}
           <div className="footer-reveal lg:col-span-4 space-y-4">
-            <Link to="/" className="inline-block hover:opacity-90 transition-opacity" aria-label="XpertQA.in Home">
+            <Link to="/" className="inline-block hover:opacity-90 transition-opacity" aria-label="32 Pearls Dental Academy Home">
               <img
-                alt="XpertQA.in"
-                className="h-11 md:h-12 w-auto object-contain brightness-0 invert drop-shadow-md"
-                src="/logos/osa_logo.png"
+                alt="32 Pearls Dental Academy"
+                className="h-14 md:h-16 w-auto max-w-[200px] object-contain drop-shadow-[0_8px_24px_rgba(0,0,0,0.25)]"
+                src={LOGO_PATH}
               />
             </Link>
 
             <p className="font-jetbrains text-xs md:text-sm text-white/85 leading-relaxed max-w-sm">
-              Empowering aspiring and working professionals with industry-grade software testing, automated QA frameworks, and hands-on project coaching.
+              {ABOUT_US_FOOTER_EXCERPT}
             </p>
-
-            <div className="font-jetbrains text-xs text-white/75 pt-1">
-              <span className="font-semibold text-white">Business Activity:</span> Computer Programming, Consultancy and Related Services
-            </div>
 
             {/* Social Icons */}
             <div className="flex items-center gap-3 pt-2">
@@ -150,7 +155,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link to="/forum" className="text-white/80 hover:text-white transition-colors hover:translate-x-0.5 inline-block">
-                  QA Forum
+                  Community Forum
                 </Link>
               </li>
               <li>
@@ -200,29 +205,28 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Column 4: Registered Office & Contact Info (4 cols) */}
+          {/* Column 4: Contact (4 cols) */}
           <div className="footer-reveal lg:col-span-4 space-y-4">
             <h4 className="font-montserrat text-xs uppercase tracking-[0.2em] font-bold text-white/95">
-              Registered Office
+              Contact
             </h4>
 
             <div className="space-y-3 font-jetbrains text-xs text-white/85">
-              <div className="flex items-start gap-2.5">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white/90 shrink-0 mt-0.5">
-                  <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
-                  <circle cx="12" cy="10" r="3" />
-                </svg>
-                <p className="leading-relaxed">
-                  Flat 74, Green City Apartments, Block 5, Gulmohar Road, Trilanga, Bhopal, Madhya Pradesh – 462039, India
-                </p>
-              </div>
-
-              <div className="flex items-center gap-2.5 pt-1">
+              <div className="flex items-center gap-2.5">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white/90 shrink-0">
                   <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
                 </svg>
-                <a href="tel:+916263384994" className="hover:text-white hover:underline transition-colors">
-                  +91 62633 84994
+                <a href={`tel:${SUPPORT_PHONE_TEL}`} className="hover:text-white hover:underline transition-colors">
+                  {getSupportPhoneDisplay()}
+                </a>
+              </div>
+
+              <div className="flex items-center gap-2.5">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white/90 shrink-0">
+                  <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+                </svg>
+                <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="hover:text-white hover:underline transition-colors">
+                  WhatsApp: {getSupportPhoneDisplay()}
                 </a>
               </div>
 
@@ -231,8 +235,8 @@ const Footer = () => {
                   <rect width="20" height="16" x="2" y="4" rx="2" />
                   <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
                 </svg>
-                <a href="mailto:xsmartqa.com@gmail.com" className="hover:text-white hover:underline transition-colors break-all">
-                  xsmartqa.com@gmail.com
+                <a href={`mailto:${SUPPORT_EMAIL}`} className="hover:text-white hover:underline transition-colors break-all">
+                  {getSupportEmailDisplay()}
                 </a>
               </div>
 
@@ -249,11 +253,11 @@ const Footer = () => {
         {/* Bottom Bar: Copyright and Tagline */}
         <div className="footer-reveal pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 font-jetbrains text-xs text-white/75">
           <p className="tracking-wide text-center sm:text-left">
-            © {new Date().getFullYear()} XpertQA.in. All rights reserved.
+            © {new Date().getFullYear()} 32 Pearls Dental Academy. All rights reserved.
           </p>
 
           <p className="text-[11px] uppercase tracking-[0.2em] text-white/60 text-center sm:text-right">
-            Software Testing & QA Excellence
+            Professional Dental Education
           </p>
         </div>
       </div>

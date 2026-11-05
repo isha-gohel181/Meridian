@@ -1,3 +1,4 @@
+import { getImageBase } from "../../utils/apiBase";
 import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import {
@@ -63,7 +64,7 @@ const TicketDetails: React.FC<{ isEditMode: boolean }> = ({ isEditMode }) => {
     type: "",
   });
   const ImageUrl =
-    import.meta.env.VITE_IMAGE_URL || "https://api.xpertqa.in/uploads/";
+    getImageBase() + "/uploads/";
 
   useEffect(() => {
     if (ticketId && !ticket) {

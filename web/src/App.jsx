@@ -34,6 +34,7 @@ import Notifications from './pages/dashboard/Notifications'
 import DashboardQuiz from './pages/DashboardQuiz'
 import DashboardAssignment from './pages/DashboardAssignment'
 import DashboardReading from './pages/DashboardReading'
+import DashboardFileLesson from './pages/DashboardFileLesson'
 import SessionExpiredPopup from './components/SessionExpiredPopup'
 import DashboardLiveClasses from './pages/DashboardLiveClasses'
 import Contact from './pages/Contact'
@@ -355,6 +356,7 @@ const AppContent = () => {
               <Route path="personality-test" element={<DashboardPersonality />} />
               <Route path="forum" element={<DashboardForum />} />
               <Route path="news" element={<DashboardNews />} />
+              <Route path="news/:id" element={<NewsDetail />} />
               <Route path="support" element={<DashboardSupport />} />
               <Route path="messages" element={<DashboardMessages />} />
               <Route path="course/:id" element={<DashboardCoursePlayer />} />
@@ -362,6 +364,7 @@ const AppContent = () => {
               <Route path="quiz/:id" element={<DashboardQuiz />} />
               <Route path="assignment/:courseId/:id" element={<DashboardAssignment />} />
               <Route path="reading/:courseId/:id" element={<DashboardReading />} />
+              <Route path="file/:courseId/:id" element={<DashboardFileLesson />} />
               <Route path="job-posts" element={<DashboardJobPosts />} />
               <Route path="job/:id" element={<JobDetail />} />
               <Route path="my-forum" element={<MyForum />} />

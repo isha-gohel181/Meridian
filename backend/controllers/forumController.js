@@ -558,10 +558,15 @@ export const getAllThreadsWithReplies = async (req, res) => {
       isApproved = false;
     }
 
-    const threadsResult = await forumService.getAllThreadsWithReplies({
+    const serviceQuery = {
       ...req.query,
-      isApproved
-    });
+      isApproved,
+    };
+    if (req.user && req.user.role !== "admin") {
+      serviceQuery.viewerUserId = req.user._id;
+    }
+
+    const threadsResult = await forumService.getAllThreadsWithReplies(serviceQuery);
 
     //console.log("getAllThreadsWithReplies - User Role:", req?.user);
 
@@ -749,6 +754,19 @@ export const getAllThreadsWithReplies = async (req, res) => {
     });
   } catch (error) {
     console.error("getAllThreadsWithReplies error:", error);
+    res.status(500).json({ success: false, message: "Server Error" });
+  }
+};
+
+export const getForumStats = async (req, res) => {
+  try {
+    const stats = await forumService.getForumStats();
+    res.status(200).json({
+      success: true,
+      data: stats,
+    });
+  } catch (error) {
+    console.error("getForumStats error:", error);
     res.status(500).json({ success: false, message: "Server Error" });
   }
 };

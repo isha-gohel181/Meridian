@@ -24,6 +24,7 @@ const certificateSchema = new Schema(
     total_duration: { type: String, default: "" },
     user_time_spent: { type: String, default: "" },
     final_grade: { type: String, default: "" },
+    user_certificate_additional: { type: String, default: "" },
   },
   {
     timestamps: true,

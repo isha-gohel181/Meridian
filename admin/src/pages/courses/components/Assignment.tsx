@@ -1,3 +1,4 @@
+import { getImageBase } from "../../../utils/apiBase";
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -24,7 +25,7 @@ import {
   updateAssignment,
   fetchAssignmentById,
 } from "../../../store/slices/assignment";
-const baseUrl = import.meta.env.VITE_IMAGE_URL || import.meta.env.VITE_BASE_URL || "https://api.xpertqa.in/";
+const baseUrl = getImageBase() + "/";
 
 // Enhanced popup component similar to TextLesson component
 interface EnhancedPopupProps {

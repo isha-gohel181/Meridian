@@ -1,5 +1,6 @@
-// const rawBase = import.meta.env.VITE_BASE_URL || 'https://api.xpertqa.in';
-const rawBase = import.meta.env.VITE_BASE_URL || 'https://api.xpertqa.in';
+import { getApiBase } from '../utils/apiBase.js';
+// const rawBase = getApiBase();
+const rawBase = getApiBase();
 const BASE = rawBase.includes('/api/v1') ? rawBase : `${rawBase}`;
 
 export async function authorizedFetch(path, opts = {}) {

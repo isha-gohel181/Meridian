@@ -1,3 +1,4 @@
+import { getImageBase } from "../../utils/apiBase";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import PageBreadcrumb from "../../components/common/PageBreadCrumb";
@@ -53,7 +54,7 @@ export default function AddEditTestSeries() {
           isActive: ts.isActive,
         });
         if (ts.coverImage) {
-          const imgBase = (import.meta.env.VITE_IMAGE_URL || import.meta.env.VITE_BASE_URL || 'https://api.xpertqa.in').replace(/\/+$/, '');
+          const imgBase = (getImageBase()).replace(/\/+$/, '');
           setCoverImagePreview(ts.coverImage.startsWith('http') ? ts.coverImage : `${imgBase}${ts.coverImage.startsWith('/') ? '' : '/'}${ts.coverImage}`);
         }
         // If it has sections, wrap it in a mock object that matches what Quiz component expects
@@ -118,7 +119,7 @@ export default function AddEditTestSeries() {
 
   return (
     <>
-      <PageMeta title={`${isEdit ? 'Edit' : 'Add'} Test Series | Xpertqa`} description="Manage Test Series" />
+      <PageMeta title={`${isEdit ? 'Edit' : 'Add'} Test Series | 32 Pearls Dental Academy`} description="Manage Test Series" />
       <PageBreadcrumb pageTitle={`${isEdit ? 'Edit' : 'Add'} Test Series`} />
       
       <div className="bg-white rounded-2xl border border-gray-200 p-6 dark:bg-gray-900 dark:border-gray-800">

@@ -8,10 +8,7 @@ import CourseCard from '../components/CourseCard'
 import DashboardHeader from '../components/dashboard/DashboardHeader'
 import { useLanguage } from '../context/LanguageContext'
 
-import { dummyCourses } from '../data/coursesData'
-
-const courseData = dummyCourses
-
+import { resolveCourseThumbnail } from '../utils/courseThumbnail.js'
 
 const DashboardCourses = () => {
   const dispatch = useDispatch()
@@ -24,39 +21,34 @@ const DashboardCourses = () => {
   const [selectedDuration, setSelectedDuration] = useState('All hours')
 
   const filteredCourses = React.useMemo(() => {
-    const apiAvailable = courses && courses.length > 0
-    let list = apiAvailable ? courses : dummyCourses
+    let list = courses ?? []
 
     if (activeFilter === 'GS COURSES') {
-      let gsResults = []
-      if (apiAvailable) {
-        gsResults = courses.filter(item => {
-          const cat = (item.category?.name || item.category || '').toUpperCase()
-          const title = (item.title || '').toUpperCase()
-          return cat.includes('GS') || cat.includes('GENERAL STUDIES') || title.includes('GS')
-        })
-      }
-      if (gsResults.length === 0) {
-        gsResults = dummyCourses.filter(c => c.category === 'GS COURSES')
-      }
-      list = gsResults
+      list = list.filter(item => {
+        const cat = (item.category?.name || item.categoryId?.name || item.category || '').toUpperCase()
+        const title = (item.title || '').toUpperCase()
+        return cat.includes('GS') || cat.includes('GENERAL STUDIES') || title.includes('GS')
+      })
     } else if (activeFilter === 'OPTIONAL COURSES') {
-      let optResults = []
-      if (apiAvailable) {
-        optResults = courses.filter(item => {
-          const cat = (item.category?.name || item.category || '').toUpperCase()
-          const title = (item.title || '').toUpperCase()
-          return cat.includes('OPTIONAL') || title.includes('OPTIONAL')
-        })
-      }
-      if (optResults.length === 0) {
-        optResults = dummyCourses.filter(c => c.category === 'OPTIONAL COURSES')
-      }
-      list = optResults
+      list = list.filter(item => {
+        const cat = (item.category?.name || item.categoryId?.name || item.category || '').toUpperCase()
+        const title = (item.title || '').toUpperCase()
+        return cat.includes('OPTIONAL') || title.includes('OPTIONAL')
+      })
     }
 
     return list
   }, [courses, activeFilter])
+
+  const availableCount = filteredCourses.length
+  const newTodayCount = React.useMemo(() => {
+    const startOfDay = new Date()
+    startOfDay.setHours(0, 0, 0, 0)
+    return filteredCourses.filter((c) => {
+      const created = c.createdAt ? new Date(c.createdAt) : null
+      return created && created >= startOfDay
+    }).length
+  }, [filteredCourses])
 
   useLayoutEffect(() => {
     dispatch(fetchCourses())
@@ -108,11 +100,11 @@ const DashboardCourses = () => {
           <div className="flex gap-12 items-center self-end md:self-auto pb-2">
              <div className="text-right group relative">
                 <p className="font-jetbrains text-xs text-slate-500 uppercase tracking-[0.3em] mb-1 font-bold">{t('availableStat')}</p>
-                <p className="font-newsreader italic text-4xl text-slate-900 leading-none font-medium tracking-tighter">18</p>
+                <p className="font-newsreader italic text-4xl text-slate-900 leading-none font-medium tracking-tighter">{String(availableCount).padStart(2, '0')}</p>
              </div>
              <div className="text-right group relative">
                 <p className="font-jetbrains text-xs text-slate-500 uppercase tracking-[0.3em] mb-1 font-bold">{t('newTodayStat')}</p>
-                <p className="font-newsreader italic text-4xl text-slate-900 leading-none font-medium tracking-tighter">02</p>
+                <p className="font-newsreader italic text-4xl text-slate-900 leading-none font-medium tracking-tighter">{String(newTodayCount).padStart(2, '0')}</p>
              </div>
           </div>
         </div>
@@ -245,21 +237,14 @@ const DashboardCourses = () => {
                     description: item.shortDescription || item.description,
                     price: activePrice,
                     originalPrice: originalPrice,
-                    image: (() => {
-                        const thumb = item.thumbnail;
-                        if (!thumb) return '/herocard.png';
-                        if (thumb.startsWith('http')) return thumb;
-                        const rawBase = import.meta.env.VITE_BASE_URL || import.meta.env.VITE_API_BASE || 'https://api.xpertqa.in';
-                        const baseUrl = rawBase.replace(/\/api\/v1\/?$/, '');
-                        return `${baseUrl}${thumb.startsWith('/') ? '' : '/'}${thumb}`;
-                    })(),
+                    image: resolveCourseThumbnail(item.thumbnail),
                     isNew: true,
                   }} 
                 />
               );
             })
           ) : (
-            <div className="col-span-full text-center py-20 text-slate-500 font-montserrat font-medium">{t('noCoursesAvailable')}</div>
+            <div className="col-span-full text-center py-20 text-description font-montserrat text-sm font-medium uppercase tracking-[0.15em]">{t('noCoursesAvailable')}</div>
           )}
         </div>
       </main>

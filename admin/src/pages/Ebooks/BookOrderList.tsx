@@ -61,7 +61,7 @@ export default function BookOrderList() {
 
   return (
     <div>
-      <PageMeta title="Book Orders | Xpertqa" description="Manage physical book orders" />
+      <PageMeta title="Book Orders | 32 Pearls Dental Academy" description="Manage physical book orders" />
       <PageBreadcrumb pageTitle="Book Orders" />
       
       <div className="bg-white dark:bg-gray-900 p-6 rounded-2xl border border-gray-200 dark:border-gray-800">
@@ -106,7 +106,7 @@ export default function BookOrderList() {
                     <td className="px-4 py-3">
                       <span className={`px-2 py-1 rounded-full text-xs font-medium 
                         ${order.deliveryStatus === 'pending' ? 'bg-yellow-100 text-yellow-800' : 
-                          order.deliveryStatus === 'shipped' ? 'bg-blue-100 text-blue-800' : 
+                          order.deliveryStatus === 'shipped' ? 'bg-brand-100 text-brand-800' : 
                           order.deliveryStatus === 'delivered' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}
                       >
                         {order.deliveryStatus?.toUpperCase() || 'PENDING'}

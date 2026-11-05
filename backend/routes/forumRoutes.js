@@ -19,7 +19,8 @@ import {
   approveThread,
   updateThreadOpenSource,
   getThreadByIdAdmin,
-  getMyThreads
+  getMyThreads,
+  getForumStats
 } from '../controllers/forumController.js';
 import accessTokenAutoRefresh from '../middlewares/accessTokenAutoRefresh.js';
 import passport from 'passport';
@@ -37,6 +38,8 @@ forumRouter.get(
   getMyThreads
 );
 
+
+forumRouter.get('/stats', getForumStats);
 
 forumRouter.get('/all-threads-with-replies', (req, res, next) => {
   passport.authenticate('jwt', { session: false }, (err, user) => {

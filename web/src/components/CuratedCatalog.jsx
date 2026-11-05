@@ -6,61 +6,13 @@ import { useDispatch, useSelector } from 'react-redux'
 import { fetchCourses } from '../redux/slices/courseSlice'
 import RollingText from './RollingText'
 import CourseCard from './CourseCard'
+import { resolveCourseThumbnail } from '../utils/courseThumbnail.js'
+import { useLanguage } from '../context/LanguageContext'
 
 gsap.registerPlugin(ScrollTrigger)
 
-const catalogItems = [
-  {
-    id: 1,
-    category: 'EDITORIAL DESIGN',
-    title: 'The Architecture of the Page',
-    description: 'Mastering grid systems and visual tension in high-end publishing.',
-    price: '$249.00',
-    image: '/courses/architecture.png',
-  },
-  {
-    id: 2,
-    category: 'TYPOGRAPHY',
-    title: 'The Romantic Serif',
-    description: 'History and application of intricate display typefaces in digital systems.',
-    price: '$189.00',
-    image: '/courses/typography.png',
-  },
-  {
-    id: 3,
-    category: 'CURATION',
-    title: 'The Digital Curator',
-    description: 'Transitioning from content manager to high-end content architect.',
-    price: '$322.00',
-    image: '/courses/curator.png',
-  },
-  {
-    id: 4,
-    category: 'ART DIRECTION',
-    title: 'Visual Narrative & Identity',
-    description: 'Building cohesive brand worlds through cinematic storytelling.',
-    price: '$599.00',
-    image: '/courses/narrative.png',
-  },
-  {
-    id: 5,
-    category: 'DIGITAL ART',
-    title: 'Motion & Tonal Stacking',
-    description: 'Creating depth and atmosphere without traditional drop shadows.',
-    price: '$420.00',
-    image: '/courses/motion.png',
-  },
-  {
-    id: 6,
-    category: 'PROFESSIONAL PRACTICE',
-    title: 'Pricing the Premium',
-    description: 'The economics of high-end design services and luxury positioning.',
-    price: '$144.00',
-    image: '/courses/pricing.png',
-  }
-]
-
 const CuratedCatalog = () => {
+  const { t } = useLanguage()
   const dispatch = useDispatch()
   const { courses, loading, error } = useSelector((state) => state.courses)
   const containerRef = useRef(null)
@@ -206,15 +158,6 @@ const CuratedCatalog = () => {
             const activePrice = item.salePrice ? `₹${item.salePrice}` : (item.price ? `₹${item.price}` : 'FREE');
             const originalPrice = hasSale ? `₹${item.price}` : null;
 
-            const getCardImage = (thumb) => {
-              if (!thumb) return '/herocard.png';
-              const normalized = String(thumb).replace(/\\/g, '/');
-              if (/^https?:\/\//i.test(normalized)) return normalized;
-              const rawBase = import.meta.env.VITE_BASE_URL || import.meta.env.VITE_API_BASE || 'https://api.xpertqa.in';
-              const baseUrl = rawBase.replace(/\/api\/v1\/?$/, '');
-              return normalized.startsWith('/') ? `${baseUrl}${normalized}` : `${baseUrl}/${normalized}`;
-            };
-
             return (
               <CourseCard 
                 key={item._id || item.id} 
@@ -225,14 +168,16 @@ const CuratedCatalog = () => {
                   description: item.shortDescription || item.description,
                   price: activePrice,
                   originalPrice: originalPrice,
-                  image: getCardImage(item.thumbnail),
+                  image: resolveCourseThumbnail(item.thumbnail),
                   isNew: true,
                 }} 
               />
             );
           })
         ) : (
-          <div className="col-span-full text-center py-20 text-description font-montserrat">NO COURSES AVAILABLE</div>
+          <div className="col-span-full text-center py-20 text-description font-montserrat text-sm font-medium uppercase tracking-[0.15em]">
+            {t('noCoursesAvailable')}
+          </div>
         )}
       </div>
     </section>

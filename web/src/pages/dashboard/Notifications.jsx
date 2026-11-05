@@ -5,7 +5,7 @@ import { fetchNotifications, markNotificationsRead } from '../../redux/slices/no
 import DashboardHeader from '../../components/dashboard/DashboardHeader';
 import { useLanguage } from '../../context/LanguageContext';
 
-const BRAND = '#1878C0';
+const BRAND = '#C96A1B';
 
 const Notifications = () => {
   const dispatch = useDispatch();
@@ -41,7 +41,7 @@ const Notifications = () => {
         <div className="mx-auto w-full max-w-3xl">
           <Link
             to="/dashboard"
-            className="inline-flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-[#1878C0] transition-colors mb-6"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-[#C96A1B] transition-colors mb-6"
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="m15 18-6-6 6-6" />
@@ -55,7 +55,7 @@ const Notifications = () => {
                 {t('notifications') || 'Notifications'}
               </h1>
               <p className="text-sm text-slate-500 mt-1">
-                Updates from your courses and ExpertQa announcements
+                Updates from your courses and 32 Pearls announcements
               </p>
             </div>
             <button
@@ -166,7 +166,7 @@ const Notifications = () => {
                     type="button"
                     onClick={handlePrevPage}
                     disabled={page === 1}
-                    className="px-4 py-2 rounded-xl border border-slate-200 bg-white text-slate-600 text-sm font-medium disabled:opacity-50 hover:border-[#1878C0]/40 transition-colors"
+                    className="px-4 py-2 rounded-xl border border-slate-200 bg-white text-slate-600 text-sm font-medium disabled:opacity-50 hover:border-[#C96A1B]/40 transition-colors"
                   >
                     Previous
                   </button>
@@ -174,7 +174,7 @@ const Notifications = () => {
                     type="button"
                     onClick={handleNextPage}
                     disabled={page * limit >= total}
-                    className="px-4 py-2 rounded-xl border border-slate-200 bg-white text-slate-600 text-sm font-medium disabled:opacity-50 hover:border-[#1878C0]/40 transition-colors"
+                    className="px-4 py-2 rounded-xl border border-slate-200 bg-white text-slate-600 text-sm font-medium disabled:opacity-50 hover:border-[#C96A1B]/40 transition-colors"
                   >
                     Next
                   </button>

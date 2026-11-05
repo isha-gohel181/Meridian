@@ -1,4 +1,5 @@
 import { updateLessonProgressDirect } from '../controllers/ProgressController.js';
+import { emitCourseProgressRefresh } from '../utils/progressSocketNotify.js';
 
 // Store last update time per user to throttle updates
 const progressCache = new Map();
@@ -14,7 +15,7 @@ const videoSocketHandler = (socket) => {
     const lastUpdate = progressCache.get(cacheKey) || 0;
     const now = Date.now();
     
-    if (now - lastUpdate < 1000) { // 30 seconds throttle
+    if (now - lastUpdate < 5000) {
       //console.log(`Progress update throttled for user ${userId}`);
       return;
     }
@@ -42,7 +43,7 @@ const videoSocketHandler = (socket) => {
         progressPercentage: progressPercentage,
         sessionId: socket.id,
         videoDuration: duration,
-        ...(progressPercentage > 80 && { completed: true })
+        ...(progressPercentage >= 90 && { completed: true })
       };
 
       const update = await updateLessonProgressDirect(
@@ -52,7 +53,11 @@ const videoSocketHandler = (socket) => {
         updateData
       );
 
-      //console.log(`Updated progress for video ${videoId}, user ${userId}`);
+      emitCourseProgressRefresh(userId, {
+        courseId,
+        lessonId: targetLessonId,
+        progressPercentage: update?.progressPercentage,
+      });
 
       socket.emit('progress-updated', {
         success: true,

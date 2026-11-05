@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import gsap from 'gsap';
+import { SUPPORT_EMAIL, getSupportEmailDisplay } from '../constants/brand';
 
 const PrivacyPolicy = () => {
   useEffect(() => {
@@ -17,7 +18,7 @@ const PrivacyPolicy = () => {
         <div className="privacy-animate space-y-6 text-base leading-relaxed">
           <p><strong>Effective Date:</strong> January 1, 2026</p>
           <p>
-            At Xpertqa, we take your privacy and data security seriously. This Privacy Policy explains how we collect, use, and protect your personal information when you use our website, application, and learning platform.
+            At 32 Pearls Dental Academy, we take your privacy and data security seriously. This Privacy Policy explains how we collect, use, and protect your personal information when you use our website, application, and learning platform.
           </p>
 
           <h2 className="text-xl font-bold text-amber-600 mt-6">1. Information We Collect</h2>
@@ -52,8 +53,8 @@ const PrivacyPolicy = () => {
           <h2 className="text-xl font-bold text-amber-600 mt-6">6. Contact Us</h2>
           <p>
             If you have questions or inquiries regarding our Privacy Policy or data handling, please contact us at{' '}
-            <a href="mailto:xsmartqa.com@gmail.com" className="text-amber-600 font-bold hover:underline">
-              xsmartqa.com@gmail.com
+            <a href={`mailto:${SUPPORT_EMAIL}`} className="text-amber-600 font-bold hover:underline">
+              {getSupportEmailDisplay()}
             </a>.
           </p>
         </div>

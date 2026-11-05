@@ -141,6 +141,28 @@ export const getCouponById = async (req, res) => {
 };
 
 // controller/couponController.js
+export const getActiveCouponsForCheckout = async (req, res) => {
+  try {
+    const { courseId } = req.query;
+    const coupons = await couponService.getActiveForCheckout(courseId || null);
+
+    return res.status(200).json({
+      success: true,
+      message: 'Active coupons retrieved successfully',
+      data: { coupons },
+      err: {},
+    });
+  } catch (err) {
+    console.error('❌ Get Active Coupons Error:', err);
+    return res.status(500).json({
+      success: false,
+      message: err.message || 'Failed to fetch active coupons',
+      data: {},
+      err: err.message,
+    });
+  }
+};
+
 export const getAllCoupons = async (req, res) => {
   try {
     // Determine admin status: prefer req.user (when passport ran), otherwise

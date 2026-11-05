@@ -43,7 +43,7 @@ export default function FreeContentList() {
   return (
     <>
       <PageMeta
-        title="Free Content | Xpertqa"
+        title="Free Content | 32 Pearls Dental Academy"
         description="Manage Free Content."
       />
       <PageBreadcrumb pageTitle="Free Content" />

@@ -90,6 +90,7 @@ export const autoGenerateCertificate = async (userId, courseId, customTemplateId
       completion_date: new Date(),
       remarks: 'Automatically generated on course completion',
       grade: 'A',
+      user_certificate_additional: course.title || '',
     });
 
     // 7. Generate PDF and save file path

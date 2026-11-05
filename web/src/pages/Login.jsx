@@ -110,7 +110,7 @@ const Login = () => {
       <div className="login-left">
         <div className="flex items-center justify-between w-full mb-8">
           <Link to="/" className="login-logo flex items-center gap-2.5">
-            <img src="/logo/osa_logo.png" alt="Xpertqa Logo" className="h-11 w-auto object-contain" />
+            <img src="/dental_acadmy/dental.jpeg" alt="32 Pearls Dental Academy" className="h-11 w-auto object-contain" />
           </Link>
         </div>
 
@@ -219,7 +219,7 @@ const Login = () => {
         </div>
 
         <div className="login-footer">
-          © {new Date().getFullYear()} XPERTQA. ALL RIGHTS RESERVED.
+          © {new Date().getFullYear()} 32 PEARLS DENTAL ACADEMY. ALL RIGHTS RESERVED.
         </div>
       </div>
 
@@ -227,18 +227,18 @@ const Login = () => {
       <div className="login-right">
         <div className="system-status">
           <div className="status-dot"></div>
-          XPERTQA LEARNING PORTAL
+          32 PEARLS DENTAL ACADEMY LEARNING PORTAL
         </div>
 
         <div className="bg-text-wrap">
-          <div className="bg-text">Build.</div>
-          <div className="bg-text">Test.</div>
+          <div className="bg-text">Learn.</div>
+          <div className="bg-text">Practice.</div>
           <div className="bg-text">Excel.</div>
         </div>
 
         <div className="testimonial-card">
           <p className="testimonial-quote">
-            "The practical computer programming consultancy and quality assurance training at Xpertqa transformed our skill set and brought profound career advancement."
+            "The practical, clinically oriented orthodontic training at 32 Pearls Dental Academy helped me diagnose, plan, and manage cases with confidence in everyday practice."
           </p>
         </div>
 
@@ -254,7 +254,7 @@ const Login = () => {
         </div>
 
         <p className="right-description">
-          Connect with authentic computer programming, consultancy, and quality assurance education for lasting professional success.
+          Hands-on workshops, mentor-led case reviews, and structured programs that connect orthodontic theory with chairside skill.
         </p>
 
         <div className="nav-arrows">
@@ -290,6 +290,7 @@ const Login = () => {
             <p className="forgot-modal__copy">
               {t('requestResetLinkDesc')}
             </p>
+            <p className="forgot-modal__brand-note">{t('forgotEmailBrandNote')}</p>
 
             {forgotError && <div className="forgot-modal__status forgot-modal__status--error">{forgotError}</div>}
             {forgotMessage && <div className="forgot-modal__status forgot-modal__status--success">{forgotMessage}</div>}

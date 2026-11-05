@@ -52,6 +52,7 @@ export const getAllQueries = createAsyncThunk(
   async (token: string, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.get("/queries", {
+        params: { page: 1, limit: 1000 },
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -130,7 +131,8 @@ const querySlice = createSlice({
       })
       .addCase(createQuery.fulfilled, (state, action) => {
         state.loading = false;
-        state.queries.push(action.payload);
+        const created = action.payload?.data ?? action.payload;
+        if (created?._id) state.queries.unshift(created);
       })
       .addCase(createQuery.rejected, (state, action) => {
         state.loading = false;
@@ -164,16 +166,17 @@ const querySlice = createSlice({
       })
       // updateQuery
       .addCase(updateQuery.pending, (state) => {
-        state.loading = true;
         state.error = null;
       })
       .addCase(updateQuery.fulfilled, (state, action) => {
         state.loading = false;
-        state.query = action.payload;
-        // Update in list as well
-        state.queries = state.queries.map((q) =>
-          q._id === action.payload._id ? action.payload : q
-        );
+        const updated = action.payload?.data ?? action.payload;
+        state.query = updated;
+        if (updated?._id) {
+          state.queries = state.queries.map((q) =>
+            q._id === updated._id ? { ...q, ...updated } : q
+          );
+        }
       })
       .addCase(updateQuery.rejected, (state, action) => {
         state.loading = false;

@@ -1,9 +1,10 @@
+import { getApiBase, resolveMediaUrl } from '../utils/apiBase.js';
 import React, { useEffect, useRef, useState } from 'react'
 import EmojiPicker from 'emoji-picker-react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchThreads, likeThread, postReply, createThread } from '../redux/slices/forumSlice'
+import { fetchThreads, fetchForumStats, likeThread, postReply, createThread } from '../redux/slices/forumSlice'
 import DashboardHeader from '../components/dashboard/DashboardHeader'
 import CreateTopicModal from '../components/dashboard/CreateTopicModal'
 import ForumFilterModal from '../components/dashboard/ForumFilterModal'
@@ -19,13 +20,20 @@ const DashboardForum = () => {
   const [showSuccessMessage, setShowSuccessMessage] = useState(false)
   const dispatch = useDispatch()
   const { t } = useLanguage()
-  const { threads, loading, total, currentPage, totalPages } = useSelector((state) => state.forum)
+  const { threads, loading, total, currentPage, totalPages, forumStats } = useSelector((state) => state.forum)
   const user = useSelector((state) => state.auth.user)
   const loaderRef = useRef(null)
 
   useEffect(() => {
     dispatch(fetchThreads({ page: 1, limit: 10 }))
+    dispatch(fetchForumStats())
   }, [dispatch])
+
+  const formatStat = (n) => {
+    const num = Number(n)
+    if (Number.isNaN(num)) return '0'
+    return num.toLocaleString()
+  }
 
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
@@ -92,49 +100,47 @@ const DashboardForum = () => {
 
   const tags = ['#Mindset', '#Feedback', '#Paid Ads', '#SEO', '#Client Acquisition', '#Operations']
   const stats = [
-    { label: 'TOTAL TOPICS', value: total || '0' },
-    { label: 'ACTIVE USERS', value: '1,254' },
-    { label: 'THIS WEEK', value: '47' }
+    { label: t('totalTopicsLabel'), value: formatStat(forumStats?.totalTopics ?? total ?? 0) },
+    { label: t('activeUsersLabel'), value: formatStat(forumStats?.activeParticipants ?? 0) },
+    { label: t('thisWeekLabel'), value: formatStat(forumStats?.topicsThisWeek ?? 0) },
   ]
   const discourseTags = ['#TYPOGRAPHY', '#EDITORIAL', '#GRIDSYSTEMS', '#UXDESIGN', '#ASYMMETRY']
 
   useEffect(() => {
     window.scrollTo(0, 0)
-    if (!loading && threads.length > 0) {
-      const ctx = gsap.context(() => {
-        // Sidebar Reveal
-        gsap.fromTo('.sidebar-dash-reveal',
-          { y: 15, autoAlpha: 0 },
-          {
-            y: 0,
-            autoAlpha: 1,
-            duration: 0.5,
-            ease: 'power2.out',
-            stagger: 0.04,
-            force3D: true,
-            clearProps: 'transform'
-          }
-        )
+    if (loading) return
 
-        // Content Card Reveal
-        gsap.fromTo('.forum-dash-reveal',
-          { y: 25, autoAlpha: 0 },
-          {
-            y: 0,
-            autoAlpha: 1,
-            duration: 0.7,
-            ease: 'expo.out',
-            stagger: 0.05,
-            delay: 0.05,
-            force3D: true,
-            clearProps: 'transform'
-          }
-        )
-      }, containerRef)
+    const ctx = gsap.context(() => {
+      gsap.fromTo('.sidebar-dash-reveal',
+        { y: 15, autoAlpha: 0 },
+        {
+          y: 0,
+          autoAlpha: 1,
+          duration: 0.5,
+          ease: 'power2.out',
+          stagger: 0.04,
+          force3D: true,
+          clearProps: 'transform'
+        }
+      )
 
-      return () => ctx.revert()
-    }
-  }, [loading, threads])
+      gsap.fromTo('.forum-dash-reveal',
+        { y: 25, autoAlpha: 0 },
+        {
+          y: 0,
+          autoAlpha: 1,
+          duration: 0.7,
+          ease: 'expo.out',
+          stagger: 0.05,
+          delay: 0.05,
+          force3D: true,
+          clearProps: 'transform'
+        }
+      )
+    }, containerRef)
+
+    return () => ctx.revert()
+  }, [loading, threads.length])
 
   const QuestionCard = ({ question }) => {
     const [isOpen, setIsOpen] = useState(false)
@@ -204,7 +210,7 @@ const DashboardForum = () => {
                   const pic = question.profilePicture;
                   if (!pic) return '/news_placeholder.png';
                   if (pic.startsWith('http')) return pic;
-                  const rawBase = import.meta.env.VITE_BASE_URL || import.meta.env.VITE_API_BASE || 'https://api.xpertqa.in';
+                  const rawBase = getApiBase();
                   const baseUrl = rawBase.replace(/\/api\/v1\/?$/, '');
                   return `${baseUrl}/uploads/profiles/${pic}`;
                 })()}
@@ -254,7 +260,8 @@ const DashboardForum = () => {
                   return /\.(jpg|jpeg|png|gif|webp|svg)$/i.test(path);
                 }).map((att, idx) => {
                   const path = typeof att === 'string' ? att : (att.type || '');
-                  const fullUrl = path.startsWith('http') ? path : `https://api.xpertqa.in/${path.startsWith('uploads/') ? path : `uploads/forum/${path}`}`;
+                  const rel = path.startsWith('uploads/') ? path : `uploads/forum/${path}`;
+                  const fullUrl = path.startsWith('http') ? path : resolveMediaUrl(rel);
 
                   return (
                     <div key={idx} className="attachment-item relative aspect-video bg-slate-100 border border-slate-200 rounded-xl overflow-hidden group/img shadow-sm">
@@ -318,7 +325,7 @@ const DashboardForum = () => {
                       const pic = reply.profilePicture;
                       if (!pic) return '/news_placeholder.png';
                       if (pic.startsWith('http')) return pic;
-                      const rawBase = import.meta.env.VITE_BASE_URL || import.meta.env.VITE_API_BASE || 'https://api.xpertqa.in';
+                      const rawBase = getApiBase();
                       const baseUrl = rawBase.replace(/\/api\/v1\/?$/, '');
                       return `${baseUrl}/uploads/profiles/${pic}`;
                     })()}
@@ -350,13 +357,13 @@ const DashboardForum = () => {
                 value={replyText}
                 onChange={(e) => setReplyText(e.target.value)}
                 placeholder="Contribute to this discourse..."
-                className="w-full bg-white/[0.01] border border-white/5 p-6 rounded-sm font-jetbrains text-sm text-normal placeholder:text-description/80 min-h-[120px] focus:border-accent/30 transition-all outline-none resize-none"
+                className="w-full bg-slate-50 border border-slate-200 p-6 rounded-xl font-montserrat text-sm text-slate-800 placeholder:text-slate-400 min-h-[120px] focus:border-accent focus:ring-2 focus:ring-accent/20 transition-all outline-none resize-none"
               />
 
               <div className="absolute bottom-4 right-4 flex items-center gap-4">
                 <div className="flex items-center gap-3 mr-2">
                   {attachment && (
-                    <div className="flex items-center gap-2 px-3 py-1 bg-white/5 border border-white/10 rounded-sm">
+                    <div className="flex items-center gap-2 px-3 py-1 bg-slate-100 border border-slate-200 rounded-lg">
                       <span className="font-jetbrains text-[9px] text-accent truncate max-w-[100px]">{attachment.name}</span>
                       <button onClick={() => setAttachment(null)} className="text-description hover:text-white">
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M18 6L6 18M6 6l12 12" /></svg>
@@ -423,18 +430,18 @@ const DashboardForum = () => {
   }
 
   return (
-    <div ref={containerRef} className="min-h-screen bg-dark relative selection:bg-amber-400/30 overflow-x-clip">
+    <div ref={containerRef} className="min-h-screen bg-slate-50 relative selection:bg-amber-400/30 overflow-x-clip">
       <DashboardHeader />
 
-      <main className="pt-16 pb-16 px-4">
-        <div className=" mx-auto">
+      <main className="pt-24 pb-16 px-4 md:px-8 max-w-[1600px] mx-auto">
+        <div className="mx-auto">
 
           {/* Top Stats Protocol */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16 forum-dash-reveal opacity-0">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16 forum-dash-reveal">
             {stats.map((stat, i) => (
               <div key={stat.label} className="bg-white border border-slate-200 p-8 rounded-2xl flex flex-col gap-2 group hover:border-amber-400 shadow-sm transition-all">
                 <span className="font-jetbrains text-[9px] text-slate-500 uppercase tracking-[0.4em] group-hover:text-amber-700 transition-colors">{stat.label}</span>
-                <span className="font-newsreader italic text-4xl text-slate-900 tracking-tighter">{stat.value}</span>
+                <span className="font-jetbrains text-3xl md:text-4xl font-bold text-slate-900 tabular-nums tracking-tight">{stat.value}</span>
               </div>
             ))}
           </div>
@@ -443,20 +450,36 @@ const DashboardForum = () => {
 
             {/* Discussion List Area */}
             <div className="md:col-span-8 lg:col-span-8 flex flex-col gap-2">
-              <div className="flex items-center justify-between mb-8 forum-dash-reveal opacity-0">
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-8 forum-dash-reveal">
                 <h1 className="font-newsreader italic text-4xl text-slate-900 font-extralight tracking-tight uppercase">{t('recentDiscourse')}</h1>
-                <div className="hidden md:flex items-center gap-4">
-                  <span className="font-jetbrains text-[9px] text-slate-400 tracking-widest uppercase">{t('filterByIntelligence')}</span>
-                  <div className="h-[1px] w-12 bg-slate-200" />
+                <div className="flex items-center gap-4">
+                  <button
+                    type="button"
+                    onClick={() => setIsModalOpen(true)}
+                    className="md:hidden bg-accent text-white px-5 py-2.5 font-jetbrains text-[10px] font-black uppercase tracking-widest rounded-xl shadow-accent-soft border border-accent"
+                  >
+                    {t('startNewTopic')}
+                  </button>
+                  <div className="hidden md:flex items-center gap-4">
+                    <span className="font-jetbrains text-[9px] text-slate-400 tracking-widest uppercase">{t('filterByIntelligence')}</span>
+                    <div className="h-[1px] w-12 bg-slate-200" />
+                  </div>
                 </div>
               </div>
               {questions.length === 0 && !loading && (
-                <div className="flex flex-col items-center justify-center py-20 text-center opacity-60 forum-dash-reveal">
+                <div className="flex flex-col items-center justify-center py-20 text-center forum-dash-reveal bg-white border border-slate-200 rounded-2xl shadow-sm">
                   <div className="w-16 h-16 rounded-full border border-slate-300 flex items-center justify-center mb-6">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-slate-400"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
                   </div>
                   <h3 className="font-newsreader italic text-3xl text-slate-900 mb-2">No Discussions Yet</h3>
-                  <p className="font-jetbrains text-xs text-slate-500 uppercase tracking-widest">Be the first to start a new topic.</p>
+                  <p className="font-jetbrains text-xs text-slate-500 uppercase tracking-widest max-w-sm">Be the first to start a new topic, or check back once moderators publish approved threads.</p>
+                  <button
+                    type="button"
+                    onClick={() => setIsModalOpen(true)}
+                    className="mt-8 bg-accent text-white px-8 py-3 font-jetbrains text-[11px] font-black uppercase tracking-[0.3em] rounded-xl shadow-accent-soft border border-accent hover:brightness-105 transition-all"
+                  >
+                    {t('startNewTopic')}
+                  </button>
                 </div>
               )}
               {questions.map((q) => <QuestionCard key={q.id} question={q} />)}
@@ -470,25 +493,29 @@ const DashboardForum = () => {
             {/* Action Sidebar - Desktop Only (md+) */}
             <div className="hidden md:block md:col-span-4 lg:col-span-4 space-y-12 h-fit md:sticky md:top-36">
               {/* Create Topic CTA */}
-              <div className="sidebar-dash-reveal opacity-0">
+              <div className="sidebar-dash-reveal">
                 <button
+                  type="button"
                   onClick={() => setIsModalOpen(true)}
-                  className="w-full bg-accent text-slate-950 p-8 font-jetbrains text-[11px] font-black uppercase tracking-[0.4em] hover:scale-[1.05] active:scale-95 transition-all shadow-accent-soft flex flex-col items-center gap-4 group rounded-2xl"
+                  className="w-full bg-accent text-white p-8 font-jetbrains text-[11px] font-black uppercase tracking-[0.4em] hover:scale-[1.02] active:scale-95 transition-all shadow-accent-soft flex flex-col items-center justify-center text-center gap-4 group rounded-2xl border border-accent"
                 >
-                  <div className="w-12 h-12 rounded-full bg-[#4a89ff] flex items-center justify-center text-white shadow-lg group-hover:rotate-90 transition-transform duration-500">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M12 5v14M5 12h14" /></svg>
+                  <div className="w-14 h-14 rounded-full bg-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-all duration-300">
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#C96A1B" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
+                      <line x1="12" y1="5" x2="12" y2="19" />
+                      <line x1="5" y1="12" x2="19" y2="12" />
+                    </svg>
                   </div>
-                  {t('startNewTopic')}
-                  <span className="text-[8px] font-normal tracking-[0.2em] opacity-60 normal-case italic">{t('contributeCollective')}</span>
+                  <span className="text-white font-black tracking-[0.35em] text-[12px]">{t('startNewTopic')}</span>
+                  <span className="text-[9px] font-normal tracking-[0.15em] text-white/90 normal-case italic text-center">{t('contributeCollective')}</span>
                 </button>
               </div>
 
               {/* Tags Protocol */}
-              <div className="sidebar-dash-reveal opacity-0 space-y-6">
+              <div className="sidebar-dash-reveal space-y-6">
                 <h4 className="font-montserrat text-[14px] font-black text-accent tracking-[0.3em] uppercase underline underline-offset-8 decoration-accent/20">{t('popularTags')}</h4>
                 <div className="flex flex-wrap gap-2 pt-2">
                   {tags.map((tag) => (
-                    <button key={tag} className="px-4 py-2 border border-white/50 font-jetbrains text-[8px] text-normal hover:text-accent hover:border-accent transition-all uppercase tracking-widest rounded-sm">
+                    <button key={tag} className="px-4 py-2 border border-slate-200 font-jetbrains text-[8px] text-slate-600 hover:text-accent hover:border-accent transition-all uppercase tracking-widest rounded-xl">
                       {tag}
                     </button>
                   ))}
@@ -496,10 +523,10 @@ const DashboardForum = () => {
               </div>
 
               {/* Discourse Protocol */}
-              <div className="sidebar-dash-reveal opacity-0 space-y-6">
-                <h4 className="font-montserrat text-[14px] font-black text-normal tracking-[0.3em] uppercase opacity-40">{t('intelligenceNetwork')}</h4>
-                <p className="font-jetbrains text-[9px] text-description/80 leading-relaxed uppercase tracking-wider">
-                  Connected intelligence from 1,254 active carrier units. Share your perspective, upload attachments, and calibrate with the community.
+              <div className="sidebar-dash-reveal space-y-6">
+                <h4 className="font-montserrat text-[14px] font-black text-slate-900 tracking-[0.3em] uppercase opacity-40">{t('intelligenceNetwork')}</h4>
+                <p className="font-montserrat text-sm text-slate-600 leading-relaxed">
+                  {t('contributeCollective')}
                 </p>
               </div>
             </div>
@@ -514,6 +541,7 @@ const DashboardForum = () => {
         onSubmit={async (data) => {
           const result = await dispatch(createThread(data))
           if (createThread.fulfilled.match(result)) {
+            dispatch(fetchForumStats())
             setShowSuccessMessage(true)
             setTimeout(() => setShowSuccessMessage(false), 3000)
             return true
@@ -553,7 +581,7 @@ const DashboardForum = () => {
       {/* Global Success Notification */}
       {showSuccessMessage && (
         <div className="fixed inset-0 z-[30000] flex items-center justify-center pointer-events-none">
-          <div className="bg-accent text-dark px-12 py-8 rounded-sm shadow-[0_30px_100px_rgba(139, 92, 246,0.3)] flex flex-col items-center gap-4">
+          <div className="bg-accent text-dark px-12 py-8 rounded-2xl shadow-[0_30px_100px_rgba(139, 92, 246,0.3)] flex flex-col items-center gap-4">
             <div className="w-16 h-16 rounded-full bg-dark/10 flex items-center justify-center">
               <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12" /></svg>
             </div>

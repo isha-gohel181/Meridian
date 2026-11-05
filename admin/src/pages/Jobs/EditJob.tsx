@@ -1,3 +1,4 @@
+import { getImageBase } from "../../utils/apiBase";
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
@@ -49,7 +50,7 @@ const EditJob: React.FC = () => {
   });
   // Base URL for images
   const IMAGE_BASE_URL =
-    import.meta.env.VITE_IMAGE_URL || import.meta.env.VITE_BASE_URL || "https://api.xpertqa.in/";
+    getImageBase() + "/";
 
   const [formData, setFormData] = useState<JobFormData>({
     title: "",

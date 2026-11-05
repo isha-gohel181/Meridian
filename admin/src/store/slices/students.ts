@@ -1,3 +1,4 @@
+import { getApiBase } from "../../utils/apiBase";
 import axios from "axios";
 // Remove duplicate import of createAsyncThunk
 
@@ -71,7 +72,7 @@ interface StudentState {
   };
 }
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_BASE_URL || "https://api.xpertqa.in";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || getApiBase();
 
 export const fetchAllStudents = createAsyncThunk<
   { students: Student[]; pagination: StudentState["pagination"] },

@@ -9,6 +9,7 @@ import DashboardSidebar from '../components/dashboard/DashboardSidebar'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchUserProfile } from '../redux/slices/profileSlice'
 import { fetchDashboardData } from '../redux/slices/dashboardSlice'
+import { fetchMyEnrollments } from '../redux/slices/enrollmentSlice'
 import DashboardLoading from '../components/dashboard/DashboardLoading'
 
 const Dashboard = () => {
@@ -18,6 +19,7 @@ const Dashboard = () => {
    useEffect(() => {
       dispatch(fetchUserProfile())
       dispatch(fetchDashboardData())
+      dispatch(fetchMyEnrollments())
       window.scrollTo(0, 0)
 
       // Staggered reveal for dashboard modules

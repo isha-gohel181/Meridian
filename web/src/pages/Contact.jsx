@@ -1,8 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { gsap } from 'gsap';
-import { submitLapaasTicket, resetSupportState } from '../redux/slices/supportSlice';
+import { submitContactQuery, resetSupportState } from '../redux/slices/supportSlice';
 import { useLanguage } from '../context/LanguageContext';
+import {
+    SUPPORT_EMAIL,
+    SUPPORT_PHONE_TEL,
+    WHATSAPP_URL,
+    getSupportEmailDisplay,
+    getSupportPhoneDisplay,
+} from '../constants/brand';
 
 const Contact = () => {
     const dispatch = useDispatch();
@@ -97,45 +104,34 @@ const Contact = () => {
             return;
         }
 
-        const pageUrl = new URL(window.location.href);
+        const subject = formData.subject.trim();
+        const subjectLower = subject.toLowerCase();
+        let category = 'general';
+        if (subjectLower.includes('billing') || subjectLower.includes('payment')) category = 'billing';
+        else if (subjectLower.includes('course') || subjectLower.includes('cohort') || subjectLower.includes('enrollment')) category = 'course';
+        else if (subjectLower.includes('technical') || subjectLower.includes('support')) category = 'technical';
 
         const payload = {
             name: formData.userName.trim(),
             email: formData.userEmail.trim(),
             phone: `${formData.code.trim()} ${formData.phoneNumber.trim()}`.trim(),
-            subject: formData.subject,
-            message: formData.description.trim() || '',
-            source: 'Contact Form',
-            extra: {
-                website: window.location.hostname,
-                pageUrl: window.location.href,
-                referrer: document.referrer || '',
-                formName: 'Contact Form',
-                utm: {
-                    source: pageUrl.searchParams.get('utm_source') || '',
-                    medium: pageUrl.searchParams.get('utm_medium') || '',
-                    campaign: pageUrl.searchParams.get('utm_campaign') || ''
-                }
-            }
+            message: `[${subject}] ${formData.description.trim() || 'No additional message.'}`,
+            category,
         };
 
-        dispatch(submitLapaasTicket(payload));
+        dispatch(submitContactQuery(payload));
     };
 
     const subjectOptions = [
         'General Inquiry',
-        'Solopreneur',
-        'Personal Branding',
-        'Studio Services',
         'Course Enquiry',
-        'Course',
-        'Collaboration',
-        'Cohort Enrollment',
-        'Offline Mentorship Enrollment',
+        'Enrollment',
+        'Hands-on Workshop',
         'Billing or Payment Issue',
+        'Technical Support',
         'Feedback',
-        'Complaint',
-        'Other'
+        'Collaboration',
+        'Other',
     ];
 
     return (
@@ -148,14 +144,17 @@ const Contact = () => {
 
             <div className="max-w-7xl mx-auto relative z-10">
                 {/* Contact Header */}
-                <div className="mb-20 contact-reveal">
-                    <span className="font-jetbrains text-[10px] font-bold text-amber-800 tracking-[0.5em] uppercase mb-4 block">
-                        {t('getInTouch')}
-                    </span>
-                    <h1 className="font-newsreader text-[clamp(3rem,8vw,7rem)] leading-[0.9] font-extralight uppercase select-none tracking-tighter text-slate-900">
-                        {t('contactUs')}
+                <div className="mb-12 contact-reveal space-y-4">
+                    <div className="flex items-center gap-3">
+                        <div className="w-1.5 h-1.5 bg-accent rounded-full animate-pulse" />
+                        <span className="font-jetbrains text-[10px] text-accent tracking-[0.4em] uppercase">
+                            {t('getInTouch')}
+                        </span>
+                    </div>
+                    <h1 className="font-newsreader italic text-4xl md:text-6xl text-slate-900 tracking-tighter">
+                        Contact Us
                     </h1>
-                    <p className="font-jetbrains text-slate-600 text-sm max-w-xl mt-6 leading-relaxed">
+                    <p className="font-jetbrains text-slate-600 text-sm max-w-xl leading-relaxed">
                         {t('contactDesc')}
                     </p>
                 </div>
@@ -274,35 +273,49 @@ const Contact = () => {
                                 <div className="flex justify-between items-center opacity-40">
                                     <span className="font-jetbrains text-[8px] tracking-[0.4em] uppercase text-slate-500">Official Details</span>
                                     <div className="h-[1px] w-16 bg-slate-300" />
-                                    <span className="font-jetbrains text-[8px] tracking-[0.1em] uppercase text-slate-500">Xpertqa Registered Office</span>
+                                    <span className="font-jetbrains text-[8px] tracking-[0.1em] uppercase text-slate-500">32 Pearls Dental Academy</span>
                                 </div>
 
                                 <div className="space-y-6">
-                                    {/* Company & Activity */}
                                     <div className="space-y-1">
-                                        <h3 className="font-newsreader text-2xl italic text-slate-900 font-bold">Xpertqa</h3>
+                                        <h3 className="font-newsreader text-2xl italic text-slate-900 font-bold">32 Pearls Dental Academy</h3>
                                         <p className="font-jetbrains text-xs text-amber-800 font-bold uppercase tracking-wider">
-                                            Computer Programming, Consultancy and Related Services
+                                            Orthodontic Education &amp; Clinical Training
                                         </p>
                                     </div>
 
-                                    {/* Phone Section */}
                                     <div className="space-y-2 pt-4 border-t border-slate-100">
-                                        <span className="font-jetbrains text-[9px] uppercase tracking-[0.3em] font-bold text-slate-500 block">Phone Support</span>
+                                        <span className="font-jetbrains text-[9px] uppercase tracking-[0.3em] font-bold text-slate-500 block">Phone</span>
                                         <div className="flex items-center gap-2">
                                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-amber-600 shrink-0">
                                                 <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
                                             </svg>
                                             <a
-                                                href="tel:+916263384994"
+                                                href={`tel:${SUPPORT_PHONE_TEL}`}
                                                 className="font-jetbrains text-base md:text-lg font-bold text-slate-900 hover:text-amber-600 transition-colors"
                                             >
-                                                +91 62633 84994
+                                                {getSupportPhoneDisplay()}
                                             </a>
                                         </div>
                                     </div>
 
-                                    {/* Email Section */}
+                                    <div className="space-y-2 pt-4 border-t border-slate-100">
+                                        <span className="font-jetbrains text-[9px] uppercase tracking-[0.3em] font-bold text-slate-500 block">WhatsApp</span>
+                                        <div className="flex items-center gap-2">
+                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-amber-600 shrink-0">
+                                                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+                                            </svg>
+                                            <a
+                                                href={WHATSAPP_URL}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="font-jetbrains text-base md:text-lg font-bold text-slate-900 hover:text-amber-600 transition-colors"
+                                            >
+                                                {getSupportPhoneDisplay()}
+                                            </a>
+                                        </div>
+                                    </div>
+
                                     <div className="space-y-2 pt-4 border-t border-slate-100">
                                         <span className="font-jetbrains text-[9px] uppercase tracking-[0.3em] font-bold text-slate-500 block">Email Address</span>
                                         <div className="flex items-center gap-2">
@@ -311,10 +324,10 @@ const Contact = () => {
                                                 <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
                                             </svg>
                                             <a
-                                                href="mailto:xsmartqa.com@gmail.com"
+                                                href={`mailto:${SUPPORT_EMAIL}`}
                                                 className="font-jetbrains text-base md:text-lg font-bold text-slate-900 hover:text-amber-600 transition-colors break-all"
                                             >
-                                                xsmartqa.com@gmail.com
+                                                {getSupportEmailDisplay()}
                                             </a>
                                         </div>
                                         <p className="font-jetbrains text-[9px] text-slate-500 uppercase tracking-wider">
@@ -322,35 +335,10 @@ const Contact = () => {
                                         </p>
                                     </div>
 
-                                    {/* Registered Office Address Section */}
-                                    <div className="space-y-2 pt-4 border-t border-slate-100">
-                                        <span className="font-jetbrains text-[9px] uppercase tracking-[0.3em] font-bold text-slate-500 block">Registered Office</span>
-                                        <div className="flex items-start gap-2">
-                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-amber-600 shrink-0 mt-0.5">
-                                                <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
-                                                <circle cx="12" cy="10" r="3" />
-                                            </svg>
-                                            <p className="font-jetbrains text-xs text-slate-700 leading-relaxed">
-                                                Flat 74, Green City Apartments, Block 5, Gulmohar Road, Trilanga, Bhopal, Madhya Pradesh – 462039, India
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                    {/* Location Map Section */}
-                                    <div className="pt-4 border-t border-slate-100 space-y-2">
-                                        <span className="font-jetbrains text-[9px] uppercase tracking-[0.3em] font-bold text-slate-500 block">Office Location</span>
-                                        <div className="w-full h-44 rounded-2xl overflow-hidden border border-slate-200 shadow-inner">
-                                            <iframe
-                                                title="Xpertqa Registered Office Location"
-                                                width="100%"
-                                                height="100%"
-                                                style={{ border: 0 }}
-                                                loading="lazy"
-                                                allowFullScreen
-                                                referrerPolicy="no-referrer-when-downgrade"
-                                                src="https://maps.google.com/maps?q=Trilanga,+Bhopal,+Madhya+Pradesh+462039&t=&z=14&ie=UTF8&iwloc=&output=embed"
-                                            />
-                                        </div>
+                                    <div className="pt-4 border-t border-slate-100">
+                                        <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-50 border border-amber-100 text-[10px] text-amber-900 font-jetbrains uppercase tracking-wider">
+                                            Support: Mon–Sat (10:00 AM – 7:00 PM IST)
+                                        </span>
                                     </div>
                                 </div>
                             </div>
