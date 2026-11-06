@@ -2200,7 +2200,7 @@ const EditCourse = () => {
                         </label>
                         <img
                           src={CERTIFICATE_DEFAULT_IMAGE}
-                          alt="32 Pearls Dental Academy certificate"
+                          alt="Meridian Group of Education certificate"
                           className="w-full max-w-3xl rounded-lg shadow-lg border border-amber-200/80"
                         />
                         <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">

@@ -5,7 +5,6 @@ import { registerUser, googleLoginUser, clearAuthError, sendOtp, verifyOtp } fro
 import { useGoogleLogin } from '@react-oauth/google'
 import { useLanguage } from '../context/LanguageContext'
 
-import AuthShowcase from '../components/AuthShowcase'
 import './Signup.css'
 
 const Signup = () => {
@@ -115,11 +114,11 @@ const Signup = () => {
 
   return (
     <div className="signup-container">
-      {/* Left Section: Signup Form */}
-      <div className="signup-left">
-        <div className="flex items-center justify-between w-full mb-8">
+      <div className="signup-inner">
+        <div className="signup-card">
+        <div className="signup-card__header">
           <Link to="/" className="signup-logo flex items-center gap-2.5">
-            <img src="/dental_acadmy/dental.jpeg" alt="32 Pearls Dental Academy" className="h-11 w-auto object-contain" />
+            <img src="/meridian/logo.jpeg" alt="Meridian Group of Education" className="h-11 w-auto object-contain" />
           </Link>
         </div>
 
@@ -309,12 +308,9 @@ const Signup = () => {
         </div>
 
         <div className="signup-footer">
-          © {new Date().getFullYear()} 32 PEARLS DENTAL ACADEMY. ALL RIGHTS RESERVED.
+          © {new Date().getFullYear()} MERIDIAN GROUP OF EDUCATION. ALL RIGHTS RESERVED.
         </div>
-      </div>
-
-      <div className="signup-right">
-        <AuthShowcase />
+        </div>
       </div>
     </div>
   )

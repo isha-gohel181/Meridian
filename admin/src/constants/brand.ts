@@ -1,25 +1,26 @@
 /** Product branding — keep in sync with backend utils/appBrand.js */
-export const APP_DISPLAY_NAME = "32 Pearls Dental Academy";
-export const APP_SHORT_NAME = "32 Pearls";
-export const APP_TAGLINE = "Professional Dental Education & Training";
-export const CERTIFICATE_ORGANIZATION_DEFAULT = "32 Pearls Dental Academy";
-/** Same asset as student web — admin/public/dental_acadmy/dental.jpeg */
-export const LOGO_PATH = "/dental_acadmy/dental.jpeg";
+export const APP_DISPLAY_NAME = "Meridian Group of Education";
+export const APP_SHORT_NAME = "Meridian";
+export const APP_TAGLINE = "Knowledge. Excellence. Impact.";
+export const CERTIFICATE_ORGANIZATION_DEFAULT = "Meridian Group of Education";
+export const LOGO_PATH = "/meridian/logo.jpeg";
 export const CERTIFICATE_DEFAULT_IMAGE = "/dental_acadmy/certificate.png";
 
 /**
  * Landing / web theme (web/src/index.css + Footer.jsx):
- * accent #C96A1B, brand-brown #682701, cream #FFF9F3
+ * navy #032746, gold #D8B840, ice #F5F8FA
  */
-export const BRAND_ACCENT_HEX = "#C96A1B";
-export const BRAND_BROWN_HEX = "#682701";
-export const BRAND_CREAM_HEX = "#FFF9F3";
+export const BRAND_ACCENT_HEX = "#D8B840";
+export const BRAND_PRIMARY_HEX = "#032746";
+export const BRAND_ICE_HEX = "#F5F8FA";
 
-/** Same gradient as web landing footer: from accent → brown */
+/** Same gradient as web landing footer: navy depth */
 export const BRAND_LANDING_GRADIENT_CLASS =
-  "bg-gradient-to-b from-brand-500 to-brand-800";
+  "bg-gradient-to-b from-brand-700 to-brand-900";
 
-export const BRAND_SIDEBAR_CLASS = BRAND_LANDING_GRADIENT_CLASS;
+/** Same solid navy as dashboard "Platform Revenue" card (Home.tsx: bg-brand-500) */
+export const BRAND_SIDEBAR_CLASS =
+  "bg-brand-500 border-r border-white/10 shadow-md shadow-black/20";
 export const BRAND_ACCENT_CLASS = BRAND_LANDING_GRADIENT_CLASS;
 
 export const SUPPORT_EMAIL = import.meta.env.VITE_SUPPORT_EMAIL || "";

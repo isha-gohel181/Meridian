@@ -50,7 +50,7 @@ const LandingPricingTeaser = () => {
           {!loading && !featured && (
             <Link
               to="/courses"
-              className="inline-flex px-8 py-3.5 bg-accent text-white rounded-xl font-jetbrains text-xs uppercase tracking-[0.2em] font-bold shadow-accent-soft hover:bg-amber-600 transition-colors"
+              className="inline-flex px-8 py-3.5 bg-brand-brown text-white rounded-xl font-jetbrains text-xs uppercase tracking-[0.2em] font-bold shadow-accent-soft hover:bg-brand-brown/90 transition-colors"
             >
               {t('pricingBrowseAll')}
             </Link>
@@ -82,13 +82,13 @@ const LandingPricingTeaser = () => {
               <div className="flex flex-wrap justify-center gap-3">
                 <Link
                   to={courseDetailPath(featured)}
-                  className="px-6 py-3 bg-white border border-accent text-accent rounded-xl font-jetbrains text-xs uppercase tracking-[0.15em] font-bold hover:bg-accent hover:text-white transition-colors"
+                  className="px-6 py-3 bg-white border border-accent text-accent rounded-xl font-jetbrains text-xs uppercase tracking-[0.15em] font-bold hover:bg-accent hover:text-brand-brown transition-colors"
                 >
                   {t('pricingViewCourse')}
                 </Link>
                 <Link
                   to={`${courseDetailPath(featured)}#pricing`}
-                  className="px-6 py-3 bg-accent text-white rounded-xl font-jetbrains text-xs uppercase tracking-[0.15em] font-bold shadow-accent-soft hover:bg-amber-600 transition-colors"
+                  className="px-6 py-3 bg-brand-brown text-white rounded-xl font-jetbrains text-xs uppercase tracking-[0.15em] font-bold shadow-accent-soft hover:bg-brand-brown/90 transition-colors"
                 >
                   {t('pricingEnroll')}
                 </Link>

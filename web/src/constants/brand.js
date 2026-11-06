@@ -1,46 +1,70 @@
 /** Product branding — keep in sync with backend utils/appBrand.js and admin constants/brand.ts */
 
-export const APP_DISPLAY_NAME = '32 Pearls Dental Academy';
-export const APP_SHORT_NAME = '32 Pearls';
-export const APP_TAGLINE = 'Professional Dental Education & Training';
-export const CERTIFICATE_ORGANIZATION_DEFAULT = '32 Pearls Dental Academy';
-export const LOGO_PATH = '/dental_acadmy/dental.jpeg';
-/** Faculty photo — add file at web/public/dental_acadmy/mentor.jpg */
-export const MENTOR_IMAGE_PATH = '/dental_acadmy/mentor.jpg';
+export const APP_DISPLAY_NAME = 'Meridian Group of Education';
+export const APP_SHORT_NAME = 'Meridian';
+export const APP_TAGLINE = 'Knowledge. Excellence. Impact.';
+export const BRAND_TAGLINE_SECONDARY = 'Empowering Minds. Inspiring Excellence.';
+export const CERTIFICATE_ORGANIZATION_DEFAULT = 'Meridian Group of Education';
+export const LOGO_PATH = '/meridian/logo.jpeg';
+/** Faculty photo — add file at web/public/meridian/mentor.jpg when available */
+export const MENTOR_IMAGE_PATH = '/meridian/mentor.jpg';
 /** Default course certificate artwork (full design — overlays add name, course, date, serial) */
 export const CERTIFICATE_DEFAULT_IMAGE = '/dental_acadmy/certificate.png';
 
-export const MENTOR_NAME = 'Dr. Kataria';
-export const MENTOR_TITLE = 'Program Director & Orthodontic Mentor';
+export const MENTOR_NAME = 'Program Director';
+export const MENTOR_TITLE = 'Lead Educator & Mentor';
 export const MENTOR_CREDENTIALS = [
-  'Clinical orthodontics & aligner therapy',
-  'Hands-on mechanics and case finishing',
-  'Mentor-led treatment planning reviews',
+  'Structured learning pathways',
+  'Hands-on skill development',
+  'Mentor-led progress reviews',
 ];
 export const MENTOR_STORY = [
-  'Programs at 32 Pearls Dental Academy are built around live demonstrations, supervised practice, and structured case reviews—so you build clinical judgment alongside technique.',
-  'From your first records to finishing mechanics, mentorship focuses on anticipating challenges, revising plans, and communicating clearly with patients.',
+  'Programs at Meridian Group of Education combine expert instruction, practical exercises, and structured feedback—so learners build confidence alongside knowledge.',
+  'From foundational concepts to advanced topics, mentorship focuses on clear goals, thoughtful practice, and measurable progress.',
 ];
 
-export const DEFAULT_SUPPORT_EMAIL = '32pearlsdentalacademy@gmail.com';
+export const DEFAULT_SUPPORT_EMAIL = 'info@meridiangroupofeducation.in';
+const envSupportEmail = (import.meta.env.VITE_SUPPORT_EMAIL || '').trim();
+const isLegacyPearlsEmail = /32pearl|pearlsdental/i.test(envSupportEmail);
 export const SUPPORT_EMAIL =
-  import.meta.env.VITE_SUPPORT_EMAIL || DEFAULT_SUPPORT_EMAIL;
+  envSupportEmail && !isLegacyPearlsEmail
+    ? envSupportEmail
+    : DEFAULT_SUPPORT_EMAIL;
+
+const defaultWhatsAppE164 = '919731546948';
+const defaultPrimaryE164 = '919731546948';
+const defaultAltE164 = '918861198751';
 
 /** E.164 without + for wa.me / tel */
-export const SUPPORT_PHONE_E164 = '918288008777';
+export const WHATSAPP_PHONE_E164 =
+  import.meta.env.VITE_WHATSAPP_PHONE?.replace(/\D/g, '') || defaultWhatsAppE164;
+export const SUPPORT_PHONE_E164 =
+  import.meta.env.VITE_SUPPORT_PHONE?.replace(/\D/g, '') || defaultPrimaryE164;
+export const SUPPORT_PHONE_ALT_E164 =
+  import.meta.env.VITE_SUPPORT_PHONE_ALT?.replace(/\D/g, '') || defaultAltE164;
+
 export const SUPPORT_PHONE_TEL = `+${SUPPORT_PHONE_E164}`;
-export const WHATSAPP_URL = `https://wa.me/${SUPPORT_PHONE_E164}`;
+export const SUPPORT_PHONE_ALT_TEL = `+${SUPPORT_PHONE_ALT_E164}`;
+export const WHATSAPP_URL = `https://wa.me/${WHATSAPP_PHONE_E164}`;
 
 export const ABOUT_US_PARAGRAPH =
-  '32 Pearls Dental Academy is dedicated to advancing orthodontic education through practical, clinically oriented training. We empower dental practitioners to confidently diagnose, plan, and manage orthodontic cases, from basic tooth alignment to advanced treatment mechanics. With expert mentorship, hands-on training, real-case discussions, and continuous clinical guidance, we bridge the gap between theoretical knowledge and successful orthodontic practice.';
+  'At Meridian Group of Education, we believe education is more than the acquisition of knowledge—it is the foundation for curiosity, confidence, creativity, and lifelong growth.';
 
 export const ABOUT_US_FOOTER_EXCERPT =
-  'Practical, clinically oriented orthodontic training for dental practitioners—diagnosis, treatment planning, hands-on mechanics, and mentor-led case discussions.';
+  'Building foundations for learning. Creating possibilities for tomorrow.';
 
 export function getSupportEmailDisplay() {
   return SUPPORT_EMAIL || DEFAULT_SUPPORT_EMAIL;
 }
 
 export function getSupportPhoneDisplay() {
-  return '+91 82880 08777';
+  return '+91 97315 46948';
+}
+
+export function getWhatsAppPhoneDisplay() {
+  return '+91 97315 46948';
+}
+
+export function getSupportPhoneAltDisplay() {
+  return '+91 88611 98751';
 }

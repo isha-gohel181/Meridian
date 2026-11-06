@@ -12,13 +12,15 @@ class UserService {
   // Async Password comparison
   async comparePassword(inputPassword, hashedPassword) {
     try {
-      // console?.log("inputPassword:", inputPassword);
-      console?.log("hashedPassword:", hashedPassword);
+      const hashHint =
+        typeof hashedPassword === "string" && hashedPassword.length > 10
+          ? `${hashedPassword.slice(0, 10)}…`
+          : "(missing)";
       const isMatch = await bcrypt.compare(inputPassword, hashedPassword);
       if (isMatch) {
-        //console.log("✅ Password match successful");
+        // quiet success — caller logs outcome
       } else {
-        console.warn("❌ Password match failed");
+        console.warn("[auth] bcrypt compare: no match", { hashHint });
       }
       return isMatch; // ✅ This is correct
     } catch (error) {
@@ -129,22 +131,24 @@ class UserService {
   async login(email, password) {
     try {
       if (!email || !password) {
-        //console.log("⚠️ Missing email or password");
+        console.warn("[auth] login: missing email or password");
         return { success: false, message: "Email and password are required" };
       }
 
-      //console.log("🔹 Attempting login for email:", email);
-      const user = await this.userRepository.findOne({ email });
+      const normalizedEmail = String(email).trim().toLowerCase();
+      console.log("[auth] login attempt", { email: normalizedEmail });
+
+      const user = await this.userRepository.findOne({ email: normalizedEmail });
 
       if (!user || !user._id) {
-        //console.log("⚠️ No user found with this email.");
+        console.warn("[auth] login: no user for email", normalizedEmail);
         return { success: false, message: "Invalid email or password" };
       }
 
       const userObj = user.toObject ? user.toObject() : user;
 
       if (userObj.status === 'inactive') {
-        //console.log("⚠️ Account is inactive");
+        console.warn("[auth] login: inactive account", normalizedEmail);
         return {
           success: false,
           message: "No Account Found. Please contact support.",
@@ -153,14 +157,20 @@ class UserService {
       }
 
       const isPasswordValid = await this.comparePassword(password, userObj.password);
-      //console.log("🔹 Password valid:", isPasswordValid);
 
       if (!isPasswordValid) {
-        //console.log("⚠️ Invalid password.");
+        console.warn("[auth] login: password mismatch", {
+          email: normalizedEmail,
+          userId: String(userObj._id),
+        });
         return { success: false, message: "Invalid email or password" };
       }
 
-      //console.log("✅ Login successful for user:", userObj.email);
+      console.log("[auth] login ok", {
+        email: normalizedEmail,
+        role: userObj.role,
+        userId: String(userObj._id),
+      });
       // Return user directly in the success case
       return { success: true, userObj };
     } catch (error) {

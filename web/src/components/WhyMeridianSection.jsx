@@ -39,7 +39,7 @@ const icons = [
   ),
 ]
 
-const WhyPearlsSection = () => {
+const WhyMeridianSection = () => {
   const { t } = useLanguage()
 
   const features = [
@@ -56,12 +56,12 @@ const WhyPearlsSection = () => {
       <div className="max-w-7xl mx-auto">
         <div className="max-w-2xl mb-14 space-y-4">
           <span className="font-jetbrains text-[10px] text-accent tracking-[0.5em] uppercase font-bold">
-            {t('whyPearlsEyebrow')}
+            {t('whyMeridianEyebrow')}
           </span>
           <h2 className="font-newsreader italic text-3xl sm:text-4xl md:text-5xl text-normal font-light">
-            {t('whyPearlsTitle')}
+            {t('whyMeridianTitle')}
           </h2>
-          <p className="font-montserrat text-sm md:text-base text-description">{t('whyPearlsSub')}</p>
+          <p className="font-montserrat text-sm md:text-base text-description">{t('whyMeridianSub')}</p>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
           {features.map((f, i) => {
@@ -83,4 +83,4 @@ const WhyPearlsSection = () => {
   )
 }
 
-export default WhyPearlsSection
+export default WhyMeridianSection

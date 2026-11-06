@@ -51,44 +51,46 @@ textarea,
   --font-jetbrains: "JetBrains Mono", monospace;
   --font-signature: "Mrs Saint Delafield", cursive;
 
-  /* 32 Pearls Dental Academy — warm brown & orange theme */
-  --color-brand-brown: #682701;
-  --color-accent: #C96A1B;
-  --color-accent-secondary: #E89A52;
-  --color-dark: #FFF9F3;
-  --color-normal: #2B1A12;
-  --color-description: #5c4034;
-  --color-border: rgba(104, 39, 1, 0.14);
+  /* Meridian Group of Education — navy & gold theme (token brand-brown = primary navy) */
+  --color-brand-brown: #032746;
+  --color-accent: #D8B840;
+  --color-accent-secondary: #E5D576;
+  --color-dark: #FFFFFF;
+  --color-normal: #032746;
+  --color-description: #64748B;
+  --color-border: rgba(3, 39, 70, 0.14);
   --color-card: #FFFFFF;
-  --color-card-border: rgba(104, 39, 1, 0.08);
+  --color-card-border: rgba(3, 39, 70, 0.08);
 
-  --shadow-accent-large: 0 10px 30px -5px rgba(201, 106, 27, 0.35), 0 0 20px rgba(201, 106, 27, 0.2);
-  --shadow-accent-soft: 0 4px 20px -2px rgba(201, 106, 27, 0.25);
+  --shadow-accent-large: 0 10px 30px -5px rgba(3, 39, 70, 0.35), 0 0 20px rgba(3, 39, 70, 0.15);
+  --shadow-accent-soft: 0 4px 20px -2px rgba(3, 39, 70, 0.2);
 
-  --color-amber-50: #fff9f3;
-  --color-amber-100: #fdebd5;
-  --color-amber-200: #f9d4a8;
-  --color-amber-300: #f0b574;
-  --color-amber-400: #C96A1B;
-  --color-amber-500: #a85614;
-  --color-amber-600: #8a460f;
-  --color-amber-700: #6d380c;
-  --color-amber-800: #502a09;
-  --color-amber-900: #3a1e06;
+  --color-amber-50: #fbf8eb;
+  --color-amber-100: #f5efc9;
+  --color-amber-200: #ebe099;
+  --color-amber-300: #e5d576;
+  --color-amber-400: #D8B840;
+  --color-amber-500: #c4a635;
+  --color-amber-600: #a88e2b;
+  --color-amber-700: #8a7523;
+  --color-amber-800: #6b5c1b;
+  --color-amber-900: #4d4213;
 
-  --color-yellow-50: #fff9f3;
-  --color-yellow-100: #fdebd5;
-  --color-yellow-200: #f9d4a8;
-  --color-yellow-300: #f0b574;
-  --color-yellow-400: #C96A1B;
-  --color-yellow-500: #a85614;
-  --color-yellow-600: #8a460f;
-  --color-yellow-700: #6d380c;
-  --color-yellow-800: #502a09;
-  --color-yellow-900: #3a1e06;
+  --color-yellow-50: #fbf8eb;
+  --color-yellow-100: #f5efc9;
+  --color-yellow-200: #ebe099;
+  --color-yellow-300: #e5d576;
+  --color-yellow-400: #D8B840;
+  --color-yellow-500: #c4a635;
+  --color-yellow-600: #a88e2b;
+  --color-yellow-700: #8a7523;
+  --color-yellow-800: #6b5c1b;
+  --color-yellow-900: #4d4213;
 
-  --color-slate-50: #fff9f3;
-  --color-slate-100: #f5ebe0;
+  --color-slate-50: #F5F8FA;
+  --color-slate-100: #E8EEF3;
+  --color-slate-500: #64748B;
+  --color-slate-600: #64748B;
 
   --shadow-card: 0 10px 25px -5px rgba(15, 23, 42, 0.06), 0 4px 6px -2px rgba(15, 23, 42, 0.04);
 
@@ -502,7 +504,7 @@ button {
 }
 
 .news-content-html--light a {
-  @apply text-[#C96A1B] underline underline-offset-2;
+  @apply text-accent underline underline-offset-2;
 }
 
 .news-content-html--light img {
@@ -510,10 +512,23 @@ button {
 }
 
 .news-content-html--light blockquote {
-  @apply border-l-4 border-[#C96A1B] bg-slate-50 p-4 italic text-slate-600 my-6 rounded-r-lg;
+  @apply border-l-4 border-accent bg-slate-50 p-4 italic text-slate-600 my-6 rounded-r-lg;
 }
 
-/* Custom contrast helper overrides for the Ocean Blue theme */
+/* Primary navy surfaces — white text */
+.bg-brand-brown,
+.hover\:bg-brand-brown:hover,
+.group:hover .group-hover\:bg-brand-brown {
+  color: #ffffff !important;
+}
+
+.bg-brand-brown *,
+.hover\:bg-brand-brown:hover *,
+.group:hover .group-hover\:bg-brand-brown * {
+  color: #ffffff !important;
+}
+
+/* Gold accent surfaces — navy text */
 .bg-accent,
 .bg-amber-400,
 .bg-yellow-400,
@@ -523,10 +538,9 @@ button {
 .group:hover .group-hover\:bg-accent,
 .group:hover .group-hover\:bg-amber-400,
 .group:hover .group-hover\:bg-yellow-400 {
-  color: #ffffff !important;
+  color: var(--color-brand-brown) !important;
 }
 
-/* Ensure text children inside deep blue buttons/components also inherit or display as white */
 .bg-accent *,
 .bg-amber-400 *,
 .bg-yellow-400 *,
@@ -535,17 +549,7 @@ button {
 .hover\:bg-yellow-400:hover *,
 .group:hover .group-hover\:bg-accent *,
 .group:hover .group-hover\:bg-amber-400 * {
-  color: #ffffff !important;
-}
-
-/* Fix specific contrast edge-cases like yellow-900 or amber-900 text on dark buttons */
-.bg-accent .text-slate-950,
-.bg-accent .text-amber-900,
-.bg-accent .text-yellow-900,
-.bg-amber-400 .text-slate-950,
-.bg-amber-400 .text-amber-900,
-.bg-amber-400 .text-yellow-900 {
-  color: #ffffff !important;
+  color: var(--color-brand-brown) !important;
 }
 
 /* Specific button and input focus outlines to use accent */
@@ -562,7 +566,7 @@ select:focus {
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: #C96A1B;
+  color: var(--color-accent);
 }
 
 .marketing-page-title {
@@ -571,7 +575,7 @@ select:focus {
   font-weight: 600;
   letter-spacing: -0.02em;
   line-height: 1.15;
-  color: #0f172a;
+  color: var(--color-normal);
   font-style: normal;
 }
 
@@ -580,5 +584,5 @@ select:focus {
   font-weight: 600;
   font-style: normal;
   letter-spacing: -0.01em;
-  color: #0f172a;
+  color: var(--color-normal);
 }

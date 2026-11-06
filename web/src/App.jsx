@@ -325,7 +325,7 @@ const AppContent = () => {
           <SecureWrapper>
           <Routes>
             {/* Public Routes */}
-            <Route path="/" element={<Home isLoaded={isLoaded} />} />
+            <Route path="/" element={<Home />} />
             <Route path="/courses" element={<Courses />} />
             <Route path="/forum" element={<Forum />} />
             <Route path="/gig" element={<Gigs />} />

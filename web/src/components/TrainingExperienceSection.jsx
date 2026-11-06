@@ -51,7 +51,7 @@ const TrainingExperienceSection = () => {
 
             <Link
               to="/courses"
-              className="inline-flex items-center justify-center px-7 py-3.5 bg-accent hover:bg-amber-600 text-white rounded-xl font-jetbrains text-xs uppercase tracking-[0.2em] font-bold shadow-lg shadow-accent-soft hover:scale-[1.02] active:scale-[0.98] transition-all"
+              className="inline-flex items-center justify-center px-7 py-3.5 bg-brand-brown hover:bg-brand-brown/90 text-white rounded-xl font-jetbrains text-xs uppercase tracking-[0.2em] font-bold shadow-lg shadow-accent-soft hover:scale-[1.02] active:scale-[0.98] transition-all"
             >
               {t('trainingCta')}
             </Link>
@@ -62,7 +62,7 @@ const TrainingExperienceSection = () => {
               {galleryItems.map((item, index) => (
                 <figure
                   key={item.key}
-                  className={`group relative overflow-hidden rounded-2xl border border-card-border bg-[#FFF9F3] shadow-sm ${item.className}`}
+                  className={`group relative overflow-hidden rounded-2xl border border-card-border bg-[#F5F8FA] shadow-sm ${item.className}`}
                 >
                   <img
                     src={item.src}

@@ -416,7 +416,7 @@ const Courses = () => {
             key: checkData.razorpay.key || import.meta.env.VITE_RAZORPAY_KEY_ID,
             amount: checkData.razorpay.order?.amount || Math.round((checkData.razorpay.amount || 0) * 100),
             currency: checkData.razorpay.currency || 'INR',
-            name: '32 Pearls Dental Academy',
+            name: 'Meridian Group of Education',
             description: `Registration: ${activeEventModal.title}`,
             order_id: checkData.razorpay.order?.id,
             prefill: {
@@ -530,7 +530,7 @@ const Courses = () => {
                     onClick={() => handleFilterChange(id)}
                     className={`course-filter-reveal px-6 py-3 font-montserrat text-[11px] font-bold tracking-[0.2em] border transition-all duration-500 uppercase rounded-xl cursor-pointer ${
                       isActive
-                        ? 'bg-accent text-white border-accent'
+                        ? 'bg-brand-brown text-white border-accent'
                         : 'text-description border-border hover:border-accent/40 hover:text-normal'
                     }`}
                   >
@@ -594,7 +594,7 @@ const Courses = () => {
                         onClick={() => setSelectedDifficulty(level)}
                         className={`px-8 py-4 font-montserrat text-[11px] font-bold tracking-[0.2em] border transition-all duration-500 uppercase rounded-xl cursor-pointer ${
                           selectedDifficulty === level
-                            ? 'bg-accent text-white border-accent'
+                            ? 'bg-brand-brown text-white border-accent'
                             : 'text-description border-border hover:border-accent/30 hover:text-normal'
                         }`}
                       >
@@ -689,7 +689,7 @@ const Courses = () => {
                         key={id}
                         onClick={() => handleFilterChange(id)}
                         className={`w-full px-6 py-4 text-left font-montserrat text-[11px] font-bold tracking-[0.15em] uppercase transition-colors cursor-pointer ${
-                          activeFilter === id ? 'bg-accent text-white' : 'text-description hover:bg-black/5 dark:hover:bg-white/5'
+                          activeFilter === id ? 'bg-brand-brown text-white' : 'text-description hover:bg-black/5 dark:hover:bg-white/5'
                         }`}
                       >
                         {labelText}
@@ -753,7 +753,7 @@ const Courses = () => {
                   <div className="pt-6">
                     <button
                       onClick={() => startQuiz(test)}
-                      className="w-full py-3 px-4 rounded-xl bg-accent text-white font-montserrat text-xs font-bold uppercase tracking-wider hover:opacity-90 transition-all duration-300 flex items-center justify-center gap-2 shadow-sm active:scale-98 cursor-pointer"
+                      className="w-full py-3 px-4 rounded-xl bg-brand-brown text-white font-montserrat text-xs font-bold uppercase tracking-wider hover:opacity-90 transition-all duration-300 flex items-center justify-center gap-2 shadow-sm active:scale-98 cursor-pointer"
                     >
                       <span>Start Test Series</span>
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
@@ -786,7 +786,7 @@ const Courses = () => {
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-                      <div className="absolute top-3 right-3 px-2.5 py-1 rounded-md text-[10px] font-mono font-bold bg-accent text-white shadow-sm">
+                      <div className="absolute top-3 right-3 px-2.5 py-1 rounded-md text-[10px] font-mono font-bold bg-brand-brown text-white shadow-sm">
                         {book.discount}
                       </div>
                       <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-white">
@@ -827,7 +827,7 @@ const Courses = () => {
                     </button>
                     <button
                       onClick={() => openBookModal(book)}
-                      className="flex-1 py-2.5 px-3 rounded-xl bg-accent text-white font-montserrat text-xs font-bold uppercase tracking-wider hover:scale-[1.02] active:scale-98 transition-all shadow-xs cursor-pointer text-center"
+                      className="flex-1 py-2.5 px-3 rounded-xl bg-brand-brown text-white font-montserrat text-xs font-bold uppercase tracking-wider hover:scale-[1.02] active:scale-98 transition-all shadow-xs cursor-pointer text-center"
                     >
                       Get eBook
                     </button>

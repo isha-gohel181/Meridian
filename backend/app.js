@@ -18,6 +18,14 @@ const __dirname = path.dirname(__filename);
 const app = express();
 app.set("trust proxy", 1); // Trust first proxy (Render load balancer)
 
+// Dev/debug: log every HTTP request so you can confirm traffic hits this process
+if (process.env.NODE_ENV !== "production" || process.env.LOG_HTTP === "1") {
+  app.use((req, _res, next) => {
+    console.log(`[http] ${req.method} ${req.originalUrl}`);
+    next();
+  });
+}
+
 // Serve static files
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 

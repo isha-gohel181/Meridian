@@ -152,7 +152,7 @@ const CourseSlider = () => {
 
   if (loading && baseCourses.length === 0) {
     return (
-      <section className="relative w-full py-12 md:py-16 bg-gradient-to-b from-[#FFF9F3] to-[#f8fafc]">
+      <section className="relative w-full py-12 md:py-16 bg-gradient-to-b from-[#F5F8FA] to-[#f8fafc]">
         <p className="text-center py-12 font-montserrat text-sm font-medium uppercase tracking-[0.15em] text-description">
           {t('loadingCourses')}
         </p>
@@ -162,7 +162,7 @@ const CourseSlider = () => {
 
   if (baseCourses.length === 0) {
     return (
-      <section className="relative w-full py-12 md:py-16 px-6 bg-gradient-to-b from-[#FFF9F3] to-[#f8fafc]">
+      <section className="relative w-full py-12 md:py-16 px-6 bg-gradient-to-b from-[#F5F8FA] to-[#f8fafc]">
         <p className="text-center py-20 font-montserrat text-sm font-medium uppercase tracking-[0.15em] text-description">
           {t('noCoursesAvailable')}
         </p>
@@ -173,7 +173,7 @@ const CourseSlider = () => {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full py-8 md:py-14 pb-16 md:pb-24 overflow-hidden select-none bg-gradient-to-b from-[#FFF9F3] via-[#FFF9F3]/60 to-[#f8fafc]"
+      className="relative w-full py-8 md:py-14 pb-16 md:pb-24 overflow-hidden select-none bg-gradient-to-b from-[#F5F8FA] via-[#F5F8FA]/60 to-[#f8fafc]"
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
       onMouseLeave={() => {
@@ -183,8 +183,8 @@ const CourseSlider = () => {
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
-      <div className="absolute top-0 left-0 z-20 w-[14vw] md:w-[18vw] h-full bg-gradient-to-r from-[#FFF9F3] to-transparent pointer-events-none" />
-      <div className="absolute top-0 right-0 z-20 w-[14vw] md:w-[18vw] h-full bg-gradient-to-l from-[#FFF9F3] to-transparent pointer-events-none" />
+      <div className="absolute top-0 left-0 z-20 w-[14vw] md:w-[18vw] h-full bg-gradient-to-r from-[#F5F8FA] to-transparent pointer-events-none" />
+      <div className="absolute top-0 right-0 z-20 w-[14vw] md:w-[18vw] h-full bg-gradient-to-l from-[#F5F8FA] to-transparent pointer-events-none" />
 
       <div
         ref={trackRef}
@@ -209,7 +209,7 @@ const CourseSlider = () => {
             />
 
             <div className="relative border border-slate-200/90 p-2.5 flex flex-col gap-2 overflow-hidden transition-colors duration-500 group-hover:border-accent/50 bg-white rounded-md shadow-md">
-              <div className="relative aspect-[4/5] overflow-hidden bg-[#FFF9F3] rounded-sm border border-[#682701]/10">
+              <div className="relative aspect-[4/5] overflow-hidden bg-[#F5F8FA] rounded-sm border border-[#032746]/10">
                 {getImageUrl(course) ? (
                   <img
                     alt={sanitizeDisplay(course.title)}
@@ -219,7 +219,7 @@ const CourseSlider = () => {
                   />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center px-2">
-                    <span className="font-jetbrains text-[7px] uppercase tracking-widest text-[#682701]/35 text-center">
+                    <span className="font-jetbrains text-[7px] uppercase tracking-widest text-[#032746]/35 text-center">
                       {t('noPreview') || 'No preview'}
                     </span>
                   </div>

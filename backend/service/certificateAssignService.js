@@ -1,7 +1,7 @@
 import CertificateAssignRepository from '../repository/certificateAssignRepository.js';
 import { generateCertificatePDF } from '../utils/certificateGenerator.js';
 import { CERTIFICATE_ORGANIZATION_DEFAULT } from '../utils/appBrand.js';
-import { PEARLS_CERTIFICATE_BG_REL } from '../utils/pearlsCertificateTheme.js';
+import { MERIDIAN_CERTIFICATE_BG_REL } from '../utils/meridianCertificateTheme.js';
 import User from '../models/user.js';
 import Course from '../models/Course.js'; // Updated to lowercase
 import path from 'path';
@@ -132,7 +132,7 @@ class CertificateAssignService {
 
       // Generate certificate PDF
       const certificateUrl = await generateCertificatePDF({
-        template: { image: template.image || PEARLS_CERTIFICATE_BG_REL },
+        template: { image: template.image || MERIDIAN_CERTIFICATE_BG_REL },
         certificateData,
       });
 
@@ -278,7 +278,7 @@ class CertificateAssignService {
         };
 
         updateData.certificate_url = await generateCertificatePDF({
-          template: { image: template.image || PEARLS_CERTIFICATE_BG_REL },
+          template: { image: template.image || MERIDIAN_CERTIFICATE_BG_REL },
           certificateData,
         });
 

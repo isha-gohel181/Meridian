@@ -131,7 +131,7 @@ const GigCard = ({ gig }) => {
         </div>
 
         {/* Footer Button */}
-        <button className="w-full mt-2 py-3 bg-accent text-white font-montserrat text-xs font-bold tracking-widest uppercase rounded-xl shadow-sm hover:scale-[1.02] active:scale-95 transition-all duration-300 flex items-center justify-center gap-2">
+        <button className="w-full mt-2 py-3 bg-brand-brown text-white font-montserrat text-xs font-bold tracking-widest uppercase rounded-xl shadow-sm hover:scale-[1.02] active:scale-95 transition-all duration-300 flex items-center justify-center gap-2">
           {t('applyNow') || 'APPLY NOW'}
           <span className="text-base">›</span>
         </button>
@@ -426,7 +426,7 @@ const JobDetail = ({ job, onBack, submitting, dispatch }) => {
                   <button 
                     disabled={submitting}
                     type="submit"
-                    className="w-full py-4 bg-accent text-white font-montserrat text-xs font-bold tracking-widest uppercase rounded-xl shadow-sm hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                    className="w-full py-4 bg-brand-brown text-white font-montserrat text-xs font-bold tracking-widest uppercase rounded-xl shadow-sm hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                   >
                     {submitting ? 'SUBMITTING...' : 'SUBMIT PROPOSAL'}
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>

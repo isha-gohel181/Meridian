@@ -10,7 +10,7 @@ const bonuses = [
     price: "20,000/-",
   },
   {
-    title: "1 Year Complimentary Access To All 32 Pearls Dental Academy Beta Tools",
+    title: "1 Year Complimentary Access To All Meridian Group of Education Beta Tools",
     price: "4,999/-",
   },
   {

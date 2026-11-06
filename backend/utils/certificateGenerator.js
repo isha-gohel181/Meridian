@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { PDFDocument } from 'pdf-lib';
-import { getPearlsCertificateBgPath, PEARLS_CERTIFICATE_BG_REL } from './pearlsCertificateTheme.js';
+import { getMeridianCertificateBgPath, MERIDIAN_CERTIFICATE_BG_REL } from './meridianCertificateTheme.js';
 
 /** A4 landscape — matches certificate.png layout */
 const W = 842;
@@ -10,7 +10,7 @@ const H = 595;
 function resolveBackgroundPath(template) {
   const candidates = [
     template?.image ? path.join(process.cwd(), template.image) : null,
-    getPearlsCertificateBgPath(),
+    getMeridianCertificateBgPath(),
   ].filter(Boolean);
   for (const ip of candidates) {
     if (fs.existsSync(ip) && !ip.toLowerCase().endsWith('.svg')) return ip;
@@ -28,7 +28,7 @@ export const generateCertificatePDF = async ({ template, certificateData }) => {
 
     const bgPath = resolveBackgroundPath(template);
     if (!bgPath) {
-      throw new Error(`Certificate background not found. Expected ${PEARLS_CERTIFICATE_BG_REL}`);
+      throw new Error(`Certificate background not found. Expected ${MERIDIAN_CERTIFICATE_BG_REL}`);
     }
 
     const bytes = fs.readFileSync(bgPath);

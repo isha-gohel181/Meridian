@@ -702,7 +702,7 @@ const DashboardCoursePlayer = () => {
                                 type="button"
                                 disabled={selectedLessonIndex < 0 || selectedLessonIndex >= flatLessons.length - 1}
                                 onClick={() => goToAdjacentLesson(1)}
-                                className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-accent text-white text-sm font-semibold disabled:opacity-40 disabled:cursor-not-allowed hover:opacity-90"
+                                className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-brand-brown text-white text-sm font-semibold disabled:opacity-40 disabled:cursor-not-allowed hover:opacity-90"
                             >
                                 Next →
                             </button>
@@ -729,7 +729,7 @@ const DashboardCoursePlayer = () => {
                             <p className="text-xs text-slate-400 mb-2">
                                 {dripLoading ? 'Updating lesson progress…' : 'Could not refresh lesson progress.'}
                                 {!dripLoading && (
-                                    <button type="button" onClick={refreshStatuses} className="ml-2 text-[#C96A1B] font-semibold hover:underline">
+                                    <button type="button" onClick={refreshStatuses} className="ml-2 text-[#D8B840] font-semibold hover:underline">
                                         Retry
                                     </button>
                                 )}
@@ -741,7 +741,7 @@ const DashboardCoursePlayer = () => {
                                 <div 
                                     key={module._id || i}
                                     className={`group border transition-all duration-300 overflow-hidden bg-white rounded-2xl shadow-sm
-                                        ${activeAccordion === (module._id || i) ? 'border-[#C96A1B]/50 ring-1 ring-[#C96A1B]/20' : 'border-slate-200 hover:border-slate-300'}`}
+                                        ${activeAccordion === (module._id || i) ? 'border-[#D8B840]/50 ring-1 ring-[#D8B840]/20' : 'border-slate-200 hover:border-slate-300'}`}
                                 >
                                     <button 
                                         type="button"
@@ -750,7 +750,7 @@ const DashboardCoursePlayer = () => {
                                     >
                                         <div className="flex items-center gap-5">
                                             <div className={`w-11 h-11 border rounded-xl flex items-center justify-center text-xs font-bold transition-all
-                                                ${activeAccordion === (module._id || i) ? 'bg-[#C96A1B] text-white border-[#C96A1B]' : 'bg-sky-50 border-sky-100 text-[#C96A1B]'}`}>
+                                                ${activeAccordion === (module._id || i) ? 'bg-[#D8B840] text-white border-[#D8B840]' : 'bg-sky-50 border-sky-100 text-[#D8B840]'}`}>
                                                 {String(i + 1).padStart(2, '0')}
                                             </div>
                                             <div className="space-y-1">
@@ -762,7 +762,7 @@ const DashboardCoursePlayer = () => {
                                                 </p>
                                             </div>
                                         </div>
-                                        <div className={`transition-transform duration-300 ${activeAccordion === (module._id || i) ? 'rotate-180 text-[#C96A1B]' : 'text-slate-400 group-hover:text-slate-600'}`}>
+                                        <div className={`transition-transform duration-300 ${activeAccordion === (module._id || i) ? 'rotate-180 text-[#D8B840]' : 'text-slate-400 group-hover:text-slate-600'}`}>
                                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="m18 15-6-6-6 6"/></svg>
                                         </div>
                                     </button>

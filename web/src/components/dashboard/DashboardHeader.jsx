@@ -164,7 +164,7 @@ const DashboardHeader = () => {
 
         <div className="dash-menu-item absolute top-0 left-0 w-full p-6 flex items-center justify-between z-20">
           <div className="flex items-center gap-2.5">
-            <img src="/dental_acadmy/dental.jpeg" alt="32 Pearls Dental Academy" className="h-8 md:h-9 w-auto object-contain" />
+            <img src="/meridian/logo.jpeg" alt="Meridian Group of Education" className="h-8 md:h-9 w-auto object-contain" />
           </div>
           <button
             onClick={toggleMenu}
@@ -247,7 +247,7 @@ const DashboardHeader = () => {
       <div className="flex items-center gap-6">
         {/* DASHBOARD LOGO */}
         <Link to="/" className="flex items-center gap-2.5 hover:opacity-80 transition-opacity text-slate-900">
-          <img src="/dental_acadmy/dental.jpeg" alt="32 Pearls Dental Academy" className="h-8 md:h-9 w-auto object-contain" />
+          <img src="/meridian/logo.jpeg" alt="Meridian Group of Education" className="h-8 md:h-9 w-auto object-contain" />
         </Link>
 
         <nav className="hidden [@media(min-width:1300px)]:flex items-center gap-6">

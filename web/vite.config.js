@@ -1,3 +1,4 @@
+import { fileURLToPath, URL } from 'node:url'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
@@ -17,6 +18,7 @@ export default defineConfig({
   resolve: {
     dedupe: ['react', 'react-dom', 'react-redux'],
     alias: {
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
       'socket.io-client': 'socket.io-client/dist/socket.io.js'
     }
   },

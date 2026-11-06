@@ -12,9 +12,9 @@ import CourseEnrollment from "../models/CourseEnrollment.js";
 import { hasAdminRole } from "../middlewares/isAdmin.js";
 import { CERTIFICATE_ORGANIZATION_DEFAULT } from "../utils/appBrand.js";
 import {
-  getPearlsCertificateBackgroundHtml,
-  PEARLS_CERTIFICATE_BG_REL,
-} from "../utils/pearlsCertificateTheme.js";
+  getMeridianCertificateBackgroundHtml,
+  MERIDIAN_CERTIFICATE_BG_REL,
+} from "../utils/meridianCertificateTheme.js";
 
 async function resolvePlatformNameForCertificate(certificate) {
   let platformName = CERTIFICATE_ORGANIZATION_DEFAULT;
@@ -506,9 +506,9 @@ function renderTemplate(template, elements, data) {
 
   let backgroundImageUrl = template.image
     ? template.image.replace(/\\/g, "/")
-    : PEARLS_CERTIFICATE_BG_REL;
+    : MERIDIAN_CERTIFICATE_BG_REL;
   if (backgroundImageUrl.toLowerCase().endsWith(".svg")) {
-    backgroundImageUrl = PEARLS_CERTIFICATE_BG_REL;
+    backgroundImageUrl = MERIDIAN_CERTIFICATE_BG_REL;
   }
 
   let backgroundImgTag = "";
@@ -517,7 +517,7 @@ function renderTemplate(template, elements, data) {
     // Use file protocol to avoid server round-trip/deadlock
     backgroundImgTag = `<img src="file://${bgPath}" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0;" alt="Certificate Background" />`;
   } else {
-    backgroundImgTag = getPearlsCertificateBackgroundHtml();
+    backgroundImgTag = getMeridianCertificateBackgroundHtml();
   }
 
   const html = `

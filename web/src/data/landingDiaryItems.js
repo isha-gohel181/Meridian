@@ -1,0 +1,95 @@
+export const DIARY_ITEMS = [
+  {
+    slug: 'open-revision-clinic',
+    kind: 'event',
+    featured: true,
+    month: 'Nov',
+    day: '18',
+    title: 'Open revision clinic',
+    blurb: 'Drop-in hour for exam-week questions—small groups, clear next steps.',
+    meta: 'Online · 18:00 IST',
+    dateLabel: '18 November 2026',
+    image: '/meridian/diary/clinic.jpg',
+    alt: 'Student revising at a laptop with headphones',
+    intro: 'A drop-in hour for exam-week questions—small groups, clear next steps, no long lecture.',
+    paragraphs: [
+      'Bring the paper, the topic, or the question you cannot settle. Mentors work in small groups so each learner leaves with one clear next step, not a pile of extra notes.',
+      'The clinic runs online at 18:00 IST. Join for twenty minutes or stay the hour. Cameras optional; questions are not.',
+      'Places are unbooked on purpose. Arrive when you can. If the room fills, we open a second breakout rather than turning people away.',
+    ],
+  },
+  {
+    slug: 'winter-cohort-now-open',
+    kind: 'news',
+    title: 'Winter cohort now open',
+    blurb: 'Places for the next live group. Enrolment closes when the room is full.',
+    meta: '4 Nov 2026',
+    dateLabel: '4 November 2026',
+    image: '/meridian/diary/cohort.jpg',
+    alt: 'Learners in a live seminar room',
+    intro: 'The next live group is open. Enrolment stays open until the room is full—not until a calendar date.',
+    paragraphs: [
+      'Winter live groups keep the same small-room format: a mentor, a shared timetable, and weekly check-ins that actually get read.',
+      'If you missed the autumn intake, this is the next clean start. Course pages list which programmes have seats left.',
+      'When a room fills we close the form rather than adding extra chairs. Write in if you want a waitlist note for a later cohort.',
+    ],
+  },
+  {
+    slug: 'mentor-office-hours-expand',
+    kind: 'news',
+    title: 'Mentor office hours expand',
+    blurb: 'Two extra evening slots each week for working learners.',
+    meta: '1 Nov 2026',
+    dateLabel: '1 November 2026',
+    image: '/meridian/diary/mentor.jpg',
+    alt: 'Mentor and learner talking at a desk',
+    intro: 'Two extra evening slots each week so working learners can ask questions without missing a shift.',
+    paragraphs: [
+      'Office hours are short, booked conversations—not another class. Bring one problem, a draft, or a timetable that is slipping.',
+      'The new slots sit later in the evening, IST, so they sit after school and after most workdays.',
+      'Book from your programme page. If a slot is gone, the next open week is listed beside it.',
+    ],
+  },
+  {
+    slug: 'parent-briefing-online',
+    kind: 'event',
+    month: 'Dec',
+    day: '02',
+    title: 'Parent briefing (online)',
+    blurb: 'How live groups run this term, what to watch at home, and how to ask for extra support.',
+    meta: '19:00 IST',
+    dateLabel: '2 December 2026',
+    image: '/meridian/diary/briefing.jpg',
+    alt: 'Laptop on a video call for a parent briefing',
+    intro: 'A 45-minute call for families—how live groups run, what to expect this term, and how to ask for extra support.',
+    paragraphs: [
+      'This briefing is for parents and carers, not a sales call. We walk through the week as a learner sees it: live sessions, homework load, and when a mentor actually replies.',
+      'There is time for questions at the end. If you cannot stay, the same notes go out by email the next morning.',
+      'Join on the link we send after you register. No camera required. One adult per household is plenty.',
+    ],
+  },
+  {
+    slug: 'study-skills-workshop',
+    kind: 'event',
+    month: 'Dec',
+    day: '14',
+    title: 'Study-skills workshop',
+    blurb: 'Note-taking, revision loops, and a weekly plan you can keep after the session ends.',
+    meta: 'Campus + live',
+    dateLabel: '14 December 2026',
+    image: '/meridian/diary/workshop.jpg',
+    alt: 'Workshop around a table with notes on the wall',
+    intro: 'A practical workshop on note-taking, revision loops, and a weekly plan that still works the week after.',
+    paragraphs: [
+      'We work through one subject you already have, not a made-up example. Leave with a one-page plan and a revision loop you can run without a mentor in the room.',
+      'Join on campus or on the live stream. Both rooms follow the same exercises; campus seats are limited.',
+      'Bring a notebook or a laptop. We will not assume a particular app—paper is fine.',
+    ],
+  },
+]
+
+export const getDiaryItemBySlug = (slug) => DIARY_ITEMS.find((item) => item.slug === slug)
+
+export const DIARY_FEATURED = DIARY_ITEMS.find((item) => item.featured)
+export const DIARY_NEWS = DIARY_ITEMS.filter((item) => item.kind === 'news')
+export const DIARY_UPCOMING = DIARY_ITEMS.filter((item) => item.kind === 'event' && !item.featured)

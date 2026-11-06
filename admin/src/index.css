@@ -41,94 +41,94 @@ layer(base);
   --color-white: #ffffff;
   --color-black: #101828;
 
-  --color-brand-25: #fff9f3;
-  --color-brand-50: #fdebd5;
-  --color-brand-100: #f9d4a8;
-  --color-brand-200: #f0b574;
-  --color-brand-300: #e89a52;
-  --color-brand-400: #d47a28;
-  --color-brand-500: #C96A1B;
-  --color-brand-600: #a85614;
-  --color-brand-700: #8a460f;
-  --color-brand-800: #682701;
-  --color-brand-900: #4a1c01;
-  --color-brand-950: #2b1a12;
+  --color-brand-25: #f5f8fa;
+  --color-brand-50: #e8eef3;
+  --color-brand-100: #d1dce6;
+  --color-brand-200: #a3b9cd;
+  --color-brand-300: #7596b4;
+  --color-brand-400: #4a7496;
+  --color-brand-500: #032746;
+  --color-brand-600: #022038;
+  --color-brand-700: #02182a;
+  --color-brand-800: #01101c;
+  --color-brand-900: #010a12;
+  --color-brand-950: #000508;
 
-  /* Map legacy TailAdmin blue-light tokens to brand (32 Pearls) */
-  --color-blue-light-25: #fff9f3;
-  --color-blue-light-50: #fdebd5;
-  --color-blue-light-100: #f9d4a8;
-  --color-blue-light-200: #f0b574;
-  --color-blue-light-300: #e89a52;
-  --color-blue-light-400: #d47a28;
-  --color-blue-light-500: #C96A1B;
-  --color-blue-light-600: #a85614;
-  --color-blue-light-700: #8a460f;
-  --color-blue-light-800: #682701;
-  --color-blue-light-900: #4a1c01;
-  --color-blue-light-950: #2b1a12;
+  /* Map legacy TailAdmin blue-light tokens to Meridian navy */
+  --color-blue-light-25: #f5f8fa;
+  --color-blue-light-50: #e8eef3;
+  --color-blue-light-100: #d1dce6;
+  --color-blue-light-200: #a3b9cd;
+  --color-blue-light-300: #7596b4;
+  --color-blue-light-400: #4a7496;
+  --color-blue-light-500: #032746;
+  --color-blue-light-600: #022038;
+  --color-blue-light-700: #02182a;
+  --color-blue-light-800: #01101c;
+  --color-blue-light-900: #010a12;
+  --color-blue-light-950: #000508;
 
-  /* Map default Tailwind blue utilities to brand scale site-wide */
-  --color-blue-50: #fff9f3;
-  --color-blue-100: #fdebd5;
-  --color-blue-200: #f9d4a8;
-  --color-blue-300: #f0b574;
-  --color-blue-400: #e89a52;
-  --color-blue-500: #C96A1B;
-  --color-blue-600: #a85614;
-  --color-blue-700: #8a460f;
-  --color-blue-800: #682701;
-  --color-blue-900: #4a1c01;
-  --color-blue-950: #2b1a12;
+  /* Map default Tailwind blue utilities to navy scale site-wide */
+  --color-blue-50: #f5f8fa;
+  --color-blue-100: #e8eef3;
+  --color-blue-200: #d1dce6;
+  --color-blue-300: #7596b4;
+  --color-blue-400: #4a7496;
+  --color-blue-500: #032746;
+  --color-blue-600: #022038;
+  --color-blue-700: #02182a;
+  --color-blue-800: #01101c;
+  --color-blue-900: #010a12;
+  --color-blue-950: #000508;
 
-  /* Map indigo / sky / purple (TailAdmin defaults) to brand */
-  --color-indigo-50: #fff9f3;
-  --color-indigo-100: #fdebd5;
-  --color-indigo-200: #f9d4a8;
-  --color-indigo-300: #f0b574;
-  --color-indigo-400: #e89a52;
-  --color-indigo-500: #C96A1B;
-  --color-indigo-600: #a85614;
-  --color-indigo-700: #8a460f;
-  --color-indigo-800: #682701;
-  --color-indigo-900: #4a1c01;
-  --color-indigo-950: #2b1a12;
+  /* Map indigo / sky / purple (TailAdmin defaults) to navy */
+  --color-indigo-50: #f5f8fa;
+  --color-indigo-100: #e8eef3;
+  --color-indigo-200: #d1dce6;
+  --color-indigo-300: #7596b4;
+  --color-indigo-400: #4a7496;
+  --color-indigo-500: #032746;
+  --color-indigo-600: #022038;
+  --color-indigo-700: #02182a;
+  --color-indigo-800: #01101c;
+  --color-indigo-900: #010a12;
+  --color-indigo-950: #000508;
 
-  --color-sky-50: #fff9f3;
-  --color-sky-100: #fdebd5;
-  --color-sky-200: #f9d4a8;
-  --color-sky-300: #f0b574;
-  --color-sky-400: #e89a52;
-  --color-sky-500: #C96A1B;
-  --color-sky-600: #a85614;
-  --color-sky-700: #8a460f;
-  --color-sky-800: #682701;
-  --color-sky-900: #4a1c01;
-  --color-sky-950: #2b1a12;
+  --color-sky-50: #f5f8fa;
+  --color-sky-100: #e8eef3;
+  --color-sky-200: #d1dce6;
+  --color-sky-300: #7596b4;
+  --color-sky-400: #4a7496;
+  --color-sky-500: #032746;
+  --color-sky-600: #022038;
+  --color-sky-700: #02182a;
+  --color-sky-800: #01101c;
+  --color-sky-900: #010a12;
+  --color-sky-950: #000508;
 
-  --color-purple-50: #fff9f3;
-  --color-purple-100: #fdebd5;
-  --color-purple-200: #f9d4a8;
-  --color-purple-300: #f0b574;
-  --color-purple-400: #e89a52;
-  --color-purple-500: #C96A1B;
-  --color-purple-600: #a85614;
-  --color-purple-700: #8a460f;
-  --color-purple-800: #682701;
-  --color-purple-900: #4a1c01;
-  --color-purple-950: #2b1a12;
+  --color-purple-50: #f5f8fa;
+  --color-purple-100: #e8eef3;
+  --color-purple-200: #d1dce6;
+  --color-purple-300: #7596b4;
+  --color-purple-400: #4a7496;
+  --color-purple-500: #032746;
+  --color-purple-600: #022038;
+  --color-purple-700: #02182a;
+  --color-purple-800: #01101c;
+  --color-purple-900: #010a12;
+  --color-purple-950: #000508;
 
-  --color-violet-50: #fff9f3;
-  --color-violet-100: #fdebd5;
-  --color-violet-200: #f9d4a8;
-  --color-violet-300: #f0b574;
-  --color-violet-400: #e89a52;
-  --color-violet-500: #C96A1B;
-  --color-violet-600: #a85614;
-  --color-violet-700: #8a460f;
-  --color-violet-800: #682701;
-  --color-violet-900: #4a1c01;
-  --color-violet-950: #2b1a12;
+  --color-violet-50: #f5f8fa;
+  --color-violet-100: #e8eef3;
+  --color-violet-200: #d1dce6;
+  --color-violet-300: #7596b4;
+  --color-violet-400: #4a7496;
+  --color-violet-500: #032746;
+  --color-violet-600: #022038;
+  --color-violet-700: #02182a;
+  --color-violet-800: #01101c;
+  --color-violet-900: #010a12;
+  --color-violet-950: #000508;
 
   --color-gray-25: #fcfcfd;
   --color-gray-50: #f9fafb;
@@ -210,7 +210,7 @@ layer(base);
   --shadow-theme-xl: 0px 20px 24px -4px rgba(16, 24, 40, 0.08),
     0px 8px 8px -4px rgba(16, 24, 40, 0.03);
   --shadow-datepicker: -5px 0 0 #262d3c, 5px 0 0 #262d3c;
-  --shadow-focus-ring: 0px 0px 0px 4px rgba(201, 106, 27, 0.15);
+  --shadow-focus-ring: 0px 0px 0px 4px rgba(3, 39, 70, 0.15);
   --shadow-slider-navigation: 0px 1px 2px 0px rgba(16, 24, 40, 0.1),
     0px 1px 3px 0px rgba(16, 24, 40, 0.1);
   --shadow-tooltip: 0px 4px 6px -2px rgba(16, 24, 40, 0.05),
@@ -596,13 +596,13 @@ span.flatpickr-weekday,
 .flatpickr-day.selected.nextMonthDay,
 .flatpickr-day.startRange.nextMonthDay,
 .flatpickr-day.endRange.nextMonthDay {
-  background: #C96A1B;
+  background: #032746;
   @apply !border-brand-500 !bg-brand-500 hover:!border-brand-500 hover:!bg-brand-500;
 }
 .flatpickr-day.selected.startRange + .endRange:not(:nth-child(7n + 1)),
 .flatpickr-day.startRange.startRange + .endRange:not(:nth-child(7n + 1)),
 .flatpickr-day.endRange.startRange + .endRange:not(:nth-child(7n + 1)) {
-  box-shadow: -10px 0 0 #C96A1B;
+  box-shadow: -10px 0 0 #032746;
 }
 
 .flatpickr-months .flatpickr-prev-month svg,

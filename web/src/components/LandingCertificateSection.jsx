@@ -24,7 +24,7 @@ const LandingCertificateSection = () => {
           <div className="relative bg-white p-1.5 rounded-xl shadow-2xl border border-card-border overflow-hidden">
             <img
               src={CERTIFICATE_DEFAULT_IMAGE}
-              alt="32 Pearls Dental Academy certificate of completion"
+              alt="Meridian Group of Education certificate of completion"
               className="w-full h-auto"
               loading="lazy"
             />

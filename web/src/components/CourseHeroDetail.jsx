@@ -168,7 +168,7 @@ const CourseHeroDetail = ({ course, section }) => {
               </span>
               <input
                 type="text"
-                className="w-full rounded-xl border border-card-border bg-[#FFF9F3]/50 px-4 py-3 font-montserrat text-sm text-normal placeholder:text-description/50 focus:outline-none focus:border-accent/50 focus:ring-2 focus:ring-accent/15 transition-colors"
+                className="w-full rounded-xl border border-card-border bg-[#F5F8FA]/50 px-4 py-3 font-montserrat text-sm text-normal placeholder:text-description/50 focus:outline-none focus:border-accent/50 focus:ring-2 focus:ring-accent/15 transition-colors"
                 placeholder="Your name"
               />
             </label>
@@ -178,7 +178,7 @@ const CourseHeroDetail = ({ course, section }) => {
               </span>
               <input
                 type="email"
-                className="w-full rounded-xl border border-card-border bg-[#FFF9F3]/50 px-4 py-3 font-montserrat text-sm text-normal placeholder:text-description/50 focus:outline-none focus:border-accent/50 focus:ring-2 focus:ring-accent/15 transition-colors"
+                className="w-full rounded-xl border border-card-border bg-[#F5F8FA]/50 px-4 py-3 font-montserrat text-sm text-normal placeholder:text-description/50 focus:outline-none focus:border-accent/50 focus:ring-2 focus:ring-accent/15 transition-colors"
                 placeholder="you@example.com"
               />
             </label>
@@ -186,7 +186,7 @@ const CourseHeroDetail = ({ course, section }) => {
               <span className="font-jetbrains text-[9px] uppercase tracking-[0.2em] text-description/90 font-semibold">
                 {t('phoneNumber')}
               </span>
-              <div className="flex rounded-xl border border-card-border bg-[#FFF9F3]/50 overflow-hidden focus-within:border-accent/50 focus-within:ring-2 focus-within:ring-accent/15 transition-colors">
+              <div className="flex rounded-xl border border-card-border bg-[#F5F8FA]/50 overflow-hidden focus-within:border-accent/50 focus-within:ring-2 focus-within:ring-accent/15 transition-colors">
                 <span className="flex items-center px-3 font-jetbrains text-xs text-accent font-bold border-r border-card-border bg-white/80">
                   +91
                 </span>
@@ -203,7 +203,7 @@ const CourseHeroDetail = ({ course, section }) => {
               </span>
               <textarea
                 rows={3}
-                className="w-full rounded-xl border border-card-border bg-[#FFF9F3]/50 px-4 py-3 font-montserrat text-sm text-normal placeholder:text-description/50 focus:outline-none focus:border-accent/50 focus:ring-2 focus:ring-accent/15 transition-colors resize-none"
+                className="w-full rounded-xl border border-card-border bg-[#F5F8FA]/50 px-4 py-3 font-montserrat text-sm text-normal placeholder:text-description/50 focus:outline-none focus:border-accent/50 focus:ring-2 focus:ring-accent/15 transition-colors resize-none"
                 placeholder="Tell us briefly…"
               />
             </label>

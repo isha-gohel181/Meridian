@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react'
-import { Link, NavLink, useLocation } from 'react-router-dom'
+import React, { useState, useEffect, useRef, useCallback } from 'react'
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import RollingText from './RollingText'
 import { useTheme } from '../context/ThemeContext'
@@ -16,6 +16,7 @@ const Navbar = ({ isLoaded }) => {
   const { theme } = useTheme()
   const { t } = useLanguage()
   const location = useLocation()
+  const navigate = useNavigate()
   const [isOpen, setIsOpen] = useState(false)
   const menuRef = useRef(null)
   const shutter1Ref = useRef(null)
@@ -25,21 +26,34 @@ const Navbar = ({ isLoaded }) => {
   const line2Ref = useRef(null)
   const line3Ref = useRef(null)
 
-  const navLinks = [
-    { key: 'home', name: t('home'), path: '/' },
-    { key: 'ourCourses', name: t('ourCourses'), path: '/courses' },
-    { key: 'forum', name: t('forum'), path: '/forum' },
-    // { key: 'about Us', name: t('about Us'), path: '/about-us' },
-    { key: 'gig', name: t('gig'), path: '/gig' },
-    { key: 'news', name: t('news'), path: '/news' },
-  ]
+  const scrollToSection = useCallback((hash) => {
+    const id = hash.replace(/^#/, '')
+    const el = document.getElementById(id)
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+  }, [])
 
-  const socialLinks = [
-    { name: 'YouTube', icon: 'M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z M10 15V9l6 3z', url: 'https://youtube.com' },
-    { name: 'Instagram', icon: 'M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z M17.5 6.5h.01', url: 'https://www.instagram.com', isInsta: true },
-    { name: 'X', icon: 'M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154H7.594l5.243 6.932 6.064-6.933zm-1.292 19.49h2.039L6.486 3.24H4.298L17.61 20.644z', url: '#' },
-    { name: 'Facebook', icon: 'M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z', url: '#' }
-  ]
+  const handleHashNav = useCallback(
+    (e, hash) => {
+      e.preventDefault()
+      setIsOpen(false)
+      const id = hash.replace(/^#/, '')
+      if (location.pathname !== '/') {
+        navigate('/')
+        setTimeout(() => scrollToSection(id), 80)
+      } else {
+        scrollToSection(id)
+      }
+    },
+    [location.pathname, navigate, scrollToSection]
+  )
+
+  useEffect(() => {
+    if (location.pathname !== '/' || !location.hash) return
+    const id = location.hash.replace('#', '')
+    setTimeout(() => scrollToSection(id), 120)
+  }, [location.pathname, location.hash, scrollToSection])
 
   const navContainerRef = useRef(null)
   const innerNavRef = useRef(null)
@@ -48,27 +62,31 @@ const Navbar = ({ isLoaded }) => {
   const buttonsWrapRef = useRef(null)
   const pillRef = useRef(null)
 
+  const desktopLinkClass =
+    'nav-slot nav-link-item group px-3.5 xl:px-4 py-2 rounded-xl font-inter text-[10px] xl:text-[11px] font-semibold uppercase transition-all duration-300 tracking-[0.12em] xl:tracking-[0.18em] relative z-10 text-slate-700 hover:text-slate-900 cursor-pointer'
+
   useEffect(() => {
-    if (!isLoaded) return;
+    if (!isLoaded) return
 
     const ctx = gsap.context(() => {
       const internalTl = gsap.timeline()
 
-      // 1. Initial Entrance
-      internalTl.fromTo(navContainerRef.current,
+      internalTl.fromTo(
+        navContainerRef.current,
         { y: -15, opacity: 0 },
         {
           y: 0,
           opacity: 1,
           autoAlpha: 1,
-          pointerEvents: "auto",
+          pointerEvents: 'auto',
           duration: 0.35,
-          ease: 'power3.out'
+          ease: 'power3.out',
         }
       )
 
       internalTl.fromTo(logoRef.current, { x: -4, opacity: 0 }, { x: 0, opacity: 1, duration: 0.25 }, '-=0.15')
-      internalTl.fromTo('.nav-link-item',
+      internalTl.fromTo(
+        '.nav-link-item',
         { y: 3, opacity: 0, scale: 0.99 },
         { y: 0, opacity: 1, scale: 1, stagger: 0.02, duration: 0.35, ease: 'power3.out' },
         '-=0.15'
@@ -81,7 +99,6 @@ const Navbar = ({ isLoaded }) => {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Big expanded glass pill state by default (previously applied on scroll)
       gsap.set(navContainerRef.current, {
         top: '1rem',
         width: '90%',
@@ -94,7 +111,7 @@ const Navbar = ({ isLoaded }) => {
         paddingTop: '0.75rem',
         paddingBottom: '0.75rem',
         backgroundColor: 'rgba(255, 255, 255, 0.98)',
-        backdropFilter: 'blur(24px)'
+        backdropFilter: 'blur(24px)',
       })
     })
 
@@ -103,15 +120,17 @@ const Navbar = ({ isLoaded }) => {
 
   const updatePillToActive = () => {
     if (!linksWrapRef.current || !pillRef.current) return
-    const activeEl = linksWrapRef.current.querySelector('.nav-item-active, .active')
+    const activeEl = linksWrapRef.current.querySelector('.nav-item-active, a.active, .router-active')
     if (activeEl) {
-      const targetEl = activeEl.classList.contains('nav-slot') ? activeEl : (activeEl.closest('.nav-slot') || activeEl)
+      const targetEl = activeEl.classList.contains('nav-slot')
+        ? activeEl
+        : activeEl.closest('.nav-slot') || activeEl
       gsap.to(pillRef.current, {
         left: targetEl.offsetLeft,
         width: targetEl.offsetWidth,
         duration: 0.35,
         ease: 'power3.out',
-        autoAlpha: 1
+        autoAlpha: 1,
       })
     } else {
       gsap.to(pillRef.current, { autoAlpha: 0, duration: 0.3 })
@@ -123,15 +142,17 @@ const Navbar = ({ isLoaded }) => {
     return () => clearTimeout(timer)
   }, [location.pathname, t])
 
-  // Floating Pill Highlight Logic
   const handleHover = (e) => {
-    const targetEl = e.currentTarget.classList.contains('nav-slot') ? e.currentTarget : (e.currentTarget.closest('.nav-slot') || e.currentTarget)
+    const targetEl = e.currentTarget.classList.contains('nav-slot')
+      ? e.currentTarget
+      : e.currentTarget.closest('.nav-slot') || e.currentTarget
+    if (!pillRef.current) return
     gsap.to(pillRef.current, {
       left: targetEl.offsetLeft,
       width: targetEl.offsetWidth,
       duration: 0.35,
       ease: 'power3.out',
-      autoAlpha: 1
+      autoAlpha: 1,
     })
   }
 
@@ -146,51 +167,44 @@ const Navbar = ({ isLoaded }) => {
     const ctx = gsap.context(() => {
       tl.current = gsap.timeline({ paused: true, defaults: { duration: 1.1, ease: 'expo.inOut' } })
 
-      // 1. Perspective Shift for Content
-      tl.current.to(contentWrap, {
-        scale: 0.85,
-        rotateY: -10,
-        x: '-15%',
-        borderRadius: '2rem',
-        pointerEvents: 'none',
-      }, 0)
+      tl.current.to(
+        contentWrap,
+        {
+          scale: 0.85,
+          rotateY: -10,
+          x: '-15%',
+          borderRadius: '2rem',
+          pointerEvents: 'none',
+        },
+        0
+      )
 
-      // 2. Hide Site Navbar entirely
       tl.current.to(navContainerRef.current, { autoAlpha: 0, scale: 0.9, duration: 0.8 }, 0)
 
-      // 3. Cascading Shutters
       tl.current.to(menuRef.current, { autoAlpha: 1, duration: 0 }, 0)
-      tl.current.fromTo([shutter1Ref.current, shutter2Ref.current, shutter3Ref.current],
+      tl.current.fromTo(
+        [shutter1Ref.current, shutter2Ref.current, shutter3Ref.current],
         { x: '100%' },
         { x: '0%', stagger: 0.1 },
         0
       )
 
-      // 4. Menu Header Reveal
       tl.current.fromTo('.menu-header', { opacity: 0, y: -20 }, { opacity: 1, y: 0, duration: 0.8 }, 0.6)
 
-      // 5. Staggered Menu Content
-      tl.current.fromTo('.menu-item',
+      tl.current.fromTo(
+        '.menu-item',
         { y: 40, opacity: 0, rotateX: -20, scale: 0.95, filter: 'blur(15px)' },
         { y: 0, opacity: 1, rotateX: 0, scale: 1, filter: 'blur(0px)', stagger: 0.1, duration: 1.2, ease: 'power3.out' },
         0.5
       )
 
-      // 4. Background Shapes Reveal
-      tl.current.fromTo('.bg-shape',
+      tl.current.fromTo(
+        '.bg-shape',
         { scale: 0.3, opacity: 0, rotate: -45 },
         { scale: 1, opacity: 0.12, rotate: 0, stagger: 0.15, duration: 1.5 },
         0.5
       )
 
-      // 5. Staggered Menu Content (Materializing from void)
-      tl.current.fromTo('.menu-item',
-        { y: 40, opacity: 0, rotateX: -20, scale: 0.95, filter: 'blur(15px)' },
-        { y: 0, opacity: 1, rotateX: 0, scale: 1, filter: 'blur(0px)', stagger: 0.12, duration: 1.2, ease: 'power3.out' },
-        0.6
-      )
-
-      // Perpetual Float (independent of timeline)
       gsap.to('.bg-shape-float', {
         y: '30px',
         x: '15px',
@@ -198,7 +212,7 @@ const Navbar = ({ isLoaded }) => {
         repeat: -1,
         yoyo: true,
         ease: 'sine.inOut',
-        stagger: { each: 0.8, from: 'random' }
+        stagger: { each: 0.8, from: 'random' },
       })
     })
 
@@ -207,17 +221,24 @@ const Navbar = ({ isLoaded }) => {
 
   useEffect(() => {
     if (isOpen) {
-      tl.current.play()
+      tl.current?.play()
     } else {
-      tl.current.reverse()
+      tl.current?.reverse()
     }
   }, [isOpen])
 
   const toggleMenu = () => setIsOpen(!isOpen)
 
+  const mobileLinkAfter = () => {
+    setIsOpen(false)
+  }
+
+  const mobileHash = (e, hash) => {
+    handleHashNav(e, hash)
+  }
+
   return (
     <>
-      {/* Navbar Container */}
       <nav
         ref={navContainerRef}
         className="fixed z-[120] will-change-[transform,top,width] opacity-0 pointer-events-none"
@@ -226,149 +247,174 @@ const Navbar = ({ isLoaded }) => {
 
         <div
           ref={innerNavRef}
-          className="flex items-center justify-between bg-white/92 rounded-2xl px-4 md:px-7 !py-2.5 border border-slate-200/90 shadow-[0_4px_30px_rgba(24, 120, 192,0.12)] backdrop-blur-2xl relative z-20 will-change-[padding,background-color]"
+          className="flex items-center justify-between bg-white/92 rounded-2xl px-3 sm:px-5 md:px-7 !py-2.5 border border-slate-200/90 shadow-[0_4px_30px_rgba(24,120,192,0.12)] backdrop-blur-2xl relative z-20 will-change-[padding,background-color]"
         >
-
-          <Link to="/" ref={logoRef} className="flex items-center hover:opacity-80 transition-opacity gap-2.5">
-            <img src="/dental_acadmy/dental.jpeg" alt="32 Pearls Dental Academy" className="h-9 md:h-11 w-auto object-contain" />
+          <Link to="/" ref={logoRef} className="flex items-center hover:opacity-80 transition-opacity gap-2.5 shrink-0">
+            <img src="/meridian/logo.jpeg" alt="Meridian Group of Education" className="h-9 md:h-11 w-auto object-contain" />
           </Link>
 
           <div
             ref={linksWrapRef}
             onMouseLeave={handleLeave}
-            className="hidden xl:flex items-center gap-1 relative px-1 py-1"
+            className="hidden xl:flex items-center gap-0.5 relative px-1 py-1 flex-1 justify-center min-w-0"
           >
-            {/* Liquid Active Pill Indicator */}
             <div
               ref={pillRef}
-              className="absolute top-1/2 -translate-y-1/2 h-8 bg-accent/10 border border-accent/20 rounded-xl pointer-events-none transition-all duration-300 z-0 opacity-0"
+              className="absolute top-1/2 -translate-y-1/2 h-8 bg-brand-brown/8 border border-brand-brown/15 rounded-xl pointer-events-none transition-all duration-300 z-0 opacity-0"
             />
 
-            {navLinks.map((link) => (
-              <NavLink
-                key={link.key}
-                to={link.path}
-                onMouseEnter={handleHover}
-                className={({ isActive }) =>
-                  `nav-slot nav-link-item group px-4 py-2 rounded-xl font-inter text-[11px] font-semibold uppercase transition-all duration-300 tracking-[0.18em] relative z-10 ${
-                    isActive ? 'nav-item-active text-accent font-bold' : 'text-slate-700 hover:text-slate-900'
-                  }`
-                }
-              >
-                {link.name}
-              </NavLink>
-            ))}
+            <NavLink
+              to="/"
+              end
+              onMouseEnter={handleHover}
+              className={({ isActive }) =>
+                `${desktopLinkClass} ${isActive ? 'nav-item-active router-active text-brand-brown font-bold' : ''}`
+              }
+            >
+              {t('home')}
+            </NavLink>
+
+            <a
+              href="/#about"
+              onClick={(e) => handleHashNav(e, 'about')}
+              onMouseEnter={handleHover}
+              className={desktopLinkClass}
+            >
+              {t('navAbout')}
+            </a>
+
+            <NavLink
+              to="/courses"
+              onMouseEnter={handleHover}
+              className={({ isActive }) =>
+                `${desktopLinkClass} ${isActive ? 'nav-item-active router-active text-brand-brown font-bold' : ''}`
+              }
+            >
+              {t('navCourses')}
+            </NavLink>
+
+            <NavLink
+              to="/news"
+              onMouseEnter={handleHover}
+              className={({ isActive }) =>
+                `${desktopLinkClass} ${isActive ? 'nav-item-active router-active text-brand-brown font-bold' : ''}`
+              }
+            >
+              {t('navBlog')}
+            </NavLink>
+
+            <NavLink
+              to="/contact"
+              onMouseEnter={handleHover}
+              className={({ isActive }) =>
+                `${desktopLinkClass} ${isActive ? 'nav-item-active router-active text-brand-brown font-bold' : ''}`
+              }
+            >
+              {t('navContact')}
+            </NavLink>
           </div>
 
-          <div ref={buttonsWrapRef} className="flex items-center gap-2 sm:gap-3">
-            {/* Sign In / Dashboard Button */}
+          <div ref={buttonsWrapRef} className="flex items-center gap-2 sm:gap-3 shrink-0">
             <Link
-              to={isAuthenticated ? "/dashboard" : "/login"}
-              className="relative group bg-accent text-white font-bold px-4 md:px-5 py-2 rounded-xl font-inter text-[10px] uppercase tracking-[0.15em] overflow-hidden transition-all duration-300 hover:scale-[1.04] active:scale-95 shadow-accent-soft flex items-center justify-center gap-1.5"
+              to="/contact#enquiry"
+              className="hidden sm:inline-flex relative group bg-accent text-brand-brown font-bold px-3 md:px-4 py-2 rounded-xl font-inter text-[9px] md:text-[10px] uppercase tracking-[0.12em] overflow-hidden transition-all duration-300 hover:scale-[1.03] active:scale-95 shadow-md border border-accent/30"
+            >
+              <span className="relative z-10 font-black">{t('enquireNow')}</span>
+              <div className="absolute inset-0 bg-white/35 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out skew-x-12" />
+            </Link>
+
+            <Link
+              to={isAuthenticated ? '/dashboard' : '/login'}
+              className="relative group bg-brand-brown text-white font-bold px-3 md:px-5 py-2 rounded-xl font-inter text-[9px] md:text-[10px] uppercase tracking-[0.12em] md:tracking-[0.15em] overflow-hidden transition-all duration-300 hover:scale-[1.04] active:scale-95 shadow-accent-soft flex items-center justify-center gap-1.5"
             >
               <span className="relative z-10 font-black">{isAuthenticated ? t('dashboard') : t('signIn')}</span>
               <div className="absolute inset-0 bg-white/25 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out skew-x-12" />
             </Link>
 
             <button
+              type="button"
               onClick={toggleMenu}
-              className="xl:hidden w-9 h-9 rounded-xl bg-slate-100 border border-slate-200 flex flex-col items-center justify-center gap-[4px] relative z-[130] group hover:bg-accent/15 hover:border-accent/30 transition-colors"
+              className="xl:hidden w-9 h-9 rounded-xl bg-slate-100 border border-slate-200 flex flex-col items-center justify-center gap-[4px] relative z-[130] group hover:bg-brand-brown/10 hover:border-brand-brown/25 transition-colors"
+              aria-expanded={isOpen}
+              aria-label="Open menu"
             >
-              <span ref={line1Ref} className="w-3.5 h-[2px] bg-slate-800 transition-colors group-hover:bg-accent" />
-              <span ref={line2Ref} className="w-4.5 h-[2px] bg-slate-800 transition-colors group-hover:bg-accent" />
-              <span ref={line3Ref} className="w-3.5 h-[2px] bg-slate-800 transition-colors group-hover:bg-accent" />
+              <span ref={line1Ref} className="w-3.5 h-[2px] bg-slate-800 transition-colors group-hover:bg-brand-brown" />
+              <span ref={line2Ref} className="w-4.5 h-[2px] bg-slate-800 transition-colors group-hover:bg-brand-brown" />
+              <span ref={line3Ref} className="w-3.5 h-[2px] bg-slate-800 transition-colors group-hover:bg-brand-brown" />
             </button>
           </div>
         </div>
       </nav>
 
-      {/* Multilayered Cascading Menu Overlay */}
       <div
         ref={menuRef}
         className="fixed inset-0 z-[110] h-[100dvh] overflow-hidden opacity-0 invisible"
       >
         <div ref={shutter1Ref} className="absolute inset-0 bg-slate-50 translate-x-full" />
-        <div ref={shutter2Ref} className="absolute inset-0 bg-amber-100/60 translate-x-full border-r border-amber-300/40 backdrop-blur-xl" />
+        <div
+          ref={shutter2Ref}
+          className="absolute inset-0 bg-amber-100/60 translate-x-full border-r border-amber-300/40 backdrop-blur-xl"
+        />
         <div ref={shutter3Ref} className="absolute inset-0 bg-white translate-x-full overflow-hidden">
           <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')] [background-size:200px_200px]" />
 
-          {/* Internal Menu Header */}
           <header className="menu-header absolute top-0 left-0 w-full px-8 md:px-12 py-8 md:py-10 flex items-center justify-between z-50">
-            <Link to="/" onClick={toggleMenu} className="flex items-center gap-3 hover:opacity-80 transition-opacity">
-              <img src="/dental_acadmy/dental.jpeg" alt="32 Pearls Dental Academy" className="h-10 md:h-12 w-auto object-contain" />
+            <Link to="/" onClick={() => setIsOpen(false)} className="flex items-center gap-3 hover:opacity-80 transition-opacity">
+              <img src="/meridian/logo.jpeg" alt="Meridian Group of Education" className="h-10 md:h-12 w-auto object-contain" />
             </Link>
 
             <button
+              type="button"
               onClick={toggleMenu}
               className="group w-12 h-12 md:w-14 md:h-14 flex items-center justify-center relative hover:scale-110 active:scale-90 transition-transform"
+              aria-label="Close menu"
             >
               <div className="absolute inset-0 bg-slate-100 rounded-xl scale-0 group-hover:scale-100 transition-transform duration-500 ease-expo" />
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="relative transition-transform duration-700 group-hover:rotate-180">
-                <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-normal" />
+                <path
+                  d="M18 6L6 18M6 6L18 18"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="text-normal"
+                />
               </svg>
             </button>
           </header>
 
-          <div className="relative z-10 flex flex-col items-center justify-center h-full gap-8 md:gap-12 px-8 text-center pt-28 md:pt-40 pb-12 overflow-y-auto">
-            <div className="flex flex-col items-center gap-5">
-              {navLinks.map((link) => (
-                <div key={link.key} className="flex flex-col items-center gap-2">
-                  <NavLink
-                    to={link.path}
-                    onClick={toggleMenu}
-                    className={({ isActive }) =>
-                      `menu-item font-newsreader text-2xl sm:text-4xl md:text-7xl font-extralight transition-all duration-300 block ${
-                        isActive ? 'text-accent italic' : 'text-slate-800 opacity-60 hover:opacity-100 hover:tracking-wider'
-                      }`
-                    }
-                  >
-                    <RollingText text={link.name} className="md:h-20 h-7 sm:h-10" />
-                  </NavLink>
-                </div>
-              ))}
+          <div className="relative z-10 flex flex-col items-center justify-center h-full gap-8 md:gap-10 px-8 text-center pt-28 md:pt-36 pb-12 overflow-y-auto">
+            <div className="flex flex-col items-center gap-4 md:gap-5 w-full max-w-lg">
+              <NavLink to="/" onClick={mobileLinkAfter} className="menu-item font-newsreader text-2xl sm:text-4xl md:text-6xl font-extralight text-slate-800 block w-full">
+                <RollingText text={t('home')} className="md:h-16 h-7 sm:h-10" />
+              </NavLink>
+              <a
+                href="/#about"
+                onClick={(e) => mobileHash(e, 'about')}
+                className="menu-item font-newsreader text-2xl sm:text-4xl md:text-6xl font-extralight text-slate-800 opacity-80 hover:opacity-100 block w-full"
+              >
+                <RollingText text={t('navAbout')} className="md:h-16 h-7 sm:h-10" />
+              </a>
+              <NavLink to="/courses" onClick={mobileLinkAfter} className="menu-item font-newsreader text-2xl sm:text-4xl md:text-6xl font-extralight text-slate-800 opacity-80 hover:opacity-100 block w-full">
+                <RollingText text={t('navCourses')} className="md:h-16 h-7 sm:h-10" />
+              </NavLink>
+              <NavLink to="/news" onClick={mobileLinkAfter} className="menu-item font-newsreader text-2xl sm:text-4xl md:text-6xl font-extralight text-slate-800 opacity-80 hover:opacity-100 block w-full">
+                <RollingText text={t('navBlog')} className="md:h-16 h-7 sm:h-10" />
+              </NavLink>
+              <NavLink to="/contact" onClick={mobileLinkAfter} className="menu-item font-newsreader text-2xl sm:text-4xl md:text-6xl font-extralight text-slate-800 opacity-80 hover:opacity-100 block w-full">
+                <RollingText text={t('navContact')} className="md:h-16 h-7 sm:h-10" />
+              </NavLink>
+              <Link
+                to="/contact#enquiry"
+                onClick={mobileLinkAfter}
+                className="menu-item mt-4 inline-flex items-center justify-center px-8 py-3.5 bg-accent text-brand-brown rounded-xl font-jetbrains text-[10px] uppercase tracking-[0.25em] font-bold"
+              >
+                {t('enquireNow')}
+              </Link>
             </div>
 
-            <div className="menu-item flex flex-col items-center gap-12 pt-4">
-
-              <div className="flex flex-col gap-8 items-center w-full px-4">
-                <div className="flex gap-6 items-center justify-center">
-                  {socialLinks.map((social) => (
-                    <a
-                      key={social.name}
-                      href={social.url}
-                      className="group relative p-2"
-                      aria-label={social.name}
-                      onClick={toggleMenu}
-                    >
-                      <svg
-                        width="18"
-                        height="18"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className="text-slate-500 hover:text-accent transition-all duration-300 hover:scale-110"
-                      >
-                        {social.isInsta ? (
-                          <>
-                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-                            <path d={social.icon} />
-                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
-                          </>
-                        ) : (
-                          <path d={social.icon} />
-                        )}
-                      </svg>
-                    </a>
-                  ))}
-                </div>
-                <div className="flex flex-col gap-2 items-center text-center w-full">
-                  <p className="font-jetbrains text-[9px] tracking-[0.3em] sm:tracking-[0.6em] text-slate-500 uppercase italic whitespace-normal">Where Ambition Meets Execution</p>
-                  <p className="font-jetbrains text-[8px] tracking-[0.1em] sm:tracking-[0.2em] text-slate-400 uppercase whitespace-normal">© 2026 32 PEARLS DENTAL ACADEMY. ALL RIGHTS RESERVED.</p>
-                </div>
-              </div>
+            <div className="menu-item flex flex-col items-center gap-8 pt-2 w-full">
+              <p className="font-jetbrains text-[9px] tracking-[0.3em] text-slate-500 uppercase italic">{t('navMobileTag')}</p>
             </div>
           </div>
         </div>

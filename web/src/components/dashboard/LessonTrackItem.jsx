@@ -1,6 +1,6 @@
 import React from 'react';
 
-const BRAND = '#C96A1B';
+const BRAND = '#D8B840';
 
 const LessonTrackItem = ({ title, progress, isActive, onPlay, unlocked = true, type = 'video' }) => {
     const getIcon = () => {

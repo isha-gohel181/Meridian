@@ -72,7 +72,7 @@ const ContinueLearning = () => {
             
             <button 
                onClick={() => navigate(`/dashboard/course/${lastSession.courseId}`)}
-               className="w-full md:w-auto bg-accent text-white px-8 py-3.5 rounded-xl font-inter text-[11px] font-bold tracking-widest uppercase hover:scale-[1.05] active:scale-95 transition-all shadow-accent-soft flex items-center justify-center gap-3 shrink-0"
+               className="w-full md:w-auto bg-brand-brown text-white px-8 py-3.5 rounded-xl font-inter text-[11px] font-bold tracking-widest uppercase hover:scale-[1.05] active:scale-95 transition-all shadow-accent-soft flex items-center justify-center gap-3 shrink-0"
             >
                {t('resume')}
                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">

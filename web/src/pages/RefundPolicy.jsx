@@ -17,7 +17,7 @@ const RefundPolicy = () => {
         
         <div className="refund-animate space-y-6 text-base leading-relaxed">
           <p>
-            Thank you for enrolling in 32 Pearls Dental Academy courses and services. We strive to provide the highest quality orthodontic education and clinical training. Please read our refund policy carefully.
+            Thank you for enrolling in Meridian Group of Education courses and services. We strive to provide the highest quality education and practical training. Please read our refund policy carefully.
           </p>
           
           <h2 className="text-xl font-bold text-amber-600 mt-6">1. Digital Products</h2>

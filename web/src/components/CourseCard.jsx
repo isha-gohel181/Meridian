@@ -20,7 +20,7 @@ const CourseCard = ({ item, className = '', variant = 'course', onRegister }) =>
   const CardContent = (
     <div className={`catalog-card flex flex-col h-full group ${className}`}>
       {/* Image Wrapper */}
-      <div className="relative overflow-hidden mb-8 aspect-square bg-[#FFF9F3] border border-[#682701]/10 rounded-none">
+      <div className="relative overflow-hidden mb-8 aspect-square bg-[#F5F8FA] border border-[#032746]/10 rounded-none">
         {item.image ? (
           <img
             src={item.image}
@@ -29,7 +29,7 @@ const CourseCard = ({ item, className = '', variant = 'course', onRegister }) =>
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center px-4">
-            <span className="font-jetbrains text-[9px] uppercase tracking-[0.2em] text-[#682701]/40 text-center">
+            <span className="font-jetbrains text-[9px] uppercase tracking-[0.2em] text-[#032746]/40 text-center">
               {t('noPreview') || 'No preview'}
             </span>
           </div>
@@ -86,7 +86,7 @@ const CourseCard = ({ item, className = '', variant = 'course', onRegister }) =>
             <button 
               type="button"
               onClick={handleAction}
-              className="w-full py-3 bg-accent text-white font-montserrat text-[11px] font-bold tracking-[0.2em] uppercase hover:scale-[1.02] active:scale-98 shadow-sm transition-all duration-300 cursor-pointer text-center"
+              className="w-full py-3 bg-brand-brown text-white font-montserrat text-[11px] font-bold tracking-[0.2em] uppercase hover:scale-[1.02] active:scale-98 shadow-sm transition-all duration-300 cursor-pointer text-center"
             >
               {item.buttonText || t('registerNow') || 'REGISTER NOW'}
             </button>

@@ -11,7 +11,7 @@ const sizeClasses = {
   lg: "h-24 w-auto max-w-[240px]",
 };
 
-/** Circular dental academy mark — no background chip or wrapper. */
+/** Meridian logo mark — no background chip or wrapper. */
 export default function BrandLogo({
   size = "md",
   className = "",

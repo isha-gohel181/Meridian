@@ -18,9 +18,9 @@ function getArg(name, fallback) {
   return args[i + 1];
 }
 
-const ADMIN_EMAIL = getArg("--admin-email", "admin@32pearlsdental.in");
+const ADMIN_EMAIL = getArg("--admin-email", "admin@meridiangroupofeducation.in");
 const ADMIN_PASSWORD = getArg("--admin-password", "Admin@123");
-const STUDENT_EMAIL = getArg("--student-email", "student@32pearlsdental.in");
+const STUDENT_EMAIL = getArg("--student-email", "student@meridiangroupofeducation.in");
 const STUDENT_PASSWORD = getArg("--student-password", "Student@123");
 const LEGACY_ADMIN_EMAILS = ["admin@xpertqa.in", "admin@osacademy.com"];
 
@@ -114,7 +114,7 @@ async function main() {
     email: ADMIN_EMAIL,
     password: ADMIN_PASSWORD,
     role: "admin",
-    fullName: "32 Pearls Admin",
+    fullName: "Meridian Admin",
   });
   console.log(`✅ Admin ${adminResult.action}: ${adminResult.email}`);
 
@@ -122,7 +122,7 @@ async function main() {
     email: STUDENT_EMAIL,
     password: STUDENT_PASSWORD,
     role: "student",
-    fullName: "32 Pearls Student",
+    fullName: "Meridian Student",
   });
   console.log(`✅ Student ${studentResult.action}: ${studentResult.email}`);
 

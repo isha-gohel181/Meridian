@@ -200,7 +200,7 @@ const Checkout = () => {
             key: rKey,
             amount: rAmount,
             currency: razor.currency || 'INR',
-            name: '32 Pearls Dental Academy',
+            name: 'Meridian Group of Education',
             description: course.title || 'Course Purchase',
             order_id: order.id,
             handler: async function (response) {
@@ -240,7 +240,7 @@ const Checkout = () => {
                courseId: course._id || '',
                planId: selectedPlan.id || ''
             },
-            theme: { color: '#C96A1B' }
+            theme: { color: '#D8B840' }
          }
 
          const rzp = new window.Razorpay(options)
@@ -413,7 +413,7 @@ const Checkout = () => {
                   </div>
                )}
                {/* Gradients */}
-               <div className="absolute inset-0 bg-gradient-to-r from-[#2B1A12]/95 via-[#3a1e06]/80 to-[#682701]/45" />
+               <div className="absolute inset-0 bg-gradient-to-r from-[#2B1A12]/95 via-[#3a1e06]/80 to-[#032746]/45" />
                <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-[#2B1A12]/95" />
             </div>
 
@@ -446,7 +446,7 @@ const Checkout = () => {
 
                   <div className="inline-flex items-center gap-2 bg-accent/15 border border-accent/35 px-3 py-1 rounded-full backdrop-blur-md">
                      <div className="w-2 h-2 bg-accent-secondary rounded-full animate-pulse" />
-                     <span className="font-jetbrains text-[10px] text-amber-100 tracking-[0.2em] font-bold uppercase">32 Pearls Dental Academy Certified</span>
+                     <span className="font-jetbrains text-[10px] text-amber-100 tracking-[0.2em] font-bold uppercase">Meridian Group of Education Certified</span>
                   </div>
                </div>
 
@@ -557,7 +557,7 @@ const Checkout = () => {
                                  type="button"
                                  onClick={sendOtp}
                                  disabled={sendingOtp || !formData.email}
-                                 className="font-jetbrains inline-flex items-center gap-2 px-4 py-2 bg-accent hover:bg-amber-600 text-white text-[10px] font-bold uppercase tracking-[0.15em] rounded-xl transition-all shadow-accent-soft cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                                 className="font-jetbrains inline-flex items-center gap-2 px-4 py-2 bg-brand-brown hover:bg-brand-brown/90 text-white text-[10px] font-bold uppercase tracking-[0.15em] rounded-xl transition-all shadow-accent-soft cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                               >
                                  {sendingOtp ? 'Sending OTP...' : 'Verify Email'}
                               </button>
@@ -656,7 +656,7 @@ const Checkout = () => {
                                     type="button"
                                     onClick={handleApplyCoupon}
                                     disabled={couponLoading || !formData.coupon}
-                                    className="font-jetbrains px-4 py-2.5 bg-accent hover:bg-amber-600 text-white text-[10px] font-bold uppercase tracking-[0.15em] rounded-xl transition-all shadow-accent-soft shrink-0 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                                    className="font-jetbrains px-4 py-2.5 bg-brand-brown hover:bg-brand-brown/90 text-white text-[10px] font-bold uppercase tracking-[0.15em] rounded-xl transition-all shadow-accent-soft shrink-0 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                                  >
                                     {couponLoading ? '...' : 'Apply'}
                                  </button>
@@ -687,7 +687,7 @@ const Checkout = () => {
                         <button 
                            onClick={handlePayment} 
                            type="button" 
-                           className="w-full bg-accent hover:bg-amber-600 text-white py-4 px-6 rounded-xl font-jetbrains font-bold uppercase tracking-[0.12em] text-sm shadow-accent-soft transition-all flex items-center justify-center gap-3 cursor-pointer"
+                           className="w-full bg-brand-brown hover:bg-brand-brown/90 text-white py-4 px-6 rounded-xl font-jetbrains font-bold uppercase tracking-[0.12em] text-sm shadow-accent-soft transition-all flex items-center justify-center gap-3 cursor-pointer"
                         >
                            <span>Complete Payment • ₹{displayTotal}</span>
                            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
@@ -746,7 +746,7 @@ const Checkout = () => {
                      <button type="button" onClick={() => { setShowOTPModal(false); setOtp(''); setOtpMessage('') }} className="px-4 py-2 border border-slate-300 hover:bg-slate-50 rounded-xl text-xs font-semibold text-slate-700 cursor-pointer">
                         Cancel
                      </button>
-                     <button type="button" onClick={verifyOtp} disabled={verifyingOtp} className="px-4 py-2 bg-accent hover:bg-amber-600 text-white rounded-xl text-xs font-bold shadow-accent-soft cursor-pointer disabled:opacity-50">
+                     <button type="button" onClick={verifyOtp} disabled={verifyingOtp} className="px-4 py-2 bg-brand-brown hover:bg-brand-brown/90 text-white rounded-xl text-xs font-bold shadow-accent-soft cursor-pointer disabled:opacity-50">
                         {verifyingOtp ? 'Verifying...' : 'Verify OTP'}
                      </button>
                   </div>
@@ -774,7 +774,7 @@ const Checkout = () => {
 
                   <button
                      onClick={() => navigate('/dashboard/my-courses')}
-                     className="w-full bg-accent hover:bg-amber-600 text-white py-3.5 rounded-xl font-bold text-sm shadow-accent-soft transition-all flex justify-center items-center gap-2 cursor-pointer"
+                     className="w-full bg-brand-brown hover:bg-brand-brown/90 text-white py-3.5 rounded-xl font-bold text-sm shadow-accent-soft transition-all flex justify-center items-center gap-2 cursor-pointer"
                   >
                      <span>Go to My Courses</span>
                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>

@@ -170,7 +170,7 @@ const FreeContent = () => {
               Free <span className="italic font-normal text-amber-600">Knowledge Hub</span>
             </h1>
             <p className="mt-3 text-slate-600 max-w-2xl text-sm sm:text-base leading-relaxed">
-              Explore free orthodontic learning resources—downloadable guides, video sessions, and quizzes from 32 Pearls Dental Academy.
+              Explore free learning resources—downloadable guides, video sessions, and quizzes from Meridian Group of Education.
             </p>
           </div>
 
@@ -391,7 +391,7 @@ const FreeContent = () => {
                     <div className="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between gap-3">
                       <button
                         onClick={() => setActivePdfModal(pdf)}
-                        className="flex-1 py-2.5 px-4 bg-slate-900 hover:bg-amber-600 text-white font-mono text-xs font-bold uppercase tracking-wider rounded-xl transition-colors text-center flex items-center justify-center gap-2"
+                        className="flex-1 py-2.5 px-4 bg-slate-900 hover:bg-brand-brown/90 text-white font-mono text-xs font-bold uppercase tracking-wider rounded-xl transition-colors text-center flex items-center justify-center gap-2"
                       >
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                           <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
@@ -610,7 +610,7 @@ const FreeContent = () => {
                       </div>
                       <button
                         onClick={() => startQuiz(test)}
-                        className="py-2.5 px-5 bg-slate-900 hover:bg-amber-600 text-white font-mono text-xs font-bold uppercase tracking-wider rounded-xl transition-all shadow-sm hover:shadow flex items-center gap-1.5"
+                        className="py-2.5 px-5 bg-slate-900 hover:bg-brand-brown/90 text-white font-mono text-xs font-bold uppercase tracking-wider rounded-xl transition-all shadow-sm hover:shadow flex items-center gap-1.5"
                       >
                         <span>Start Test</span>
                         <span>→</span>
@@ -639,7 +639,7 @@ const FreeContent = () => {
                   setSelectedCategory('All')
                   setActiveTab('all')
                 }}
-                className="mt-5 px-5 py-2.5 bg-amber-500 text-white text-xs font-mono font-bold uppercase tracking-wider rounded-xl hover:bg-amber-600 transition-colors"
+                className="mt-5 px-5 py-2.5 bg-amber-500 text-white text-xs font-mono font-bold uppercase tracking-wider rounded-xl hover:bg-brand-brown/90 transition-colors"
               >
                 Reset All Filters
               </button>
@@ -722,7 +722,7 @@ const FreeContent = () => {
                     alert(`Download started for "${activePdfModal.title}"`);
                     setActivePdfModal(null);
                   }}
-                  className="px-6 py-2.5 bg-amber-500 hover:bg-amber-600 text-white text-xs font-mono font-bold uppercase tracking-wider rounded-xl transition-all shadow-md flex items-center gap-2"
+                  className="px-6 py-2.5 bg-amber-500 hover:bg-brand-brown/90 text-white text-xs font-mono font-bold uppercase tracking-wider rounded-xl transition-all shadow-md flex items-center gap-2"
                 >
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
@@ -807,10 +807,10 @@ const FreeContent = () => {
 
             {/* Modal Footer */}
             <div className="p-4 px-6 border-t border-slate-100 bg-slate-50 flex items-center justify-between">
-              <span className="text-xs text-slate-500">Free open lecture provided by 32 Pearls Dental Academy</span>
+              <span className="text-xs text-slate-500">Free open lecture provided by Meridian Group of Education</span>
               <button
                 onClick={() => setActiveClassModal(null)}
-                className="px-6 py-2.5 bg-slate-900 hover:bg-amber-600 text-white font-mono text-xs font-bold uppercase tracking-wider rounded-xl transition-colors"
+                className="px-6 py-2.5 bg-slate-900 hover:bg-brand-brown/90 text-white font-mono text-xs font-bold uppercase tracking-wider rounded-xl transition-colors"
               >
                 Close Player
               </button>
@@ -996,14 +996,14 @@ const FreeContent = () => {
                     {currentQuizIndex < activeQuizModal.questions.length - 1 ? (
                       <button
                         onClick={() => setCurrentQuizIndex((prev) => prev + 1)}
-                        className="px-6 py-2.5 bg-slate-900 hover:bg-amber-600 text-white font-mono text-xs font-bold uppercase tracking-wider rounded-xl transition-colors"
+                        className="px-6 py-2.5 bg-slate-900 hover:bg-brand-brown/90 text-white font-mono text-xs font-bold uppercase tracking-wider rounded-xl transition-colors"
                       >
                         Next →
                       </button>
                     ) : (
                       <button
                         onClick={() => setQuizSubmitted(true)}
-                        className="px-6 py-2.5 bg-amber-500 hover:bg-amber-600 text-white font-mono text-xs font-bold uppercase tracking-wider rounded-xl transition-colors shadow-md"
+                        className="px-6 py-2.5 bg-amber-500 hover:bg-brand-brown/90 text-white font-mono text-xs font-bold uppercase tracking-wider rounded-xl transition-colors shadow-md"
                       >
                         Submit Test ✓
                       </button>
@@ -1020,7 +1020,7 @@ const FreeContent = () => {
                   </button>
                   <button
                     onClick={() => setActiveQuizModal(null)}
-                    className="px-6 py-2.5 bg-slate-900 hover:bg-amber-600 text-white font-mono text-xs font-bold uppercase tracking-wider rounded-xl transition-colors"
+                    className="px-6 py-2.5 bg-slate-900 hover:bg-brand-brown/90 text-white font-mono text-xs font-bold uppercase tracking-wider rounded-xl transition-colors"
                   >
                     Done & Exit
                   </button>

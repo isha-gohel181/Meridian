@@ -108,7 +108,7 @@ export default function AddEditEbook() {
 
   return (
     <div>
-      <PageMeta title={`${isEdit ? 'Edit' : 'Add'} Book | 32 Pearls Dental Academy`} description="Manage Book" />
+      <PageMeta title={`${isEdit ? 'Edit' : 'Add'} Book | Meridian Group of Education`} description="Manage Book" />
       <PageBreadcrumb pageTitle={`${isEdit ? 'Edit' : 'Add'} Book`} />
       <div className="bg-white rounded-2xl border border-gray-200 p-6 dark:bg-gray-900 dark:border-gray-800">
         <h2 className="text-lg font-semibold mb-4 text-gray-800 dark:text-white/90">Ebook Form</h2>

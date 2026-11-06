@@ -5,7 +5,7 @@ import { useLanguage } from '../context/LanguageContext'
 
 const FormatCard = ({ title, desc, imageSrc, imageAlt, ctaLabel }) => (
   <div className="group relative flex flex-col h-full bg-white border border-card-border rounded-2xl overflow-hidden shadow-sm hover:border-accent/35 hover:shadow-lg transition-all duration-300">
-    <div className="relative aspect-[16/10] overflow-hidden bg-[#FFF9F3]">
+    <div className="relative aspect-[16/10] overflow-hidden bg-[#F5F8FA]">
       <img
         src={imageSrc}
         alt={imageAlt}

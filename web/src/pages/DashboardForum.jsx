@@ -463,7 +463,7 @@ const DashboardForum = () => {
                   <button
                     type="button"
                     onClick={() => setIsModalOpen(true)}
-                    className="md:hidden bg-accent text-white px-5 py-2.5 font-jetbrains text-[10px] font-black uppercase tracking-widest rounded-xl shadow-accent-soft border border-accent"
+                    className="md:hidden bg-brand-brown text-white px-5 py-2.5 font-jetbrains text-[10px] font-black uppercase tracking-widest rounded-xl shadow-accent-soft border border-accent"
                   >
                     {t('startNewTopic')}
                   </button>
@@ -483,7 +483,7 @@ const DashboardForum = () => {
                   <button
                     type="button"
                     onClick={() => setIsModalOpen(true)}
-                    className="mt-8 bg-accent text-white px-8 py-3 font-jetbrains text-[11px] font-black uppercase tracking-[0.3em] rounded-xl shadow-accent-soft border border-accent hover:brightness-105 transition-all"
+                    className="mt-8 bg-brand-brown text-white px-8 py-3 font-jetbrains text-[11px] font-black uppercase tracking-[0.3em] rounded-xl shadow-accent-soft border border-accent hover:brightness-105 transition-all"
                   >
                     {t('startNewTopic')}
                   </button>
@@ -504,10 +504,10 @@ const DashboardForum = () => {
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(true)}
-                  className="w-full bg-accent text-white p-8 font-jetbrains text-[11px] font-black uppercase tracking-[0.4em] hover:scale-[1.02] active:scale-95 transition-all shadow-accent-soft flex flex-col items-center justify-center text-center gap-4 group rounded-2xl border border-accent"
+                  className="w-full bg-brand-brown text-white p-8 font-jetbrains text-[11px] font-black uppercase tracking-[0.4em] hover:scale-[1.02] active:scale-95 transition-all shadow-accent-soft flex flex-col items-center justify-center text-center gap-4 group rounded-2xl border border-accent"
                 >
                   <div className="w-14 h-14 rounded-full bg-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-all duration-300">
-                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#C96A1B" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#D8B840" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
                       <line x1="12" y1="5" x2="12" y2="19" />
                       <line x1="5" y1="12" x2="19" y2="12" />
                     </svg>

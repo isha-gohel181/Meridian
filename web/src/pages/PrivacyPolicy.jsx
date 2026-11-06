@@ -18,7 +18,7 @@ const PrivacyPolicy = () => {
         <div className="privacy-animate space-y-6 text-base leading-relaxed">
           <p><strong>Effective Date:</strong> January 1, 2026</p>
           <p>
-            At 32 Pearls Dental Academy, we take your privacy and data security seriously. This Privacy Policy explains how we collect, use, and protect your personal information when you use our website, application, and learning platform.
+            At Meridian Group of Education, we take your privacy and data security seriously. This Privacy Policy explains how we collect, use, and protect your personal information when you use our website, application, and learning platform.
           </p>
 
           <h2 className="text-xl font-bold text-amber-600 mt-6">1. Information We Collect</h2>

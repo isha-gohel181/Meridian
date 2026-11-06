@@ -877,9 +877,14 @@ export const registerOrUpdateDevice = async (userId, deviceId, deviceInfo) => {
 // Login controller
 export const login = async (req, res) => {
   try {
-    //console.log("📩 Request Body user login:", req.body);
-
     const { email, password, deviceId, platform } = req.body;
+    if (email) {
+      console.log("[auth] POST /login", {
+        email: String(email).trim().toLowerCase(),
+        platform: platform || "web",
+        ip: req.ip || req.connection?.remoteAddress,
+      });
+    }
     const isWeb = platform === 'web';
 
     const deviceInfo = {

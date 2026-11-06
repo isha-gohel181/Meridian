@@ -51,7 +51,7 @@ const DashboardReading = () => {
             >
                 <Link
                     to="/dashboard/my-courses"
-                    className="inline-flex px-6 py-3 rounded-xl bg-accent text-white text-sm font-semibold hover:opacity-90"
+                    className="inline-flex px-6 py-3 rounded-xl bg-brand-brown text-white text-sm font-semibold hover:opacity-90"
                 >
                     Back to my courses
                 </Link>
@@ -117,7 +117,7 @@ const DashboardReading = () => {
                                             href={href}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="shrink-0 px-4 py-2 rounded-lg bg-accent text-white text-sm font-semibold hover:opacity-90"
+                                            className="shrink-0 px-4 py-2 rounded-lg bg-brand-brown text-white text-sm font-semibold hover:opacity-90"
                                         >
                                             Download
                                         </a>

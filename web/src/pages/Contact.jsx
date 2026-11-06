@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useLayoutEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { gsap } from 'gsap';
 import { submitContactQuery, resetSupportState } from '../redux/slices/supportSlice';
@@ -9,6 +9,10 @@ import {
     WHATSAPP_URL,
     getSupportEmailDisplay,
     getSupportPhoneDisplay,
+    getSupportPhoneAltDisplay,
+    getWhatsAppPhoneDisplay,
+    SUPPORT_PHONE_ALT_TEL,
+    APP_TAGLINE,
 } from '../constants/brand';
 
 const Contact = () => {
@@ -31,9 +35,15 @@ const Contact = () => {
 
     const [showSuccessOverlay, setShowSuccessOverlay] = useState(false);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         dispatch(resetSupportState());
         window.scrollTo(0, 0);
+
+        if (window.location.hash === '#enquiry') {
+            requestAnimationFrame(() => {
+                document.getElementById('enquiry')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        }
 
         // GSAP Animations
         const ctx = gsap.context(() => {
@@ -65,6 +75,7 @@ const Contact = () => {
     }, [dispatch]);
 
     // Prefill user data if auth state changes
+    /* eslint-disable react-hooks/set-state-in-effect -- intentional sync when auth user loads */
     useEffect(() => {
         if (user) {
             setFormData(prev => ({
@@ -74,8 +85,10 @@ const Contact = () => {
             }));
         }
     }, [user]);
+    /* eslint-enable react-hooks/set-state-in-effect */
 
     // Handle ticket submission status changes
+    /* eslint-disable react-hooks/set-state-in-effect -- success flag from Redux submission */
     useEffect(() => {
         if (success) {
             setShowSuccessOverlay(true);
@@ -91,6 +104,7 @@ const Contact = () => {
             dispatch(resetSupportState());
         }
     }, [success, dispatch, user]);
+    /* eslint-enable react-hooks/set-state-in-effect */
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -161,7 +175,7 @@ const Contact = () => {
 
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-start">
                     {/* Left Column: Form */}
-                    <div className="lg:col-span-7 space-y-10 contact-reveal">
+                    <div id="enquiry" className="lg:col-span-7 space-y-10 contact-reveal scroll-mt-28 md:scroll-mt-36">
                         <div className="space-y-2">
                             <h2 className="font-newsreader italic text-3xl text-slate-900 font-bold tracking-tight uppercase">
                                 {t('sendMessage')}
@@ -273,14 +287,14 @@ const Contact = () => {
                                 <div className="flex justify-between items-center opacity-40">
                                     <span className="font-jetbrains text-[8px] tracking-[0.4em] uppercase text-slate-500">Official Details</span>
                                     <div className="h-[1px] w-16 bg-slate-300" />
-                                    <span className="font-jetbrains text-[8px] tracking-[0.1em] uppercase text-slate-500">32 Pearls Dental Academy</span>
+                                    <span className="font-jetbrains text-[8px] tracking-[0.1em] uppercase text-slate-500">Meridian Group of Education</span>
                                 </div>
 
                                 <div className="space-y-6">
                                     <div className="space-y-1">
-                                        <h3 className="font-newsreader text-2xl italic text-slate-900 font-bold">32 Pearls Dental Academy</h3>
+                                        <h3 className="font-newsreader text-2xl italic text-slate-900 font-bold">Meridian Group of Education</h3>
                                         <p className="font-jetbrains text-xs text-amber-800 font-bold uppercase tracking-wider">
-                                            Orthodontic Education &amp; Clinical Training
+                                            {APP_TAGLINE}
                                         </p>
                                     </div>
 
@@ -300,6 +314,21 @@ const Contact = () => {
                                     </div>
 
                                     <div className="space-y-2 pt-4 border-t border-slate-100">
+                                        <span className="font-jetbrains text-[9px] uppercase tracking-[0.3em] font-bold text-slate-500 block">Alternative phone</span>
+                                        <div className="flex items-center gap-2">
+                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-amber-600 shrink-0">
+                                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                                            </svg>
+                                            <a
+                                                href={`tel:${SUPPORT_PHONE_ALT_TEL}`}
+                                                className="font-jetbrains text-base md:text-lg font-bold text-slate-900 hover:text-amber-600 transition-colors"
+                                            >
+                                                {getSupportPhoneAltDisplay()}
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    <div className="space-y-2 pt-4 border-t border-slate-100">
                                         <span className="font-jetbrains text-[9px] uppercase tracking-[0.3em] font-bold text-slate-500 block">WhatsApp</span>
                                         <div className="flex items-center gap-2">
                                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-amber-600 shrink-0">
@@ -311,7 +340,7 @@ const Contact = () => {
                                                 rel="noopener noreferrer"
                                                 className="font-jetbrains text-base md:text-lg font-bold text-slate-900 hover:text-amber-600 transition-colors"
                                             >
-                                                {getSupportPhoneDisplay()}
+                                                {getWhatsAppPhoneDisplay()}
                                             </a>
                                         </div>
                                     </div>

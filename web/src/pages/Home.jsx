@@ -1,20 +1,23 @@
-import { useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { fetchCourses } from '../redux/slices/courseSlice'
-import Hero from '../components/Hero'
-import CourseFormatsSection from '../components/CourseFormatsSection'
-import TrainingExperienceSection from '../components/TrainingExperienceSection'
+import LandingPortalHero from '../components/landing/LandingPortalHero'
+import LandingStats from '../components/landing/LandingStats'
+import LandingBendingMarquee from '../components/landing/LandingBendingMarquee'
+import LandingMarqueeStrip from '../components/landing/LandingMarqueeStrip'
+import LandingStatementFold from '../components/landing/LandingStatementFold'
 import LandingCoursesSection from '../components/LandingCoursesSection'
-import WhyPearlsSection from '../components/WhyPearlsSection'
-import LearningPathSection from '../components/LearningPathSection'
-import MentorSection from '../components/MentorSection'
-import AlumniCasesStrip from '../components/AlumniCasesStrip'
 import TestimonialsScroll from '../components/TestimonialsScroll'
-import LandingCertificateSection from '../components/LandingCertificateSection'
-import LandingPricingTeaser from '../components/LandingPricingTeaser'
-import HomeFAQSection from '../components/HomeFAQSection'
+import LandingDiary from '../components/landing/LandingDiary'
+import LandingAbout from '../components/landing/LandingAbout'
+import LandingWhyChoose from '../components/landing/LandingWhyChoose'
+import LandingMissionVision from '../components/landing/LandingMissionVision'
+import LandingFacultyRoster from '../components/landing/LandingFacultyRoster'
+import LandingProgramDates from '../components/landing/LandingProgramDates'
+import LandingHomeClose from '../components/landing/LandingHomeClose'
+import LandingContactCta from '../components/landing/LandingContactCta'
 
-const Home = ({ isLoaded }) => {
+const Home = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -22,19 +25,22 @@ const Home = ({ isLoaded }) => {
   }, [dispatch])
 
   return (
-    <div className="w-full">
-      <Hero isLoaded={isLoaded} />
-      <CourseFormatsSection />
-      <TrainingExperienceSection />
+    <div className="w-full bg-slate-50">
+      <LandingPortalHero />
+      <LandingStats />
+      <LandingBendingMarquee />
+      <LandingStatementFold />
       <LandingCoursesSection />
-      <WhyPearlsSection />
-      <LearningPathSection />
-      <MentorSection />
-      <AlumniCasesStrip />
       <TestimonialsScroll variant="landing" />
-      <LandingCertificateSection />
-      <LandingPricingTeaser />
-      <HomeFAQSection />
+      <LandingAbout />
+      <LandingDiary />
+      <LandingWhyChoose />
+      <LandingMissionVision />
+      <LandingMarqueeStrip />
+      <LandingFacultyRoster />
+      <LandingProgramDates />
+      <LandingHomeClose />
+      <LandingContactCta />
     </div>
   )
 }

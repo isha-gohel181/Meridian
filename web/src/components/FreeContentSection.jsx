@@ -31,7 +31,7 @@ const FreeContentSection = () => {
 
         <Link
           to="/free-content"
-          className="group inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-slate-900 hover:bg-amber-600 text-white font-mono text-xs font-bold uppercase tracking-wider transition-all shadow-sm shrink-0"
+          className="group inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-slate-900 hover:bg-brand-brown/90 text-white font-mono text-xs font-bold uppercase tracking-wider transition-all shadow-sm shrink-0"
         >
           <span>Explore All Free Library</span>
           <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>

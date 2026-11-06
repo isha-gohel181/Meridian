@@ -150,7 +150,7 @@ const DashboardAssignment = () => {
                 title="Assignment not found"
                 subtitle="This assignment may not be published yet."
             >
-                <Link to="/dashboard/my-courses" className="inline-flex px-6 py-3 rounded-xl bg-accent text-white text-sm font-semibold hover:opacity-90">
+                <Link to="/dashboard/my-courses" className="inline-flex px-6 py-3 rounded-xl bg-brand-brown text-white text-sm font-semibold hover:opacity-90">
                     Back to my courses
                 </Link>
             </LessonPageLayout>
@@ -203,7 +203,7 @@ const DashboardAssignment = () => {
                                                     <p className="font-medium text-slate-900">Assignment document</p>
                                                     <p className="text-xs text-slate-500">PDF</p>
                                                 </div>
-                                                <a href={buildMediaUrl(assignment.documentFile)} target="_blank" rel="noopener noreferrer" className="shrink-0 px-4 py-2 rounded-lg bg-accent text-white text-sm font-semibold hover:opacity-90">View PDF</a>
+                                                <a href={buildMediaUrl(assignment.documentFile)} target="_blank" rel="noopener noreferrer" className="shrink-0 px-4 py-2 rounded-lg bg-brand-brown text-white text-sm font-semibold hover:opacity-90">View PDF</a>
                                             </div>
                                         )}
                                         {assignment.attachmentFile && (
@@ -212,7 +212,7 @@ const DashboardAssignment = () => {
                                                     <p className="font-medium text-slate-900">Reference material</p>
                                                     <p className="text-xs text-slate-500">Attachment</p>
                                                 </div>
-                                                <a href={buildMediaUrl(assignment.attachmentFile)} target="_blank" rel="noopener noreferrer" className="shrink-0 px-4 py-2 rounded-lg bg-accent text-white text-sm font-semibold hover:opacity-90">Open</a>
+                                                <a href={buildMediaUrl(assignment.attachmentFile)} target="_blank" rel="noopener noreferrer" className="shrink-0 px-4 py-2 rounded-lg bg-brand-brown text-white text-sm font-semibold hover:opacity-90">Open</a>
                                             </div>
                                         )}
                                     </div>
@@ -254,7 +254,7 @@ const DashboardAssignment = () => {
                                     </div>
                                 )}
                             </div>
-                            <button type="button" onClick={handleSubmit} disabled={isSubmitting} className="w-full sm:w-auto px-8 py-3 rounded-xl bg-accent text-white font-semibold hover:opacity-90 disabled:opacity-50 flex items-center justify-center gap-2">
+                            <button type="button" onClick={handleSubmit} disabled={isSubmitting} className="w-full sm:w-auto px-8 py-3 rounded-xl bg-brand-brown text-white font-semibold hover:opacity-90 disabled:opacity-50 flex items-center justify-center gap-2">
                                 {isSubmitting ? 'Submitting…' : 'Submit assignment'}
                             </button>
                         </section>
@@ -301,7 +301,7 @@ const DashboardAssignment = () => {
                             <div className="flex justify-between gap-4"><dt className="text-slate-500">Score</dt><dd className="font-medium text-slate-900">{assignment.score} / {assignment.maxScore}</dd></div>
                             <div className="flex justify-between gap-4"><dt className="text-slate-500">Language</dt><dd className="font-medium text-slate-900">{assignment.language}</dd></div>
                         </dl>
-                        <button type="button" onClick={() => setActiveTab('submission')} className="w-full py-3 rounded-xl bg-accent text-white font-semibold hover:opacity-90">
+                        <button type="button" onClick={() => setActiveTab('submission')} className="w-full py-3 rounded-xl bg-brand-brown text-white font-semibold hover:opacity-90">
                             Go to submission
                         </button>
                     </div>
@@ -317,7 +317,7 @@ const DashboardAssignment = () => {
                         <h2 className="font-newsreader italic text-2xl text-slate-900">Submitted successfully</h2>
                         <p className="text-sm text-slate-600">Your assignment was received. Feedback typically arrives within a few business days.</p>
                         <div className="flex flex-col gap-2">
-                            <button type="button" onClick={() => { setShowSuccessModal(false); setActiveTab('my_submissions'); }} className="w-full py-3 rounded-xl bg-accent text-white font-semibold">View my submissions</button>
+                            <button type="button" onClick={() => { setShowSuccessModal(false); setActiveTab('my_submissions'); }} className="w-full py-3 rounded-xl bg-brand-brown text-white font-semibold">View my submissions</button>
                             <button type="button" onClick={() => setShowSuccessModal(false)} className="w-full py-3 rounded-xl border border-slate-200 text-slate-700 font-semibold">Close</button>
                         </div>
                     </div>

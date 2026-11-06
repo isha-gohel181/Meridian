@@ -310,7 +310,7 @@ const QuestionCard = ({ question }) => {
                       <div className="absolute inset-0 bg-slate-950/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
                         <button 
                           onClick={() => setFullImageUrl(fullUrl)}
-                          className="p-3 bg-accent text-white rounded-xl shadow-md"
+                          className="p-3 bg-brand-brown text-white rounded-xl shadow-md"
                         >
                           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
                         </button>
@@ -522,7 +522,7 @@ const QuestionCard = ({ question }) => {
 
                   <button 
                     onClick={handlePublish}
-                    className="px-8 py-4 bg-accent text-white font-bold font-jetbrains text-[9px] tracking-[0.3em] uppercase hover:brightness-105 transition-all rounded-xl"
+                    className="px-8 py-4 bg-brand-brown text-white font-bold font-jetbrains text-[9px] tracking-[0.3em] uppercase hover:brightness-105 transition-all rounded-xl"
                   >
                     PUBLISH
                   </button>
@@ -642,7 +642,7 @@ const QuestionCard = ({ question }) => {
                 <div className="sidebar-reveal mb-12">
                    <button 
                      onClick={() => setIsModalOpen(true)}
-                     className="w-full bg-accent text-white p-8 md:p-10 font-jetbrains text-[11px] font-black uppercase tracking-[0.4em] hover:scale-[1.02] active:scale-95 transition-all shadow-accent-soft flex flex-col items-center justify-center text-center gap-4 group rounded-xl border border-accent cursor-pointer"
+                     className="w-full bg-brand-brown text-white p-8 md:p-10 font-jetbrains text-[11px] font-black uppercase tracking-[0.4em] hover:scale-[1.02] active:scale-95 transition-all shadow-accent-soft flex flex-col items-center justify-center text-center gap-4 group rounded-xl border border-accent cursor-pointer"
                    >
                       <div className="w-14 h-14 rounded-full bg-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-all duration-300">
                          <svg 
@@ -650,14 +650,14 @@ const QuestionCard = ({ question }) => {
                            height="26" 
                            viewBox="0 0 24 24" 
                            fill="none" 
-                           stroke="#C96A1B" 
+                           stroke="#D8B840" 
                            strokeWidth="3.5" 
                            strokeLinecap="round" 
                            strokeLinejoin="round" 
-                           style={{ stroke: '#C96A1B', color: '#C96A1B' }}
+                           style={{ stroke: '#D8B840', color: '#D8B840' }}
                          >
-                           <line x1="12" y1="5" x2="12" y2="19" style={{ stroke: '#C96A1B' }} />
-                           <line x1="5" y1="12" x2="19" y2="12" style={{ stroke: '#C96A1B' }} />
+                           <line x1="12" y1="5" x2="12" y2="19" style={{ stroke: '#D8B840' }} />
+                           <line x1="5" y1="12" x2="19" y2="12" style={{ stroke: '#D8B840' }} />
                          </svg>
                       </div>
                       <span className="text-white font-black tracking-[0.35em] text-[12px]">{t('startNewTopic')}</span>

@@ -448,7 +448,7 @@ const AppSidebar: React.FC = () => {
                       </span>
                     )}
                     <ChevronDownIcon
-                      className={`w-4 h-4 transition-transform duration-200 ${openSubmenu.includes(subMenuKey) ? "rotate-180" : ""
+                      className={`w-4 h-4 text-white/70 transition-transform duration-200 ${openSubmenu.includes(subMenuKey) ? "rotate-180" : ""
                         }`}
                     />
                   </span>
@@ -540,11 +540,11 @@ const AppSidebar: React.FC = () => {
                   <span className="menu-item-text">{nav.name}</span>
                 )}
                 {(isExpanded || isHovered || isMobileOpen) && (
-                  <ChevronDownIcon
+                    <ChevronDownIcon
                     className={`ml-auto w-4 h-4 transition-transform duration-200 ${openSubmenu.includes(menuKey)
                       ? "rotate-180 text-white"
                       : "text-white/70 group-hover:text-white"
-                      }`}
+                        }`}
                   />
                 )}
               </button>
@@ -632,7 +632,7 @@ const AppSidebar: React.FC = () => {
 
   return (
     <aside
-      className={`fixed mt-16 flex flex-col lg:mt-0 top-0 px-4 left-0 ${BRAND_SIDEBAR_CLASS} text-white h-screen transition-all duration-300 ease-in-out z-50 border-r border-white/10 shadow-xl
+      className={`fixed mt-16 flex flex-col lg:mt-0 top-0 px-4 left-0 ${BRAND_SIDEBAR_CLASS} text-white h-screen transition-all duration-300 ease-in-out z-50
         ${isExpanded || isMobileOpen
           ? "w-[290px]"
           : isHovered

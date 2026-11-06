@@ -5,7 +5,7 @@ import './AuthShowcase.css'
 const SLIDES = [
   {
     image: '/dental_acadmy/login-clinic.jpg',
-    fallback: '/dental_acadmy/dental.jpeg',
+    fallback: '/meridian/logo.jpeg',
   },
   {
     image: '/dental_acadmy/login-showcase-1.jpg',

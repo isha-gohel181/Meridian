@@ -1,6 +1,6 @@
 /**
- * Seeds the default published course certificate template for 32 Pearls Dental Academy.
- * Usage: node scripts/seed-pearls-certificate-template.mjs
+ * Seeds the default published course certificate template for Meridian Group of Education.
+ * Usage: node scripts/seed-meridian-certificate-template.mjs
  */
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
@@ -17,7 +17,7 @@ if (!MONGO_URI) {
 
 const { default: CertificateTemplate } = await import('../models/CertificateTemplate.js');
 const { default: User } = await import('../models/user.js');
-const { getDefaultPearlsTemplatePayload } = await import('../utils/pearlsCertificateTheme.js');
+const { getDefaultMeridianTemplatePayload } = await import('../utils/meridianCertificateTheme.js');
 
 async function main() {
   await mongoose.connect(MONGO_URI, { serverSelectionTimeoutMS: 30000 });
@@ -33,7 +33,7 @@ async function main() {
     process.exit(1);
   }
 
-  const payload = getDefaultPearlsTemplatePayload(admin._id);
+  const payload = getDefaultMeridianTemplatePayload(admin._id);
 
   const existing = await CertificateTemplate.findOne({
     title: payload.title,

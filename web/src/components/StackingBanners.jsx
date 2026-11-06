@@ -109,7 +109,7 @@ const StackingBanners = () => {
             <div className="pt-4 md:pt-6 flex items-center gap-8 group/all">
               <button 
                 onClick={() => navigate('/courses')}
-                className="px-12 py-6 rounded-xl font-montserrat text-[12px] font-bold tracking-[0.3em] relative group/btn overflow-hidden transition-all hover:scale-105 active:scale-95 bg-accent text-white w-fit shadow-[0_10px_40px_rgba(24, 120, 192,0.25)]"
+                className="px-12 py-6 rounded-xl font-montserrat text-[12px] font-bold tracking-[0.3em] relative group/btn overflow-hidden transition-all hover:scale-105 active:scale-95 bg-brand-brown text-white w-fit shadow-[0_10px_40px_rgba(24, 120, 192,0.25)]"
               >
                 <RollingText text={t('exploreAll') || 'EXPLORE ALL'} className="relative z-10" />
                 <div className="absolute inset-0 bg-white/20 translate-y-full group-hover/btn:translate-y-0 transition-transform duration-500"></div>
@@ -132,7 +132,7 @@ const StackingBanners = () => {
             </div>
           )}
           {bannersLoaded && bannerItems.length === 0 && (
-            <div className="h-[40vh] md:h-[50vh] flex items-center justify-center rounded-[2rem] border border-dashed border-[#682701]/20 bg-[#FFF9F3] px-8">
+            <div className="h-[40vh] md:h-[50vh] flex items-center justify-center rounded-[2rem] border border-dashed border-[#032746]/20 bg-[#F5F8FA] px-8">
               <p className="text-center font-montserrat text-sm font-medium uppercase tracking-[0.15em] text-description">
                 {t('selectionEmptyTitle')}
               </p>
@@ -152,7 +152,7 @@ const StackingBanners = () => {
               >
                 {/* Background Image Container */}
                 <div className="relative w-full h-full overflow-hidden group">
-                  <div className="w-full h-full transition-transform duration-700 group-hover:scale-105 bg-[#FFF9F3]">
+                  <div className="w-full h-full transition-transform duration-700 group-hover:scale-105 bg-[#F5F8FA]">
                     {card.image ? (
                       <img
                         alt={card.title || 'Module'}
@@ -161,7 +161,7 @@ const StackingBanners = () => {
                       />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center">
-                        <span className="font-jetbrains text-[10px] uppercase tracking-widest text-[#682701]/35">
+                        <span className="font-jetbrains text-[10px] uppercase tracking-widest text-[#032746]/35">
                           {t('noPreview') || 'No preview'}
                         </span>
                       </div>
@@ -176,7 +176,7 @@ const StackingBanners = () => {
                 <div className="absolute bottom-6 left-6 pointer-events-auto z-20">
                   <button 
                     onClick={() => handleCardClick(card)}
-                    className="px-8 py-5 rounded-xl font-montserrat text-[14px] font-bold tracking-[0.2em] relative group/btn overflow-hidden transition-all hover:scale-105 active:scale-95 bg-accent text-white w-fit shadow-md"
+                    className="px-8 py-5 rounded-xl font-montserrat text-[14px] font-bold tracking-[0.2em] relative group/btn overflow-hidden transition-all hover:scale-105 active:scale-95 bg-brand-brown text-white w-fit shadow-md"
                   >
                     <RollingText 
                       text={

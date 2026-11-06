@@ -86,7 +86,7 @@ const CertificatePricingSection = ({ course }) => {
                <div className="relative bg-white p-1 shadow-2xl overflow-hidden rounded-xl">
                   <img
                      src={certificateSrc}
-                     alt="32 Pearls Dental Academy Certificate of Completion"
+                     alt="Meridian Group of Education Certificate of Completion"
                      className="w-full h-auto transition-all duration-1000"
                   />
                </div>

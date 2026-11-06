@@ -2,7 +2,9 @@ import React, { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { Link } from 'react-router-dom'
+import { useLanguage } from '../context/LanguageContext'
 import {
+  APP_DISPLAY_NAME,
   LOGO_PATH,
   SUPPORT_EMAIL,
   ABOUT_US_FOOTER_EXCERPT,
@@ -10,11 +12,66 @@ import {
   WHATSAPP_URL,
   getSupportEmailDisplay,
   getSupportPhoneDisplay,
+  getSupportPhoneAltDisplay,
+  getWhatsAppPhoneDisplay,
+  SUPPORT_PHONE_ALT_TEL,
+  APP_TAGLINE,
+  BRAND_TAGLINE_SECONDARY,
 } from '../constants/brand'
 
 gsap.registerPlugin(ScrollTrigger)
 
+const SOCIALS = [
+  {
+    href: 'https://www.facebook.com',
+    label: 'Facebook',
+    icon: (
+      <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+    ),
+  },
+  {
+    href: 'https://x.com',
+    label: 'X (Twitter)',
+    icon: (
+      <path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154H7.594l5.243 6.932 6.064-6.933zm-1.292 19.49h2.039L6.486 3.24H4.298L17.61 20.644z" />
+    ),
+  },
+  {
+    href: 'https://www.instagram.com',
+    label: 'Instagram',
+    icon: (
+      <>
+        <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+      </>
+    ),
+  },
+  {
+    href: 'https://youtube.com',
+    label: 'YouTube',
+    icon: (
+      <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z M10 15V9l6 3z" />
+    ),
+  },
+  {
+    href: 'https://linkedin.com',
+    label: 'LinkedIn',
+    icon: (
+      <>
+        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+        <rect width="4" height="12" x="2" y="9" />
+        <circle cx="4" cy="4" r="2" />
+      </>
+    ),
+  },
+]
+
+const linkClass =
+  'text-[13px] text-brand-brown/70 transition-colors duration-200 hover:text-accent'
+
 const Footer = () => {
+  const { t } = useLanguage()
   const footerRef = useRef(null)
 
   useEffect(() => {
@@ -22,19 +79,22 @@ const Footer = () => {
       gsap.from('.footer-reveal', {
         scrollTrigger: {
           trigger: footerRef.current,
-          start: 'top 85%',
+          start: 'top 90%',
         },
-        y: 20,
+        y: 16,
         opacity: 0,
-        filter: 'blur(6px)',
-        stagger: 0.08,
-        duration: 0.8,
-        ease: 'power3.out'
+        stagger: 0.06,
+        duration: 0.7,
+        ease: 'power3.out',
       })
     }, footerRef)
 
     requestAnimationFrame(() => {
-      try { ScrollTrigger.refresh() } catch (e) { }
+      try {
+        ScrollTrigger.refresh()
+      } catch {
+        /* ignore */
+      }
     })
 
     return () => ctx.revert()
@@ -43,221 +103,173 @@ const Footer = () => {
   return (
     <footer
       ref={footerRef}
-      className="relative w-full bg-gradient-to-b from-[#C96A1B] to-[#682701] text-white border-t border-white/15 overflow-hidden select-none"
+      className="relative w-full overflow-hidden bg-slate-50 text-brand-brown select-none"
     >
-      {/* Decorative Ambient Background Soft Glows */}
-      <div className="absolute inset-0 pointer-events-none opacity-25">
-        <div className="absolute -top-32 -left-32 w-96 h-96 bg-white/20 blur-[140px] rounded-full" />
-        <div className="absolute -bottom-32 -right-32 w-96 h-96 bg-black/40 blur-[140px] rounded-full" />
-      </div>
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-brand-brown/20 to-transparent md:inset-x-14"
+      />
 
-      {/* Main Content Area */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pt-16 pb-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-12 pb-12 border-b border-white/15">
-          
-          {/* Column 1: Brand & Bio (4 cols) */}
-          <div className="footer-reveal lg:col-span-4 space-y-4">
-            <Link to="/" className="inline-block hover:opacity-90 transition-opacity" aria-label="32 Pearls Dental Academy Home">
+      <div className="relative z-10 mx-auto max-w-7xl px-6 pb-7 pt-6 sm:px-8 md:pt-8 lg:px-12">
+        <div className="grid gap-10 border-b border-brand-brown/10 pb-9 md:grid-cols-12 md:gap-8 lg:gap-12">
+          <div className="footer-reveal md:col-span-5">
+            <Link
+              to="/"
+              className="inline-block transition-opacity hover:opacity-80"
+              aria-label={`${APP_DISPLAY_NAME} Home`}
+            >
               <img
-                alt="32 Pearls Dental Academy"
-                className="h-14 md:h-16 w-auto max-w-[200px] object-contain drop-shadow-[0_8px_24px_rgba(0,0,0,0.25)]"
+                alt={APP_DISPLAY_NAME}
                 src={LOGO_PATH}
+                className="h-11 w-auto max-w-[168px] object-contain md:h-12"
               />
             </Link>
-
-            <p className="font-jetbrains text-xs md:text-sm text-white/85 leading-relaxed max-w-sm">
+            <p className="mt-4 max-w-sm font-newsreader text-xl italic leading-snug tracking-tight text-brand-brown md:text-[1.4rem]">
+              {BRAND_TAGLINE_SECONDARY}
+            </p>
+            <p className="mt-3 max-w-sm font-newsreader text-sm leading-relaxed text-brand-brown/60">
               {ABOUT_US_FOOTER_EXCERPT}
             </p>
-
-            {/* Social Icons */}
-            <div className="flex items-center gap-3 pt-2">
-              <a
-                href="https://www.facebook.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-9 h-9 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 flex items-center justify-center text-white transition-all duration-300 hover:scale-110"
-                aria-label="Facebook"
-              >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
-                </svg>
-              </a>
-
-              <a
-                href="https://x.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-9 h-9 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 flex items-center justify-center text-white transition-all duration-300 hover:scale-110"
-                aria-label="X (Twitter)"
-              >
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154H7.594l5.243 6.932 6.064-6.933zm-1.292 19.49h2.039L6.486 3.24H4.298L17.61 20.644z" />
-                </svg>
-              </a>
-
-              <a
-                href="https://www.instagram.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-9 h-9 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 flex items-center justify-center text-white transition-all duration-300 hover:scale-110"
-                aria-label="Instagram"
-              >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
-                </svg>
-              </a>
-
-              <a
-                href="https://youtube.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-9 h-9 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 flex items-center justify-center text-white transition-all duration-300 hover:scale-110"
-                aria-label="YouTube"
-              >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z M10 15V9l6 3z" />
-                </svg>
-              </a>
-
-              <a
-                href="https://linkedin.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-9 h-9 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 flex items-center justify-center text-white transition-all duration-300 hover:scale-110"
-                aria-label="LinkedIn"
-              >
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
-                  <rect width="4" height="12" x="2" y="9" />
-                  <circle cx="4" cy="4" r="2" />
-                </svg>
-              </a>
-            </div>
-          </div>
-
-          {/* Column 2: Quick Links (2 cols) */}
-          <div className="footer-reveal lg:col-span-2 space-y-4">
-            <h4 className="font-montserrat text-xs uppercase tracking-[0.2em] font-bold text-white/95">
-              Platform
-            </h4>
-            <ul className="space-y-2.5 font-jetbrains text-xs">
+            <ul className="mt-6 space-y-2 font-newsreader text-[13px] text-brand-brown/75">
               <li>
-                <Link to="/" className="text-white/80 hover:text-white transition-colors hover:translate-x-0.5 inline-block">
-                  Home
-                </Link>
-              </li>
-              <li>
-                <Link to="/courses" className="text-white/80 hover:text-white transition-colors hover:translate-x-0.5 inline-block">
-                  All Courses
-                </Link>
-              </li>
-              <li>
-                <Link to="/forum" className="text-white/80 hover:text-white transition-colors hover:translate-x-0.5 inline-block">
-                  Community Forum
-                </Link>
-              </li>
-              <li>
-                <Link to="/gig" className="text-white/80 hover:text-white transition-colors hover:translate-x-0.5 inline-block">
-                  Work & Gigs
-                </Link>
-              </li>
-              <li>
-                <Link to="/news" className="text-white/80 hover:text-white transition-colors hover:translate-x-0.5 inline-block">
-                  Industry News
-                </Link>
-              </li>
-              <li>
-                <Link to="/about-us" className="text-white/80 hover:text-white transition-colors hover:translate-x-0.5 inline-block">
-                  About Us
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Column 3: Legal & Policy (2 cols) */}
-          <div className="footer-reveal lg:col-span-2 space-y-4">
-            <h4 className="font-montserrat text-xs uppercase tracking-[0.2em] font-bold text-white/95">
-              Policies
-            </h4>
-            <ul className="space-y-2.5 font-jetbrains text-xs">
-              <li>
-                <Link to="/privacy-policy" className="text-white/80 hover:text-white transition-colors hover:translate-x-0.5 inline-block">
-                  Privacy Policy
-                </Link>
-              </li>
-              <li>
-                <Link to="/terms-conditions" className="text-white/80 hover:text-white transition-colors hover:translate-x-0.5 inline-block">
-                  Terms & Conditions
-                </Link>
-              </li>
-              <li>
-                <Link to="/refund-policy" className="text-white/80 hover:text-white transition-colors hover:translate-x-0.5 inline-block">
-                  Refund Policy
-                </Link>
-              </li>
-              <li>
-                <Link to="/contact" className="text-white/80 hover:text-white transition-colors hover:translate-x-0.5 inline-block">
-                  Contact Support
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Column 4: Contact (4 cols) */}
-          <div className="footer-reveal lg:col-span-4 space-y-4">
-            <h4 className="font-montserrat text-xs uppercase tracking-[0.2em] font-bold text-white/95">
-              Contact
-            </h4>
-
-            <div className="space-y-3 font-jetbrains text-xs text-white/85">
-              <div className="flex items-center gap-2.5">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white/90 shrink-0">
-                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
-                </svg>
-                <a href={`tel:${SUPPORT_PHONE_TEL}`} className="hover:text-white hover:underline transition-colors">
+                <a
+                  href={`tel:${SUPPORT_PHONE_TEL}`}
+                  className="transition-colors duration-200 hover:text-accent"
+                >
                   {getSupportPhoneDisplay()}
                 </a>
-              </div>
-
-              <div className="flex items-center gap-2.5">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white/90 shrink-0">
-                  <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
-                </svg>
-                <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="hover:text-white hover:underline transition-colors">
-                  WhatsApp: {getSupportPhoneDisplay()}
+                <span className="px-2 text-brand-brown/25">/</span>
+                <a
+                  href={`tel:${SUPPORT_PHONE_ALT_TEL}`}
+                  className="transition-colors duration-200 hover:text-accent"
+                >
+                  {getSupportPhoneAltDisplay()}
                 </a>
-              </div>
-
-              <div className="flex items-center gap-2.5">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white/90 shrink-0">
-                  <rect width="20" height="16" x="2" y="4" rx="2" />
-                  <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-                </svg>
-                <a href={`mailto:${SUPPORT_EMAIL}`} className="hover:text-white hover:underline transition-colors break-all">
+              </li>
+              <li>
+                <a
+                  href={WHATSAPP_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="transition-colors duration-200 hover:text-accent"
+                >
+                  WhatsApp · {getWhatsAppPhoneDisplay()}
+                </a>
+              </li>
+              <li>
+                <a
+                  href={`mailto:${SUPPORT_EMAIL}`}
+                  className="break-all transition-colors duration-200 hover:text-accent"
+                >
                   {getSupportEmailDisplay()}
                 </a>
-              </div>
+              </li>
+            </ul>
+            <p className="mt-4 font-jetbrains text-[9px] uppercase tracking-[0.18em] text-brand-brown/40">
+              Mon–Sat · 10:00 AM – 7:00 PM IST
+            </p>
+          </div>
 
-              <div className="pt-2">
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 border border-white/15 text-[11px] text-white/90">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  Support: Mon–Sat (10:00 AM – 7:00 PM IST)
-                </span>
-              </div>
+          <div className="footer-reveal grid grid-cols-2 gap-8 md:col-span-7 md:gap-10">
+            <div>
+              <p className="mb-4 font-jetbrains text-[10px] font-bold uppercase tracking-[0.28em] text-accent">
+                01 — {t('footerEssentialLinks')}
+              </p>
+              <ul className="space-y-2.5 font-newsreader">
+                <li>
+                  <Link to="/" className={linkClass}>
+                    Home
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/about-us" className={linkClass}>
+                    About Us
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/courses" className={linkClass}>
+                    {t('navCourses')}
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/news" className={linkClass}>
+                    {t('navBlog')}
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/contact" className={linkClass}>
+                    {t('navContact')}
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/contact#enquiry" className={linkClass}>
+                    {t('footerEnquireLink')}
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <p className="mb-4 font-jetbrains text-[10px] font-bold uppercase tracking-[0.28em] text-accent">
+                02 — Policies
+              </p>
+              <ul className="space-y-2.5 font-newsreader">
+                <li>
+                  <Link to="/privacy-policy" className={linkClass}>
+                    Privacy Policy
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/terms-conditions" className={linkClass}>
+                    Terms & Conditions
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/refund-policy" className={linkClass}>
+                    Refund Policy
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/contact" className={linkClass}>
+                    Contact Support
+                  </Link>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
 
-        {/* Bottom Bar: Copyright and Tagline */}
-        <div className="footer-reveal pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 font-jetbrains text-xs text-white/75">
-          <p className="tracking-wide text-center sm:text-left">
-            © {new Date().getFullYear()} 32 Pearls Dental Academy. All rights reserved.
+        <div className="footer-reveal flex flex-col items-start justify-between gap-4 pt-5 sm:flex-row sm:items-center">
+          <p className="font-newsreader text-sm text-brand-brown/55">
+            © {new Date().getFullYear()} {APP_DISPLAY_NAME}
           </p>
-
-          <p className="text-[11px] uppercase tracking-[0.2em] text-white/60 text-center sm:text-right">
-            Professional Dental Education
+          <div className="flex items-center gap-2">
+            {SOCIALS.map((item) => (
+              <a
+                key={item.label}
+                href={item.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={item.label}
+                className="flex size-8 items-center justify-center rounded-full border border-brand-brown/12 text-brand-brown/55 transition-colors duration-200 hover:border-accent hover:text-accent"
+              >
+                <svg
+                  width="13"
+                  height="13"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  {item.icon}
+                </svg>
+              </a>
+            ))}
+          </div>
+          <p className="font-jetbrains text-[10px] uppercase tracking-[0.28em] text-brand-brown/40">
+            {APP_TAGLINE}
           </p>
         </div>
       </div>

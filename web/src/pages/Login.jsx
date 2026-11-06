@@ -5,7 +5,6 @@ import { loginUser, googleLoginUser, clearAuthError, requestPasswordReset } from
 import { useGoogleLogin } from '@react-oauth/google'
 import { useLanguage } from '../context/LanguageContext'
 
-import AuthShowcase from '../components/AuthShowcase'
 import './Login.css'
 
 const Login = () => {
@@ -107,11 +106,11 @@ const Login = () => {
 
   return (
     <div className="login-container">
-      {/* Left Section: Login Form */}
-      <div className="login-left">
-        <div className="flex items-center justify-between w-full mb-8">
+      <div className="login-inner">
+        <div className="login-card">
+        <div className="login-card__header">
           <Link to="/" className="login-logo flex items-center gap-2.5">
-            <img src="/dental_acadmy/dental.jpeg" alt="32 Pearls Dental Academy" className="h-11 w-auto object-contain" />
+            <img src="/meridian/logo.jpeg" alt="Meridian Group of Education" className="h-11 w-auto object-contain" />
           </Link>
         </div>
 
@@ -220,12 +219,9 @@ const Login = () => {
         </div>
 
         <div className="login-footer">
-          © {new Date().getFullYear()} 32 PEARLS DENTAL ACADEMY. ALL RIGHTS RESERVED.
+          © {new Date().getFullYear()} MERIDIAN GROUP OF EDUCATION. ALL RIGHTS RESERVED.
         </div>
-      </div>
-
-      <div className="login-right">
-        <AuthShowcase />
+        </div>
       </div>
 
       {forgotOpen && (

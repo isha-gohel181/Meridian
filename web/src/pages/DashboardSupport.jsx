@@ -242,7 +242,7 @@ const DashboardSupport = () => {
                             role={notice.type === 'success' ? 'status' : 'alert'}
                             className={`rounded-2xl border p-4 md:p-5 flex flex-col sm:flex-row sm:items-center gap-4 shadow-sm animate-in fade-in slide-in-from-top-2 duration-300 ${
                                 notice.type === 'success'
-                                    ? 'bg-[#FFF9F3] border-accent/30'
+                                    ? 'bg-[#F5F8FA] border-accent/30'
                                     : 'bg-red-50 border-red-200'
                             }`}
                         >
@@ -280,7 +280,7 @@ const DashboardSupport = () => {
                                             setActiveTab('my');
                                             dispatch(fetchMyTickets());
                                         }}
-                                        className="px-4 py-2.5 rounded-xl bg-accent text-white font-montserrat text-sm font-semibold hover:brightness-105 transition-all"
+                                        className="px-4 py-2.5 rounded-xl bg-brand-brown text-white font-montserrat text-sm font-semibold hover:brightness-105 transition-all"
                                     >
                                         {t('viewMyTickets')}
                                     </button>
@@ -519,7 +519,7 @@ const DashboardSupport = () => {
                                         type="button"
                                         onClick={handleSubmit}
                                         disabled={submitting}
-                                        className="inline-flex shrink-0 items-center justify-center gap-2.5 w-full lg:w-auto min-h-[52px] px-8 py-3.5 rounded-xl bg-accent text-white font-montserrat text-base font-semibold shadow-accent-soft hover:brightness-105 active:scale-[0.98] transition-all disabled:opacity-60 disabled:pointer-events-none focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 focus-visible:ring-offset-2"
+                                        className="inline-flex shrink-0 items-center justify-center gap-2.5 w-full lg:w-auto min-h-[52px] px-8 py-3.5 rounded-xl bg-brand-brown text-white font-montserrat text-base font-semibold shadow-accent-soft hover:brightness-105 active:scale-[0.98] transition-all disabled:opacity-60 disabled:pointer-events-none focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 focus-visible:ring-offset-2"
                                     >
                                         {submitting ? (
                                             <>
@@ -581,7 +581,7 @@ const DashboardSupport = () => {
                                     <h3 className="font-montserrat text-sm font-semibold text-slate-900">{t('ticketConversation')}</h3>
                                     <div className="space-y-3 max-h-[360px] overflow-y-auto pr-1">
                                         {(selectedTicket.messages || []).map((msg, idx) => (
-                                            <div key={msg._id || idx} className="rounded-xl bg-[#FFF9F3] border border-slate-100 p-4">
+                                            <div key={msg._id || idx} className="rounded-xl bg-[#F5F8FA] border border-slate-100 p-4">
                                                 <p className="font-montserrat text-sm text-slate-800 whitespace-pre-line leading-relaxed">
                                                     {msg.message || '—'}
                                                 </p>
@@ -613,7 +613,7 @@ const DashboardSupport = () => {
                                         <button
                                             type="submit"
                                             disabled={replySending || !replyText.trim()}
-                                            className="inline-flex items-center justify-center min-h-[44px] px-6 py-2.5 rounded-xl bg-accent text-white font-montserrat text-sm font-semibold disabled:opacity-50"
+                                            className="inline-flex items-center justify-center min-h-[44px] px-6 py-2.5 rounded-xl bg-brand-brown text-white font-montserrat text-sm font-semibold disabled:opacity-50"
                                         >
                                             {replySending ? t('submittingTicket') : t('sendReply')}
                                         </button>

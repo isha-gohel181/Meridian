@@ -181,25 +181,24 @@ const News = () => {
     <div ref={containerRef} className="min-h-screen bg-dark pt-28 md:pt-36 pb-24 px-4 md:px-12 lg:px-20 overflow-x-hidden text-normal">
       <div className="max-w-7xl mx-auto">
         
-        {/* News Header - Restored Interlocking Editorial Style */}
+        {/* Blog header */}
         <div className="mb-12 md:mb-16">
             <p className="marketing-page-eyebrow mb-2">
-              {t('archive2024') || 'Dispatch archive'}
+              {t('blogPageEyebrow')}
             </p>
             <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
               <div className="max-w-2xl">
                 <h1 className="marketing-page-title">
-                  {t('latestTitle') || 'Latest'}{' '}
-                  <span className="text-[#C96A1B]">{t('dispatchesTitle') || 'Dispatches & insights'}</span>
+                  {t('blogPageTitle')}
                 </h1>
                 <p className="font-inter text-sm md:text-base text-slate-600 mt-2">
-                  {t('newsSubtitle')}
+                  {t('blogPageSubtitle')}
                 </p>
               </div>
               <div className="w-full lg:max-w-md group relative shrink-0">
                 <input
                   type="text"
-                  placeholder={t('searchNewsPlaceholder') || 'Search dispatches...'}
+                  placeholder={t('blogSearchPlaceholder')}
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   className="w-full bg-card border border-border rounded-xl py-3 px-6 pr-12 font-inter text-sm text-normal focus:outline-none focus:border-accent shadow-sm transition-all placeholder:text-description/60"
@@ -227,8 +226,8 @@ const News = () => {
 
         {!loading && formattedArticles.length === 0 && (
           <div className="py-24 text-center border border-border rounded-2xl bg-card/50 mb-16">
-            <p className="font-jetbrains text-xs text-accent tracking-[0.3em] uppercase mb-3">Archive empty</p>
-            <p className="font-inter text-base text-slate-600">No news articles published yet. Check back soon.</p>
+            <p className="font-jetbrains text-xs text-accent tracking-[0.3em] uppercase mb-3">{t('blogEmptyTitle')}</p>
+            <p className="font-inter text-base text-slate-600">{t('blogEmptyDesc')}</p>
           </div>
         )}
 
@@ -268,7 +267,7 @@ const News = () => {
                  <button 
                   key={i} 
                   onClick={() => dispatch(fetchNews({ page: i + 1 }))}
-                  className={`w-8 h-8 rounded-xl flex items-center justify-center transition-all cursor-pointer ${currentPage === i + 1 ? 'bg-accent text-white font-bold shadow-sm' : 'bg-card border border-border text-description hover:border-accent hover:text-normal'}`}
+                  className={`w-8 h-8 rounded-xl flex items-center justify-center transition-all cursor-pointer ${currentPage === i + 1 ? 'bg-brand-brown text-white font-bold shadow-sm' : 'bg-card border border-border text-description hover:border-accent hover:text-normal'}`}
                  >
                    {(i + 1).toString().padStart(2, '0')}
                  </button>

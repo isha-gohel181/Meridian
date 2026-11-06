@@ -59,7 +59,7 @@ const DashboardFileLesson = () => {
             >
                 <Link
                     to={`/dashboard/course/${courseId}`}
-                    className="inline-flex px-6 py-3 rounded-xl bg-accent text-white text-sm font-semibold hover:opacity-90"
+                    className="inline-flex px-6 py-3 rounded-xl bg-brand-brown text-white text-sm font-semibold hover:opacity-90"
                 >
                     Back to course
                 </Link>
@@ -102,7 +102,7 @@ const DashboardFileLesson = () => {
                                 href={fileUrl}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="px-5 py-2.5 rounded-xl bg-accent text-white text-sm font-semibold hover:opacity-90"
+                                className="px-5 py-2.5 rounded-xl bg-brand-brown text-white text-sm font-semibold hover:opacity-90"
                             >
                                 Open
                             </a>

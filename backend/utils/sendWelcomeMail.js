@@ -233,7 +233,7 @@ function getWelcomeEmailHTML(name, email) {
                 <p class="highlight-text">Your course is ready for you. Access all video lessons, study material, and community discussions directly from your student dashboard.</p>
             </div>
             
-            <div class="highlight-box" style="background-color: #f1f5f9; border-left: 4px solid #C96A1B; margin: 30px 0;">
+            <div class="highlight-box" style="background-color: #f1f5f9; border-left: 4px solid #032746; margin: 30px 0;">
                 <p class="highlight-text" style="font-weight:bold;">Your Login Credentials:</p>
                 <p class="highlight-text">Email: <b>${email}</b></p>
                 <p class="highlight-text" style="font-size:13px; color:#666;">(Use the password created during checkout or reset password link.)</p>

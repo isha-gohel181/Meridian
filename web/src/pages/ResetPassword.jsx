@@ -63,13 +63,13 @@ const ResetPassword = () => {
     <div className="reset-page">
       <div className="reset-page__panel">
         <Link to="/" className="reset-page__logo flex items-center gap-2.5">
-          <img src="/dental_acadmy/dental.jpeg" alt="32 Pearls Dental Academy" className="h-11 w-auto object-contain" />
+          <img src="/meridian/logo.jpeg" alt="Meridian Group of Education" className="h-11 w-auto object-contain" />
         </Link>
 
         <p className="reset-page__eyebrow">{t('resetPasswordTitle')}</p>
         <h1 className="reset-page__title">Set a new password</h1>
         <p className="reset-page__copy">
-          Open the secure link from your 32 Pearls Dental Academy password reset email, then choose a new password below.
+          Open the secure link from your Meridian Group of Education password reset email, then choose a new password below.
         </p>
 
         {displayError && <div className="reset-page__notice reset-page__notice--error">{displayError}</div>}

@@ -32,8 +32,9 @@ export const login = createAsyncThunk<
   { rejectValue: string }
 >("auth/login", async (credentials, { rejectWithValue }) => {
   try {
+    // Paths are relative — axiosInstance already sets baseURL to API_BASE_URL
     const response = await axiosInstance.post<ApiResponse<AuthResponse>>(
-      `${API_BASE_URL}/login`,
+      "/login",
       {
         email: credentials.email,
         password: credentials.password,
@@ -92,7 +93,7 @@ export const signup = createAsyncThunk<
 >("auth/signup", async (userData, { rejectWithValue }) => {
   try {
     const response = await axiosInstance.post<ApiResponse<AuthResponse>>(
-      `${API_BASE_URL}/signup`,
+      "/signup",
       {
         email: userData.email,
         password: userData.password,
@@ -189,7 +190,7 @@ export const checkAuthStatus = createAsyncThunk<
         }
 
         const response = await axiosInstance.get<ApiResponse<{ user: User }>>(
-          `${API_BASE_URL}/me`,
+          "/me",
           { headers, withCredentials: true }
         );
 

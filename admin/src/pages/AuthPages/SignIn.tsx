@@ -6,8 +6,8 @@ export default function SignIn() {
   return (
     <>
       <PageMeta
-        title="Sign In | 32 Pearls Dental Academy Admin"
-        description="Sign in to 32 Pearls Dental Academy Admin Dashboard"
+        title="Sign In | Meridian Group of Education Admin"
+        description="Sign in to Meridian Group of Education Admin Dashboard"
       />
       <AuthLayout>
         <SignInForm />

@@ -98,7 +98,7 @@ const CreateTopicModal = ({ isOpen, onClose, onSubmit }) => {
         {/* Header Terminal */}
         <div className="flex-shrink-0 flex items-center justify-between px-6 py-6 md:px-8 md:py-7 border-b border-slate-100 bg-white">
            <div className="flex items-center gap-4">
-              <div className="w-11 h-11 rounded-xl bg-accent text-white flex items-center justify-center font-jetbrains text-sm font-bold shadow-sm">
+              <div className="w-11 h-11 rounded-xl bg-brand-brown text-white flex items-center justify-center font-jetbrains text-sm font-bold shadow-sm">
                  {avatarInitials}
               </div>
               <span className="font-newsreader italic text-xl md:text-2xl text-slate-900 font-bold">Create Discourse Topic</span>
@@ -233,7 +233,7 @@ const CreateTopicModal = ({ isOpen, onClose, onSubmit }) => {
             <button 
               onClick={handleSubmit}
               disabled={!title.trim() || !content.trim() || isSubmitting}
-              className="bg-accent text-white font-bold px-8 py-3.5 font-montserrat text-[11px] uppercase tracking-[0.3em] flex items-center gap-3 hover:scale-[1.02] active:scale-95 transition-all shadow-sm disabled:opacity-50 disabled:cursor-not-allowed min-w-[180px] justify-center rounded-xl cursor-pointer"
+              className="bg-brand-brown text-white font-bold px-8 py-3.5 font-montserrat text-[11px] uppercase tracking-[0.3em] flex items-center gap-3 hover:scale-[1.02] active:scale-95 transition-all shadow-sm disabled:opacity-50 disabled:cursor-not-allowed min-w-[180px] justify-center rounded-xl cursor-pointer"
             >
                {isSubmitting ? (
                  <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />

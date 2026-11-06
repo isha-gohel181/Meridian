@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { fetchNewsBySlug } from '../redux/slices/newsSlice'
 import { useLanguage } from '../context/LanguageContext'
 import DashboardHeader from '../components/dashboard/DashboardHeader'
+import { getDiaryItemBySlug } from '../data/landingDiaryItems'
 
 const NewsDetail = () => {
   const { id: slug } = useParams()
@@ -14,6 +15,7 @@ const NewsDetail = () => {
   const { currentNews: articleData, loading } = useSelector((state) => state.news)
   const [comment, setComment] = useState('')
   const [comments, setComments] = useState([])
+  const diaryItem = getDiaryItemBySlug(slug)
 
   const isDashboard = location.pathname.startsWith('/dashboard/news')
   const backPath = isDashboard ? '/dashboard/news' : '/news'
@@ -33,14 +35,14 @@ const NewsDetail = () => {
   }
 
   useEffect(() => {
-    if (slug) dispatch(fetchNewsBySlug(slug))
-  }, [dispatch, slug])
+    if (slug && !diaryItem) dispatch(fetchNewsBySlug(slug))
+  }, [dispatch, slug, diaryItem])
 
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [slug, articleData])
 
-  if (loading && !articleData) {
+  if (!diaryItem && loading && !articleData) {
     return (
       <div className="min-h-screen bg-slate-50">
         {isDashboard && <DashboardHeader />}
@@ -51,41 +53,54 @@ const NewsDetail = () => {
     )
   }
 
-  if (!articleData) {
+  if (!diaryItem && !articleData) {
     return (
       <div className="min-h-screen bg-slate-50">
         {isDashboard && <DashboardHeader />}
         <div className="max-w-3xl mx-auto pt-32 px-4 text-center">
           <p className="font-montserrat text-slate-600 mb-6">Article not found.</p>
           <Link to={backPath} className="font-jetbrains text-[10px] font-bold text-accent uppercase tracking-[0.2em] hover:underline">
-            ← Back to news
+            ← {isDashboard ? t('dashboardBackToNews') : t('backToBlog')}
           </Link>
         </div>
       </div>
     )
   }
 
-  const article = {
-    category: articleData.categories?.[0]?.toUpperCase() || 'NEWS',
-    title: articleData.title,
-    date: new Date(articleData.publishedAt || articleData.createdAt)
-      .toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
-      .toUpperCase(),
-    views:
-      articleData.stats?.views >= 1000
-        ? `${(articleData.stats.views / 1000).toFixed(1)}K`
-        : String(articleData.stats?.views || '0'),
-    commentsCount: articleData.comments?.length || 0,
-    image: (() => {
-      const url = articleData.imageUrl || articleData.coverImage || articleData.image
-      if (!url) return '/news_placeholder.png'
-      const rawBase = getApiBase()
-      const baseUrl = rawBase.replace(/\/api\/v1\/?$/, '')
-      return encodeURI(url.startsWith('http') ? url : `${baseUrl}/uploads/news/${url}`)
-    })(),
-    intro: articleData.summary?.replace(/<[^>]*>?/gm, '')?.replace('[&hellip;]', '...'),
-    content: articleData.content,
-  }
+  const article = diaryItem
+    ? {
+        category: diaryItem.kind === 'event' ? 'EVENT' : 'NEWS',
+        title: diaryItem.title,
+        date: diaryItem.dateLabel.toUpperCase(),
+        views: null,
+        commentsCount: 0,
+        image: diaryItem.image,
+        intro: diaryItem.intro,
+        content: null,
+        paragraphs: diaryItem.paragraphs,
+      }
+    : {
+        category: articleData.categories?.[0]?.toUpperCase() || 'NEWS',
+        title: articleData.title,
+        date: new Date(articleData.publishedAt || articleData.createdAt)
+          .toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
+          .toUpperCase(),
+        views:
+          articleData.stats?.views >= 1000
+            ? `${(articleData.stats.views / 1000).toFixed(1)}K`
+            : String(articleData.stats?.views || '0'),
+        commentsCount: articleData.comments?.length || 0,
+        image: (() => {
+          const url = articleData.imageUrl || articleData.coverImage || articleData.image
+          if (!url) return '/news_placeholder.png'
+          const rawBase = getApiBase()
+          const baseUrl = rawBase.replace(/\/api\/v1\/?$/, '')
+          return encodeURI(url.startsWith('http') ? url : `${baseUrl}/uploads/news/${url}`)
+        })(),
+        intro: articleData.summary?.replace(/<[^>]*>?/gm, '')?.replace('[&hellip;]', '...'),
+        content: articleData.content,
+        paragraphs: null,
+      }
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -99,7 +114,7 @@ const NewsDetail = () => {
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M19 12H5M12 19l-7-7 7-7" />
           </svg>
-          {isDashboard ? 'Back to news' : t('backToNews') || 'Back to all articles'}
+          {isDashboard ? t('dashboardBackToNews') : t('backToBlog')}
         </Link>
 
         <header className="mb-8">
@@ -111,8 +126,12 @@ const NewsDetail = () => {
           </h1>
           <div className="flex flex-wrap items-center gap-4 font-jetbrains text-[10px] uppercase tracking-[0.15em] text-slate-500 pb-6 border-b border-slate-200">
             <span>{article.date}</span>
-            <span aria-hidden>·</span>
-            <span>{article.views} views</span>
+            {article.views != null && (
+              <>
+                <span aria-hidden>·</span>
+                <span>{article.views} views</span>
+              </>
+            )}
             {article.commentsCount > 0 && (
               <>
                 <span aria-hidden>·</span>
@@ -125,7 +144,7 @@ const NewsDetail = () => {
         <div className="rounded-2xl overflow-hidden border border-slate-200 bg-white shadow-sm mb-10">
           <img
             src={article.image}
-            alt=""
+            alt={article.title}
             referrerPolicy="no-referrer"
             className="w-full aspect-[16/9] object-cover"
           />
@@ -134,6 +153,14 @@ const NewsDetail = () => {
         {article.intro && (
           <div className="rounded-xl border border-accent/20 bg-accent/5 px-6 py-5 mb-8">
             <p className="font-newsreader italic text-xl text-slate-700 leading-relaxed">{article.intro}</p>
+          </div>
+        )}
+
+        {article.paragraphs?.length > 0 && (
+          <div className="news-content-html news-content-html--light mb-12">
+            {article.paragraphs.map((paragraph) => (
+              <p key={paragraph}>{paragraph}</p>
+            ))}
           </div>
         )}
 

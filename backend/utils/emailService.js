@@ -105,7 +105,7 @@ class EmailService {
                   <!-- Header -->
                   <tr>
                     <td style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); padding: 30px 40px; text-align: center;">
-                      <h1 style="color: #C96A1B; margin: 0; font-size: 24px; font-weight: 800; letter-spacing: 1px;">${APP_DISPLAY_NAME.toUpperCase()}</h1>
+                      <h1 style="color: #032746; margin: 0; font-size: 24px; font-weight: 800; letter-spacing: 1px;">${APP_DISPLAY_NAME.toUpperCase()}</h1>
                       <p style="color: #64748b; margin: 6px 0 0 0; font-size: 13px; font-weight: 500;">${APP_TAGLINE}</p>
                     </td>
                   </tr>
@@ -184,7 +184,7 @@ class EmailService {
                 <table role="presentation" style="width: 100%; max-width: 560px; margin: 0 auto; background-color: #ffffff; border-radius: 20px; overflow: hidden; box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.15); border: 1px solid #e2e8f0;">
                   <tr>
                     <td style="padding: 32px 36px 24px; text-align: center; border-bottom: 1px solid #f1f5f9;">
-                      <p style="margin: 0 0 8px; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: #C96A1B; font-weight: 800;">${APP_DISPLAY_NAME}</p>
+                      <p style="margin: 0 0 8px; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: #032746; font-weight: 800;">${APP_DISPLAY_NAME}</p>
                       <h1 style="margin: 0; font-size: 28px; font-weight: 300; font-style: italic; color: #0f172a; font-family: Georgia, 'Times New Roman', serif;">Password reset</h1>
                       <p style="margin: 10px 0 0; font-size: 14px; color: #64748b;">${APP_TAGLINE}</p>
                     </td>
@@ -198,7 +198,7 @@ class EmailService {
                       <table role="presentation" style="margin: 0 auto 28px;">
                         <tr>
                           <td style="text-align: center;">
-                            <a href="${resetUrl}" style="display: inline-block; padding: 14px 28px; background-color: #C96A1B; color: #ffffff; text-decoration: none; border-radius: 12px; font-weight: 700; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase;">
+                            <a href="${resetUrl}" style="display: inline-block; padding: 14px 28px; background-color: #032746; color: #ffffff; text-decoration: none; border-radius: 12px; font-weight: 700; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase;">
                               Reset password
                             </a>
                           </td>
@@ -207,7 +207,7 @@ class EmailService {
                       <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; margin-bottom: 24px;">
                         <p style="margin: 0 0 8px; font-size: 13px; color: #64748b;">If the button does not work, copy this link:</p>
                         <p style="margin: 0; word-break: break-all; font-size: 13px;">
-                          <a href="${resetUrl}" style="color: #C96A1B;">${resetUrl}</a>
+                          <a href="${resetUrl}" style="color: #032746;">${resetUrl}</a>
                         </p>
                       </div>
                       <p style="margin: 0; font-size: 13px; line-height: 1.5; color: #64748b;">
@@ -259,7 +259,7 @@ class EmailService {
           <p>Your login details are as follows:</p>
           <p><strong>Email:</strong> ${email}</p>
           <p><strong>Password:</strong> ${password}</p>
-          <a href="${process.env.FRONTEND_URL || 'http://localhost:5173'}/login" style="padding: 10px 15px; background-color: #C96A1B; color: white; border: none; border-radius: 5px; cursor: pointer; text-decoration: none;">
+          <a href="${process.env.FRONTEND_URL || 'http://localhost:5173'}/login" style="padding: 10px 15px; background-color: #032746; color: white; border: none; border-radius: 5px; cursor: pointer; text-decoration: none;">
             Login to your account
           </a>
           `
@@ -302,19 +302,19 @@ class EmailService {
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Arial', sans-serif; background-color: #ffffff; color: #000000; line-height: 1.6; }
-        .email-container { max-width: 600px; margin: 0 auto; background-color: #ffffff; border: 2px solid #C96A1B; }
+        .email-container { max-width: 600px; margin: 0 auto; background-color: #ffffff; border: 2px solid #032746; }
         .header { background-color: #1e293b; color: #ffffff; padding: 30px 40px; text-align: center; }
         .logo { font-size: 28px; font-weight: bold; letter-spacing: 1px; margin-bottom: 5px; color: #60a5fa; }
         .tagline { font-size: 14px; font-weight: normal; opacity: 0.9; }
         .content { padding: 40px; background-color: #ffffff; }
         .greeting { font-size: 20px; font-weight: bold; margin-bottom: 25px; color: #000000; }
         .message-text { font-size: 16px; margin-bottom: 20px; color: #333333; }
-        .highlight-box { background-color: #f8fafc; border-left: 4px solid #C96A1B; padding: 20px; margin: 30px 0; }
+        .highlight-box { background-color: #f8fafc; border-left: 4px solid #032746; padding: 20px; margin: 30px 0; }
         .highlight-text { font-size: 16px; font-style: italic; color: #000000; }
-        .course-title { font-size: 18px; font-weight: bold; color: #C96A1B; margin-bottom: 10px; }
+        .course-title { font-size: 18px; font-weight: bold; color: #032746; margin-bottom: 10px; }
         .download-section { text-align: center; margin: 40px 0; padding: 30px 20px; background-color: #1e293b; color: #ffffff; border-radius: 8px; }
         .download-title { font-size: 20px; font-weight: bold; margin-bottom: 15px; color: #ffffff; }
-        .download-btn { display: inline-block; padding: 12px 25px; background-color: #C96A1B; color: #ffffff; text-decoration: none; font-weight: bold; font-size: 16px; border-radius: 5px; }
+        .download-btn { display: inline-block; padding: 12px 25px; background-color: #032746; color: #ffffff; text-decoration: none; font-weight: bold; font-size: 16px; border-radius: 5px; }
         .signature { margin-top: 30px; padding-top: 20px; border-top: 1px solid #e0e0e0; }
         .signature-text { font-size: 16px; margin-bottom: 5px; }
         .signature-name { font-weight: bold; color: #000000; }

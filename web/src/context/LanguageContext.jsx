@@ -15,6 +15,16 @@ const translations = {
     news: 'News',
     dashboard: 'Dashboard',
     signIn: 'Sign In',
+    navAbout: 'About',
+    navCourses: 'Courses',
+    navWhatWeOffer: 'What We Offer',
+    navOurApproach: 'Our Approach',
+    navContact: 'Contact',
+    navBlog: 'Blog',
+    enquireNow: 'Enquire Now',
+    navMobileTag: 'Meridian Group of Education',
+    footerEssentialLinks: 'Essential links',
+    footerEnquireLink: 'Enquire now',
     logOut: 'Log Out',
     liveClasses: 'Live Classes',
     profile: 'Profile',
@@ -103,7 +113,7 @@ const translations = {
 
     // Purchases & Ledger
     archiveLedger: 'ARCHIVE & LEDGER',
-    purchasesLedgerSub: 'Persistent record of course enrollments, service packages, and transaction receipts across 32 Pearls Dental Academy.',
+    purchasesLedgerSub: 'Persistent record of course enrollments, service packages, and transaction receipts across Meridian Group of Education.',
     moduleArchive: 'MODULE ARCHIVE',
     acquisition: 'ACQUISITION',
     amount: 'AMOUNT',
@@ -279,8 +289,8 @@ const translations = {
     welcomeBackTitle: 'Welcome back',
     loginSubtitle: 'Sign in to access your courses, live classes, and messages.',
 
-    authShowcaseEyebrow: '32 Pearls Dental Academy',
-    authShowcaseTitle: 'Clinical orthodontic training for everyday practice',
+    authShowcaseEyebrow: 'Meridian Group of Education',
+    authShowcaseTitle: 'Structured programs for lifelong learning',
     authShowcaseLead: 'Structured programs with mentor guidance—online, live, and hands-on.',
     authShowcaseQuote:
       'The training helped me plan cases and manage mechanics with much more confidence in my clinic.',
@@ -292,7 +302,7 @@ const translations = {
     authShowcaseStatMentor: 'Mentor support',
     continueWithGoogle: 'CONTINUE WITH GOOGLE',
     joinTheCircleTitle: 'Join the circle',
-    signupSubtitle: 'Start your dental education journey with 32 Pearls Dental Academy.',
+    signupSubtitle: 'Start your learning journey with Meridian Group of Education.',
     joinWithGoogle: 'JOIN WITH GOOGLE',
     sendOtpBtn: 'SEND OTP',
     resendOtpBtn: 'RESEND OTP',
@@ -303,16 +313,16 @@ const translations = {
     verifiedBtn: 'VERIFIED',
     requestResetLink: 'Request a reset link',
     requestResetLinkDesc: 'Enter the email attached to your account. If it exists, we will send a link to reset the password.',
-    forgotEmailBrandNote: 'The reset email will come from 32 Pearls Dental Academy and match the style of our login page.',
+    forgotEmailBrandNote: 'The reset email will come from Meridian Group of Education and match the style of our login page.',
     sendResetLinkBtn: 'SEND RESET LINK',
 
-    heroBadge: 'ORTHODONTIC EDUCATION',
-    heroTitleLine1: 'CLINICAL ORTHODONTIC TRAINING',
-    heroTitleLine2: 'FOR CONFIDENT PRACTICE',
-    heroDesc: 'Diagnose, plan, and manage orthodontic cases with hands-on workshops, real-case discussions, and continuous mentor guidance at 32 Pearls Dental Academy.',
+    heroBadge: 'MERIDIAN EDUCATION',
+    heroTitleLine1: 'QUALITY EDUCATION PROGRAMS',
+    heroTitleLine2: 'FOR LASTING SUCCESS',
+    heroDesc: 'Learn with expert-led sessions, practical exercises, and continuous mentor guidance at Meridian Group of Education.',
     exploreCourses: 'EXPLORE COURSES',
     getStarted: 'GET STARTED',
-    activeLearners: 'Dental Professionals',
+    activeLearners: 'Learners',
     activeStudents: 'Active Learners',
     completionRate: 'Satisfaction Rate',
     topRating: 'Client Rating',
@@ -381,10 +391,10 @@ const translations = {
 
     // Landing Sections & Home Page
     growthBadge: 'PROFESSIONAL GROWTH',
-    growthHeadline1: 'Build orthodontic',
-    growthHeadline2: 'clinical confidence',
-    growthHeadline: 'Build orthodontic clinical confidence',
-    growthSub: 'Structured programs combining diagnosis, treatment planning, hands-on mechanics, and mentor-led case reviews—for practitioners who want theory and chairside skill aligned.',
+    growthHeadline1: 'Build professional',
+    growthHeadline2: 'confidence and skill',
+    growthHeadline: 'Build professional confidence and skill',
+    growthSub: 'Structured programs combining theory, practice, and mentor-led reviews—for learners who want knowledge and application aligned.',
     growthCtaPrimary: 'Explore Courses',
     growthCtaSecondary: 'Join Community Forum',
     growthFeature1: 'Case-based curriculum',
@@ -394,7 +404,7 @@ const translations = {
     
     selectedForYou: 'CURATED FOR YOU',
     selectionTitle: 'Featured programs',
-    selectionSub: 'Orthodontic courses, live sessions, and practical modules to strengthen diagnosis, planning, and treatment delivery.',
+    selectionSub: 'Courses, live sessions, and practical modules to strengthen knowledge, planning, and delivery.',
     exploreAll: 'EXPLORE ALL',
 
     // CTAs & Badges
@@ -438,7 +448,7 @@ const translations = {
     phoneNumber: 'PHONE NUMBER',
 
     // News & Dossier
-    backToNews: 'BACK TO ALL ARTICLES',
+    backToNews: 'BACK TO BLOG',
     scrollToUnlock: 'SCROLL TO UNLOCK ARTICLES',
     endOfArchive: 'END OF ASTRO ARTICLES',
     prevDispatch: 'PREVIOUS ARTICLE',
@@ -472,8 +482,8 @@ const translations = {
     seePricing: 'SEE PRICING',
 
     howWeHelp: 'HOW WE HELP / EXPERTISE',
-    designedToGrow: 'Clinically oriented orthodontic education',
-    brandFeaturesSub: 'Practical training that connects diagnosis, planning, mechanics, and long-term case management.',
+    designedToGrow: 'Practical, mentor-led education',
+    brandFeaturesSub: 'Practical training that connects concepts, planning, practice, and long-term growth.',
     focus01Title: 'Diagnosis & case selection',
     focus01Desc: 'Structured assessment, records review, and case filtering for predictable treatment outcomes.',
     focus02Title: 'Treatment planning',
@@ -487,13 +497,162 @@ const translations = {
     focus06Title: 'Lifetime learning support',
     focus06Desc: 'Ongoing mentor guidance and case-based support beyond the core curriculum.',
 
-    heroEyebrow: 'Orthodontic training for dentists',
-    heroTitle: 'Master orthodontics with',
+    heroEyebrow: 'Meridian Group of Education',
+    heroTitle: 'Empowering Minds. Inspiring Excellence.',
     heroTitleAccent: 'confidence',
-    heroSubline: 'India-focused digital orthodontic training for general dentists—learn step-by-step from diagnosis to finishing with real clinical cases and expert mentorship at 32 Pearls Dental Academy.',
+    heroSubline:
+      'Student-centred online tutoring, personalised support, small-group learning, and educational workshops—built for curious, confident learners.',
+    heroMarquee:
+      'Quality education · Expert mentors · Workshops & small groups · Lifelong learning · Meridian',
     browseCourses: 'Browse courses',
     whatsAppCta: 'WhatsApp',
     callCta: 'Call',
+    landingCtaWhatsApp: 'Message on WhatsApp',
+
+    landingPortalHeroAria: 'Introductory hero with scroll-driven opening animation',
+    landingPortalMetaTopLeft: 'Meridian',
+    landingPortalMetaTopRight: 'Established',
+    landingPortalMetaBottomLeft: 'Programs',
+    landingPortalMetaBottomRight: 'Enrolment',
+
+    landingStatementEyebrow: 'Statement',
+    landingStatementIndex: '01',
+    landingStatementBodyBefore: 'Education that pairs',
+    landingStatementBodyAccent: 'structure',
+    landingStatementBodyAfter: ' with empathy—so learners gain confidence, clarity, and momentum.',
+    landingStatementImageAlt1: 'Student working at a desk with a laptop and open notebook.',
+    landingStatementIndex2: '02',
+    landingStatementBodyBefore2: 'Support that stays',
+    landingStatementBodyAccent2: 'personal',
+    landingStatementBodyAfter2: '—small groups, clear feedback, and room to ask every question.',
+    landingStatementImageAlt2: 'Learners collaborating around a table during a small-group session.',
+    landingStatementIndex3: '03',
+    landingStatementBodyBefore3: 'Growth that feels',
+    landingStatementBodyAccent3: 'steady',
+    landingStatementBodyAfter3: '—independent thinking, resilient habits, and momentum that lasts.',
+    landingStatementImageAlt3: 'Students studying together in a bright workshop space.',
+
+    landingProgramsEyebrow: 'Programs',
+    landingProgramsTitle: 'Explore the catalogue',
+    landingProgramsSub:
+      'Flip through featured courses. Each card links to the full program page when you tap without dragging.',
+
+    landingDeckEmpty: 'Programs will appear here when the catalogue loads.',
+    landingDeckAria: 'Program catalogue card stack. Drag the top card sideways to flip through.',
+    landingDeckUntitled: 'Program',
+    landingDeckView: 'View program',
+    landingDeckHint: 'Drag the top card / Arrow keys',
+    landingDeckDragHint: 'Drag sideways to flip; tap to open',
+    landingDeckProgressLabel: 'Deck position',
+
+    landingStatsEyebrow: 'At a glance',
+    landingStatsTitle: 'Built for steady academic progress',
+    landingStatsSub:
+      'A structured learning environment with clear pathways, mentor support, and flexible formats—online, live, or blended.',
+    landingStatsSectionEyebrow: 'By the numbers',
+    landingStatsSectionTitle: 'Outcomes families can feel',
+    landingStatsSectionSub:
+      'Learners, mentors, and programs in one picture—clear signals of how Meridian shows up day to day.',
+    landingStatsBlock1ImageAlt: 'Students collaborating with a laptop in front of bookshelves.',
+    landingStatLearnersLabel: 'Active learners',
+    landingStatProgramsLabel: 'Programs and courses',
+    landingStatSupportLabel: 'Positive support experience',
+    landingStatRatingLabel: 'Average learner rating',
+
+    landingFacultyEyebrow: 'Faculty',
+    landingFacultyTitle: 'Program leadership',
+    landingFacultySub: 'Names and roles listed on programs in our catalogue, with a count of programs per faculty member.',
+    landingFacultyDefaultRole: 'Faculty',
+    landingFacultyProgramsLabel: 'Programs',
+
+    landingDatesEyebrow: 'Schedule',
+    landingDatesTitle: 'Program start windows',
+    landingDatesSub: 'Upcoming or ongoing cohort dates from published programs. Links open the program detail page.',
+    landingDatesColProgram: 'Program',
+    landingDatesColSchedule: 'Window',
+    landingDatesColLevel: 'Level',
+    landingDatesColDuration: 'Duration',
+
+    landingProgramLevelBeginner: 'Beginner',
+    landingProgramLevelIntermediate: 'Intermediate',
+    landingProgramLevelAdvanced: 'Advanced',
+
+    landingCloseTitle: 'Ready to take the next step?',
+    landingCloseFine:
+      'Browse the full catalogue or send an enquiry—our team will respond with clear next steps.',
+
+    landingAboutEyebrow: 'About Meridian',
+    landingAboutTitle: 'Where curiosity meets structured support',
+    landingCommitmentSnippet: 'Building foundations for learning. Creating possibilities for tomorrow.',
+    landingPhilosophy:
+      'At Meridian Group of Education, we believe education is more than the acquisition of knowledge—it is the foundation for curiosity, confidence, creativity, and lifelong growth.',
+    landingIntro:
+      'We are an emerging educational initiative committed to making learning more accessible, engaging, and student-centred through online tutoring, personalised academic support, small-group learning, and interactive educational workshops.',
+    landingApproachSummary:
+      'Our approach focuses on helping students build strong conceptual foundations, develop independent thinking, and approach academic challenges with confidence.',
+
+    landingOfferEyebrow: 'What we offer',
+    landingOfferTitle: 'Learning services tailored to real students',
+    landingOfferSub: 'From one-to-one attention to collaborative groups—clear structure, respectful pace, meaningful outcomes.',
+    landingOffer1Title: 'Online Tutoring',
+    landingOffer1Desc:
+      'Structured sessions that meet learners where they are, with clear goals and responsive teaching.',
+    landingOffer2Title: 'Personalised Academic Support',
+    landingOffer2Desc: 'Focused guidance through individual and small-group sessions tailored to each learner.',
+    landingOffer3Title: 'Small-Group Learning',
+    landingOffer3Desc:
+      'Collaborative settings that encourage discussion, peer learning, and deeper understanding.',
+    landingOffer4Title: 'Educational Workshops',
+    landingOffer4Desc: 'Interactive workshops that build skills, confidence, and lasting engagement with ideas.',
+
+    landingApproachEyebrow: 'Our learning approach',
+    landingApproachTitle: 'Understand · Engage · Grow',
+    landingApproachSub: 'A simple rhythm that keeps depth and momentum in balance.',
+    landingStep1Name: 'Understand',
+    landingStep1Desc:
+      'Clarify concepts and build a solid base before moving forward—thoughtful pacing, not rushed memorisation.',
+    landingStep2Name: 'Engage',
+    landingStep2Desc: 'Take part through dialogue, practice, and guided activities that make ideas stick.',
+    landingStep3Name: 'Grow',
+    landingStep3Desc: 'Apply learning with independence and resilience as academic demands evolve.',
+
+    landingWhyEyebrow: 'Why choose Meridian',
+    landingWhyTitle: 'Five reasons families and students trust our approach',
+    landingWhySub: 'Concise, human, and focused on lasting academic habits—not empty promises.',
+    landingWhy1Title: 'Student-centred learning',
+    landingWhy1Desc: 'Experiences shaped around learners’ needs and goals—not one-size-fits-all delivery.',
+    landingWhy2Title: 'Personalised academic support',
+    landingWhy2Desc: 'Focused guidance through individual and small-group sessions when it matters most.',
+    landingWhy3Title: 'Interactive education',
+    landingWhy3Desc: 'Workshops and activities that reward participation and conceptual clarity.',
+    landingWhy4Title: 'A culture of excellence',
+    landingWhy4Desc: 'Professional standards, continuous improvement, and quality in every interaction.',
+    landingWhy5Title: 'A vision for the future',
+    landingWhy5Desc:
+      'A foundation for specialised programmes, research initiatives, and technology-enabled education.',
+
+    landingMissionLabel: 'Mission',
+    landingMissionHeading: 'Meaningful learning, clearly delivered',
+    landingMissionBody:
+      'To deliver meaningful learning experiences that empower students to understand deeply, think independently, and pursue their academic goals with confidence.',
+    landingVisionLabel: 'Vision',
+    landingVisionHeading: 'A trusted, forward-thinking organisation',
+    landingVisionBody:
+      'To build a trusted and forward-thinking educational organisation that brings together academic excellence, competitive examination preparation, research, and innovative educational technology.',
+
+    landingFutureEyebrow: 'Our future vision',
+    landingFutureTitle: 'Planned initiatives',
+    landingFutureIntro:
+      'We are beginning with online learning and educational workshops, with the ambition to grow into a broader educational ecosystem through planned future initiatives.',
+    landingFutureBadge: 'Future initiatives — in development',
+    landingFutureItemTag: 'Planned division',
+    landingFutureNote:
+      'Each initiative represents our long-term commitment to expanding educational opportunities and creating meaningful academic impact.',
+
+    landingCtaEyebrow: 'Contact',
+    landingCtaTitle: 'Students and parents: we are here to help',
+    landingCtaSub:
+      'Share your goals and questions—we will respond with clear next steps and honest guidance about how we can support your learning journey.',
 
     formatsEyebrow: 'Learning formats',
     formatsTitle: 'Learn wherever—and however—you practice best',
@@ -509,27 +668,27 @@ const translations = {
     trainingEyebrow: 'Hands-on training',
     trainingTitle: 'Learn in the room—not only on screen',
     trainingSub:
-      'Live seminars, mentor-led case discussions, and supervised workshop tables—see how 32 Pearls training feels before you enroll.',
-    trainingHighlight1: 'Faculty-led sessions with real orthodontic cases and open Q&A.',
+      'Live seminars, mentor-led case discussions, and supervised workshop tables—see how Meridian training feels before you enroll.',
+    trainingHighlight1: 'Faculty-led sessions with real examples and open Q&A.',
     trainingHighlight2: 'Small-group mentorship at the table with models and mechanics.',
-    trainingHighlight3: 'In-person workshops designed for busy general dentists.',
+    trainingHighlight3: 'In-person workshops designed for busy learners.',
     trainingCta: 'Explore programs',
     trainingGalleryLabel: 'On campus',
     trainingCaptionSeminar: 'Live faculty seminars & case discussions',
     trainingCaptionMentor: 'One-to-one mentor guidance at the table',
     trainingCaptionWorkshop: 'Supervised hands-on workshop practice',
 
-    landingCoursesEyebrow: 'Our programs',
-    landingCoursesTitle: 'Courses built for everyday clinic work',
-    landingCoursesSub: 'Structured orthodontic training—live batches, on-demand modules, and hands-on workshops.',
+    landingCoursesEyebrow: 'Featured courses',
+    landingCoursesTitle: 'Courses designed for real study routines',
+    landingCoursesSub: 'Structured paths—live cohorts, on-demand lessons, and workshops you can fit around school and life.',
     landingCoursesViewAll: 'View all courses',
     landingCoursesFrom: 'From',
     landingCoursesCta: 'Details',
-    landingCoursesCategoryFallback: 'Orthodontics',
+    landingCoursesCategoryFallback: 'Programs',
 
-    whyPearlsEyebrow: 'Why 32 Pearls',
-    whyPearlsTitle: 'Build knowledge, skills, and confidence for everyday practice',
-    whyPearlsSub: 'Practical, clinically oriented education—not textbook memorization alone.',
+    whyMeridianEyebrow: 'Why Meridian',
+    whyMeridianTitle: 'Student-centred learning with lasting impact',
+    whyMeridianSub: 'Personalised support, interactive workshops, and a culture of excellence—not rote memorisation alone.',
 
     pathEyebrow: 'Your learning path',
     pathTitle: 'From fundamentals to confident finishing',
@@ -544,10 +703,10 @@ const translations = {
 
     meetMentorEyebrow: 'Meet the mentor',
     meetMentorTitle: 'Clinical guidance at every step',
-    meetMentorSub: 'Faculty-led programs designed for busy dental practitioners.',
+    meetMentorSub: 'Faculty-led programs designed for busy learners and professionals.',
 
     alumniStripTitle: 'Cases treated by alumni',
-    alumniStripSub: 'Graduates applying structured orthodontic training in daily practice.',
+    alumniStripSub: 'Graduates applying structured training in daily work.',
     alumniChip1: 'Aligner case starts',
     alumniChip2: 'Fixed appliance cases',
     alumniChip3: 'Treatment plan revisions',
@@ -555,9 +714,16 @@ const translations = {
     alumniChip5: 'Hands-on workshop grads',
     alumniChip6: 'Mentor case reviews',
 
-    testimonialsEyebrow: 'Alumni voices',
-    testimonialsTitle: 'Trusted by dentists across India',
-    testimonialsSub: 'Short notes from practitioners who trained with us—what changed in their day-to-day clinic work.',
+    testimonialsEyebrow: 'Student & parent voices',
+    testimonialsTitle: 'Trusted by families and learners',
+    testimonialsSub: 'Short notes from people who study with us—what shifted in confidence, clarity, and habits.',
+
+    landingDiaryEyebrow: 'Diary',
+    landingDiaryTitle: 'Events & news',
+    landingDiarySub: 'Workshops, briefings, and notes from the desk—one board, not two lists.',
+    landingDiaryEvent: 'Event',
+    landingDiaryNews: 'News',
+    landingDiaryViewAll: 'View all',
 
     landingCertEyebrow: 'Certification',
     landingCertTitle: 'Certificate of completion',
@@ -571,8 +737,8 @@ const translations = {
     pricingEnroll: 'See pricing & enroll',
     pricingBrowseAll: 'Browse all courses',
 
-    homeFaq1Q: 'Do I need prior orthodontic experience to join?',
-    homeFaq1A: 'No. Programs are structured for beginners and for dentists with some prior exposure. We cover fundamentals before advancing to clinical mechanics and case management.',
+    homeFaq1Q: 'Do I need prior experience to join?',
+    homeFaq1A: 'No. Programs are structured for beginners and for learners with some prior exposure. We cover fundamentals before advancing to clinical mechanics and case management.',
     homeFaq2Q: 'Can I pay in installments?',
     homeFaq2A: 'Yes. Flexible installment options may be available—contact our team on WhatsApp or phone for the current payment schedule.',
     homeFaq3Q: 'Do I get downloadable notes?',
@@ -585,24 +751,24 @@ const translations = {
     homeFaq6A: 'Recorded enrollments typically include extended online access (e.g. one year). Live programs follow the scheduled session calendar. Offline training is conducted in person with no separate online access period.',
 
     faqTitle: 'FREQUENTLY ASKED QUESTIONS',
-    faqSubtitle: 'Common questions about our orthodontic courses, workshops, enrollment, and clinical mentorship.',
+    faqSubtitle: 'Common questions about our courses, workshops, enrollment, and mentorship.',
     
-    comparisonTitle: '32 PEARLS VS TRADITIONAL TRAINING',
-    comparisonSubtitle: 'Discover why learners trust 32 Pearls Dental Academy for transparent, skill-backed dental education.',
-    edrillaAdvantage: 'The 32 Pearls Approach',
+    comparisonTitle: 'MERIDIAN VS TRADITIONAL TRAINING',
+    comparisonSubtitle: 'Discover why learners trust Meridian Group of Education for transparent, skill-backed education.',
+    edrillaAdvantage: 'The Meridian Approach',
     traditionalWay: 'Outdated Training',
     
-    benefitsTitle: 'WHY CHOOSE 32 PEARLS',
+    benefitsTitle: 'WHY CHOOSE MERIDIAN',
     benefitsSub: 'Training built for real clinical practice—not textbook memorization alone.',
     
     guaranteeTitle: 'PRACTICAL CLINICAL MENTORSHIP',
-    guaranteeDesc: 'Transparent, hands-on orthodontic education with real-case discussions and continuous guidance as you treat patients.',
+    guaranteeDesc: 'Transparent, hands-on education with real-world discussions and continuous guidance as you treat patients.',
     
-    solutionTitle: 'THE COMPLETE ORTHODONTIC LEARNING PATH',
-    solutionSub: 'From foundational diagnosis to advanced treatment mechanics and case stability.',
+    solutionTitle: 'THE COMPLETE LEARNING PATH',
+    solutionSub: 'From foundational concepts to advanced skills and lasting outcomes.',
     
-    catalogTitle: 'CURATED ORTHODONTIC PROGRAMS',
-    catalogSub: 'Learning tracks for general dentists and specialists expanding their orthodontic skill set.',
+    catalogTitle: 'CURATED PROGRAMS',
+    catalogSub: 'Learning tracks for students and professionals expanding their skill set.',
     
     masterclassTitle: 'LIVE MASTERCLASSES & WEBINARS',
     masterclassSub: 'Interactive sessions on treatment planning, mechanics, and case management with expert faculty.',
@@ -690,11 +856,20 @@ const translations = {
     rating: "Rating",
     studentsEnrolled: "Students",
     forumTitle: 'Community discussions',
-    forumSubtitle: 'Ask clinical questions, share case learnings, and connect with fellow dental practitioners.',
+    forumSubtitle: 'Ask questions, share learnings, and connect with fellow learners.',
     gigTitle: 'Job & freelance opportunities',
-    gigSubtitle: 'Discover roles and opportunities relevant to dental professionals.',
-    newsTitle: 'Insights & updates',
-    newsSubtitle: 'Course updates, clinical news, and announcements from 32 Pearls Dental Academy.',
+    gigSubtitle: 'Discover roles and opportunities relevant to education and careers.',
+    newsTitle: 'Blog',
+    newsSubtitle: 'Course updates, clinical news, and announcements from Meridian Group of Education.',
+    blogPageEyebrow: 'Meridian blog',
+    blogPageTitle: 'Blog',
+    blogPageSubtitle:
+      'Articles, course updates, and announcements from Meridian Group of Education.',
+    blogSearchPlaceholder: 'Search blog articles…',
+    blogEmptyTitle: 'No articles yet',
+    blogEmptyDesc: 'New posts will appear here soon.',
+    backToBlog: 'BACK TO BLOG',
+    dashboardBackToNews: 'BACK TO NEWS',
     contactTitle: "Get in Touch with Us",
     contactSub: "We would love to hear from you. Send us a message and we will respond as soon as possible.",
   },
@@ -712,6 +887,16 @@ const translations = {
     news: 'समाचार',
     dashboard: 'डैशबोर्ड',
     signIn: 'साइन इन',
+    navAbout: 'हमारे बारे में',
+    navCourses: 'कोर्स',
+    navWhatWeOffer: 'हम क्या देते हैं',
+    navOurApproach: 'हमारा दृष्टिकोण',
+    navContact: 'संपर्क',
+    navBlog: 'ब्लॉग',
+    enquireNow: 'अभी पूछताछ करें',
+    navMobileTag: 'Meridian Group of Education',
+    footerEssentialLinks: 'महत्वपूर्ण लिंक',
+    footerEnquireLink: 'पूछताछ करें',
     logOut: 'लॉग आउट',
     liveClasses: 'लाइव कक्षाएं',
     profile: 'प्रोफ़ाइल',
@@ -977,8 +1162,8 @@ const translations = {
     welcomeBackTitle: 'वापसी पर स्वागत है',
     loginSubtitle: 'कोर्स, live classes और messages के लिए sign in करें।',
 
-    authShowcaseEyebrow: '32 Pearls Dental Academy',
-    authShowcaseTitle: 'रोज़मर्रा के practice के लिए clinical orthodontic training',
+    authShowcaseEyebrow: 'Meridian Group of Education',
+    authShowcaseTitle: 'रोज़मर्रा के लिए संरचित शिक्षा कार्यक्रम',
     authShowcaseLead: 'Mentor guidance के साथ structured programs—online, live और hands-on।',
     authShowcaseQuote:
       'Training se case plan aur mechanics clinic me zyada confidently handle kar paati hoon.',
@@ -1001,14 +1186,14 @@ const translations = {
     verifiedBtn: 'सत्यापित',
     requestResetLink: 'रीसेट लिंक का अनुरोध करें',
     requestResetLinkDesc: 'अपने खाते से जुड़ा ईमेल दर्ज करें। यदि यह मौजूद है, तो हम पासवर्ड रीसेट करने का लिंक भेजेंगे।',
-    forgotEmailBrandNote: 'रीसेट ईमेल 32 Pearls Dental Academy से आएगा और हमारे लॉगिन पेज जैसी स्टाइल में होगा।',
+    forgotEmailBrandNote: 'रीसेट ईमेल Meridian Group of Education से आएगा और हमारे लॉगिन पेज जैसी स्टाइल में होगा।',
     sendResetLinkBtn: 'रीसेट लिंक भेजें',
 
     // Hero & Landing
     heroBadge: 'ऑर्थोडॉन्टिक शिक्षा',
     heroTitleLine1: 'व्यावहारिक ऑर्थोडॉन्टिक',
     heroTitleLine2: 'प्रशिक्षण और मार्गदर्शन',
-    heroDesc: '32 Pearls Dental Academy में हैंड्स-ऑन वर्कशॉप, वास्तविक केस चर्चा और निरंतर मेंटर गाइडेंस के साथ ऑर्थोडॉन्टिक केस का निदान, योजना और प्रबंधन सीखें।',
+    heroDesc: 'Meridian Group of Education में हैंड्स-ऑन वर्कशॉप, वास्तविक केस चर्चा और निरंतर मेंटर गाइडेंस के साथ ऑर्थोडॉन्टिक केस का निदान, योजना और प्रबंधन सीखें।',
     exploreCourses: 'कोर्स देखें',
     getStarted: 'शुरू करें',
     activeLearners: 'दंत चिकित्सक',
@@ -1137,7 +1322,7 @@ const translations = {
     phoneNumber: 'फोन नंबर',
 
     // News & Dossier
-    backToNews: 'सभी लेखों पर वापस जाएं',
+    backToNews: 'ब्लॉग पर वापस जाएँ',
     scrollToUnlock: 'लेख अनलॉक करने के लिए स्क्रॉल करें',
     endOfArchive: 'लेख संग्रह समाप्त',
     prevDispatch: 'पिछला लेख',
@@ -1186,13 +1371,162 @@ const translations = {
     focus06Title: 'आजीवन सीखने का सहयोग',
     focus06Desc: 'पाठ्यक्रम के बाद भी मेंटर मार्गदर्शन और केस-आधारित सहायता।',
 
-    heroEyebrow: 'दंत चिकित्सकों के लिए ऑर्थोडॉन्टिक प्रशिक्षण',
-    heroTitle: 'आत्मविश्वास के साथ ऑर्थोडॉन्टिक्स में',
+    heroEyebrow: 'Meridian Group of Education',
+    heroTitle: 'मानसिक शक्ति को सशक्त बनाना। उत्कर्ष से प्रेरणा।',
     heroTitleAccent: 'माहिर बनें',
-    heroSubline: 'सामान्य दंत चिकित्सकों के लिए व्यावहारिक डिजिटल ऑर्थोडॉन्टिक प्रशिक्षण—निदान से फिनिशिंग तक, वास्तविक केस और मेंटरशिप के साथ 32 Pearls Dental Academy पर।',
+    heroSubline:
+      'छात्र-केंद्रित ऑनलाइन ट्यूशन, व्यक्तिगत सहायता, छोटे समूह में सीखना और शैक्षिक कार्यशालाएँ—जिज्ञासु और आत्मविश्वासी शिक्षार्थियों के लिए।',
+    heroMarquee:
+      'गुणवत्तापूर्ण शिक्षा · विशेषज्ञ मार्गदर्शन · कार्यशालाएँ और छोटे समूह · आजीवन सीखना · Meridian',
     browseCourses: 'कोर्स देखें',
     whatsAppCta: 'WhatsApp',
     callCta: 'कॉल',
+    landingCtaWhatsApp: 'WhatsApp पर संदेश',
+
+    landingPortalHeroAria: 'स्क्रॉल से चलने वाला परिचयात्मक नायक खण्ड',
+    landingPortalMetaTopLeft: 'Meridian',
+    landingPortalMetaTopRight: 'स्थापित',
+    landingPortalMetaBottomLeft: 'कार्यक्रम',
+    landingPortalMetaBottomRight: 'नामांकन',
+
+    landingStatementEyebrow: 'कथन',
+    landingStatementIndex: '०१',
+    landingStatementBodyBefore: 'ऐसी शिक्षा जो',
+    landingStatementBodyAccent: 'संरचना',
+    landingStatementBodyAfter:
+      ' को सहानुभूति के साथ जोड़ती है—ताकि शिक्षार्थियों को आत्मविश्वास, स्पष्टता और गति मिले।',
+    landingStatementImageAlt1: 'लैपटॉप और खुली कॉपी के साथ डेस्क पर काम करता शिक्षार्थी।',
+    landingStatementIndex2: '०२',
+    landingStatementBodyBefore2: 'सहयोग जो',
+    landingStatementBodyAccent2: 'व्यक्तिगत',
+    landingStatementBodyAfter2: ' रहता है—छोटे समूह, स्पष्ट प्रतिक्रिया, और हर प्रश्न पूछने की जगह।',
+    landingStatementImageAlt2: 'छोटे समूह सत्र में मेज़ के चारों ओर मिलकर सीखते शिक्षार्थी।',
+    landingStatementIndex3: '०३',
+    landingStatementBodyBefore3: 'विकास जो',
+    landingStatementBodyAccent3: 'स्थिर',
+    landingStatementBodyAfter3: ' लगता है—स्वतंत्र सोच, मज़बूत आदतें, और टिकाऊ गति।',
+    landingStatementImageAlt3: 'उज्वल कार्यशाला में साथ मिलकर अध्ययन करते शिक्षार्थी।',
+
+    landingProgramsEyebrow: 'कार्यक्रम',
+    landingProgramsTitle: 'सूची देखें',
+    landingProgramsSub:
+      'फ़ीचर्ड कोर्सों के ढेर से गुज़रें। बिना खींचे टैप करने पर पूर्ण कार्यक्रम पृष्ठ खुलेगा।',
+
+    landingDeckEmpty: 'सूची लोड होने पर यहाँ कार्यक्रम दिखाई देंगे।',
+    landingDeckAria: 'कार्यक्रम कार्ड ढेर। ऊपर वाले कार्ड को बगल में खींचकर पलटें।',
+    landingDeckUntitled: 'कार्यक्रम',
+    landingDeckView: 'कार्यक्रम देखें',
+    landingDeckHint: 'ऊपर वाला कार्ड खींचें / तीर कुंजी',
+    landingDeckDragHint: 'पलटने के लिए बगल में खींचें; खोलने के लिए टैप',
+    landingDeckProgressLabel: 'डेक स्थिति',
+
+    landingStatsEyebrow: 'एक नज़र में',
+    landingStatsTitle: 'स्थिर अकादमिक प्रगति के लिए',
+    landingStatsSub:
+      'स्पष्ट मार्ग, मेंटर सहायता और लचीले प्रारूप—ऑनलाइन, लाइव या मिश्रित—के साथ संरचित सीखने का माहौल।',
+    landingStatsSectionEyebrow: 'संख्याओं के माध्यम से',
+    landingStatsSectionTitle: 'परिणाम जो परिवार महसूस कर सकें',
+    landingStatsSectionSub:
+      'शिक्षार्थी, मेंटर और कार्यक्रम एक साथ—Meridian रोज़ाना कैसे मौजूद रहता है, इसकी स्पष्ट झलक।',
+    landingStatsBlock1ImageAlt: 'किताबों की अलमारियों के सामने लैपटॉप पर मिलकर काम करते छात्र।',
+    landingStatLearnersLabel: 'सक्रिय शिक्षार्थी',
+    landingStatProgramsLabel: 'कार्यक्रम और कोर्स',
+    landingStatSupportLabel: 'सकारात्मक सहायता अनुभव',
+    landingStatRatingLabel: 'औसत शिक्षार्थी रेटिंग',
+
+    landingFacultyEyebrow: 'फ़ैकल्टी',
+    landingFacultyTitle: 'कार्यक्रम नेतृत्व',
+    landingFacultySub: 'हमारी सूची में कार्यक्रमों पर दर्ज नाम और भूमिकाएँ, प्रति फ़ैकल्टी कार्यक्रमों की संख्या के साथ।',
+    landingFacultyDefaultRole: 'फ़ैकल्टी',
+    landingFacultyProgramsLabel: 'कार्यक्रम',
+
+    landingDatesEyebrow: 'अनुसूची',
+    landingDatesTitle: 'प्रारंभ अवधि',
+    landingDatesSub: 'प्रकाशित कार्यक्रमों की आगामी या चल रही अवधि। लिंक विवरण पृष्ठ खोलते हैं।',
+    landingDatesColProgram: 'कार्यक्रम',
+    landingDatesColSchedule: 'अवधि',
+    landingDatesColLevel: 'स्तर',
+    landingDatesColDuration: 'अवधि (समय)',
+
+    landingProgramLevelBeginner: 'प्रारंभिक',
+    landingProgramLevelIntermediate: 'मध्यम',
+    landingProgramLevelAdvanced: 'उन्नत',
+
+    landingCloseTitle: 'अगला कदम उठाने के लिए तैयार?',
+    landingCloseFine: 'पूरी सूची देखें या पूछताछ भेजें—हमारी टीम स्पष्ट अगले कदमों के साथ जवाब देगी।',
+
+    landingAboutEyebrow: 'Meridian के बारे में',
+    landingAboutTitle: 'जहाँ जिज्ञासा संरचित सहायता से मिलती है',
+    landingCommitmentSnippet: 'सीखने की नींव। कल की संभावनाएँ।',
+    landingPhilosophy:
+      'Meridian Group of Education में हम मानते हैं कि शिक्षा केवल जानकारी प्राप्त करना नहीं है—यह जिज्ञासा, आत्मविश्वास, रचनात्मकता और आजीवन विकास की नींव है।',
+    landingIntro:
+      'हम एक उभरती शैक्षिक पहल हैं जो ऑनलाइन ट्यूशन, व्यक्तिगत शैक्षणिक सहायता, छोटे समूह में सीखना और इंटरैक्टिव शैक्षिक कार्यशालाओं के माध्यम से सीखने को अधिक सुलभ, आकर्षक और छात्र-केंद्रित बनाने के लिए प्रतिबद्ध हैं।',
+    landingApproachSummary:
+      'हमारा दृष्टिकोण छात्रों को मजबूत संकल्पात्मक आधार बनाने, स्वतंत्र सोच विकसित करने और शैक्षणिक चुनौतियों का आत्मविश्वास से सामना करने में मदद करता है।',
+
+    landingOfferEyebrow: 'हम क्या देते हैं',
+    landingOfferTitle: 'वास्तविक छात्रों के अनुरूप सेवाएँ',
+    landingOfferSub: 'एक-से-एक ध्यान से सहयोगात्मक समूह तक—स्पष्ट संरचना, सम्मानजनक गति, सार्थक परिणाम।',
+    landingOffer1Title: 'ऑनलाइन ट्यूशन',
+    landingOffer1Desc:
+      'स्पष्ट लक्ष्यों और उत्तरदायी शिक्षण के साथ संरचित सत्र जो शिक्षार्थियों को उनके स्तर पर मिलते हैं।',
+    landingOffer2Title: 'व्यक्तिगत शैक्षणिक सहायता',
+    landingOffer2Desc: 'प्रत्येक शिक्षार्थी के अनुरूप व्यक्तिगत और छोटे समूह के सत्रों के माध्यम से केंद्रित मार्गदर्शन।',
+    landingOffer3Title: 'छोटे समूह में सीखना',
+    landingOffer3Desc:
+      'चर्चा, सहकक्षीय सीखना और गहरी समझ को प्रोत्साहित करने वाले सहयोगात्मक वातावरण।',
+    landingOffer4Title: 'शैक्षिक कार्यशालाएँ',
+    landingOffer4Desc: 'कौशल, आत्मविश्वास और विचारों के प्रति स्थायी रुचि बनाने वाली इंटरैक्टिव कार्यशालाएँ।',
+
+    landingApproachEyebrow: 'हमारा सीखने का तरीका',
+    landingApproachTitle: 'समझें · सहभागिता करें · बढ़ें',
+    landingApproachSub: 'एक सरल लय जो गहराई और गति संतुलित रखती है।',
+    landingStep1Name: 'समझें',
+    landingStep1Desc:
+      'आगे बढ़ने से पहले अवधारणाएँ स्पष्ट करें और मजबूत आधार बनाएँ—जल्दबाज़ रटंत नहीं, विचारपूर्ण गति।',
+    landingStep2Name: 'सहभागिता करें',
+    landingStep2Desc: 'संवाद, अभ्यास और निर्देशित गतिविधियों के माध्यम से भाग लें ताकि विचार टिकें।',
+    landingStep3Name: 'बढ़ें',
+    landingStep3Desc: 'जैसे-जैसे शैक्षणिक माँग बदलती है, स्वतंत्रता और लचीलेपन के साथ सीखना लागू करें।',
+
+    landingWhyEyebrow: 'Meridian क्यों',
+    landingWhyTitle: 'पाँच कारण जिन पर परिवार भरोसा करते हैं',
+    landingWhySub: 'संक्षिप्त, मानवीय और स्थायी अध्ययन आदतों पर केंद्रित—खोखले वादे नहीं।',
+    landingWhy1Title: 'छात्र-केंद्रित सीखना',
+    landingWhy1Desc: 'शिक्षार्थियों की जरूरतों और लक्ष्यों के चारों ओर आकारित अनुभव—एक ही फॉर्मूला सभी के लिए नहीं।',
+    landingWhy2Title: 'व्यक्तिगत शैक्षणिक सहायता',
+    landingWhy2Desc: 'जब जरूरत हो तब व्यक्तिगत और छोटे समूह के सत्रों के माध्यम से केंद्रित मार्गदर्शन।',
+    landingWhy3Title: 'इंटरैक्टिव शिक्षा',
+    landingWhy3Desc: 'कार्यशालाएँ और गतिविधियाँ जो भागीदारी और संकल्पात्मक स्पष्टता को पुरस्कृत करती हैं।',
+    landingWhy4Title: 'उत्कर्ष की संस्कृति',
+    landingWhy4Desc: 'पेशेवर मानक, निरंतर सुधार और हर संवाद में गुणवत्ता।',
+    landingWhy5Title: 'भविष्य के लिए दृष्टि',
+    landingWhy5Desc:
+      'विशेष कार्यक्रमों, अनुसंधान पहलों और प्रौद्योगिकी-सक्षम शिक्षा के लिए ठोस आधार।',
+
+    landingMissionLabel: 'उद्देश्य',
+    landingMissionHeading: 'सार्थक सीखना, स्पष्ट रूप से',
+    landingMissionBody:
+      'सार्थक शैक्षणिक अनुभव प्रदान करना जो छात्रों को गहराई से समझने, स्वतंत्र रूप से सोचने और आत्मविश्वास के साथ अपने शैक्षणिक लक्ष्यों का पीछा करने में सशक्त बनाए।',
+    landingVisionLabel: 'दृष्टि',
+    landingVisionHeading: 'विश्वसनीय, दूरदर्शी संगठन',
+    landingVisionBody:
+      'एक विश्वसनीय और दूरदर्शी शैक्षिक संगठन बनाना जो शैक्षणिक उत्कर्ष, प्रतियोगी परीक्षा तैयारी, अनुसंधान और नवाचारी शैक्षिक प्रौद्योगिकी को एक साथ लाए।',
+
+    landingFutureEyebrow: 'भविष्य की दृष्टि',
+    landingFutureTitle: 'नियोजित पहलें',
+    landingFutureIntro:
+      'हम ऑनलाइन सीखने और शैक्षिक कार्यशालाओं से शुरू कर रहे हैं, व्यापक शैक्षिक पारिस्थितिकी तंत्र की दिशा में बढ़ने की महत्वाकांक्षा के साथ।',
+    landingFutureBadge: 'भविष्य की पहल — विकासाधीन',
+    landingFutureItemTag: 'नियोजित प्रभाग',
+    landingFutureNote:
+      'प्रत्येक पहल शैक्षिक अवसरों का विस्तार और सार्थक शैक्षणिक प्रभाव सृजित करने के हमारे दीर्घकालिक प्रतिबद्धता को दर्शाती है।',
+
+    landingCtaEyebrow: 'संपर्क',
+    landingCtaTitle: 'छात्र और अभिभावक: हम यहाँ हैं',
+    landingCtaSub:
+      'अपने लक्ष्य और प्रश्न साझा करें—हम स्पष्ट अगले कदमों और ईमानदार मार्गदर्शन के साथ जवाब देंगे कि हम आपकी सीखने की यात्रा में कैसे मदद कर सकते हैं।',
 
     formatsEyebrow: 'सीखने के प्रारूप',
     formatsTitle: 'जहाँ और जैसे चाहें, वैसे सीखें',
@@ -1208,8 +1542,8 @@ const translations = {
     trainingEyebrow: 'हैंड्स-ऑन प्रशिक्षण',
     trainingTitle: 'केवल स्क्रीन पर नहीं—कक्षा में सीखें',
     trainingSub:
-      'लाइव सेमिनार, मेंटर-नेतृत्व में केस चर्चा और supervised workshop—नामांकन से पहले 32 Pearls training का अनुभव देखें।',
-    trainingHighlight1: 'वास्तविक orthodontic cases और open Q&A के साथ faculty sessions।',
+      'लाइव सेमिनार, मेंटर-नेतृत्व में केस चर्चा और supervised workshop—नामांकन से पहले Meridian training का अनुभव देखें।',
+    trainingHighlight1: 'वास्तविक उदाहरणों और open Q&A के साथ faculty sessions।',
     trainingHighlight2: 'मॉडल और mechanics के साथ छोटे समूह में table-side mentorship।',
     trainingHighlight3: 'व्यस्त general dentists के लिए in-person workshops।',
     trainingCta: 'कार्यक्रम देखें',
@@ -1218,17 +1552,17 @@ const translations = {
     trainingCaptionMentor: 'Table पर one-to-one mentor guidance',
     trainingCaptionWorkshop: 'Supervised hands-on workshop practice',
 
-    landingCoursesEyebrow: 'हमारे कार्यक्रम',
-    landingCoursesTitle: 'रोज़मर्रा के clinic के लिए कोर्स',
-    landingCoursesSub: 'Structured orthodontic training—live batches, on-demand modules और hands-on workshops।',
+    landingCoursesEyebrow: 'विशेष कोर्स',
+    landingCoursesTitle: 'वास्तविक अध्ययन दिनचर्या के लिए कोर्स',
+    landingCoursesSub: 'संरचित मार्ग—लाइव कोहॉर्ट, ऑन-डिमांड पाठ और स्कूल व जीवन के साथ मेल खाती वर्कशॉप।',
     landingCoursesViewAll: 'सभी कोर्स देखें',
     landingCoursesFrom: 'से',
     landingCoursesCta: 'विवरण',
-    landingCoursesCategoryFallback: 'Orthodontics',
+    landingCoursesCategoryFallback: 'Programs',
 
-    whyPearlsEyebrow: '32 Pearls क्यों',
-    whyPearlsTitle: 'ज्ञान, कौशल और रोज़मर्रा के अभ्यास के लिए आत्मविश्वास',
-    whyPearlsSub: 'व्यावहारिक, क्लिनिक-उन्मुख शिक्षा—केवल पाठ्यपुस्तक नहीं।',
+    whyMeridianEyebrow: 'Meridian क्यों',
+    whyMeridianTitle: 'छात्र-केंद्रित शिक्षा, स्थायी प्रभाव के साथ',
+    whyMeridianSub: 'व्यक्तिगत सहायता, interactive workshops और excellence की संस्कृति—केवल रटант नहीं।',
 
     pathEyebrow: 'आपका सीखने का मार्ग',
     pathTitle: 'बुनियाद से confident finishing तक',
@@ -1246,7 +1580,7 @@ const translations = {
     meetMentorSub: 'व्यस्त दंत चिकित्सकों के लिए faculty-led कार्यक्रम।',
 
     alumniStripTitle: 'पूर्व छात्रों द्वारा treated cases',
-    alumniStripSub: 'Graduates structured orthodontic training को daily practice में लागू कर रहे हैं।',
+    alumniStripSub: 'Graduates structured training को daily practice में लागू कर रहे हैं।',
     alumniChip1: 'Aligner case starts',
     alumniChip2: 'Fixed appliance cases',
     alumniChip3: 'Treatment plan revisions',
@@ -1254,9 +1588,16 @@ const translations = {
     alumniChip5: 'Hands-on workshop grads',
     alumniChip6: 'Mentor case reviews',
 
-    testimonialsEyebrow: 'पूर्व छात्र',
-    testimonialsTitle: 'भारत भर के दंत चिकित्सकों का भरोसा',
-    testimonialsSub: 'हमारे साथ प्रशिक्षित practitioners की संक्षिप्त बातें—उनके clinic में क्या बदला।',
+    testimonialsEyebrow: 'छात्र और अभिभावक',
+    testimonialsTitle: 'परिवारों और शिक्षार्थियों का भरोसा',
+    testimonialsSub: 'हमारे साथ पढ़ने वालों की संक्षिप्त बातें—आत्मविश्वास, स्पष्टता और आदतों में क्या बदला।',
+
+    landingDiaryEyebrow: 'डायरी',
+    landingDiaryTitle: 'कार्यक्रम और समाचार',
+    landingDiarySub: 'कार्यशालाएँ, बैठकें और डेस्क से नोट्स—एक बोर्ड, दो सूचियाँ नहीं।',
+    landingDiaryEvent: 'कार्यक्रम',
+    landingDiaryNews: 'समाचार',
+    landingDiaryViewAll: 'सभी देखें',
 
     landingCertEyebrow: 'प्रमाणन',
     landingCertTitle: 'पूर्णता प्रमाणपत्र',
@@ -1270,7 +1611,7 @@ const translations = {
     pricingEnroll: 'मूल्य और enroll',
     pricingBrowseAll: 'सभी कोर्स',
 
-    homeFaq1Q: 'क्या शामिल होने के लिए पहले से orthodontic अनुभव जरूरी है?',
+    homeFaq1Q: 'क्या शामिल होने के लिए पहले से अनुभव जरूरी है?',
     homeFaq1A: 'नहीं। कार्यक्रम beginners और कुछ अनुभव वाले दंत चिकित्सकों दोनों के लिए structured हैं—पहले fundamentals, फिर advanced mechanics।',
     homeFaq2Q: 'क्या मैं installments में भुगतान कर सकता/सकती हूँ?',
     homeFaq2A: 'हाँ। Flexible installment विकल्प उपलब्ध हो सकते हैं—WhatsApp या phone पर team से संपर्क करें।',
@@ -1286,12 +1627,12 @@ const translations = {
     faqTitle: 'अक्सर पूछे जाने वाले प्रश्न (FAQ)',
     faqSubtitle: 'ऑर्थोडॉन्टिक कोर्स, वर्कशॉप, नामांकन और क्लिनिकल मेंटरशिप से जुड़े सामान्य प्रश्न।',
     
-    comparisonTitle: '32 Pearls बनाम पारंपरिक प्रशिक्षण',
-    comparisonSubtitle: 'जानिए क्यों सीखने वाले 32 Pearls Dental Academy के व्यावहारिक और पारदर्शी मार्गदर्शन पर भरोसा करते हैं।',
-    edrillaAdvantage: '32 Pearls का दृष्टिकोण',
+    comparisonTitle: 'Meridian बनाम पारंपरिक प्रशिक्षण',
+    comparisonSubtitle: 'जानिए क्यों सीखने वाले Meridian Group of Education के व्यावहारिक और पारदर्शी मार्गदर्शन पर भरोसा करते हैं।',
+    edrillaAdvantage: 'Meridian का दृष्टिकोण',
     traditionalWay: 'पारंपरिक शिक्षा पद्धति',
     
-    benefitsTitle: '32 Pearls Dental Academy क्यों चुनें',
+    benefitsTitle: 'Meridian Group of Education क्यों चुनें',
     benefitsSub: 'वास्तविक क्लिनिकल अभ्यास के लिए बनाया गया प्रशिक्षण—केवल पाठ्यपुस्तक ज्ञान नहीं।',
     
     guaranteeTitle: 'व्यावहारिक क्लिनिकल मेंटरशिप',
@@ -1389,11 +1730,21 @@ const translations = {
     rating: "रेटिंग",
     studentsEnrolled: "छात्र",
     forumTitle: "समुदाय चर्चाएं",
-    forumSubtitle: 'Clinical प्रश्न पूछें, case learnings साझा करें, और fellow dental practitioners से जुड़ें।',
+    forumSubtitle: 'प्रश्न पूछें, learnings साझा करें, और fellow learners से जुड़ें।',
     gigTitle: "नौकरी और फ्रीलांस अवसर",
     gigSubtitle: "अपने कौशल सेट के लिए तैयार किए गए हाथ से चुने गए गिग और पूर्णकालिक टेक भूमिकाओं की खोज करें।",
-    newsTitle: "टेक अंतर्दृष्टि और अपडेट",
-    newsSubtitle: "तकनीक, डिज़ाइन और करियर विकास के नवीनतम रुझानों से अपडेट रहें।",
+    newsTitle: 'ब्लॉग',
+    newsSubtitle:
+      'Meridian Group of Education से पाठ्यक्रम अपडेट, घोषणाएँ और लेख।',
+    blogPageEyebrow: 'Meridian ब्लॉग',
+    blogPageTitle: 'ब्लॉग',
+    blogPageSubtitle:
+      'Meridian Group of Education से लेख, पाठ्यक्रम अपडेट और घोषणाएँ।',
+    blogSearchPlaceholder: 'ब्लॉग लेख खोजें…',
+    blogEmptyTitle: 'अभी कोई लेख नहीं',
+    blogEmptyDesc: 'नई पोस्ट जल्द यहाँ दिखेंगी।',
+    backToBlog: 'ब्लॉग पर वापस जाएँ',
+    dashboardBackToNews: 'समाचार पर वापस जाएँ',
     contactTitle: "हमसे संपर्क करें",
     contactSub: "हम आपसे सुनना पसंद करेंगे। हमें एक संदेश भेजें और हम जल्द से जल्द जवाब देंगे।",
   }

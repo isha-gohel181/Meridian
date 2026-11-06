@@ -97,7 +97,7 @@ const CourseDetail = () => {
     if (course) {
       // Set dynamic page title
       if (course.title) {
-        document.title = `${course.title} | 32 Pearls Dental Academy`
+        document.title = `${course.title} | Meridian Group of Education`
       }
       // Set dynamic SEO meta description for search engines
       if (course.seoMetaDescription || course.subtitle || course.description) {

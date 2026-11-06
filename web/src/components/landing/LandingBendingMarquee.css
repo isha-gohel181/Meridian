@@ -1,0 +1,28 @@
+.landing-simple-marquee {
+  overflow: hidden;
+}
+
+.landing-simple-marquee__track {
+  display: flex;
+  width: max-content;
+  animation: landing-simple-marquee 32s linear infinite;
+}
+
+.landing-simple-marquee:hover .landing-simple-marquee__track {
+  animation-play-state: paused;
+}
+
+@keyframes landing-simple-marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .landing-simple-marquee__track {
+    animation: none;
+  }
+}

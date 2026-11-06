@@ -148,9 +148,9 @@ const ComparisonSection = ({ course, section }) => {
       <div className="mb-24 text-center space-y-8">
         <div className="space-y-4">
           <h2 className="solo-heading font-newsreader mb-2 italic text-[clamp(2rem,6vw,5.5rem)] text-slate-900 font-extralight leading-tight">
-            What is a <span className="text-[#C96A1B] underline-lime">{sanitize(course?.title) || 'Solopreneur'}?</span>
+            What is a <span className="text-[#D8B840] underline-lime">{sanitize(course?.title) || 'Solopreneur'}?</span>
           </h2>
-          <p className="solo-heading font-montserrat pb-4 text-[#C96A1B] text-[14px] md:text-xs font-semibold max-w-md mx-auto leading-[2.2] tracking-widest uppercase">
+          <p className="solo-heading font-montserrat pb-4 text-[#D8B840] text-[14px] md:text-xs font-semibold max-w-md mx-auto leading-[2.2] tracking-widest uppercase">
             {sanitizeDisplay(targetSection?.subtitle || course.subtitle || '')}
           </p>
 
@@ -170,10 +170,10 @@ const ComparisonSection = ({ course, section }) => {
         {/* Image */}
         <div className="solo-image-wrap relative group overflow-hidden max-w-2xl mx-auto shadow-xl rounded-2xl border border-slate-200">
           {/* Decorative corner markers */}
-          <div className="absolute top-4 left-4 z-20 w-8 h-8 border-t-2 border-l-2 border-[#C96A1B]/40 opacity-0 group-hover:opacity-100 transition-all duration-500" />
-          <div className="absolute top-4 right-4 z-20 w-8 h-8 border-t-2 border-r-2 border-[#C96A1B]/40 opacity-0 group-hover:opacity-100 transition-all duration-500" />
-          <div className="absolute bottom-4 left-4 z-20 w-8 h-8 border-b-2 border-l-2 border-[#C96A1B]/40 opacity-0 group-hover:opacity-100 transition-all duration-500" />
-          <div className="absolute bottom-4 right-4 z-20 w-8 h-8 border-b-2 border-r-2 border-[#C96A1B]/40 opacity-0 group-hover:opacity-100 transition-all duration-500" />
+          <div className="absolute top-4 left-4 z-20 w-8 h-8 border-t-2 border-l-2 border-[#D8B840]/40 opacity-0 group-hover:opacity-100 transition-all duration-500" />
+          <div className="absolute top-4 right-4 z-20 w-8 h-8 border-t-2 border-r-2 border-[#D8B840]/40 opacity-0 group-hover:opacity-100 transition-all duration-500" />
+          <div className="absolute bottom-4 left-4 z-20 w-8 h-8 border-b-2 border-l-2 border-[#D8B840]/40 opacity-0 group-hover:opacity-100 transition-all duration-500" />
+          <div className="absolute bottom-4 right-4 z-20 w-8 h-8 border-b-2 border-r-2 border-[#D8B840]/40 opacity-0 group-hover:opacity-100 transition-all duration-500" />
 
           {/* LIVE badge */}
           <div className="absolute top-6 left-6 z-20 flex items-center gap-2 bg-slate-900/80 backdrop-blur-sm px-4 py-2 border border-white/10 rounded-lg">
@@ -212,8 +212,8 @@ const ComparisonSection = ({ course, section }) => {
           </h3>
         </div>
         <div className="space-y-1">
-          <span className="font-jetbrains text-[10px] text-[#C96A1B] tracking-[0.3em] uppercase font-bold">Status / Optimal</span>
-          <h3 className="font-newsreader italic text-2xl md:text-3xl lg:text-5xl text-[#C96A1B] font-normal tracking-tight">
+          <span className="font-jetbrains text-[10px] text-[#D8B840] tracking-[0.3em] uppercase font-bold">Status / Optimal</span>
+          <h3 className="font-newsreader italic text-2xl md:text-3xl lg:text-5xl text-[#D8B840] font-normal tracking-tight">
             {sanitizeDisplay(course.comparisonSection?.rightTitle || "Our Program")}
           </h3>
         </div>
@@ -232,11 +232,11 @@ const ComparisonSection = ({ course, section }) => {
             </div>
 
             {/* Our Program Column */}
-            <div className="flex items-center gap-4 px-4 md:px-6 lg:px-8 py-4 bg-blue-50/80 border-l-4 border-[#C96A1B] rounded-xl shadow-xs transition-all duration-300">
+            <div className="flex items-center gap-4 px-4 md:px-6 lg:px-8 py-4 bg-blue-50/80 border-l-4 border-[#D8B840] rounded-xl shadow-xs transition-all duration-300">
               <div className="w-8 h-8 rounded-full border border-blue-200 flex items-center justify-center shrink-0 bg-blue-100">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C96A1B" strokeWidth="4"><path d="M20 6L9 17l-5-5" /></svg>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D8B840" strokeWidth="4"><path d="M20 6L9 17l-5-5" /></svg>
               </div>
-              <p className="font-montserrat text-xs md:text-xs lg:text-sm text-[#C96A1B] font-semibold tracking-wide uppercase">{sanitizeDisplay(item.our)}</p>
+              <p className="font-montserrat text-xs md:text-xs lg:text-sm text-[#D8B840] font-semibold tracking-wide uppercase">{sanitizeDisplay(item.our)}</p>
             </div>
           </div>
         ))}
@@ -252,15 +252,15 @@ const ComparisonSection = ({ course, section }) => {
         {apiFeatures.map((feat, i) => (
           <div 
             key={i} 
-            className="feature-card border border-slate-200/80 bg-white p-6 md:p-8 rounded-2xl shadow-sm hover:shadow-md hover:border-[#C96A1B]/50 relative group transition-all duration-300 h-full flex flex-col justify-start min-h-[140px]"
+            className="feature-card border border-slate-200/80 bg-white p-6 md:p-8 rounded-2xl shadow-sm hover:shadow-md hover:border-[#D8B840]/50 relative group transition-all duration-300 h-full flex flex-col justify-start min-h-[140px]"
           >
             <div className="absolute top-3 right-4 select-none pointer-events-none">
-              <span className="font-jetbrains text-3xl md:text-4xl font-black text-[#C96A1B]/20 group-hover:text-[#C96A1B]/40 transition-colors">
+              <span className="font-jetbrains text-3xl md:text-4xl font-black text-[#D8B840]/20 group-hover:text-[#D8B840]/40 transition-colors">
                 {String(i + 1).padStart(2, '0')}
               </span>
             </div>
             <div className="flex items-start gap-4 pr-8 relative z-10">
-              <div className="w-2.5 h-2.5 bg-[#C96A1B] rounded-full mt-1.5 shrink-0 shadow-[0_0_8px_rgba(24, 120, 192,0.35)]" />
+              <div className="w-2.5 h-2.5 bg-[#D8B840] rounded-full mt-1.5 shrink-0 shadow-[0_0_8px_rgba(24, 120, 192,0.35)]" />
               <span className="font-montserrat text-sm md:text-[15px] text-slate-800 font-semibold tracking-wide leading-relaxed">
                 {feat}
               </span>
@@ -276,14 +276,14 @@ const ComparisonSection = ({ course, section }) => {
         </h4>
 
         <div className="flex items-center justify-center gap-6 md:gap-10">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C96A1B" strokeWidth="2" className="opacity-60 hidden md:block"><path d="M5 12h14m-7-7 7 7-7 7" /></svg>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#D8B840" strokeWidth="2" className="opacity-60 hidden md:block"><path d="M5 12h14m-7-7 7 7-7 7" /></svg>
           <button 
             onClick={() => document.getElementById('pricing-section')?.scrollIntoView({ behavior: 'smooth' })}
-            className="group relative bg-[#C96A1B] hover:bg-[#1a5c96] px-10 md:px-16 py-5 md:py-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] active:scale-95 flex flex-col items-center gap-2 cursor-pointer"
+            className="group relative bg-[#D8B840] hover:bg-[#1a5c96] px-10 md:px-16 py-5 md:py-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] active:scale-95 flex flex-col items-center gap-2 cursor-pointer"
           >
             <span className="relative z-10 font-jetbrains text-white text-xs md:text-sm font-black tracking-[0.3em] uppercase">YES, I WANT TO BE CEO OF MY LIFE</span>
           </button>
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C96A1B" strokeWidth="2" className="opacity-60 hidden md:block rotate-180"><path d="M5 12h14m-7-7 7 7-7 7" /></svg>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#D8B840" strokeWidth="2" className="opacity-60 hidden md:block rotate-180"><path d="M5 12h14m-7-7 7 7-7 7" /></svg>
         </div>
       </div>
 
