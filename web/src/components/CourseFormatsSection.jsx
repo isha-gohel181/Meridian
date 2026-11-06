@@ -1,21 +1,31 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { TRAINING_IMAGES } from '../constants/trainingImages'
 import { useLanguage } from '../context/LanguageContext'
 
-const FormatCard = ({ title, desc, icon, ctaLabel }) => (
-  <div className="group relative bg-white border border-card-border rounded-2xl p-6 md:p-8 shadow-sm hover:border-accent/35 hover:shadow-md transition-all duration-300">
-    <div className="w-12 h-12 rounded-xl bg-amber-50 border border-amber-200 flex items-center justify-center text-accent mb-5">
-      {icon}
+const FormatCard = ({ title, desc, imageSrc, imageAlt, ctaLabel }) => (
+  <div className="group relative flex flex-col h-full bg-white border border-card-border rounded-2xl overflow-hidden shadow-sm hover:border-accent/35 hover:shadow-lg transition-all duration-300">
+    <div className="relative aspect-[16/10] overflow-hidden bg-[#FFF9F3]">
+      <img
+        src={imageSrc}
+        alt={imageAlt}
+        className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.05]"
+        loading="lazy"
+        decoding="async"
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent pointer-events-none" />
     </div>
-    <h3 className="font-newsreader italic text-2xl text-normal font-light mb-3">{title}</h3>
-    <p className="font-montserrat text-sm text-description leading-relaxed mb-6">{desc}</p>
-    <Link
-      to="/courses"
-      className="inline-flex items-center gap-2 font-jetbrains text-[10px] uppercase tracking-[0.2em] font-bold text-accent group-hover:gap-3 transition-all"
-    >
-      {ctaLabel}
-      <span aria-hidden>→</span>
-    </Link>
+    <div className="flex flex-col flex-1 p-6 md:p-8">
+      <h3 className="font-newsreader italic text-2xl text-normal font-light mb-3">{title}</h3>
+      <p className="font-montserrat text-sm text-description leading-relaxed mb-6 flex-1">{desc}</p>
+      <Link
+        to="/courses"
+        className="inline-flex items-center gap-2 font-jetbrains text-[10px] uppercase tracking-[0.2em] font-bold text-accent group-hover:gap-3 transition-all"
+      >
+        {ctaLabel}
+        <span aria-hidden>→</span>
+      </Link>
+    </div>
   </div>
 )
 
@@ -26,32 +36,20 @@ const CourseFormatsSection = () => {
     {
       title: t('formatLiveTitle'),
       desc: t('formatLiveDesc'),
-      icon: (
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-          <circle cx="12" cy="12" r="10" />
-          <polygon points="10,8 16,12 10,16" fill="currentColor" stroke="none" />
-        </svg>
-      ),
+      imageSrc: TRAINING_IMAGES.liveSeminar,
+      imageAlt: t('trainingCaptionSeminar'),
     },
     {
       title: t('formatRecordedTitle'),
       desc: t('formatRecordedDesc'),
-      icon: (
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-          <rect x="2" y="5" width="20" height="14" rx="2" />
-          <path d="M8 10l6 4-6 4V10z" fill="currentColor" stroke="none" />
-        </svg>
-      ),
+      imageSrc: TRAINING_IMAGES.mentorSession,
+      imageAlt: t('trainingCaptionMentor'),
     },
     {
       title: t('formatOfflineTitle'),
       desc: t('formatOfflineDesc'),
-      icon: (
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-          <path d="M12 3L2 9l10 6 10-6-10-6z" />
-          <path d="M2 15l10 6 10-6" />
-        </svg>
-      ),
+      imageSrc: TRAINING_IMAGES.handsOnWorkshop,
+      imageAlt: t('trainingCaptionWorkshop'),
     },
   ]
 
@@ -74,7 +72,14 @@ const CourseFormatsSection = () => {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
           {formats.map((f) => (
-            <FormatCard key={f.title} title={f.title} desc={f.desc} icon={f.icon} ctaLabel={t('viewCourses')} />
+            <FormatCard
+              key={f.title}
+              title={f.title}
+              desc={f.desc}
+              imageSrc={f.imageSrc}
+              imageAlt={f.imageAlt}
+              ctaLabel={t('viewCourses')}
+            />
           ))}
         </div>
       </div>

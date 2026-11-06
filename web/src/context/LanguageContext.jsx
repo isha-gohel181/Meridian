@@ -506,6 +506,19 @@ const translations = {
     formatOfflineDesc: 'In-person hands-on workshops, supervised mechanics practice, and clinical immersion with mentor oversight.',
     viewCourses: 'View courses',
 
+    trainingEyebrow: 'Hands-on training',
+    trainingTitle: 'Learn in the room—not only on screen',
+    trainingSub:
+      'Live seminars, mentor-led case discussions, and supervised workshop tables—see how 32 Pearls training feels before you enroll.',
+    trainingHighlight1: 'Faculty-led sessions with real orthodontic cases and open Q&A.',
+    trainingHighlight2: 'Small-group mentorship at the table with models and mechanics.',
+    trainingHighlight3: 'In-person workshops designed for busy general dentists.',
+    trainingCta: 'Explore programs',
+    trainingGalleryLabel: 'On campus',
+    trainingCaptionSeminar: 'Live faculty seminars & case discussions',
+    trainingCaptionMentor: 'One-to-one mentor guidance at the table',
+    trainingCaptionWorkshop: 'Supervised hands-on workshop practice',
+
     landingCoursesEyebrow: 'Our programs',
     landingCoursesTitle: 'Courses built for everyday clinic work',
     landingCoursesSub: 'Structured orthodontic training—live batches, on-demand modules, and hands-on workshops.',
@@ -1191,6 +1204,19 @@ const translations = {
     formatOfflineTitle: 'ऑफलाइन कोर्स',
     formatOfflineDesc: 'इन-पर्सन वर्कशॉप, supervised mechanics और मेंटर oversight के साथ clinical immersion।',
     viewCourses: 'कोर्स देखें',
+
+    trainingEyebrow: 'हैंड्स-ऑन प्रशिक्षण',
+    trainingTitle: 'केवल स्क्रीन पर नहीं—कक्षा में सीखें',
+    trainingSub:
+      'लाइव सेमिनार, मेंटर-नेतृत्व में केस चर्चा और supervised workshop—नामांकन से पहले 32 Pearls training का अनुभव देखें।',
+    trainingHighlight1: 'वास्तविक orthodontic cases और open Q&A के साथ faculty sessions।',
+    trainingHighlight2: 'मॉडल और mechanics के साथ छोटे समूह में table-side mentorship।',
+    trainingHighlight3: 'व्यस्त general dentists के लिए in-person workshops।',
+    trainingCta: 'कार्यक्रम देखें',
+    trainingGalleryLabel: 'Campus पर',
+    trainingCaptionSeminar: 'लाइव faculty seminars और case discussions',
+    trainingCaptionMentor: 'Table पर one-to-one mentor guidance',
+    trainingCaptionWorkshop: 'Supervised hands-on workshop practice',
 
     landingCoursesEyebrow: 'हमारे कार्यक्रम',
     landingCoursesTitle: 'रोज़मर्रा के clinic के लिए कोर्स',

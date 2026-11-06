@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux'
 import { fetchCourses } from '../redux/slices/courseSlice'
 import Hero from '../components/Hero'
 import CourseFormatsSection from '../components/CourseFormatsSection'
+import TrainingExperienceSection from '../components/TrainingExperienceSection'
 import LandingCoursesSection from '../components/LandingCoursesSection'
 import WhyPearlsSection from '../components/WhyPearlsSection'
 import LearningPathSection from '../components/LearningPathSection'
@@ -24,6 +25,7 @@ const Home = ({ isLoaded }) => {
     <div className="w-full">
       <Hero isLoaded={isLoaded} />
       <CourseFormatsSection />
+      <TrainingExperienceSection />
       <LandingCoursesSection />
       <WhyPearlsSection />
       <LearningPathSection />
