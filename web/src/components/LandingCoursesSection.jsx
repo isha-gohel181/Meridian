@@ -1,6 +1,9 @@
 import React, { useMemo, useState } from 'react'
+import { motion, useReducedMotion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import LandingReveal from './landing/LandingReveal'
+import { STAGGER_CHILD_VARIANTS } from './landing/landingRevealVariants'
 import sanitizeDisplay from '../utils/textSanitize'
 import { resolveCourseThumbnail } from '../utils/courseThumbnail.js'
 import { useLanguage } from '../context/LanguageContext'
@@ -53,6 +56,7 @@ function mapApiCourse(course, t) {
 
 const LandingCoursesSection = () => {
   const { t } = useLanguage()
+  const prefersReduced = useReducedMotion()
   const { courses } = useSelector((state) => state.courses)
   const [active, setActive] = useState(0)
 
@@ -67,13 +71,23 @@ const LandingCoursesSection = () => {
 
   const current = displayed[Math.min(active, Math.max(displayed.length - 1, 0))] || displayed[0]
 
+  const HeaderBlock = prefersReduced ? 'div' : motion.div
+  const GridBlock = prefersReduced ? 'div' : motion.div
+  const staggerProps = prefersReduced
+    ? {}
+    : { variants: STAGGER_CHILD_VARIANTS }
+
   return (
-    <section
+    <LandingReveal
       id="courses"
+      stagger={!prefersReduced}
       className="scroll-mt-28 border-y border-brand-brown/[0.06] bg-slate-50 px-4 py-20 sm:px-6 md:scroll-mt-32 md:px-10 md:py-28 lg:px-14"
     >
       <div className="mx-auto max-w-7xl">
-        <div className="mb-10 flex flex-col gap-6 md:mb-12 md:flex-row md:items-end md:justify-between">
+        <HeaderBlock
+          {...staggerProps}
+          className="mb-10 flex flex-col gap-6 md:mb-12 md:flex-row md:items-end md:justify-between"
+        >
           <div className="max-w-2xl">
             <p className="mb-3 font-jetbrains text-[10px] font-bold uppercase tracking-[0.45em] text-accent">
               {t('landingCoursesEyebrow')}
@@ -89,9 +103,12 @@ const LandingCoursesSection = () => {
           >
             {t('landingCoursesViewAll')}
           </Link>
-        </div>
+        </HeaderBlock>
 
-        <div className="grid overflow-hidden rounded-[1.75rem] border border-brand-brown/[0.08] bg-white lg:grid-cols-12">
+        <GridBlock
+          {...staggerProps}
+          className="grid overflow-hidden rounded-[1.75rem] border border-brand-brown/[0.08] bg-white lg:grid-cols-12"
+        >
           <div className="relative min-h-[20rem] bg-brand-brown lg:col-span-7 lg:min-h-[36rem]">
             {displayed.map((item, index) => (
               <img
@@ -174,9 +191,9 @@ const LandingCoursesSection = () => {
               )
             })}
           </ol>
-        </div>
+        </GridBlock>
       </div>
-    </section>
+    </LandingReveal>
   )
 }
 

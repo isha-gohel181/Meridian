@@ -2,6 +2,7 @@ import React, { useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { useLanguage } from '../../context/LanguageContext'
+import LandingReveal from './LandingReveal'
 
 function formatCourseDateRange(startDate, endDate) {
   if (!startDate) return '—'
@@ -49,7 +50,7 @@ const LandingProgramDates = () => {
   if (rows.length === 0) return null
 
   return (
-    <section id="dates" className="scroll-mt-28 md:scroll-mt-32 bg-white px-4 py-20 sm:px-6 md:px-10 lg:px-14">
+    <LandingReveal id="dates" className="scroll-mt-28 md:scroll-mt-32 bg-white px-4 py-20 sm:px-6 md:px-10 lg:px-14">
       <div className="mx-auto max-w-7xl">
         <p className="mb-3 font-jetbrains text-[10px] font-bold uppercase tracking-[0.45em] text-accent">
           {t('landingDatesEyebrow')}
@@ -120,7 +121,7 @@ const LandingProgramDates = () => {
           })}
         </div>
       </div>
-    </section>
+    </LandingReveal>
   )
 }
 

@@ -108,8 +108,8 @@ const Navbar = ({ isLoaded }) => {
       })
       gsap.set(innerNavRef.current, {
         borderRadius: '1rem',
-        paddingTop: '0.75rem',
-        paddingBottom: '0.75rem',
+        paddingTop: '0.35rem',
+        paddingBottom: '0.35rem',
         backgroundColor: 'rgba(255, 255, 255, 0.98)',
         backdropFilter: 'blur(24px)',
       })
@@ -247,10 +247,22 @@ const Navbar = ({ isLoaded }) => {
 
         <div
           ref={innerNavRef}
-          className="flex items-center justify-between bg-white/92 rounded-2xl px-3 sm:px-5 md:px-7 !py-2.5 border border-slate-200/90 shadow-[0_4px_30px_rgba(24,120,192,0.12)] backdrop-blur-2xl relative z-20 will-change-[padding,background-color]"
+          className="flex items-center justify-between bg-white/92 rounded-2xl px-3 sm:px-5 md:px-7 py-1.5 border border-slate-200/90 shadow-[0_4px_30px_rgba(24,120,192,0.12)] backdrop-blur-2xl relative z-20 will-change-[padding,background-color]"
         >
-          <Link to="/" ref={logoRef} className="flex items-center hover:opacity-80 transition-opacity gap-2.5 shrink-0">
-            <img src="/meridian/logo.jpeg" alt="Meridian Group of Education" className="h-9 md:h-11 w-auto object-contain" />
+          {/* Logo asset has heavy padding; scale inside overflow clip so the mark reads at full bar height */}
+          <Link
+            to="/"
+            ref={logoRef}
+            className="relative flex h-[3.25rem] w-[12.5rem] shrink-0 items-center justify-center overflow-hidden rounded-lg hover:opacity-90 sm:h-[3.75rem] sm:w-[14rem] md:h-[4.5rem] md:w-[15.5rem] lg:w-[17rem] transition-opacity"
+            aria-label="Meridian Group of Education home"
+          >
+            <img
+              src="/meridian/logo.jpeg"
+              alt=""
+              decoding="async"
+              draggable={false}
+              className="pointer-events-none h-full w-[265%] max-h-none max-w-none object-contain object-center sm:w-[255%] md:w-[240%] lg:w-[220%] [transform:translateZ(0)]"
+            />
           </Link>
 
           <div
@@ -359,8 +371,19 @@ const Navbar = ({ isLoaded }) => {
           <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')] [background-size:200px_200px]" />
 
           <header className="menu-header absolute top-0 left-0 w-full px-8 md:px-12 py-8 md:py-10 flex items-center justify-between z-50">
-            <Link to="/" onClick={() => setIsOpen(false)} className="flex items-center gap-3 hover:opacity-80 transition-opacity">
-              <img src="/meridian/logo.jpeg" alt="Meridian Group of Education" className="h-10 md:h-12 w-auto object-contain" />
+            <Link
+              to="/"
+              onClick={() => setIsOpen(false)}
+              className="relative flex h-[4.25rem] w-[14.5rem] items-center justify-center overflow-hidden rounded-lg hover:opacity-90 sm:h-[4.75rem] sm:w-[16rem] md:h-[5.25rem] md:w-[18rem] transition-opacity"
+              aria-label="Meridian Group of Education home"
+            >
+              <img
+                src="/meridian/logo.jpeg"
+                alt=""
+                decoding="async"
+                draggable={false}
+                className="pointer-events-none h-full w-[250%] max-h-none max-w-none object-contain object-center md:w-[230%]"
+              />
             </Link>
 
             <button

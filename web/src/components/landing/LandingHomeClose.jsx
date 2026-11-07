@@ -2,12 +2,13 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { APP_DISPLAY_NAME } from '../../constants/brand'
 import { useLanguage } from '../../context/LanguageContext'
+import LandingReveal from './LandingReveal'
 
 const LandingHomeClose = () => {
   const { t } = useLanguage()
 
   return (
-    <section className="overflow-hidden border-t border-brand-brown/[0.08] bg-slate-50 px-4 py-16 sm:px-6 md:px-10 lg:px-14">
+    <LandingReveal className="overflow-hidden border-t border-brand-brown/[0.08] bg-slate-50 px-4 py-16 sm:px-6 md:px-10 lg:px-14">
       <div className="mx-auto max-w-7xl">
         <div className="flex flex-col gap-10 md:flex-row md:items-end md:justify-between">
           <div className="max-w-xl">
@@ -39,7 +40,7 @@ const LandingHomeClose = () => {
           </p>
         </div>
       </div>
-    </section>
+    </LandingReveal>
   )
 }
 

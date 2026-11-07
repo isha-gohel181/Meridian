@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { useLanguage } from '../../context/LanguageContext'
+import LandingReveal from './LandingReveal'
 
 const LandingFacultyRoster = () => {
   const { t } = useLanguage()
@@ -26,7 +27,7 @@ const LandingFacultyRoster = () => {
   if (rows.length === 0) return null
 
   return (
-    <section
+    <LandingReveal
       id="faculty"
       className="scroll-mt-28 md:scroll-mt-32 border-y border-brand-brown/[0.06] bg-slate-50 px-4 py-20 sm:px-6 md:px-10 lg:px-14"
     >
@@ -56,7 +57,7 @@ const LandingFacultyRoster = () => {
           ))}
         </div>
       </div>
-    </section>
+    </LandingReveal>
   )
 }
 
