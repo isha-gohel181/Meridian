@@ -1,0 +1,345 @@
+/*
+  "The book that opens on scroll" from Animorio · https://animorio.com
+  License: free on your own sites and your clients’ sites, paid work included.
+  Not for resale, redistribution, templates or code collections · https://animorio.com/en/license/
+*/
+/* The book that opens on scroll: a made-up publisher, Bramble Press. The stage sticks while you scroll; the book, its
+   pages, the shadows and the light are placed by the script, which also reads the colours below. */
+:root {
+  --tavolo: #f2eee6;         /* the table, the page around the book */
+  --inchiostro: #191714;     /* the text */
+  --tenue: #8d877c;          /* the small text */
+  --tela: #cfc6b4;           /* the cloth of the cover */
+  --tela-scura: #b9af9b;     /* the cloth of the back cover and the spine */
+  --risguardo: #e6dfd0;      /* the endpaper inside the cover */
+  --carta: #fbf8f1;          /* the pages */
+  --taglio: #ece5d6;         /* the edge of the stacked pages */
+  --accento: #d9482b;        /* the ribbon bookmark, the only colour */
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+}
+
+body {
+  background: var(--tavolo);
+  color: var(--inchiostro);
+  font-family: 'Instrument Sans Variable', 'Instrument Sans', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ---------------------------------------------------------------- the stage */
+.corsa {
+  position: relative;
+  height: 420lvh; /* the script sets the real height from RIDE */
+}
+
+.palco {
+  position: sticky;
+  top: 0;
+  height: 100lvh;
+  overflow: hidden;
+  background: var(--tavolo);
+}
+
+.testa {
+  position: absolute;
+  inset: 0 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: clamp(14px, 3.2vh, 30px) clamp(16px, 4vw, 44px);
+  z-index: 2;
+}
+
+.marchio {
+  color: var(--inchiostro);
+  text-decoration: none;
+  font-family: 'Newsreader Variable', 'Newsreader', Georgia, serif;
+  font-size: clamp(14px, 1.4vw, 17px);
+  font-weight: 560;
+  letter-spacing: 0.01em;
+}
+
+.testa__nota,
+.cenno {
+  margin: 0;
+  font-size: clamp(11px, 1vw, 13px);
+  color: var(--tenue);
+  letter-spacing: 0.02em;
+}
+
+.cenno {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: clamp(14px, 4vh, 34px);
+  text-align: center;
+  z-index: 2;
+}
+
+/* ---------------------------------------------------------------- the book */
+.scena {
+  position: absolute;
+  inset: 0;
+  perspective: 1700px;
+  perspective-origin: 50% 30%;
+}
+
+.libro,
+.libro * {
+  transform-style: preserve-3d;
+}
+
+.libro {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform-origin: 0 50%;
+}
+
+.faccia,
+.libro .foglio,
+.libro .segmento {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.dorso-retro {
+  background: var(--tela-scura);
+  border-radius: 1px 3px 3px 1px;
+}
+
+.blocco {
+  background: var(--carta);
+}
+
+.pagina-base {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: linear-gradient(90deg, rgba(60, 45, 25, 0.10), rgba(60, 45, 25, 0) 9%), var(--carta);
+  font-family: 'Newsreader Variable', 'Newsreader', Georgia, serif;
+}
+
+.pagina-base__capitolo {
+  position: absolute;
+  left: 15%;
+  right: 12%;
+  top: 22%;
+  margin: 0;
+  font-style: italic;
+  font-size: var(--testo-piccolo, 11px);
+  color: var(--tenue);
+  letter-spacing: 0.02em;
+}
+
+.pagina-base__frase {
+  position: absolute;
+  left: 15%;
+  right: 12%;
+  top: 30%;
+  margin: 0;
+  font-size: var(--testo, 20px);
+  line-height: 1.16;
+  font-variation-settings: 'opsz' 36;
+  color: var(--inchiostro);
+  text-wrap: balance;
+}
+
+.pagina-base__ombra {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(40, 30, 15, 0.55), rgba(40, 30, 15, 0) 70%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.nastro {
+  position: absolute;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.08), rgba(255, 255, 255, 0.12) 45%, rgba(0, 0, 0, 0.1)), var(--accento);
+  transform-origin: 50% 0;
+  border-radius: 0 0 1px 1px;
+}
+
+/* the tail of the ribbon is cut in a little V */
+.nastro::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 7px;
+  background: linear-gradient(to bottom right, transparent 49%, var(--tavolo) 51%) left / 50% 100% no-repeat,
+    linear-gradient(to bottom left, transparent 49%, var(--tavolo) 51%) right / 50% 100% no-repeat;
+}
+
+.taglio {
+  transform-origin: 0 0;
+  background: repeating-linear-gradient(var(--verso, 180deg), var(--taglio) 0 1.2px, #d9d0bd 1.2px 1.6px);
+}
+
+.taglio--davanti {
+  --verso: 90deg;
+}
+
+/* the pages: each one is a few thin strips hinged one on the next, so it can curve while it turns */
+.foglio {
+  transform-origin: 0 50%;
+}
+
+.segmento {
+  height: 100%;
+  transform-origin: 0 50%;
+}
+
+.segmento > .lato {
+  position: absolute;
+  inset: 0;
+  box-shadow: inset 0 0.6px 0 rgba(90, 70, 40, 0.16), inset 0 -0.6px 0 rgba(90, 70, 40, 0.16);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  background: var(--carta);
+}
+
+.segmento > .lato--retro {
+  transform: rotateY(180deg);
+  background: #f8f5ee;
+}
+
+.lato::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: #2a2216;
+  opacity: var(--buio, 0);
+}
+
+.copertina {
+  transform-origin: 0 50%;
+}
+
+.copertina__fuori,
+.copertina__dentro {
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: 1px 3px 3px 1px;
+  overflow: hidden;
+}
+
+.copertina__fuori {
+  background:
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.07) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.05) 0 1px, transparent 1px 3px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.16), rgba(0, 0, 0, 0) 7%, rgba(255, 255, 255, 0.08) 8%, rgba(0, 0, 0, 0) 12%),
+    var(--tela);
+}
+
+.copertina__titolo {
+  position: absolute;
+  left: 16%;
+  right: 10%;
+  top: 18%;
+  font-family: 'Newsreader Variable', 'Newsreader', Georgia, serif;
+  font-size: var(--titolo, 34px);
+  font-weight: 520;
+  line-height: 0.95;
+  letter-spacing: -0.01em;
+  color: #b8ae99;
+  /* pressed into the cloth: a dark line above each stroke, a light one below */
+  text-shadow: 0 -1px 0 rgba(70, 55, 35, 0.45), 0 1px 0 rgba(255, 255, 255, 0.45);
+}
+
+.copertina__autore {
+  position: absolute;
+  left: 16%;
+  bottom: 12%;
+  font-size: var(--testo-piccolo, 11px);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #aa9f88;
+  text-shadow: 0 -1px 0 rgba(70, 55, 35, 0.35), 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.copertina__dentro {
+  transform: rotateY(180deg);
+  background: linear-gradient(270deg, rgba(60, 45, 25, 0.12), rgba(60, 45, 25, 0) 10%), var(--risguardo);
+}
+
+.copertina__ex {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 46%;
+  text-align: center;
+  font-family: 'Newsreader Variable', 'Newsreader', Georgia, serif;
+  font-style: italic;
+  font-size: var(--testo-piccolo, 11px);
+  color: #a99f8c;
+}
+
+.copertina__luce {
+  position: absolute;
+  inset: 0;
+  background: #20190f;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.copertina__spessore {
+  background: var(--tela-scura);
+  transform-origin: 0 0;
+}
+
+.ombra {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(60, 45, 25, 0.3), rgba(60, 45, 25, 0.12) 60%, rgba(60, 45, 25, 0));
+  filter: blur(14px);
+  transform-origin: 0 50%;
+}
+
+/* ---------------------------------------------------------------- after the book */
+.dopo {
+  min-height: 60lvh;
+  display: grid;
+  place-items: center;
+  padding: 40px 20px;
+}
+
+.dopo__testo {
+  margin: 0;
+  max-width: 34ch;
+  text-align: center;
+  font-family: 'Newsreader Variable', 'Newsreader', Georgia, serif;
+  font-size: clamp(16px, 2vw, 22px);
+  color: var(--tenue);
+}

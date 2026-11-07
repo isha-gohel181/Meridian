@@ -1,0 +1,74 @@
+<!doctype html>
+<!--
+  "The book that opens on scroll" from Animorio · https://animorio.com
+  License: free on your own sites and your clients’ sites, paid work included.
+  Not for resale, redistribution, templates or code collections · https://animorio.com/en/license/
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The book that opens on scroll</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource-variable/newsreader@5.3.0/index.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource-variable/instrument-sans@5.3.0/index.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- a made-up publisher, Bramble Press. The stage sticks while you scroll: a closed clothbound book lies on the table,
+       the cover swings open on its hinge, a few thin pages fan over one after another, and the book ends open flat on a
+       page with one short sentence. Scroll back up and it closes again. Book, pages and shadows are placed by the script -->
+  <main>
+    <section class="corsa" data-corsa>
+      <div class="palco" data-palco>
+        <header class="testa">
+          <a class="marchio" href="#" data-entra>Bramble Press</a>
+          <p class="testa__nota" data-entra>The autumn list</p>
+        </header>
+
+        <div class="scena" data-scena aria-hidden="true">
+          <div class="ombra" data-ombra></div>
+          <div class="libro" data-libro>
+            <!-- the back cover and the block of pages, with the fore-edge and the tail showing the stacked paper -->
+            <div class="dorso-retro faccia"></div>
+            <div class="blocco faccia" data-blocco>
+              <div class="pagina-base">
+                <p class="pagina-base__capitolo" data-cap>Chapter one</p>
+                <p class="pagina-base__frase" data-frase>Some stories wait for the&nbsp;right&nbsp;page.</p>
+                <span class="pagina-base__ombra" data-ombra-pagina></span>
+              </div>
+              <div class="nastro" data-nastro></div>
+            </div>
+            <div class="taglio taglio--piede faccia" data-taglio-piede></div>
+            <div class="taglio taglio--davanti faccia" data-taglio-davanti></div>
+            <div class="pagine" data-pagine></div>
+            <!-- the cover: cloth outside with the title pressed in, endpaper inside -->
+            <div class="copertina" data-copertina>
+              <div class="copertina__fuori faccia">
+                <span class="copertina__titolo">Small<br>Hours</span>
+                <span class="copertina__autore">M. Arden</span>
+                <span class="copertina__luce" data-luce-cop></span>
+              </div>
+              <div class="copertina__dentro faccia">
+                <span class="copertina__ex">Bramble Press</span>
+                <span class="copertina__luce" data-luce-dentro></span>
+              </div>
+              <div class="copertina__spessore faccia"></div>
+            </div>
+          </div>
+        </div>
+        <p class="sr-only">Small Hours, by M. Arden. Chapter one: Some stories wait for the right page.</p>
+
+        <p class="cenno" data-entra><span data-cenno>Scroll to open the book</span></p>
+      </div>
+    </section>
+    <section class="dopo">
+      <p class="dopo__testo">Small Hours is out in November, clothbound, 212 pages.</p>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
