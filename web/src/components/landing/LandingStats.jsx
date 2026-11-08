@@ -30,10 +30,7 @@ const LandingStats = () => {
           viewport={{ once: true, margin: '-40px', amount: 0.2 }}
           transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
         >
-          <p className="font-jetbrains text-[10px] font-bold uppercase tracking-[0.45em] text-accent">
-            {t('landingStatsSectionEyebrow')}
-          </p>
-          <h2 className="mt-3 font-newsreader text-3xl font-medium tracking-tight text-brand-brown sm:text-4xl md:text-[2.45rem]">
+          <h2 className="font-newsreader text-3xl font-medium tracking-tight text-brand-brown sm:text-4xl md:text-[2.45rem]">
             {t('landingStatsSectionTitle')}
           </h2>
           <p className="mt-4 max-w-2xl text-base leading-relaxed text-description md:text-lg">

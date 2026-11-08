@@ -54,11 +54,12 @@
   z-index: 2;
   margin: 0;
   text-align: center;
-  font-family: var(--font-jetbrains), ui-monospace, monospace;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.28em;
-  text-transform: uppercase;
+  font-family: var(--font-newsreader), 'Newsreader', Georgia, serif;
+  font-size: 0.9rem;
+  font-weight: 500;
+  font-style: italic;
+  letter-spacing: 0.01em;
+  text-transform: none;
   color: var(--tenue);
 }
 
@@ -102,17 +103,19 @@
 .meridian-book .pagina-base {
   position: absolute;
   inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
+  padding: 14%;
   background: linear-gradient(90deg, rgba(3, 39, 70, 0.1), rgba(3, 39, 70, 0) 9%), var(--carta);
   font-family: var(--font-newsreader), 'Newsreader', Georgia, serif;
+  text-align: center;
 }
 
 .meridian-book .pagina-base__capitolo {
-  position: absolute;
-  left: 15%;
-  right: 12%;
-  top: 22%;
-  margin: 0;
+  margin: 0 0 0.55em;
   font-style: italic;
   font-size: var(--testo-piccolo, 11px);
   color: var(--tenue);
@@ -120,10 +123,6 @@
 }
 
 .meridian-book .pagina-base__frase {
-  position: absolute;
-  left: 15%;
-  right: 12%;
-  top: 30%;
   margin: 0;
   font-size: var(--testo, 20px);
   line-height: 1.16;
@@ -180,6 +179,7 @@
   position: absolute;
   inset: 0;
   overflow: hidden;
+  transform-style: flat;
   box-shadow: inset 0 0.6px 0 rgba(3, 39, 70, 0.16), inset 0 -0.6px 0 rgba(3, 39, 70, 0.16);
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
@@ -190,25 +190,31 @@
   position: absolute;
   top: 0;
   left: 0;
+  display: flex;
   height: 100%;
-  padding: 18% 12% 10% 16%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 14%;
   pointer-events: none;
   font-family: var(--font-newsreader), 'Newsreader', Georgia, serif;
   color: var(--inchiostro);
+  text-align: center;
 }
 
 .meridian-book .pagina-testo__n {
   margin: 0 0 0.55em;
-  font-family: var(--font-jetbrains), ui-monospace, monospace;
-  font-size: var(--testo-piccolo, 10px);
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
+  font-family: var(--font-newsreader), 'Newsreader', Georgia, serif;
+  font-size: calc(var(--testo-piccolo, 11px) * 1.05);
+  font-weight: 600;
+  font-style: italic;
+  letter-spacing: 0.01em;
+  text-transform: none;
   color: #8c6d1f;
 }
 
 .meridian-book .pagina-testo__riga {
-  margin: 0;
+  margin: 0 auto;
   max-width: 12em;
   font-size: calc(var(--testo, 16px) * 0.92);
   line-height: 1.2;
@@ -218,6 +224,32 @@
 .meridian-book .segmento > .lato--retro {
   transform: rotateY(180deg);
   background: #f8f4ec;
+}
+
+.meridian-book .pagina-marca {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14%;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.meridian-book .pagina-marca--retro {
+  inset: auto;
+  top: 0;
+  left: 0;
+  height: 100%;
+  overflow: visible;
+}
+
+.meridian-book .pagina-marca img {
+  width: 68%;
+  height: auto;
+  object-fit: contain;
+  opacity: 0.9;
 }
 
 .meridian-book .lato::after {
@@ -271,10 +303,11 @@
   left: 14%;
   right: 10%;
   bottom: 12%;
-  font-family: var(--font-jetbrains), ui-monospace, monospace;
-  font-size: calc(var(--testo-piccolo, 11px) * 0.92);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font-family: var(--font-newsreader), 'Newsreader', Georgia, serif;
+  font-size: calc(var(--testo-piccolo, 11px) * 1.05);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  text-transform: none;
   color: #e5d576;
   text-shadow: 0 -1px 0 rgba(1, 16, 32, 0.55), 0 1px 0 rgba(255, 236, 180, 0.28);
 }
@@ -285,15 +318,7 @@
 }
 
 .meridian-book .copertina__ex {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 46%;
-  text-align: center;
-  font-family: var(--font-newsreader), 'Newsreader', Georgia, serif;
-  font-style: italic;
-  font-size: var(--testo-piccolo, 11px);
-  color: rgba(3, 39, 70, 0.55);
+  display: none;
 }
 
 .meridian-book .copertina__luce {

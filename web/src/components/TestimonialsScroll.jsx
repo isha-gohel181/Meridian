@@ -91,7 +91,7 @@ const mapPropReview = (r, idx, { preferStudentPhoto = false } = {}) => {
 }
 
 const HALFTONE_MASK =
-  'radial-gradient(ellipse 78% 62% at 50% 32%, transparent 42%, #000 84%)'
+  'radial-gradient(ellipse 92% 88% at 50% 42%, transparent 62%, #000 100%)'
 
 const quoteEase = [0.22, 1, 0.36, 1]
 
@@ -99,7 +99,7 @@ const QuoteMark = () => (
   <svg
     aria-hidden
     viewBox="0 0 40 32"
-    className="mb-5 h-7 w-9 text-accent drop-shadow-[0_0_18px_rgba(216,184,64,0.4)] md:mb-6 md:h-8 md:w-10"
+    className="mb-5 h-7 w-9 text-accent md:mb-6 md:h-8 md:w-10"
     fill="currentColor"
   >
     <path d="M15.4 32H0V17.6C0 7.9 5.4 1.3 14 0v7.4c-4 .7-6.2 3.4-6.2 7.6H15.4V32Zm24.6 0H24.6V17.6C24.6 7.9 30 1.3 38.6 0v7.4c-4 .7-6.2 3.4-6.2 7.6H40V32Z" />
@@ -127,7 +127,7 @@ const TestimonialCard = ({ item }) => (
   </article>
 )
 
-const VoicesStage = ({ items, eyebrow, title, sub, label }) => {
+const VoicesStage = ({ items, title, sub, label }) => {
   const [active, setActive] = useState(0)
   const current = items[active] ?? items[0]
   const galleryItems = items.map((item) => ({
@@ -143,7 +143,7 @@ const VoicesStage = ({ items, eyebrow, title, sub, label }) => {
     >
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-[0.22]"
+        className="pointer-events-none absolute inset-x-0 top-0 h-[58%] opacity-[0.18]"
         style={{
           backgroundImage: 'radial-gradient(circle, rgba(216,184,64,0.7) 1.05px, transparent 1.15px)',
           backgroundSize: '5px 5px',
@@ -153,7 +153,7 @@ const VoicesStage = ({ items, eyebrow, title, sub, label }) => {
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-[0.16]"
+        className="pointer-events-none absolute inset-x-0 top-0 h-[58%] opacity-[0.12]"
         style={{
           backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.5) 0.7px, transparent 0.85px)',
           backgroundSize: '9px 9px',
@@ -161,19 +161,12 @@ const VoicesStage = ({ items, eyebrow, title, sub, label }) => {
           WebkitMaskImage: HALFTONE_MASK,
         }}
       />
-      <div aria-hidden className="pointer-events-none absolute inset-0">
-        <div className="absolute left-1/2 top-[8%] h-64 w-[42rem] -translate-x-1/2 rounded-full bg-accent/15 blur-[120px]" />
-        <div className="absolute -bottom-24 left-1/2 size-[28rem] -translate-x-1/2 rounded-full bg-white/[0.05] blur-[100px]" />
-      </div>
       <div
         aria-hidden
         className="pointer-events-none absolute inset-x-12 top-0 h-px bg-gradient-to-r from-transparent via-accent/45 to-transparent"
       />
 
       <div className="relative z-10 mx-auto max-w-4xl px-6 pb-2 pt-14 text-center sm:px-10 md:pt-20">
-        <p className="mb-5 font-jetbrains text-[10px] font-bold uppercase tracking-[0.45em] text-accent">
-          {eyebrow}
-        </p>
         <h2 className="font-newsreader italic text-3xl font-normal leading-[1.15] tracking-tight text-white sm:text-4xl md:text-[2.85rem]">
           {title}
         </h2>
@@ -200,9 +193,7 @@ const VoicesStage = ({ items, eyebrow, title, sub, label }) => {
                   <span className="h-px w-10 bg-accent/80" />
                   <cite className="font-newsreader not-italic text-lg text-white">{current.name}</cite>
                   {current.meta && (
-                    <span className="font-jetbrains text-[10px] font-medium uppercase tracking-[0.28em] text-accent">
-                      {current.meta}
-                    </span>
+                    <span className="text-sm text-accent/90">{current.meta}</span>
                   )}
                 </figcaption>
               </motion.figure>
@@ -231,7 +222,7 @@ const VoicesStage = ({ items, eyebrow, title, sub, label }) => {
           gap={0.28}
           wave={0.65}
           fadeEdges={0.16}
-          shadow={0.38}
+          shadow={0}
           showTitles
           snap
           autoScroll={0.4}
@@ -334,7 +325,6 @@ const TestimonialsScroll = ({ reviews, variant = 'default' }) => {
     return (
       <VoicesStage
         items={displayTestimonials}
-        eyebrow={t('testimonialsEyebrow')}
         title={t('testimonialsTitle')}
         sub={t('testimonialsSub')}
         label={t('testimonialsTitle')}
@@ -346,9 +336,6 @@ const TestimonialsScroll = ({ reviews, variant = 'default' }) => {
     <section id="student-testimonials" className="relative bg-white py-20 md:py-28 px-4 md:px-8 lg:px-12 border-y border-card-border">
       <div className="max-w-7xl mx-auto">
         <div className="max-w-2xl mb-10 md:mb-12 space-y-4">
-          <span className="font-jetbrains text-[10px] text-accent tracking-[0.5em] uppercase font-bold">
-            {t('testimonialsEyebrow')}
-          </span>
           <h2 className="font-newsreader italic text-3xl sm:text-4xl md:text-5xl text-normal font-light">
             {t('testimonialsTitle')}
           </h2>

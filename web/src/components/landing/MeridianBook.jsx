@@ -41,8 +41,8 @@ const MeridianBook = () => {
       const SIZE = 1
       const CURL = 14
       const LIFT = 0.07
-      const TILT = [56, 40]
-      const TURN = [-9, -2]
+      const TILT = [58, 10]
+      const TURN = [-8, 0]
       const FAN = 0.8
       const SMOOTH = 0.7
       const RIDE = 1
@@ -102,7 +102,7 @@ const MeridianBook = () => {
           const n = String(i + 1).padStart(2, '0')
           seg.innerHTML =
             `<div class="lato lato--fronte"><div class="pagina-testo" data-page="${i}" data-face="fronte"><p class="pagina-testo__n">${n}</p><p class="pagina-testo__riga"></p></div></div>` +
-            '<div class="lato lato--retro"></div>'
+            '<div class="lato lato--retro"><div class="pagina-marca pagina-marca--retro"><img src="/meridian/logo%202.png" alt="" draggable="false" /></div></div>'
           padre.appendChild(seg)
           segmenti.push(seg)
           padre = seg
@@ -148,10 +148,11 @@ const MeridianBook = () => {
           f.segmenti.forEach((seg, s) => {
             seg.style.width = `${sw + 1.6}px`
             seg.style.left = s === 0 ? '0px' : `${sw}px`
-            seg.querySelectorAll('.pagina-testo').forEach((el) => {
+            seg.querySelectorAll('.pagina-testo, .pagina-marca--retro').forEach((el) => {
               el.style.width = `${PW}px`
               el.style.transformOrigin = '0 0'
-              el.style.transform = `translateX(${(-s * sw).toFixed(2)}px)`
+              const shift = el.classList.contains('pagina-marca--retro') ? -((S - 1 - s) * sw) : -s * sw
+              el.style.transform = `translateX(${shift.toFixed(2)}px)`
             })
           })
         }
@@ -166,11 +167,11 @@ const MeridianBook = () => {
         const c = dentroFuori(finestra(p, 0.05, 0.3))
         const apertura = esce(finestra(p, 0.05, 0.7))
         const fine = dentroFuori(finestra(p, 0.8, 0.95))
-        const tilt = lerp(TILT[0], TILT[1], dentroFuori(finestra(p, 0.1, 0.95))) + mano.y * 5
+        const tilt = TILT[1] + mano.y * 5
         const giro = lerp(TURN[0], TURN[1], apertura) + mano.x * 4
 
         const sx = -W * 0.5 * (1 - apertura)
-        const sy = lerp(H * 0.12, H * 0.06, apertura) + (1 - nasce) * 26
+        const sy = H * -0.04 + (1 - nasce) * 26
         libro.style.opacity = nasce.toFixed(3)
         libro.style.transform = `translate3d(${sx.toFixed(2)}px, ${sy.toFixed(2)}px, 0) rotateX(${tilt.toFixed(2)}deg) rotateZ(${giro.toFixed(2)}deg) scale(${(0.96 + 0.04 * nasce).toFixed(4)})`
         ombra.style.opacity = (0.85 * nasce).toFixed(3)
@@ -193,11 +194,12 @@ const MeridianBook = () => {
           const z = lerp(zR, zL, turn) + Math.sin(turn * Math.PI) * W * LIFT
           f.el.style.transform = `translate3d(${PX}px, ${PY}px, ${z.toFixed(2)}px) rotateY(${angolo.toFixed(2)}deg)`
           const piega = Math.sin(turn * Math.PI) * CURL + (i === 0 ? stato.solleva * 10 : 0)
+          const curling = Math.sin(turn * Math.PI)
           f.segmenti.forEach((seg, s) => {
             const b = s === 0 ? 0 : piega * (0.35 + s * 0.22)
             seg.style.transform = `rotateY(${b.toFixed(2)}deg)`
           })
-          const buio = 0.1 * Math.sin(turn * Math.PI)
+          const buio = 0.1 * curling
           f.lati.forEach((lati, s) => {
             lati[0].style.setProperty('--buio', (buio * (0.8 + s * 0.03)).toFixed(3))
             lati[1].style.setProperty('--buio', (buio * (0.55 + s * 0.05)).toFixed(3))
@@ -334,6 +336,9 @@ const MeridianBook = () => {
                   <span className="copertina__luce" data-luce-cop="" />
                 </div>
                 <div className="copertina__dentro faccia">
+                  <div className="pagina-marca pagina-marca--ex">
+                    <img src="/meridian/logo%202.png" alt="" draggable={false} />
+                  </div>
                   <span className="copertina__ex">{t('bookEndpaper')}</span>
                   <span className="copertina__luce" data-luce-dentro="" />
                 </div>

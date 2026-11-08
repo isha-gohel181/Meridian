@@ -5,9 +5,7 @@ import LandingReveal from './LandingReveal'
 import { DIARY_FEATURED, DIARY_NEWS, DIARY_UPCOMING } from '../../data/landingDiaryItems'
 
 const Chip = ({ children }) => (
-  <span className="inline-flex font-jetbrains text-[9px] font-bold uppercase tracking-[0.28em] text-accent">
-    {children}
-  </span>
+  <span className="inline-flex text-xs font-semibold text-accent">{children}</span>
 )
 
 const LandingDiary = () => {
@@ -21,9 +19,6 @@ const LandingDiary = () => {
       <div className="mx-auto max-w-7xl">
         <div className="mb-12 flex flex-col gap-6 md:mb-14 md:flex-row md:items-end md:justify-between">
           <div className="max-w-2xl">
-            <p className="mb-3 font-jetbrains text-[10px] font-bold uppercase tracking-[0.45em] text-accent">
-              {t('landingDiaryEyebrow')}
-            </p>
             <h2 className="font-newsreader text-3xl font-medium tracking-tight text-brand-brown sm:text-4xl md:text-[2.5rem]">
               {t('landingDiaryTitle')}
             </h2>
@@ -31,7 +26,7 @@ const LandingDiary = () => {
           </div>
           <Link
             to="/news"
-            className="inline-flex shrink-0 items-center font-jetbrains text-[10px] font-bold uppercase tracking-[0.28em] text-brand-brown transition-colors hover:text-accent"
+            className="inline-flex shrink-0 items-center text-sm font-semibold text-brand-brown transition-colors hover:text-accent"
           >
             {t('landingDiaryViewAll')}
             <span aria-hidden className="ml-2">
@@ -57,9 +52,7 @@ const LandingDiary = () => {
             <div className="relative z-10 flex h-full min-h-[22rem] flex-col justify-end p-7 md:min-h-[26rem] md:p-9">
               <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:gap-10">
                 <div className="flex shrink-0 flex-col items-start">
-                  <span className="font-jetbrains text-[10px] font-bold uppercase tracking-[0.35em] text-accent">
-                    {DIARY_FEATURED.month}
-                  </span>
+                  <span className="text-sm font-semibold text-accent">{DIARY_FEATURED.month}</span>
                   <span className="font-newsreader text-5xl font-medium leading-none tracking-tight md:text-6xl">
                     {DIARY_FEATURED.day}
                   </span>
@@ -70,9 +63,7 @@ const LandingDiary = () => {
                     {DIARY_FEATURED.title}
                   </h3>
                   <p className="mt-3 max-w-md text-sm leading-relaxed text-white/85 md:text-[15px]">{DIARY_FEATURED.blurb}</p>
-                  <p className="mt-5 font-jetbrains text-[10px] uppercase tracking-[0.22em] text-white/60">
-                    {DIARY_FEATURED.meta}
-                  </p>
+                  <p className="mt-5 text-sm text-white/75">{DIARY_FEATURED.meta}</p>
                 </div>
               </div>
             </div>
@@ -96,7 +87,7 @@ const LandingDiary = () => {
                     {item.title}
                   </h3>
                   <p className="mt-1.5 text-sm leading-relaxed text-description">{item.blurb}</p>
-                  <p className="mt-3 font-jetbrains text-[10px] uppercase tracking-[0.22em] text-brand-brown/45">{item.meta}</p>
+                  <p className="mt-3 text-sm text-description">{item.meta}</p>
                 </div>
               </Link>
             ))}
@@ -117,16 +108,14 @@ const LandingDiary = () => {
                 />
                 <div className="min-w-0 flex-1">
                   <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
-                    <span className="font-jetbrains text-[10px] font-bold uppercase tracking-[0.28em] text-accent">
-                      {t('landingDiaryEvent')}
-                    </span>
+                    <span className="text-xs font-semibold text-accent">{t('landingDiaryEvent')}</span>
                     <span className="font-newsreader text-lg font-medium text-brand-brown">
                       {item.day} {item.month}
                     </span>
                     <span className="min-w-0 flex-1 font-newsreader text-lg text-brand-brown transition-colors group-hover:text-accent">
                       {item.title}
                     </span>
-                    <span className="font-jetbrains text-[10px] uppercase tracking-[0.2em] text-description">{item.meta}</span>
+                    <span className="text-sm text-description">{item.meta}</span>
                   </div>
                   <p className="mt-1.5 max-w-3xl text-sm leading-relaxed text-description">{item.blurb}</p>
                 </div>

@@ -8,7 +8,7 @@ const LandingHomeClose = () => {
   const { t } = useLanguage()
 
   return (
-    <LandingReveal className="overflow-hidden border-t border-brand-brown/[0.08] bg-slate-50 px-4 py-16 sm:px-6 md:px-10 lg:px-14">
+    <LandingReveal className="overflow-hidden bg-slate-50 px-4 py-16 sm:px-6 md:px-10 lg:px-14">
       <div className="mx-auto max-w-7xl">
         <div className="flex flex-col gap-10 md:flex-row md:items-end md:justify-between">
           <div className="max-w-xl">
@@ -31,7 +31,7 @@ const LandingHomeClose = () => {
           </div>
         </div>
 
-        <div className="mt-14 overflow-hidden border-t border-brand-brown/15 pt-6">
+        <div className="mt-14 overflow-hidden pt-6">
           <p
             className="translate-y-6 select-none font-newsreader text-[clamp(3rem,14vw,9rem)] font-medium leading-[0.82] tracking-[-0.04em] text-brand-brown/12"
             aria-hidden

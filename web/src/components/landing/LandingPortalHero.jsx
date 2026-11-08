@@ -38,9 +38,7 @@ const HeroActions = ({ variant }) => {
       <Link
         to="/courses"
         className={`inline-flex justify-center rounded-xl px-7 py-3.5 font-jetbrains text-xs font-bold uppercase tracking-[0.2em] transition-transform hover:scale-[1.02] active:scale-[0.98] ${
-          rest
-            ? 'bg-white text-brand-brown shadow-lg shadow-black/20'
-            : 'bg-brand-brown text-white shadow-lg shadow-brand-brown/20'
+          rest ? 'bg-white text-brand-brown' : 'bg-brand-brown text-white'
         }`}
       >
         {t('browseCourses')}
@@ -50,9 +48,7 @@ const HeroActions = ({ variant }) => {
         target="_blank"
         rel="noopener noreferrer"
         className={`inline-flex items-center justify-center rounded-xl px-6 py-3.5 font-jetbrains text-xs font-semibold uppercase tracking-[0.15em] transition-transform hover:scale-[1.02] active:scale-[0.98] ${
-          rest
-            ? 'bg-brand-brown text-white shadow-lg shadow-black/25'
-            : 'bg-white text-brand-brown shadow-xs'
+          rest ? 'bg-brand-brown text-white' : 'bg-white text-brand-brown'
         }`}
       >
         {t('landingCtaWhatsApp')}
@@ -68,7 +64,6 @@ const HeroCopy = ({ variant, parts, line2, heading }) => {
 
   return (
     <div className="flex min-h-[calc(100dvh-58px)] max-w-xl flex-col justify-center px-4 sm:px-6 md:px-10 lg:px-14">
-      <p className="mb-4 font-jetbrains text-[10px] font-bold uppercase tracking-[0.45em] text-accent">{t('heroEyebrow')}</p>
       <TitleTag
         className={`font-newsreader text-3xl font-medium leading-[1.12] tracking-[-0.02em] sm:text-4xl md:text-5xl lg:text-[3.15rem] ${
           rest ? 'text-white' : 'text-brand-brown'
@@ -98,9 +93,6 @@ const LandingPortalHero = () => {
   const dotRRef = useRef(null)
   const introCopyRef = useRef(null)
   const restCopyRef = useRef(null)
-  const metaTopRef = useRef(null)
-  const metaBottomRef = useRef(null)
-
   const heroTitle = t('heroTitle')
   const parts = useMemo(() => splitHeroTitle(heroTitle), [heroTitle])
   const line2 = parts[1] || ''
@@ -126,7 +118,6 @@ const LandingPortalHero = () => {
       gsap.set(restCopyRef.current, { opacity: 1, y: 0, pointerEvents: 'auto' })
       if (introCopyRef.current) introCopyRef.current.inert = true
       if (restCopyRef.current) restCopyRef.current.inert = false
-      gsap.set([metaTopRef.current, metaBottomRef.current], { color: 'rgba(255,255,255,0.72)' })
       return undefined
     }
 
@@ -168,12 +159,6 @@ const LandingPortalHero = () => {
         .fromTo(scrimRef.current, { opacity: 0 }, { opacity: 1, ease: 'none', duration: 0.3 }, 0.68)
         .fromTo(restCopyRef.current, { opacity: 0, y: 18 }, { opacity: 1, y: 0, ease: 'none', duration: 0.32 }, 0.7)
         .fromTo(restCopyRef.current, { pointerEvents: 'none' }, { pointerEvents: 'auto', duration: 0.01 }, 0.78)
-        .fromTo(
-          [metaTopRef.current, metaBottomRef.current],
-          { color: 'rgba(3, 39, 70, 0.7)' },
-          { color: 'rgba(255, 255, 255, 0.72)', ease: 'none', duration: 0.35 },
-          0.55
-        )
     }, section)
 
     const refresh = () => {
@@ -254,23 +239,6 @@ const LandingPortalHero = () => {
           className="pointer-events-none absolute z-[2] h-2.5 w-2.5 rounded-full border border-brand-brown bg-transparent ring-2 ring-brand-brown/30"
           aria-hidden
         />
-
-        <div
-          ref={metaTopRef}
-          className="absolute left-4 right-4 top-[calc(58px+0.75rem)] z-[4] flex justify-between gap-4 font-jetbrains text-[10px] uppercase tracking-[0.35em] sm:left-6 sm:right-6"
-          style={{ color: 'rgba(3, 39, 70, 0.7)' }}
-        >
-          <span className="max-w-[45%] truncate">{t('landingPortalMetaTopLeft')}</span>
-          <span className="max-w-[45%] truncate text-right">{t('landingPortalMetaTopRight')}</span>
-        </div>
-        <div
-          ref={metaBottomRef}
-          className="absolute bottom-6 left-4 right-4 z-[4] flex justify-between gap-4 font-jetbrains text-[10px] uppercase tracking-[0.35em] sm:left-6 sm:right-6"
-          style={{ color: 'rgba(3, 39, 70, 0.6)' }}
-        >
-          <span>{t('landingPortalMetaBottomLeft')}</span>
-          <span className="text-right">{t('landingPortalMetaBottomRight')}</span>
-        </div>
 
         <div ref={introCopyRef} className="relative z-[3]">
           <HeroCopy variant="intro" parts={parts} line2={line2} heading />

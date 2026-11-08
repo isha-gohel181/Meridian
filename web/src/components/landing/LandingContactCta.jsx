@@ -65,7 +65,7 @@ const LandingContactCta = () => {
           <div className="flex w-full flex-col items-center justify-center gap-3 sm:w-auto sm:flex-row sm:gap-4">
             <Link
               to="/contact#enquiry"
-              className="inline-flex min-w-[200px] justify-center rounded-xl bg-accent px-8 py-4 font-jetbrains text-xs font-bold uppercase tracking-[0.2em] text-brand-brown shadow-lg shadow-black/20 transition-colors hover:bg-accent-secondary"
+              className="inline-flex min-w-[200px] justify-center rounded-xl bg-accent px-8 py-4 font-jetbrains text-xs font-bold uppercase tracking-[0.2em] text-brand-brown transition-colors hover:bg-accent-secondary"
             >
               {t('enquireNow')}
             </Link>

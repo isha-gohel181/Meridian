@@ -65,9 +65,6 @@ const LandingStatementFold = () => {
           >
             <div className="flex h-full min-h-[inherit] flex-col justify-center gap-10 md:flex-row md:items-center md:gap-12 lg:gap-16">
               <div className="max-w-xl shrink-0 md:max-w-[min(32rem,44vw)]">
-                <p className="mb-4 font-jetbrains text-[10px] font-bold uppercase tracking-[0.45em] text-accent">
-                  {t('landingStatementEyebrow')}
-                </p>
                 <div className="flex items-start gap-4">
                   <span
                     className="font-newsreader text-[clamp(4rem,14vw,7rem)] font-medium leading-none text-transparent"

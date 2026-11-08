@@ -17,6 +17,7 @@ const Navbar = ({ isLoaded }) => {
   const { t } = useLanguage()
   const location = useLocation()
   const navigate = useNavigate()
+  const isHome = location.pathname === '/'
   const [isOpen, setIsOpen] = useState(false)
   const menuRef = useRef(null)
   const shutter1Ref = useRef(null)
@@ -247,21 +248,20 @@ const Navbar = ({ isLoaded }) => {
 
         <div
           ref={innerNavRef}
-          className="flex items-center justify-between bg-white/92 rounded-2xl px-3 sm:px-5 md:px-7 py-1.5 border border-slate-200/90 shadow-[0_4px_30px_rgba(24,120,192,0.12)] backdrop-blur-2xl relative z-20 will-change-[padding,background-color]"
+          className="flex items-center justify-between bg-white/92 rounded-2xl px-3 sm:px-5 md:px-7 py-1.5 border border-slate-200/90 backdrop-blur-2xl relative z-20 will-change-[padding,background-color]"
         >
-          {/* Logo asset has heavy padding; scale inside overflow clip so the mark reads at full bar height */}
           <Link
             to="/"
             ref={logoRef}
-            className="relative flex h-[3.25rem] w-[12.5rem] shrink-0 items-center justify-center overflow-hidden rounded-lg hover:opacity-90 sm:h-[3.75rem] sm:w-[14rem] md:h-[4.5rem] md:w-[15.5rem] lg:w-[17rem] transition-opacity"
+            className="relative flex h-[3.25rem] shrink-0 items-center hover:opacity-90 sm:h-[3.75rem] md:h-[4.5rem] transition-opacity"
             aria-label="Meridian Group of Education home"
           >
             <img
-              src="/meridian/logo.jpeg"
+              src="/meridian/logo%202.png"
               alt=""
               decoding="async"
               draggable={false}
-              className="pointer-events-none h-full w-[265%] max-h-none max-w-none object-contain object-center sm:w-[255%] md:w-[240%] lg:w-[220%] [transform:translateZ(0)]"
+              className="pointer-events-none h-full w-auto object-contain"
             />
           </Link>
 
@@ -329,7 +329,7 @@ const Navbar = ({ isLoaded }) => {
           <div ref={buttonsWrapRef} className="flex items-center gap-2 sm:gap-3 shrink-0">
             <Link
               to="/contact#enquiry"
-              className="hidden sm:inline-flex relative group bg-accent text-brand-brown font-bold px-3 md:px-4 py-2 rounded-xl font-inter text-[9px] md:text-[10px] uppercase tracking-[0.12em] overflow-hidden transition-all duration-300 hover:scale-[1.03] active:scale-95 shadow-md border border-accent/30"
+              className={`hidden sm:inline-flex relative group bg-accent text-brand-brown font-bold px-3 md:px-4 py-2 rounded-xl font-inter text-[9px] md:text-[10px] uppercase tracking-[0.12em] overflow-hidden transition-all duration-300 hover:scale-[1.03] active:scale-95 border border-accent/30${isHome ? '' : ' shadow-md'}`}
             >
               <span className="relative z-10 font-black">{t('enquireNow')}</span>
               <div className="absolute inset-0 bg-white/35 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out skew-x-12" />
@@ -337,7 +337,7 @@ const Navbar = ({ isLoaded }) => {
 
             <Link
               to={isAuthenticated ? '/dashboard' : '/login'}
-              className="relative group bg-brand-brown text-white font-bold px-3 md:px-5 py-2 rounded-xl font-inter text-[9px] md:text-[10px] uppercase tracking-[0.12em] md:tracking-[0.15em] overflow-hidden transition-all duration-300 hover:scale-[1.04] active:scale-95 shadow-accent-soft flex items-center justify-center gap-1.5"
+              className={`relative group bg-brand-brown text-white font-bold px-3 md:px-5 py-2 rounded-xl font-inter text-[9px] md:text-[10px] uppercase tracking-[0.12em] md:tracking-[0.15em] overflow-hidden transition-all duration-300 hover:scale-[1.04] active:scale-95 flex items-center justify-center gap-1.5${isHome ? '' : ' shadow-accent-soft'}`}
             >
               <span className="relative z-10 font-black">{isAuthenticated ? t('dashboard') : t('signIn')}</span>
               <div className="absolute inset-0 bg-white/25 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out skew-x-12" />
@@ -374,15 +374,15 @@ const Navbar = ({ isLoaded }) => {
             <Link
               to="/"
               onClick={() => setIsOpen(false)}
-              className="relative flex h-[4.25rem] w-[14.5rem] items-center justify-center overflow-hidden rounded-lg hover:opacity-90 sm:h-[4.75rem] sm:w-[16rem] md:h-[5.25rem] md:w-[18rem] transition-opacity"
+              className="relative flex h-16 items-center hover:opacity-90 sm:h-[4.5rem] md:h-20 transition-opacity"
               aria-label="Meridian Group of Education home"
             >
               <img
-                src="/meridian/logo.jpeg"
+                src="/meridian/logo%202.png"
                 alt=""
                 decoding="async"
                 draggable={false}
-                className="pointer-events-none h-full w-[250%] max-h-none max-w-none object-contain object-center md:w-[230%]"
+                className="pointer-events-none h-full w-auto object-contain"
               />
             </Link>
 

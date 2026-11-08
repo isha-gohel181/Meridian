@@ -81,7 +81,7 @@ const LandingCoursesSection = () => {
     <LandingReveal
       id="courses"
       stagger={!prefersReduced}
-      className="scroll-mt-28 border-y border-brand-brown/[0.06] bg-slate-50 px-4 py-20 sm:px-6 md:scroll-mt-32 md:px-10 md:py-28 lg:px-14"
+      className="scroll-mt-28 border-b border-brand-brown/[0.06] bg-slate-50 px-4 py-20 sm:px-6 md:scroll-mt-32 md:px-10 md:py-28 lg:px-14"
     >
       <div className="mx-auto max-w-7xl">
         <HeaderBlock
@@ -89,9 +89,6 @@ const LandingCoursesSection = () => {
           className="mb-10 flex flex-col gap-6 md:mb-12 md:flex-row md:items-end md:justify-between"
         >
           <div className="max-w-2xl">
-            <p className="mb-3 font-jetbrains text-[10px] font-bold uppercase tracking-[0.45em] text-accent">
-              {t('landingCoursesEyebrow')}
-            </p>
             <h2 className="font-newsreader text-3xl font-medium tracking-tight text-brand-brown sm:text-4xl md:text-[2.5rem]">
               {t('landingCoursesTitle')}
             </h2>
@@ -99,7 +96,7 @@ const LandingCoursesSection = () => {
           </div>
           <Link
             to="/courses"
-            className="inline-flex shrink-0 justify-center rounded-xl bg-brand-brown px-7 py-3.5 font-jetbrains text-xs font-bold uppercase tracking-[0.2em] text-white transition-transform hover:scale-[1.02]"
+            className="inline-flex shrink-0 justify-center rounded-xl bg-brand-brown px-7 py-3.5 text-sm font-semibold text-white transition-transform hover:scale-[1.02]"
           >
             {t('landingCoursesViewAll')}
           </Link>
@@ -126,9 +123,9 @@ const LandingCoursesSection = () => {
             />
             {current ? (
               <div className="absolute inset-x-0 bottom-0 z-10 p-7 md:p-10">
-                <span className="font-jetbrains text-[10px] font-bold uppercase tracking-[0.32em] text-accent">
+                <span className="text-sm font-medium text-accent">
                   {current.chip}
-                  <span className="mx-3 text-white/35">/</span>
+                  <span className="mx-2 text-white/40">·</span>
                   {current.category}
                 </span>
                 <p className="mt-3 max-w-lg font-newsreader text-3xl font-medium leading-tight tracking-tight text-white md:text-4xl">
@@ -138,13 +135,13 @@ const LandingCoursesSection = () => {
                   <p className="mt-3 max-w-md text-sm leading-relaxed text-white/80 md:text-[15px]">{current.blurb}</p>
                 ) : null}
                 <div className="mt-6 flex items-center justify-between gap-4">
-                  <span className="font-jetbrains text-[10px] uppercase tracking-[0.22em] text-white/60">
+                  <span className="text-sm text-white/75">
                     {t('landingCoursesFrom')} {current.price}
                     {current.original ? <span className="ml-2 line-through opacity-70">{current.original}</span> : null}
                   </span>
                   <Link
                     to={current.href}
-                    className="font-jetbrains text-[10px] font-bold uppercase tracking-[0.22em] text-accent transition-colors hover:text-white"
+                    className="text-sm font-semibold text-accent transition-colors hover:text-white"
                   >
                     {t('landingCoursesCta')} →
                   </Link>
@@ -174,14 +171,14 @@ const LandingCoursesSection = () => {
                       {String(index + 1).padStart(2, '0')}
                     </span>
                     <span className="min-w-0 flex-1">
-                      <span className="block font-jetbrains text-[9px] font-bold uppercase tracking-[0.28em] text-accent">
+                      <span className="block text-xs font-semibold text-accent">
                         {item.chip}
                       </span>
                       <span className="mt-1 block font-newsreader text-lg leading-snug md:text-xl">{item.title}</span>
                     </span>
                     <span
-                      className={`shrink-0 pt-1 font-jetbrains text-[10px] uppercase tracking-[0.18em] ${
-                        isActive ? 'text-white/55' : 'text-brand-brown/40'
+                      className={`shrink-0 pt-1 text-sm tabular-nums ${
+                        isActive ? 'text-white/70' : 'text-description'
                       }`}
                     >
                       {item.price}
