@@ -28,7 +28,7 @@ BenefitsSection = ({ course, section }) => {
   }, [])
 
   return (
-    <section ref={containerRef} className="max-w-7xl mx-auto py-20 px-4 md:px-0">
+    <section ref={containerRef} className="site-container py-20">
       <div className="grid grid-cols-1 min-[1301px]:grid-cols-[1fr_1.8fr] gap-12 min-[1301px]:gap-20 items-start mb-24">
         <div className="space-y-8 min-[1301px]:sticky min-[1301px]:top-32 transition-all duration-500">
           <h2 className="font-newsreader italic text-4xl md:text-5xl lg:text-6xl text-slate-900 font-extralight tracking-tight leading-[1.1]">

@@ -1,6 +1,11 @@
 import NewsService from "../service/newsService.js";
 import { getMemoryCache } from "../config/memoryCache.js";
 import mongoose from "mongoose";
+import {
+  applyNewsLandingFields,
+  clearOtherLandingFeatured,
+  ensureNewsSlug,
+} from "../service/landingFeedService.js";
 
 // Helper function to generate image URL from file path
 const generateImageUrl = (filePath, req) => {
@@ -424,7 +429,13 @@ export const createNews = async (req, res) => {
       status: req.body.status || "active",
     };
 
+    applyNewsLandingFields(newsData, req.body);
+    ensureNewsSlug(newsData);
+
     const news = await NewsService.create(newsData);
+    if (news?.landingFeatured) {
+      await clearOtherLandingFeatured({ excludeNewsId: news._id });
+    }
 
     // Clear cache
     const cache = await getMemoryCache();
@@ -1100,7 +1111,12 @@ export const updateNews = async (req, res) => {
       updateData.publicationDate = new Date(req.body.publicationDate);
     }
 
+    applyNewsLandingFields(updateData, req.body);
+
     const news = await NewsService.update(id, updateData);
+    if (news?.landingFeatured) {
+      await clearOtherLandingFeatured({ excludeNewsId: news._id });
+    }
 
     // Clear cache
     const cache = await getMemoryCache();

@@ -31,7 +31,7 @@ const LandingPricingTeaser = () => {
 
   return (
     <section className="bg-white py-20 md:py-28 px-4 md:px-8 lg:px-12 border-t border-card-border">
-      <div className="max-w-7xl mx-auto">
+      <div className="site-container">
         <div className="text-center max-w-2xl mx-auto mb-12 space-y-4">
           <span className="font-jetbrains text-[10px] text-accent tracking-[0.5em] uppercase font-bold">
             {t('pricingTeaserEyebrow')}

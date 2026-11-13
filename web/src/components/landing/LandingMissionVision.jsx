@@ -7,7 +7,7 @@ const LandingMissionVision = () => {
 
   return (
     <LandingReveal className="py-20 md:py-28 px-4 sm:px-6 lg:px-12 bg-slate-50">
-      <div className="max-w-7xl mx-auto">
+      <div className="site-container">
         <div className="grid md:grid-cols-2 gap-6 md:gap-0 rounded-3xl overflow-hidden border border-brand-brown/[0.1] shadow-card bg-white">
           <div className="p-10 md:p-14 md:border-r border-brand-brown/[0.08] relative">
             <div className="absolute top-8 right-8 w-24 h-24 border border-accent/25 rounded-full opacity-40 pointer-events-none" />

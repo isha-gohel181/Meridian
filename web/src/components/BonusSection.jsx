@@ -56,7 +56,7 @@ const BonusSection = ({ course }) => {
   if (apiBonuses.length === 0) return null;
 
   return (
-    <section ref={ref} className="max-w-7xl mx-auto mb-24 px-4 md:px-0">
+    <section ref={ref} className="site-container mb-24">
       {/* Top accent */}
       <div className="w-full h-[1px] bg-gradient-to-r from-transparent via-accent/30 to-transparent mb-20" />
 

@@ -156,7 +156,7 @@ const Contact = () => {
                 <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-amber-300 blur-[120px] rounded-full" />
             </div>
 
-            <div className="max-w-7xl mx-auto relative z-10">
+            <div className="site-container relative z-10">
                 {/* Contact Header */}
                 <div className="mb-12 contact-reveal space-y-4">
                     <div className="flex items-center gap-3">

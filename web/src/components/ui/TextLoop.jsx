@@ -132,6 +132,7 @@ const TextLoop = ({
   scrollBoost = 0,
   outline = false,
   outlineWidth = 1.5,
+  preserveAspectRatio = 'xMidYMid meet',
   className = '',
   style = {}
 }) => {
@@ -482,7 +483,7 @@ const TextLoop = ({
         ref={svgRef}
         className="text-loop-svg"
         viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}
-        preserveAspectRatio="xMidYMid meet"
+        preserveAspectRatio={preserveAspectRatio}
         role="img"
         aria-label={text}
       >

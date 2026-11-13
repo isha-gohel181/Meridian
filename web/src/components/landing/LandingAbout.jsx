@@ -10,8 +10,8 @@ const LandingAbout = () => {
       id="about"
       className="relative scroll-mt-28 border-y border-brand-brown/[0.06] bg-slate-50 md:scroll-mt-32"
     >
-      <div className="mx-auto grid max-w-7xl items-start lg:grid-cols-12 lg:gap-6">
-        <div className="px-4 py-20 sm:px-6 md:py-28 lg:sticky lg:top-32 lg:col-span-5 lg:py-28 lg:pr-4 lg:pl-12">
+      <div className="site-container grid items-start lg:grid-cols-12 lg:gap-6">
+        <div className="py-20 md:py-28 lg:sticky lg:top-32 lg:col-span-5 lg:py-28 lg:pr-4">
           <h2 className="font-newsreader text-3xl leading-[1.15] font-medium tracking-tight text-brand-brown sm:text-4xl md:text-[2.65rem]">
             {t('landingAboutTitle')}
           </h2>
@@ -25,7 +25,7 @@ const LandingAbout = () => {
             <p>{t('landingApproachSummary')}</p>
           </div>
         </div>
-        <div className="min-w-0 lg:col-span-7">
+        <div className="min-w-0 max-md:-mx-[var(--site-gutter)] max-md:w-[calc(100%+2*var(--site-gutter))] lg:col-span-7">
           <MeridianBook />
         </div>
       </div>

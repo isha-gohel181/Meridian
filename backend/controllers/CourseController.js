@@ -87,6 +87,13 @@ function parseBoolean(val) {
   return false;
 }
 
+function parseFeaturedRank(val) {
+  if (val === undefined || val === null || val === "") return null;
+  const n = parseInt(String(val), 10);
+  if (Number.isNaN(n)) return null;
+  return n;
+}
+
 export const createCourse = async (req, res) => {
   try {
     // console.  log("📩 Request Body:", JSON.stringify(req.body, null, 2));
@@ -224,6 +231,7 @@ export const createCourse = async (req, res) => {
       isPublished: parseBoolean(req.body.isPublished),
       // Featured flag
       isFeatured: parseBoolean(req.body.isFeatured),
+      featuredRank: parseFeaturedRank(req.body.featuredRank),
       certificateTemplate: parseBoolean(req.body.certificateTemplate),
       isDownloadable: parseBoolean(req.body.isDownloadable),
       courseForum: parseBoolean(req.body.courseForum),
@@ -1277,9 +1285,14 @@ export const getAllCourses = async (req, res) => {
       }));
     }
 
-    // If isFeatured=true, only return _id, title, thumbnail
-    if (filterParams.isFeatured === "true" && courses?.data && Array.isArray(courses.data)) {
-      courses.data = courses.data.map(c => ({
+    // If isFeatured=true and fields=minimal, only return _id, title, thumbnail
+    if (
+      req.query.fields === "minimal" &&
+      filterParams.isFeatured === "true" &&
+      courses?.data &&
+      Array.isArray(courses.data)
+    ) {
+      courses.data = courses.data.map((c) => ({
         _id: c._id,
         title: c.title,
         thumbnail: c.thumbnail,
@@ -1547,6 +1560,7 @@ export const updateCourse = async (req, res) => {
 
       // Only set isFeatured when provided in update payload
       ...(req.body.isFeatured !== undefined && { isFeatured: parseBoolean(req.body.isFeatured) }),
+      ...(req.body.featuredRank !== undefined && { featuredRank: parseFeaturedRank(req.body.featuredRank) }),
 
       price: parsePrice(req.body.price),
       salePrice: req.body.salePrice !== undefined && req.body.salePrice !== '' ? req.body.salePrice : undefined, // <-- always pass as string/number

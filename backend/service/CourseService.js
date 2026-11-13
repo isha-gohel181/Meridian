@@ -12,6 +12,80 @@ class CourseService {
     this.repository = new CourseRepository();
   }
 
+  _toBoolean(v) {
+    if (typeof v === "boolean") return v;
+    if (typeof v === "string") return v === "true" || v === "1";
+    if (typeof v === "number") return v === 1;
+    return false;
+  }
+
+  _parseFeaturedRank(val) {
+    if (val === undefined || val === null || val === "") return null;
+    const n = parseInt(String(val), 10);
+    if (Number.isNaN(n) || n < 1 || n > 6) {
+      throw new Error("Featured rank must be between 1 and 6");
+    }
+    return n;
+  }
+
+  async validateAndNormalizeFeatured(fields, courseId = null) {
+    const existing = courseId
+      ? await Course.findOne({ _id: courseId, isDeleted: false })
+          .select("isFeatured featuredRank")
+          .lean()
+      : null;
+
+    const hasFeaturedFlag = Object.prototype.hasOwnProperty.call(fields, "isFeatured");
+    const hasRankField = Object.prototype.hasOwnProperty.call(fields, "featuredRank");
+
+    const finalFeatured = hasFeaturedFlag
+      ? this._toBoolean(fields.isFeatured)
+      : existing?.isFeatured === true;
+
+    if (!finalFeatured) {
+      fields.isFeatured = false;
+      fields.featuredRank = null;
+      return;
+    }
+
+    fields.isFeatured = true;
+
+    let rank = null;
+    if (hasRankField) {
+      rank = this._parseFeaturedRank(fields.featuredRank);
+      fields.featuredRank = rank;
+    } else if (existing) {
+      rank = existing.featuredRank ?? null;
+      if (hasFeaturedFlag) {
+        fields.featuredRank = rank;
+      }
+    } else {
+      fields.featuredRank = null;
+    }
+
+    const countQuery = { isFeatured: true, isDeleted: false };
+    if (courseId) countQuery._id = { $ne: courseId };
+    const featuredCount = await Course.countDocuments(countQuery);
+
+    const wasFeatured = existing?.isFeatured === true;
+    if (!wasFeatured && featuredCount >= 6) {
+      throw new Error(
+        "Maximum of 6 featured courses allowed. Unfeature another course first."
+      );
+    }
+
+    if (rank != null) {
+      const dupQuery = { isFeatured: true, isDeleted: false, featuredRank: rank };
+      if (courseId) dupQuery._id = { $ne: courseId };
+      const duplicate = await Course.findOne(dupQuery).select("title").lean();
+      if (duplicate) {
+        throw new Error(
+          `Featured rank ${rank} is already used by "${duplicate.title}". Choose another rank.`
+        );
+      }
+    }
+  }
+
   async generateUniqueSlug(title, excludeId = null) {
 
     try {
@@ -111,6 +185,8 @@ class CourseService {
       if (courseData.isFeatured !== undefined) {
         courseData.isFeatured = toBoolean(courseData.isFeatured);
       }
+
+      await this.validateAndNormalizeFeatured(courseData, null);
 
       const slug = await this.generateUniqueSlug(title);
       // Ensure salePrice is included if present
@@ -320,6 +396,13 @@ class CourseService {
       };
       if (updateFields.isFeatured !== undefined) {
         updateFields.isFeatured = toBoolean(updateFields.isFeatured);
+      }
+
+      if (
+        Object.prototype.hasOwnProperty.call(updateFields, "isFeatured") ||
+        Object.prototype.hasOwnProperty.call(updateFields, "featuredRank")
+      ) {
+        await this.validateAndNormalizeFeatured(updateFields, id);
       }
 
       if (Object.keys(updateFields).length === 0) {

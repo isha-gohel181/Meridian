@@ -1,4 +1,8 @@
 import Event from '../models/Event.js';
+import {
+  applyEventLandingFields,
+  clearOtherLandingFeatured,
+} from './landingFeedService.js';
 import mongoose from 'mongoose';
 import Setting from '../models/setting.js';
 import fs from 'fs';
@@ -23,8 +27,13 @@ class EventService {
         );
       }
 
+      applyEventLandingFields(eventData, eventData);
       const event = new Event(eventData);
-      return await event.save();
+      const saved = await event.save();
+      if (saved.landingFeatured) {
+        await clearOtherLandingFeatured({ excludeEventId: saved._id });
+      }
+      return saved;
     } catch (error) {
       throw error;
     }
@@ -165,6 +174,8 @@ class EventService {
         }
       });
 
+      applyEventLandingFields(updates, updateData);
+
       const event = await Event.findOneAndUpdate(
         { _id: id, isDeleted: false },
         { $set: updates },
@@ -172,6 +183,9 @@ class EventService {
       ).populate('organizer', 'fullName email');
 
       if (!event) throw new Error('Event not found');
+      if (event.landingFeatured) {
+        await clearOtherLandingFeatured({ excludeEventId: event._id });
+      }
       return event;
     } catch (error) {
       throw error;

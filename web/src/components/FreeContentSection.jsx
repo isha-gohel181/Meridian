@@ -13,7 +13,7 @@ const FreeContentSection = () => {
   const sampleTests = freeTestsData.slice(0, 2)
 
   return (
-    <section className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-slate-200/80">
+    <section className="py-24 px-4 sm:px-6 lg:px-8 site-container border-t border-slate-200/80">
       {/* Section Header */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
         <div>

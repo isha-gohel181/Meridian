@@ -5,7 +5,7 @@ import bannerImg from '../assets/images/banner.png'
 const MasterclassBanner = () => {
   return (
     <section className="relative w-full bg-dark overflow-x-hidden py-10 md:py-20 px-4 md:px-8">
-      <div className="max-w-7xl mx-auto relative rounded-3xl overflow-hidden border border-white/10 group shadow-2xl">
+      <div className="site-container relative rounded-3xl overflow-hidden border border-white/10 group shadow-2xl">
         
         <div className="relative overflow-hidden ">
         {/* <div className="relative overflow-hidden aspect-[16/9] md:aspect-[21/9]"> */}

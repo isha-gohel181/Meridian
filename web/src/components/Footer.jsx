@@ -110,7 +110,7 @@ const Footer = () => {
         className="pointer-events-none absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-brand-brown/20 to-transparent md:inset-x-14"
       />
 
-      <div className="relative z-10 mx-auto max-w-7xl px-6 pb-7 pt-6 sm:px-8 md:pt-8 lg:px-12">
+      <div className="site-container relative z-10 pb-7 pt-6 md:pt-8">
         <div className="grid gap-10 border-b border-brand-brown/10 pb-9 md:grid-cols-12 md:gap-8 lg:gap-12">
           <div className="footer-reveal md:col-span-5">
             <Link

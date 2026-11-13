@@ -15,7 +15,7 @@ const HomeFAQSection = () => {
   ]
 
   return (
-    <section className="max-w-7xl mx-auto py-20 md:py-28 relative px-4 sm:px-6 lg:px-8">
+    <section className="site-container relative py-20 md:py-28">
       <div className="space-y-6 mb-12">
         <div className="flex items-center gap-3">
           <div className="w-8 h-[2px] bg-accent" />

@@ -176,7 +176,7 @@ const PersonalityTest = () => {
             <div className="pt-bg-circle absolute bottom-1/4 -right-20 w-[600px] h-[600px] border border-accent/10 blur-[120px] opacity-10 rounded-full" />
          </div>
 
-         <div className="max-w-7xl mx-auto relative z-10">
+         <div className="site-container relative z-10">
             {/* Header Section */}
             <div className="flex flex-col md:flex-row items-center md:items-start gap-12 lg:gap-20 mb-24 result-reveal">
                 <div className="w-48 h-48 bg-accent rounded-[3rem] flex items-center justify-center shadow-[0_0_80px_rgba(139, 92, 246,0.3)] shrink-0 group hover:scale-105 transition-transform duration-500">

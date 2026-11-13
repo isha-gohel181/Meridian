@@ -18,9 +18,9 @@ const LandingProgramsShowcase = () => {
   return (
     <section
       id="programs"
-      className="scroll-mt-28 md:scroll-mt-32 border-y border-brand-brown/[0.06] bg-white px-4 py-20 sm:px-6 md:px-10 lg:px-14"
+      className="scroll-mt-28 border-y border-brand-brown/[0.06] bg-white py-20 md:scroll-mt-32"
     >
-      <div className="mx-auto grid max-w-7xl gap-14 lg:grid-cols-2 lg:items-center lg:gap-16">
+      <div className="site-container grid gap-14 lg:grid-cols-2 lg:items-center lg:gap-16">
         <div>
           <p className="mb-3 font-jetbrains text-[10px] font-bold uppercase tracking-[0.45em] text-accent">
             {t('landingProgramsEyebrow')}

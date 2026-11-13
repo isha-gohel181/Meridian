@@ -13,6 +13,16 @@ import './MeridianBook.css'
 
 gsap.registerPlugin(ScrollTrigger)
 
+const PAGE_TEXT_HTML = (pageIndex) =>
+  `<div class="lato lato--fronte"><div class="pagina-testo" data-page="${pageIndex}" data-face="fronte">` +
+  `<div class="pagina-testo__inner">` +
+  `<span class="pagina-testo__badge" data-field="badge"></span>` +
+  `<p class="pagina-testo__n" data-field="kicker"></p>` +
+  `<p class="pagina-testo__riga" data-field="line"></p>` +
+  `<p class="pagina-testo__corpo" data-field="body"></p>` +
+  `</div></div></div>` +
+  '<div class="lato lato--retro"><div class="pagina-marca pagina-marca--retro"><img src="/meridian/logo%202.png" alt="" draggable="false" /></div></div>'
+
 const MeridianBook = () => {
   const { t, language } = useLanguage()
   const container = useRef(null)
@@ -41,13 +51,17 @@ const MeridianBook = () => {
       const SIZE = 1
       const CURL = 14
       const LIFT = 0.07
-      const TILT = [58, 10]
-      const TURN = [-8, 0]
+      const TILT = [64, 8]
+      const TURN = [-12, -2]
       const FAN = 0.8
       const SMOOTH = 0.7
       const RIDE = 1
 
       const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches
+      const COARSE = matchMedia('(hover: none)').matches
+      const narrowMq = matchMedia('(max-width: 767px)')
+      let isNarrow = narrowMq.matches
+      const isNarrowViewport = () => isNarrow
       const $ = (s, r = root) => r.querySelector(s)
       const $$ = (s, r = root) => Array.from(r.querySelectorAll(s))
       const clamp = (v, a, b) => Math.min(b, Math.max(a, v))
@@ -79,7 +93,7 @@ const MeridianBook = () => {
       const cenno = $('[data-cenno]')
 
       const N = Math.round(clamp(PAGES, 2, 14))
-      const stato = { p: REDUCED ? 1 : 0, nasce: REDUCED ? 1 : 0, solleva: 0 }
+      const stato = { p: REDUCED ? 1 : 0, nasce: REDUCED ? 1 : 0, solleva: 0, hover: 0 }
       const mano = { x: 0, y: 0 }
       let W = 200
       let H = 264
@@ -99,10 +113,7 @@ const MeridianBook = () => {
         for (let s = 0; s < S; s++) {
           const seg = document.createElement('div')
           seg.className = 'segmento'
-          const n = String(i + 1).padStart(2, '0')
-          seg.innerHTML =
-            `<div class="lato lato--fronte"><div class="pagina-testo" data-page="${i}" data-face="fronte"><p class="pagina-testo__n">${n}</p><p class="pagina-testo__riga"></p></div></div>` +
-            '<div class="lato lato--retro"><div class="pagina-marca pagina-marca--retro"><img src="/meridian/logo%202.png" alt="" draggable="false" /></div></div>'
+          seg.innerHTML = PAGE_TEXT_HTML(i)
           padre.appendChild(seg)
           segmenti.push(seg)
           padre = seg
@@ -114,10 +125,24 @@ const MeridianBook = () => {
         fogli.forEach((f) => f.el.remove())
       })
 
+      function syncCorsaHeight() {
+        if (REDUCED) {
+          corsa.style.height = '100lvh'
+        } else if (isNarrow) {
+          corsa.style.height = '220lvh'
+        } else {
+          corsa.style.height = `${Math.round(100 + 320 * clamp(RIDE, 0.3, 4))}lvh`
+        }
+      }
+
       function misura() {
         const r = palco.getBoundingClientRect()
-        const k = clamp(SIZE, 0.6, 1.3)
-        W = Math.min(r.width * 0.36, r.height * 0.36, 270) * k
+        const k = isNarrowViewport() ? clamp(SIZE * 0.92, 0.6, 1.3) : clamp(SIZE, 0.6, 1.3)
+        if (isNarrowViewport()) {
+          W = Math.min(r.width / 2.35, (r.height / 1.34) * 0.88, 228) * k
+        } else {
+          W = Math.min(r.width * 0.36, r.height * 0.36, 270) * k
+        }
         H = W * 1.34
         T = Math.max(6, W * 0.055)
         CT = Math.max(2, W * 0.012)
@@ -129,8 +154,8 @@ const MeridianBook = () => {
         libro.style.height = `${H}px`
         libro.style.marginTop = `${-H / 2}px`
         libro.style.setProperty('--titolo', `${W * 0.17}px`)
-        libro.style.setProperty('--testo', `${W * 0.092}px`)
-        libro.style.setProperty('--testo-piccolo', `${Math.max(8, W * 0.045)}px`)
+        libro.style.setProperty('--testo', `${W * 0.098}px`)
+        libro.style.setProperty('--testo-piccolo', `${Math.max(9, W * 0.048)}px`)
         retro.style.cssText = `width:${W}px;height:${H}px;transform:translateZ(0px)`
         blocco.style.cssText = `left:${PX}px;top:${PY}px;width:${PW}px;height:${PH}px;transform:translateZ(${T}px)`
         piede.style.cssText = `left:${PX}px;top:${PY + PH}px;width:${PW}px;height:${T}px;transform:rotateX(90deg)`
@@ -158,6 +183,12 @@ const MeridianBook = () => {
         }
         ombra.style.width = `${W * 1.25}px`
         ombra.style.height = `${H * 0.95}px`
+
+        if (isNarrowViewport()) {
+          palco.style.minHeight = `${Math.round(H * 1.15 + 52)}px`
+        } else {
+          palco.style.minHeight = ''
+        }
       }
 
       function disegna() {
@@ -167,13 +198,21 @@ const MeridianBook = () => {
         const c = dentroFuori(finestra(p, 0.05, 0.3))
         const apertura = esce(finestra(p, 0.05, 0.7))
         const fine = dentroFuori(finestra(p, 0.8, 0.95))
-        const tilt = TILT[1] + mano.y * 5
-        const giro = lerp(TURN[0], TURN[1], apertura) + mano.x * 4
+        const tiltBase = REDUCED ? TILT[0] : lerp(TILT[0], TILT[1], apertura) + mano.y * 4
+        const hoverFace = REDUCED ? 0 : stato.hover * (1 - clamp(apertura / 0.35, 0, 1))
+        const tilt = lerp(tiltBase, 2, hoverFace)
+        const manoZ = isNarrowViewport() ? mano.x * lerp(1.5, 0.35, apertura) : mano.x * 4
+        const giro = lerp(TURN[0], TURN[1], apertura) + manoZ
+        const liftY = hoverFace * -10
+        const scaleBoost = 1 + hoverFace * 0.035
 
         const sx = -W * 0.5 * (1 - apertura)
-        const sy = H * -0.04 + (1 - nasce) * 26
+        const birthDrop = (1 - nasce) * (isNarrowViewport() ? 12 : 26)
+        const narrowLift = isNarrowViewport() ? 10 + apertura * 10 : 0
+        const sy =
+          H * (isNarrowViewport() ? -0.02 : -0.04) + birthDrop + liftY + narrowLift
         libro.style.opacity = nasce.toFixed(3)
-        libro.style.transform = `translate3d(${sx.toFixed(2)}px, ${sy.toFixed(2)}px, 0) rotateX(${tilt.toFixed(2)}deg) rotateZ(${giro.toFixed(2)}deg) scale(${(0.96 + 0.04 * nasce).toFixed(4)})`
+        libro.style.transform = `translate3d(${sx.toFixed(2)}px, ${sy.toFixed(2)}px, 0) rotateX(${tilt.toFixed(2)}deg) rotateZ(${giro.toFixed(2)}deg) scale(${(0.96 + 0.04 * nasce) * scaleBoost})`
         ombra.style.opacity = (0.85 * nasce).toFixed(3)
         ombra.style.transform = `translate3d(${(sx - W * 0.12 - W * apertura).toFixed(2)}px, ${(sy - H * 0.47 + H * 0.06).toFixed(2)}px, 0) rotateX(${tilt.toFixed(2)}deg) rotateZ(${giro.toFixed(2)}deg) scaleX(${(1 + apertura * 0.95).toFixed(3)})`
 
@@ -194,7 +233,7 @@ const MeridianBook = () => {
           const z = lerp(zR, zL, turn) + Math.sin(turn * Math.PI) * W * LIFT
           f.el.style.transform = `translate3d(${PX}px, ${PY}px, ${z.toFixed(2)}px) rotateY(${angolo.toFixed(2)}deg)`
           const piega = Math.sin(turn * Math.PI) * CURL + (i === 0 ? stato.solleva * 10 : 0)
-          const curling = Math.sin(turn * Math.PI)
+          const curling = turn < 0.08 ? 0 : Math.sin(turn * Math.PI)
           f.segmenti.forEach((seg, s) => {
             const b = s === 0 ? 0 : piega * (0.35 + s * 0.22)
             seg.style.transform = `rotateY(${b.toFixed(2)}deg)`
@@ -217,7 +256,21 @@ const MeridianBook = () => {
         cenno.style.opacity = REDUCED ? 0 : (1 - clamp(p / 0.05, 0, 1)).toFixed(3)
       }
 
-      corsa.style.height = REDUCED ? '100lvh' : `${Math.round(100 + 320 * clamp(RIDE, 0.3, 4))}lvh`
+      syncCorsaHeight()
+
+      const onNarrowChange = () => {
+        isNarrow = narrowMq.matches
+        syncCorsaHeight()
+        misura()
+        disegna()
+        try {
+          ScrollTrigger.refresh()
+        } catch {
+          /* ignore */
+        }
+      }
+      narrowMq.addEventListener('change', onNarrowChange)
+      cleanups.push(() => narrowMq.removeEventListener('change', onNarrowChange))
 
       function regia() {
         gsap.timeline({
@@ -242,8 +295,24 @@ const MeridianBook = () => {
         addPageListener(palco, 'pointerleave', () => {
           vx(0)
           vy(0)
+          if (!COARSE) {
+            gsap.to(stato, { hover: 0, duration: 0.55, ease: 'power2.out' })
+          }
         })
+        if (!COARSE) {
+          addPageListener(palco, 'pointerenter', () => {
+            gsap.to(stato, { hover: 1, duration: 0.55, ease: 'power2.out' })
+          })
+        }
+        if (COARSE) {
+          addPageListener(palco, 'pointerdown', (e) => {
+            if (e.pointerType === 'mouse') return
+            const next = stato.hover > 0.5 ? 0 : 1
+            gsap.to(stato, { hover: next, duration: 0.45, ease: 'power2.out' })
+          })
+        }
         addPageListener(palco, 'click', () => {
+          if (COARSE) return
           gsap
             .timeline()
             .to(stato, { solleva: 1, duration: 0.35, ease: 'power2.out' })
@@ -269,6 +338,8 @@ const MeridianBook = () => {
         if (attesa) attesa.kill()
         attesa = gsap.delayedCall(0.1, () => {
           if (!mounted) return
+          isNarrow = narrowMq.matches
+          syncCorsaHeight()
           misura()
           ScrollTrigger.refresh()
         })
@@ -299,10 +370,18 @@ const MeridianBook = () => {
     if (!root) return
     root.querySelectorAll('.pagina-testo').forEach((el) => {
       const n = Number(el.getAttribute('data-page')) + 1
+      const badge = el.querySelector('.pagina-testo__badge')
       const kicker = el.querySelector('.pagina-testo__n')
       const line = el.querySelector('.pagina-testo__riga')
+      const body = el.querySelector('.pagina-testo__corpo')
+      const badgeText = t(`bookLeaf${n}Badge`)
+      if (badge) {
+        badge.textContent = badgeText
+        badge.hidden = !badgeText
+      }
       if (kicker) kicker.textContent = t(`bookLeaf${n}Kicker`)
       if (line) line.textContent = t(`bookLeaf${n}Line`)
+      if (body) body.textContent = t(`bookLeaf${n}Body`)
     })
   }, [language, t])
 
@@ -322,6 +401,10 @@ const MeridianBook = () => {
                   <p className="pagina-base__frase" data-frase="">
                     {t('bookSentence')}
                   </p>
+                  <ul className="pagina-base__highlights" aria-hidden="true">
+                    <li>{t('bookHighlight1')}</li>
+                    <li>{t('bookHighlight2')}</li>
+                  </ul>
                   <span className="pagina-base__ombra" data-ombra-pagina="" />
                 </div>
                 <div className="nastro" data-nastro="" />
@@ -331,15 +414,24 @@ const MeridianBook = () => {
               <div className="pagine" data-pagine="" />
               <div className="copertina" data-copertina="">
                 <div className="copertina__fuori faccia">
+                  <span className="copertina__foil" aria-hidden="true" />
+                  <span className="copertina__texture" aria-hidden="true" />
+                  <img
+                    className="copertina__emblema"
+                    src="/meridian/logo%202.png"
+                    alt=""
+                    draggable={false}
+                    aria-hidden="true"
+                  />
                   <span className="copertina__titolo">{t('bookCoverTitle')}</span>
                   <span className="copertina__autore">{t('bookCoverLine')}</span>
+                  <span className="copertina__tagline">{t('bookCoverTagline')}</span>
                   <span className="copertina__luce" data-luce-cop="" />
                 </div>
                 <div className="copertina__dentro faccia">
                   <div className="pagina-marca pagina-marca--ex">
                     <img src="/meridian/logo%202.png" alt="" draggable={false} />
                   </div>
-                  <span className="copertina__ex">{t('bookEndpaper')}</span>
                   <span className="copertina__luce" data-luce-dentro="" />
                 </div>
                 <div className="copertina__spessore faccia" />

@@ -51,7 +51,7 @@ const InstituteSection = () => {
       <div className="absolute top-0 left-0 w-80 h-80 bg-[#D8B840]/8 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-0 right-0 w-80 h-80 bg-sky-200/30 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="relative z-10 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+      <div className="relative z-10 site-container grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
 
         {/* One Side: Banner */}
         <div ref={bannerRef} className="order-2 lg:order-2">

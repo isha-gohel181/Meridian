@@ -45,6 +45,8 @@ interface Event {
   thumbnail?: string;
   isPublic: boolean;
   tags: string[];
+  showOnLanding?: boolean;
+  landingFeatured?: boolean;
 }
 
 const VITE_IMAGE_URL = import.meta.env.VITE_BASE_URL;
@@ -306,7 +308,19 @@ const EventList: React.FC = () => {
                     />
                   </td>
                   <td className="px-6 py-4 text-sm font-medium text-gray-900 dark:text-white">
-                    {event.title}
+                    <div>{event.title}</div>
+                    {event.showOnLanding && (
+                      <div className="mt-1 flex flex-wrap gap-1">
+                        <span className="px-2 py-0.5 text-[10px] font-semibold uppercase rounded bg-indigo-100 text-indigo-800">
+                          On home
+                        </span>
+                        {event.landingFeatured && (
+                          <span className="px-2 py-0.5 text-[10px] font-semibold uppercase rounded bg-amber-100 text-amber-900">
+                            Featured
+                          </span>
+                        )}
+                      </div>
+                    )}
                   </td>
                   <td className="px-6 py-4 text-sm text-gray-700 dark:text-gray-300">
                     <span className={`capitalize ${

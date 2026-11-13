@@ -14,7 +14,7 @@ const AlumniCasesStrip = () => {
 
   return (
     <section className="bg-brand-brown/95 text-white py-10 md:py-12 px-4 md:px-8 border-y border-white/10">
-      <div className="max-w-7xl mx-auto flex flex-col lg:flex-row lg:items-center gap-6 lg:gap-10">
+      <div className="site-container flex flex-col lg:flex-row lg:items-center gap-6 lg:gap-10">
         <div className="shrink-0 max-w-sm">
           <p className="font-jetbrains text-[10px] tracking-[0.4em] uppercase text-amber-100/80 font-bold mb-2">
             Alumni outcomes

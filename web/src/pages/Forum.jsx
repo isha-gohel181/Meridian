@@ -537,7 +537,7 @@ const QuestionCard = ({ question }) => {
   return (
     <div ref={containerRef} className="min-h-screen bg-dark pt-44 pb-28 px-4 md:px-12 lg:px-20 overflow-x-clip text-normal">
       
-      <div className="max-w-7xl mx-auto">
+      <div className="site-container">
         <div className="mb-12">
           <p className="marketing-page-eyebrow mb-2">{t('forum') || 'Forum'}</p>
           <h1 className="marketing-page-title">{t('forumTitle') || 'Community discussions'}</h1>

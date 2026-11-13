@@ -29,9 +29,9 @@ const LandingFacultyRoster = () => {
   return (
     <LandingReveal
       id="faculty"
-      className="scroll-mt-28 md:scroll-mt-32 border-b border-brand-brown/[0.06] bg-slate-50 px-4 py-20 sm:px-6 md:px-10 lg:px-14"
+      className="scroll-mt-28 border-b border-brand-brown/[0.06] bg-slate-50 py-20 md:scroll-mt-32"
     >
-      <div className="mx-auto max-w-7xl">
+      <div className="site-container">
         <p className="mb-3 font-jetbrains text-[10px] font-bold uppercase tracking-[0.45em] text-accent">
           {t('landingFacultyEyebrow')}
         </p>

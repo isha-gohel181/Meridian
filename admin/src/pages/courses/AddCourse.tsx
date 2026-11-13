@@ -16,6 +16,7 @@ import {
   Download,
   MessageCircle,
   Lock,
+  Star,
   Calendar,
   Upload,
   Menu,
@@ -543,6 +544,8 @@ const AddCourse = () => {
     courseForum: false,
     isSubscription: false,
     isPrivate: false,
+    isFeatured: false,
+    featuredRank: "",
     enableWaitlist: false,
     coursePosition: "",
     // Mentor fields
@@ -634,10 +637,16 @@ const AddCourse = () => {
     const { name, value } = target;
     const type = (target as HTMLInputElement).type;
     const checked = type === "checkbox" ? (target as HTMLInputElement).checked : undefined;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }));
+    setFormData((prev) => {
+      const next = {
+        ...prev,
+        [name]: type === "checkbox" ? checked : value,
+      };
+      if (name === "isFeatured" && type === "checkbox" && !checked) {
+        next.featuredRank = "";
+      }
+      return next;
+    });
     setFormErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
@@ -1727,6 +1736,39 @@ const AddCourse = () => {
                       Enable Waitlist
                     </span>
                   </label>
+                  <label className="flex items-center gap-3 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      name="isFeatured"
+                      checked={formData.isFeatured}
+                      onChange={handleInputChange}
+                      className="w-4 h-4 text-yellow-500 border-gray-300 dark:border-gray-600 rounded focus:ring-yellow-500"
+                    />
+                    <span className="text-sm font-medium text-gray-700 dark:text-gray-200 flex items-center gap-2">
+                      <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
+                      Featured course (home page, max 6)
+                    </span>
+                  </label>
+                  <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:gap-3">
+                    <label className="text-sm font-medium text-gray-700 dark:text-gray-200" htmlFor="featuredRank">
+                      Featured rank on home
+                    </label>
+                    <select
+                      id="featuredRank"
+                      name="featuredRank"
+                      value={formData.featuredRank}
+                      onChange={handleInputChange}
+                      disabled={!formData.isFeatured}
+                      className="max-w-[8rem] rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-600 dark:bg-gray-900 dark:text-white"
+                    >
+                      <option value="">No rank</option>
+                      {[1, 2, 3, 4, 5, 6].map((n) => (
+                        <option key={n} value={String(n)}>
+                          {n}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
                 </div>
               </div>
             )}

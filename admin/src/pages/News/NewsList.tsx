@@ -302,6 +302,18 @@ export default function NewsList() {
                           <div className="text-sm font-medium text-gray-900 dark:text-white max-w-xs truncate">
                             {item.title || "Untitled"}
                           </div>
+                          {item.showOnLanding && (
+                            <div className="mt-1 flex flex-wrap gap-1">
+                              <span className="px-2 py-0.5 text-[10px] font-semibold uppercase rounded bg-indigo-100 text-indigo-800 dark:bg-indigo-900/40 dark:text-indigo-200">
+                                On home
+                              </span>
+                              {item.landingFeatured && (
+                                <span className="px-2 py-0.5 text-[10px] font-semibold uppercase rounded bg-amber-100 text-amber-900">
+                                  Featured
+                                </span>
+                              )}
+                            </div>
+                          )}
                           {item.tags && item.tags.length > 0 && (
                             <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                               {item.tags.slice(0, 3).join(", ")}

@@ -59,7 +59,7 @@ const CourseHeroDetail = ({ course, section }) => {
   return (
     <section
       ref={heroRef}
-      className="max-w-7xl mx-auto mb-16 md:mb-20 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start"
+      className="site-container mb-16 md:mb-20 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start"
     >
       {/* Course copy */}
       <div className="lg:col-span-7 flex flex-col gap-6 md:gap-8">

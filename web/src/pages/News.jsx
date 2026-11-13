@@ -179,7 +179,7 @@ const News = () => {
 
   return (
     <div ref={containerRef} className="min-h-screen bg-dark pt-28 md:pt-36 pb-24 px-4 md:px-12 lg:px-20 overflow-x-hidden text-normal">
-      <div className="max-w-7xl mx-auto">
+      <div className="site-container">
         
         {/* Blog header */}
         <div className="mb-12 md:mb-16">

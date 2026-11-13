@@ -92,7 +92,7 @@ const FrameworkSection = ({ course, section }) => {
   }, [phases])
 
   return (
-    <section ref={containerRef} className="max-w-7xl mx-auto py-20">
+    <section ref={containerRef} className="site-container py-20">
       
       {/* HEADER SECTION */}
       <div ref={introRef} className="max-w-4xl mx-auto mb-20 relative px-4 md:px-0">

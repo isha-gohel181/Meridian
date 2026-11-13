@@ -218,7 +218,7 @@ const DashboardLiveClasses = () => {
     return (
         <div className="min-h-screen bg-dark text-normal">
             <DashboardHeader />
-            <main className="pt-32 pb-20 px-6 max-w-7xl mx-auto">
+            <main className="pt-32 pb-20 px-6 site-container">
                 <div className="space-y-12">
                     <div className="space-y-4 live-reveal">
                         <div className="flex items-center gap-3">

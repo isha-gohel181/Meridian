@@ -158,6 +158,7 @@ const courseSchema = new mongoose.Schema({
 
   // Featured flag for highlighting courses in UI
   isFeatured: { type: Boolean, default: false },
+  featuredRank: { type: Number, min: 1, max: 6, default: null },
 
   // Drip setting: users for whom drip is disabled
   dripSettingDisabledFor: [{ type: Schema.Types.ObjectId, ref: 'User', default: [] }],
@@ -368,6 +369,7 @@ courseSchema.index({ averageRating: -1 });
 courseSchema.index({ coursePosition: 1 });
 // Index to quickly query featured courses
 courseSchema.index({ isFeatured: -1 });
+courseSchema.index({ isFeatured: 1, featuredRank: 1 });
 
 courseSchema.post('save', async function (doc) {
   if (doc.isNew) {

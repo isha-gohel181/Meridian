@@ -54,6 +54,9 @@ export interface Event {
   status: "draft" | "published" | "cancelled" | "completed";
   thumbnail?: string;
   attachments?: Attachment[];
+  showOnLanding?: boolean;
+  landingFeatured?: boolean;
+  cardSummary?: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -74,6 +77,9 @@ interface EventFormData {
   status: "draft" | "published" | "cancelled" | "completed";
   thumbnail?: string;
   attachments?: Attachment[];
+  showOnLanding?: boolean;
+  landingFeatured?: boolean;
+  cardSummary?: string;
 }
 
 // Custom Popup Component for success/error messages
@@ -224,6 +230,9 @@ const EditEvent = () => {
         status: event.status || "draft",
         thumbnail: typeof event.thumbnail === "string" ? event.thumbnail : "",
         attachments: [],
+        showOnLanding: event.showOnLanding === true,
+        landingFeatured: event.landingFeatured === true,
+        cardSummary: event.cardSummary || "",
       });
     }
   }, [data]);
@@ -236,6 +245,11 @@ const EditEvent = () => {
     const { name, value, type } = e.target;
     setFormData((prev) => {
       if (!prev) return null;
+
+      if (type === "checkbox") {
+        const checked = (e.target as HTMLInputElement).checked;
+        return { ...prev, [name]: checked };
+      }
 
       if (name.includes(".")) {
         const [parent, child] = name.split(".");
@@ -771,6 +785,46 @@ const EditEvent = () => {
               <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
                 Separate multiple tags with commas
               </p>
+            </div>
+          </div>
+
+          <div className="p-4 rounded-lg border border-indigo-200 bg-indigo-50/60 dark:bg-indigo-900/20 space-y-3">
+            <p className="text-sm font-medium text-indigo-900 dark:text-indigo-200">
+              Home page — Events &amp; news
+            </p>
+            <label className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
+              <input
+                type="checkbox"
+                name="showOnLanding"
+                checked={formData.showOnLanding === true}
+                onChange={handleInputChange}
+                className="h-4 w-4 text-indigo-600 rounded"
+              />
+              Show on website home
+            </label>
+            <label className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
+              <input
+                type="checkbox"
+                name="landingFeatured"
+                checked={formData.landingFeatured === true}
+                disabled={!formData.showOnLanding}
+                onChange={handleInputChange}
+                className="h-4 w-4 text-indigo-600 rounded disabled:opacity-50"
+              />
+              Feature on home (one at a time)
+            </label>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
+                Card summary (optional)
+              </label>
+              <input
+                type="text"
+                name="cardSummary"
+                value={formData.cardSummary || ""}
+                onChange={handleInputChange}
+                maxLength={280}
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md"
+              />
             </div>
           </div>
 

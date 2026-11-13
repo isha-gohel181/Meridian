@@ -29,7 +29,7 @@ const MentorSection = () => {
       <div className="absolute top-0 right-0 w-80 h-80 bg-[#D8B840]/8 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-80 h-80 bg-amber-100/40 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="relative z-10 max-w-7xl mx-auto">
+      <div className="relative z-10 site-container">
         <div className="text-center max-w-3xl mx-auto mb-14 md:mb-20 space-y-4">
           <div className="inline-flex items-center gap-3">
             <span className="w-8 h-[1px] bg-[#D8B840]/40" />

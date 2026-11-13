@@ -35,7 +35,7 @@ const GuaranteeSection = () => {
   }, [])
 
   return (
-    <section ref={containerRef} className="max-w-7xl mx-auto mb-24 px-4 md:px-0 relative">
+    <section ref={containerRef} className="site-container relative mb-24">
       
       {/* Background Glows */}
       <div className="absolute -top-24 -left-24 w-96 h-96 bg-accent/5 rounded-full blur-[120px] pointer-events-none" />

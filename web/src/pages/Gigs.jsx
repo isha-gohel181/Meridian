@@ -173,7 +173,7 @@ const Gigs = () => {
 
   return (
     <div ref={containerRef} className="min-h-screen bg-dark pt-36 pb-32 px-4 md:px-12 lg:px-20 overflow-x-clip text-normal">
-      <div className="max-w-7xl mx-auto">
+      <div className="site-container">
         <div className="mb-6">
           <div className="flex items-baseline gap-6 gig-header-reveal flex-wrap">
             <h1 className="marketing-page-title">
@@ -297,7 +297,7 @@ const JobDetail = ({ job, onBack, submitting, dispatch }) => {
 
   return (
     <div className="min-h-screen bg-dark pt-36 pb-32 px-4 md:px-12 lg:px-20 animate-in fade-in duration-700 text-normal">
-      <div className="max-w-7xl mx-auto">
+      <div className="site-container">
         <button 
           onClick={onBack}
           className="flex items-center gap-2 text-accent font-jetbrains text-xs font-bold uppercase tracking-wider mb-8 hover:gap-3 transition-all cursor-pointer"

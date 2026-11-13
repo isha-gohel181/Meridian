@@ -41,6 +41,9 @@ interface EventFormData {
     type: string;
   }>;
   isPublic: boolean;
+  showOnLanding: boolean;
+  landingFeatured: boolean;
+  cardSummary: string;
 }
 
 // Interface matching the API payload
@@ -96,6 +99,9 @@ const AddEvent: React.FC = () => {
     thumbnail: null,
     attachments: [],
     isPublic: false,
+    showOnLanding: false,
+    landingFeatured: false,
+    cardSummary: "",
   });
 
   const [newTag, setNewTag] = useState("");
@@ -207,6 +213,11 @@ const AddEvent: React.FC = () => {
       formDataToSend.append("category", formData.category);
       formDataToSend.append("status", formData.status);
       formDataToSend.append("isPublic", String(formData.isPublic));
+      formDataToSend.append("showOnLanding", String(formData.showOnLanding));
+      formDataToSend.append("landingFeatured", String(formData.landingFeatured));
+      if (formData.cardSummary) {
+        formDataToSend.append("cardSummary", formData.cardSummary);
+      }
 
       // Add venue details for offline or hybrid events
       if (formData.type !== "online") {
@@ -614,6 +625,45 @@ const AddEvent: React.FC = () => {
                   <label className="ml-2 block text-sm text-gray-700">
                     Make this event public
                   </label>
+                </div>
+              </div>
+
+              <div className="p-4 rounded-lg border border-indigo-200 bg-indigo-50/60 space-y-3">
+                <p className="text-sm font-medium text-indigo-900">Home page — Events &amp; news</p>
+                <label className="flex items-center gap-2 text-sm text-gray-700">
+                  <input
+                    type="checkbox"
+                    name="showOnLanding"
+                    checked={formData.showOnLanding}
+                    onChange={handleCheckboxChange}
+                    className="h-4 w-4 text-indigo-600 rounded"
+                  />
+                  Show on website home
+                </label>
+                <label className="flex items-center gap-2 text-sm text-gray-700">
+                  <input
+                    type="checkbox"
+                    name="landingFeatured"
+                    checked={formData.landingFeatured}
+                    disabled={!formData.showOnLanding}
+                    onChange={handleCheckboxChange}
+                    className="h-4 w-4 text-indigo-600 rounded disabled:opacity-50"
+                  />
+                  Feature on home (one at a time)
+                </label>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Card summary (optional)
+                  </label>
+                  <input
+                    type="text"
+                    name="cardSummary"
+                    value={formData.cardSummary}
+                    onChange={handleInputChange}
+                    maxLength={280}
+                    placeholder="Short line for the home board"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  />
                 </div>
               </div>
 

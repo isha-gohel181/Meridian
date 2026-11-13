@@ -59,7 +59,7 @@ const SolutionSection = ({ course, section }) => {
   ) || [];
 
   return (
-    <section ref={ref} className="max-w-7xl mx-auto py-20">
+    <section ref={ref} className="site-container py-20">
       <div className="w-full h-[1px] bg-gradient-to-r from-transparent via-accent/40 to-transparent mb-16" />
 
       <div className="grid grid-cols-1 min-[1301px]:grid-cols-[1fr_1.8fr] gap-12 min-[1301px]:gap-20 items-start mb-28 px-4 md:px-0">

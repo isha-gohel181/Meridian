@@ -17,7 +17,7 @@ const LandingWhatWeOffer = () => {
       id="what-we-offer"
       className="scroll-mt-28 md:scroll-mt-32 py-20 md:py-28 px-4 sm:px-6 lg:px-12 bg-white"
     >
-      <div className="max-w-7xl mx-auto">
+      <div className="site-container">
         <div className="max-w-3xl mb-14 md:mb-20">
           <p className="font-jetbrains text-[10px] text-accent tracking-[0.45em] uppercase font-bold mb-3">
             {t('landingOfferEyebrow')}

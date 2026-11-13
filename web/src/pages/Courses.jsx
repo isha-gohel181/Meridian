@@ -502,7 +502,7 @@ const Courses = () => {
       <div className="px-4 md:px-12 lg:px-20">
         
         {/* Hero Title */}
-        <div className={`courses-hero max-w-7xl mx-auto mb-8 ${eventList && eventList.length > 0 ? 'pt-8' : 'pt-28 md:pt-36'}`}>
+        <div className={`courses-hero site-container mb-8 ${eventList && eventList.length > 0 ? 'pt-8' : 'pt-28 md:pt-36'}`}>
           <div className="flex items-baseline gap-6 flex-wrap">
             <h1 className="marketing-page-title">
               {t('ourCourses') || 'Our Courses'}
@@ -514,7 +514,7 @@ const Courses = () => {
         </div>
 
         {/* ── Filter Row & Advanced Drawer ── */}
-        <div className="max-w-7xl mx-auto mb-12">
+        <div className="site-container mb-12">
           
           {/* Desktop Filter Row */}
           <div className="hidden md:grid grid-cols-12 items-end gap-12 w-full pb-8 border-b border-border">
@@ -708,7 +708,7 @@ const Courses = () => {
         {/* VIEW A: TEST SERIES (Quizzes & Mock Tests) - Commented Out */}
         {/*
         activeFilter === 'TEST SERIES' && (
-          <div className="max-w-7xl mx-auto mb-16">
+          <div className="site-container mb-16">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {testSeriesData.map((test) => (
                 <div
@@ -771,7 +771,7 @@ const Courses = () => {
         {/* VIEW B: BUY BOOKS (eBooks & Study Materials) - Commented Out */}
         {/*
         activeFilter === 'BUY BOOKS' && (
-          <div className="max-w-7xl mx-auto mb-16">
+          <div className="site-container mb-16">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {buyBooksData.map((book) => (
                 <div
@@ -841,7 +841,7 @@ const Courses = () => {
 
         {/* VIEW C: COURSES GRID (All Courses, GS Courses, Optional Courses) */}
         {activeFilter !== 'TEST SERIES' && activeFilter !== 'BUY BOOKS' && (
-          <div className="course-grid max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-24 mb-12">
+          <div className="course-grid site-container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-24 mb-12">
             {loading ? (
               <div className="col-span-full text-center py-20 text-accent font-montserrat">LOADING COURSES...</div>
             ) : error ? (
@@ -875,7 +875,7 @@ const Courses = () => {
         )}
 
         {/* 4. Upcoming Events Section */}
-        <div className="events-section max-w-7xl mx-auto pt-24 border-t border-border">
+        <div className="events-section site-container pt-24 border-t border-border">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
             <div>
               <h2 className="font-newsreader text-5xl md:text-6xl italic text-normal mb-4">Upcoming Events</h2>

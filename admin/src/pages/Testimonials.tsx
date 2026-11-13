@@ -3,26 +3,30 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../store';
 import { fetchTestimonials, addTestimonial, resetTestimonialState, deleteTestimonial, updateTestimonial } from '../store/slices/testimonial';
-import { fetchCourses } from '../store/slices/course';
-import { Star, Plus, X, MessageCircle, User, Briefcase, Loader2, AlertCircle, CheckCircle, Search, Trash2, Edit, BookOpen, Image as ImageIcon, Video, Upload, Film } from 'lucide-react';
+import { Star, Plus, X, MessageCircle, User, Briefcase, Loader2, AlertCircle, CheckCircle, Search, Trash2, Edit, Image as ImageIcon } from 'lucide-react';
 
 interface TestimonialData {
     _id?: string;
     name: string;
     role: string;
     company?: string;
-    tag?: string;
-    outcome?: string;
     message: string;
     rating: number;
-    courseId?: string;
     image?: string;
-    video?: string;
     status?: string;
     showOnLanding?: boolean;
     createdAt?: string;
     updatedAt?: string;
 }
+
+const emptyFormData: TestimonialData = {
+    name: '',
+    role: '',
+    company: '',
+    message: '',
+    rating: 5,
+    showOnLanding: true,
+};
 
 // Confirmation Dialog Component
 const ConfirmDialog = ({
@@ -114,26 +118,15 @@ const Popup = ({
     );
 };
 
-interface Course {
-    _id: string;
-    title: string;
-    slug?: string;
-    price?: number;
-    thumbnail?: string;
-}
-
 const TestimonialsPage: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
 
     const [testimonials, setTestimonials] = useState<TestimonialData[]>([]);
-    const [coursesList, setCoursesList] = useState<Course[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
-    const [coursesLoading, setCoursesLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
     const [showAddForm, setShowAddForm] = useState<boolean>(false);
     const [searchTerm, setSearchTerm] = useState<string>('');
     const [statusFilter, setStatusFilter] = useState<string>('all');
-    const [showCoursesList, setShowCoursesList] = useState<boolean>(true);
     const [deleteConfirm, setDeleteConfirm] = useState<{ show: boolean; id: string | null }>({
         show: false,
         id: null
@@ -148,21 +141,18 @@ const TestimonialsPage: React.FC = () => {
         type: 'success' as 'success' | 'error'
     });
 
-    const [formData, setFormData] = useState<TestimonialData>({
-        name: '',
-        role: '',
-        company: '',
-        tag: '',
-        outcome: '',
-        message: '',
-        rating: 5,
-        showOnLanding: true,
-    });
+    const [formData, setFormData] = useState<TestimonialData>({ ...emptyFormData });
 
     const [imageFile, setImageFile] = useState<File | null>(null);
-    const [videoFile, setVideoFile] = useState<File | null>(null);
     const [imagePreview, setImagePreview] = useState<string | null>(null);
-    const [videoPreview, setVideoPreview] = useState<string | null>(null);
+
+    const resetForm = () => {
+        setFormData({ ...emptyFormData });
+        setImageFile(null);
+        setImagePreview(null);
+        setEditId(null);
+        setIsEditMode(false);
+    };
 
     const BASE_URL = getImageBase();
     const getMediaUrl = (path: string) => {
@@ -194,29 +184,13 @@ const TestimonialsPage: React.FC = () => {
         }
     }, [dispatch]);
 
-    // Fetch courses
-    const fetchCoursesData = useCallback(async () => {
-        setCoursesLoading(true);
-        try {
-            const result = await dispatch(fetchCourses({})).unwrap();
-            setCoursesList(result?.courses || []);
-            setCoursesLoading(false);
-        } catch (err) {
-            console.error('Failed to fetch courses:', err);
-            setCoursesLoading(false);
-        }
-    }, [dispatch]);
-
-    // Fetch testimonials and courses on component mount
     useEffect(() => {
         fetchTestimonialsData();
-        fetchCoursesData();
 
-        // Cleanup function to reset testimonial state when component unmounts
         return () => {
             dispatch(resetTestimonialState());
         };
-    }, [fetchTestimonialsData, fetchCoursesData, dispatch]);
+    }, [fetchTestimonialsData, dispatch]);
 
     // Filter testimonials based on search term and status
     const filteredTestimonials = testimonials.filter(testimonial => {
@@ -240,16 +214,11 @@ const TestimonialsPage: React.FC = () => {
     };
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, files } = e.target;
-        if (files && files[0]) {
+        const { files } = e.target;
+        if (files?.[0]) {
             const file = files[0];
-            if (name === 'image') {
-                setImageFile(file);
-                setImagePreview(URL.createObjectURL(file));
-            } else if (name === 'video') {
-                setVideoFile(file);
-                setVideoPreview(URL.createObjectURL(file));
-            }
+            setImageFile(file);
+            setImagePreview(URL.createObjectURL(file));
         }
     };
 
@@ -265,19 +234,6 @@ const TestimonialsPage: React.FC = () => {
         fetchTestimonialsData(status);
     };
 
-    const handleAddForCourse = (courseId: string) => {
-        // Reset form data but pre-fill with courseId
-        setFormData({
-            name: '',
-            role: '',
-            message: '',
-            rating: 5,
-            courseId: courseId
-        });
-        setShowAddForm(true);
-    };
-
-    // Handle edit testimonial
     const handleEditClick = (testimonial: TestimonialData) => {
         if (!testimonial._id) return;
 
@@ -285,21 +241,15 @@ const TestimonialsPage: React.FC = () => {
             name: testimonial.name,
             role: testimonial.role,
             company: testimonial.company || '',
-            tag: testimonial.tag || '',
-            outcome: testimonial.outcome || '',
             message: testimonial.message,
             rating: testimonial.rating,
-            courseId: testimonial.courseId,
             status: testimonial.status,
             showOnLanding: testimonial.showOnLanding !== false,
             image: testimonial.image,
-            video: testimonial.video
         });
 
         setImagePreview(testimonial.image ? getMediaUrl(testimonial.image) : null);
-        setVideoPreview(testimonial.video ? getMediaUrl(testimonial.video) : null);
         setImageFile(null);
-        setVideoFile(null);
 
         setEditId(testimonial._id);
         setIsEditMode(true);
@@ -357,6 +307,16 @@ const TestimonialsPage: React.FC = () => {
             type: 'success'
         });
 
+        const hasPhoto = Boolean(imageFile || formData.image);
+        if (!hasPhoto) {
+            setPopup({
+                isVisible: true,
+                message: 'Please upload a photo — it appears in the home page gallery.',
+                type: 'error',
+            });
+            return;
+        }
+
         const token = localStorage.getItem('token') || '';
         setLoading(true);
 
@@ -366,12 +326,8 @@ const TestimonialsPage: React.FC = () => {
         formDataToSend.append('message', formData.message);
         formDataToSend.append('rating', String(formData.rating));
         if (formData.company) formDataToSend.append('company', formData.company);
-        if (formData.tag) formDataToSend.append('tag', formData.tag);
-        if (formData.outcome) formDataToSend.append('outcome', formData.outcome);
         formDataToSend.append('showOnLanding', String(formData.showOnLanding !== false));
-        if (formData.courseId) formDataToSend.append('courseId', formData.courseId);
         if (imageFile) formDataToSend.append('image', imageFile);
-        if (videoFile) formDataToSend.append('video', videoFile);
 
         // If in edit mode, call handleUpdate instead
         if (isEditMode && editId) {
@@ -388,19 +344,7 @@ const TestimonialsPage: React.FC = () => {
                 // Refresh testimonials list
                 await fetchTestimonialsData(statusFilter);
 
-                // Reset form and edit mode
-                setFormData({
-                    name: '',
-                    role: '',
-                    message: '',
-                    rating: 5,
-                });
-                setImageFile(null);
-                setVideoFile(null);
-                setImagePreview(null);
-                setVideoPreview(null);
-                setEditId(null);
-                setIsEditMode(false);
+                resetForm();
                 setShowAddForm(false);
 
                 // Show success message
@@ -435,19 +379,7 @@ const TestimonialsPage: React.FC = () => {
             // Refresh testimonials list
             await fetchTestimonialsData(statusFilter);
 
-            // Reset form data
-            setFormData({
-                name: '',
-                role: '',
-                message: '',
-                rating: 5,
-            });
-            setImageFile(null);
-            setVideoFile(null);
-            setImagePreview(null);
-            setVideoPreview(null);
-
-            // Close form
+            resetForm();
             setShowAddForm(false);
 
             // Show success message
@@ -518,7 +450,10 @@ const TestimonialsPage: React.FC = () => {
                     </p>
                 </div>
                 <button
-                    onClick={() => setShowAddForm(true)}
+                    onClick={() => {
+                        resetForm();
+                        setShowAddForm(true);
+                    }}
                     className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
                 >
                     <Plus className="w-4 h-4" />
@@ -627,6 +562,11 @@ const TestimonialsPage: React.FC = () => {
                                     }`}>
                                     {testimonial.status || 'Pending'}
                                 </span>
+                                {testimonial.status === 'approved' && testimonial.showOnLanding !== false ? (
+                                    <span className="text-xs px-2 py-1 rounded-full bg-indigo-100 text-indigo-800 dark:bg-indigo-900/40 dark:text-indigo-200">
+                                        On home
+                                    </span>
+                                ) : null}
                                 <div className="flex space-x-1">
                                     {/* Edit button will be implemented later */}
                                     <button
@@ -650,30 +590,13 @@ const TestimonialsPage: React.FC = () => {
                         </div>
                         <p className="text-gray-700 dark:text-gray-300 mb-4 italic">"{testimonial.message}"</p>
 
-                        {(testimonial.image || testimonial.video) && (
-                            <div className="flex gap-4 mb-4 overflow-x-auto pb-2">
-                                {testimonial.image && (
-                                    <div className="flex-shrink-0">
-                                        <img
-                                            src={getMediaUrl(testimonial.image)}
-                                            alt="Testimonial"
-                                            className="w-20 h-20 object-cover rounded-lg border border-gray-200 dark:border-gray-700"
-                                        />
-                                    </div>
-                                )}
-                                {testimonial.video && (
-                                    <div className="flex-shrink-0">
-                                        <div className="w-40 h-24 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center border border-gray-200 dark:border-gray-700 overflow-hidden">
-                                            <video
-                                                src={getMediaUrl(testimonial.video)}
-                                                controls
-                                                className="w-full h-full object-cover"
-                                            >
-                                                Your browser does not support the video tag.
-                                            </video>
-                                        </div>
-                                    </div>
-                                )}
+                        {testimonial.image && (
+                            <div className="mb-4">
+                                <img
+                                    src={getMediaUrl(testimonial.image)}
+                                    alt={testimonial.name}
+                                    className="w-20 h-20 object-cover rounded-lg border border-gray-200 dark:border-gray-700"
+                                />
                             </div>
                         )}
 
@@ -695,12 +618,6 @@ const TestimonialsPage: React.FC = () => {
                                     <Briefcase className="w-3 h-3 mr-1" />
                                     {testimonial.role}
                                 </p>
-                                {testimonial.courseId && (
-                                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 flex items-center">
-                                        <BookOpen className="w-3 h-3 mr-1" />
-                                        {coursesList.find(c => c._id === testimonial.courseId)?.title || `Course: ${testimonial.courseId}`}
-                                    </p>
-                                )}
                             </div>
                         </div>
                         {testimonial.createdAt && (
@@ -716,7 +633,10 @@ const TestimonialsPage: React.FC = () => {
             {showAddForm && (
                 <div
                     className="fixed inset-0 bg-white/50 backdrop-blur-md flex items-center justify-center z-50 p-4 pt-20"
-                    onClick={() => setShowAddForm(false)}
+                    onClick={() => {
+                        setShowAddForm(false);
+                        resetForm();
+                    }}
                 >
                     <div
                         className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full p-6 max-h-[90vh] overflow-y-auto"
@@ -729,20 +649,7 @@ const TestimonialsPage: React.FC = () => {
                             <button
                                 onClick={() => {
                                     setShowAddForm(false);
-                                    if (isEditMode) {
-                                        setIsEditMode(false);
-                                        setEditId(null);
-                                        setFormData({
-                                            name: '',
-                                            role: '',
-                                            message: '',
-                                            rating: 5,
-                                        });
-                                        setImageFile(null);
-                                        setVideoFile(null);
-                                        setImagePreview(null);
-                                        setVideoPreview(null);
-                                    }
+                                    resetForm();
                                 }}
                                 className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
                             >
@@ -753,6 +660,43 @@ const TestimonialsPage: React.FC = () => {
                         <form onSubmit={handleSubmit} className="space-y-4">
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                    Photo
+                                </label>
+                                <div className="relative group overflow-hidden bg-gray-100 dark:bg-gray-700 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-600 hover:border-blue-500 transition-colors aspect-[4/3] max-h-48">
+                                    {imagePreview ? (
+                                        <div className="relative w-full h-full min-h-[12rem]">
+                                            <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
+                                            <button
+                                                type="button"
+                                                onClick={() => {
+                                                    setImageFile(null);
+                                                    if (!isEditMode || !formData.image) {
+                                                        setImagePreview(null);
+                                                    } else {
+                                                        setImagePreview(getMediaUrl(formData.image));
+                                                    }
+                                                }}
+                                                className="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full opacity-90 hover:opacity-100 transition-opacity"
+                                                title="Remove new upload"
+                                            >
+                                                <X size={14} />
+                                            </button>
+                                        </div>
+                                    ) : (
+                                        <label className="flex flex-col items-center justify-center w-full h-full min-h-[12rem] cursor-pointer">
+                                            <ImageIcon className="w-10 h-10 text-gray-400 mb-2" />
+                                            <span className="text-sm text-gray-600 dark:text-gray-300">Upload photo</span>
+                                            <input type="file" name="image" accept="image/*" onChange={handleFileChange} className="hidden" />
+                                        </label>
+                                    )}
+                                </div>
+                                <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                                    Shown in the home page photo gallery.
+                                </p>
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                                     Name
                                 </label>
                                 <input
@@ -761,14 +705,14 @@ const TestimonialsPage: React.FC = () => {
                                     value={formData.name}
                                     onChange={handleInputChange}
                                     className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
-                                    placeholder="Enter name"
+                                    placeholder="Full name"
                                     required
                                 />
                             </div>
 
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                    Role/Position
+                                    Role
                                 </label>
                                 <input
                                     type="text"
@@ -776,120 +720,23 @@ const TestimonialsPage: React.FC = () => {
                                     value={formData.role}
                                     onChange={handleInputChange}
                                     className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
-                                    placeholder="Enter role or position"
+                                    placeholder="e.g. Student, Parent"
                                     required
                                 />
                             </div>
 
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                        Company
-                                    </label>
-                                    <input
-                                        type="text"
-                                        name="company"
-                                        value={formData.company || ''}
-                                        onChange={handleInputChange}
-                                        className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
-                                        placeholder="e.g. Tier-1 Bank"
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                        Outcome
-                                    </label>
-                                    <input
-                                        type="text"
-                                        name="outcome"
-                                        value={formData.outcome || ''}
-                                        onChange={handleInputChange}
-                                        className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
-                                        placeholder="e.g. Promoted to QA Lead"
-                                    />
-                                </div>
-                            </div>
-
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                    Tag (badge on card)
+                                    Location (optional)
                                 </label>
                                 <input
                                     type="text"
-                                    name="tag"
-                                    value={formData.tag || ''}
+                                    name="company"
+                                    value={formData.company || ''}
                                     onChange={handleInputChange}
                                     className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
-                                    placeholder="e.g. BANKING DOMAIN QA"
+                                    placeholder="e.g. Bengaluru — appears as Role · Location on the site"
                                 />
-                            </div>
-
-                            <label className="flex items-center gap-2 cursor-pointer">
-                                <input
-                                    type="checkbox"
-                                    name="showOnLanding"
-                                    checked={formData.showOnLanding !== false}
-                                    onChange={handleInputChange}
-                                    className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                                />
-                                <span className="text-sm text-gray-700 dark:text-gray-300">Show on website landing page</span>
-                            </label>
-
-                            {isEditMode && (
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                        Status
-                                    </label>
-                                    <div className="relative">
-                                        <select
-                                            name="status"
-                                            value={formData.status || 'pending'}
-                                            onChange={handleInputChange}
-                                            className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white appearance-none"
-                                        >
-                                            <option value="pending">Pending</option>
-                                            <option value="approved">Approved</option>
-                                            <option value="rejected">Rejected</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            )}
-
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                    Course (Optional)
-                                </label>
-                                <div className="relative">
-                                    <select
-                                        name="courseId"
-                                        value={formData.courseId || ''}
-                                        onChange={handleInputChange}
-                                        className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white appearance-none"
-                                    >
-                                        <option value="">Select a course</option>
-                                        {coursesList.map((course) => (
-                                            <option key={course._id} value={course._id}>
-                                                {course.title}
-                                            </option>
-                                        ))}
-                                    </select>
-                                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 dark:text-gray-300">
-                                        <BookOpen className="h-5 w-5" />
-                                    </div>
-                                </div>
-                                {coursesLoading && (
-                                    <div className="mt-1 text-sm text-blue-600 dark:text-blue-400 flex items-center">
-                                        <Loader2 className="w-3 h-3 mr-1 animate-spin" />
-                                        Loading courses...
-                                    </div>
-                                )}
-                            </div>
-
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                    Rating
-                                </label>
-                                <StarRating rating={formData.rating} onRatingChange={handleRatingChange} />
                             </div>
 
                             <div>
@@ -902,83 +749,55 @@ const TestimonialsPage: React.FC = () => {
                                     onChange={handleInputChange}
                                     rows={4}
                                     className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
-                                    placeholder="Enter testimonial message"
+                                    placeholder="Their quote for the home page"
                                     required
                                 />
                             </div>
 
-                            <div className="grid grid-cols-2 gap-4">
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                        Image
-                                    </label>
-                                    <div className="relative group overflow-hidden bg-gray-100 dark:bg-gray-700 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-600 hover:border-blue-500 transition-colors aspect-square">
-                                        {imagePreview ? (
-                                            <div className="relative w-full h-full">
-                                                <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
-                                                <button
-                                                    type="button"
-                                                    onClick={() => { setImageFile(null); setImagePreview(null); }}
-                                                    className="absolute top-1 right-1 bg-red-500 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
-                                                >
-                                                    <X size={14} />
-                                                </button>
-                                            </div>
-                                        ) : (
-                                            <label className="flex flex-col items-center justify-center w-full h-full cursor-pointer">
-                                                <ImageIcon className="w-8 h-8 text-gray-400 mb-1" />
-                                                <span className="text-[10px] text-gray-500">Upload Image</span>
-                                                <input type="file" name="image" accept="image/*" onChange={handleFileChange} className="hidden" />
-                                            </label>
-                                        )}
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                        Video
-                                    </label>
-                                    <div className="relative group overflow-hidden bg-gray-100 dark:bg-gray-700 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-600 hover:border-blue-500 transition-colors aspect-square">
-                                        {videoPreview ? (
-                                            <div className="relative w-full h-full flex items-center justify-center">
-                                                <Film className="w-12 h-12 text-blue-500" />
-                                                <button
-                                                    type="button"
-                                                    onClick={() => { setVideoFile(null); setVideoPreview(null); }}
-                                                    className="absolute top-1 right-1 bg-red-500 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
-                                                >
-                                                    <X size={14} />
-                                                </button>
-                                                <div className="absolute bottom-1 left-1 right-1 bg-black/50 text-[10px] text-white px-1 py-0.5 rounded truncate">
-                                                    {videoFile ? videoFile.name : 'Video uploaded'}
-                                                </div>
-                                            </div>
-                                        ) : (
-                                            <label className="flex flex-col items-center justify-center w-full h-full cursor-pointer">
-                                                <Video className="w-8 h-8 text-gray-400 mb-1" />
-                                                <span className="text-[10px] text-gray-500">Upload Video</span>
-                                                <input type="file" name="video" accept="video/*" onChange={handleFileChange} className="hidden" />
-                                            </label>
-                                        )}
-                                    </div>
-                                </div>
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                    Rating
+                                </label>
+                                <StarRating rating={formData.rating} onRatingChange={handleRatingChange} />
                             </div>
+
+                            <label className="flex items-center gap-2 cursor-pointer">
+                                <input
+                                    type="checkbox"
+                                    name="showOnLanding"
+                                    checked={formData.showOnLanding !== false}
+                                    onChange={handleInputChange}
+                                    className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                                />
+                                <span className="text-sm text-gray-700 dark:text-gray-300">
+                                    Show on website home page
+                                </span>
+                            </label>
+
+                            {isEditMode && (
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                        Publication status
+                                    </label>
+                                    <select
+                                        name="status"
+                                        value={formData.status || 'pending'}
+                                        onChange={handleInputChange}
+                                        className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+                                    >
+                                        <option value="pending">Pending</option>
+                                        <option value="approved">Approved</option>
+                                        <option value="rejected">Rejected</option>
+                                    </select>
+                                </div>
+                            )}
 
                             <div className="flex justify-end pt-2">
                                 <button
                                     type="button"
                                     onClick={() => {
                                         setShowAddForm(false);
-                                        if (isEditMode) {
-                                            setIsEditMode(false);
-                                            setEditId(null);
-                                            setFormData({
-                                                name: '',
-                                                role: '',
-                                                message: '',
-                                                rating: 5,
-                                            });
-                                        }
+                                        resetForm();
                                     }}
                                     className="px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg mr-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                                 >

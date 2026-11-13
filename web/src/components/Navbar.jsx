@@ -103,7 +103,7 @@ const Navbar = ({ isLoaded }) => {
       gsap.set(navContainerRef.current, {
         top: '1rem',
         width: '90%',
-        maxWidth: '1350px',
+        maxWidth: '90rem',
         left: '50%',
         xPercent: -50,
       })

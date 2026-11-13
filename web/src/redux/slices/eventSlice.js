@@ -30,10 +30,30 @@ export const fetchEvents = createAsyncThunk(
     }
 );
 
+export const fetchEventById = createAsyncThunk(
+    'events/fetchEventById',
+    async (id, { rejectWithValue }) => {
+        try {
+            const response = await fetch(`${BASE_URL}/events/${id}`, {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' },
+            });
+            if (!response.ok) {
+                throw new Error('Failed to fetch event');
+            }
+            const json = await response.json();
+            return json?.data ?? json;
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
 const eventSlice = createSlice({
     name: 'events',
     initialState: {
         eventList: [],
+        currentEvent: null,
         loading: false,
         error: null,
         total: 0,
@@ -68,6 +88,19 @@ const eventSlice = createSlice({
             .addCase(fetchEvents.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
+            })
+            .addCase(fetchEventById.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(fetchEventById.fulfilled, (state, action) => {
+                state.loading = false;
+                state.currentEvent = action.payload;
+            })
+            .addCase(fetchEventById.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+                state.currentEvent = null;
             });
     },
 });

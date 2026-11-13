@@ -53,7 +53,7 @@ const WhyMeridianSection = () => {
 
   return (
     <section className="relative bg-white py-20 md:py-28 px-4 md:px-8 lg:px-12 border-y border-card-border">
-      <div className="max-w-7xl mx-auto">
+      <div className="site-container">
         <div className="max-w-2xl mb-14 space-y-4">
           <span className="font-jetbrains text-[10px] text-accent tracking-[0.5em] uppercase font-bold">
             {t('whyMeridianEyebrow')}

@@ -47,7 +47,7 @@ const AboutSnapshot = () => {
          {/* Decorative background element */}
          <div className="absolute top-0 right-0 w-[40rem] h-[40rem] bg-amber-50 rounded-full blur-[100px] -z-10 translate-x-1/3 -translate-y-1/3" />
          
-         <div className="max-w-7xl mx-auto px-6 md:px-12 flex flex-col lg:flex-row items-center gap-16">
+         <div className="site-container flex flex-col items-center gap-16 lg:flex-row">
             
             {/* Left: Image Composite */}
             <div ref={imageRef} className="w-full lg:w-1/2 relative">

@@ -21,9 +21,9 @@ const LandingStats = () => {
   return (
     <section
       id="stats"
-      className="scroll-mt-28 md:scroll-mt-32 border-y border-brand-brown/[0.06] bg-white px-4 py-16 sm:px-6 md:px-10 lg:px-14"
+      className="scroll-mt-28 border-y border-brand-brown/[0.06] bg-white py-16 md:scroll-mt-32"
     >
-      <div className="mx-auto max-w-7xl">
+      <div className="site-container">
         <MotionDiv
           initial={prefersReduced ? false : { opacity: 0, y: 16 }}
           whileInView={prefersReduced ? undefined : { opacity: 1, y: 0 }}

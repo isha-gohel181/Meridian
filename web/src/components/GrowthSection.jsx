@@ -51,11 +51,11 @@ const GrowthSection = () => {
   return (
     <section
       ref={containerRef}
-      className="w-full bg-slate-50 py-10 md:py-12 pb-14 md:pb-20 px-4 sm:px-6 md:px-10 lg:px-16 overflow-x-hidden select-none"
+      className="w-full overflow-x-hidden bg-slate-50 py-10 pb-14 select-none md:py-12 md:pb-20"
     >
       <div
         ref={cardRef}
-        className="growth-card group max-w-7xl mx-auto rounded-2xl md:rounded-3xl relative overflow-hidden border border-[#032746]/20 shadow-accent-large p-8 sm:p-10 md:p-10 lg:px-12 lg:py-12 min-h-[320px] sm:min-h-[340px] md:min-h-[360px] flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-10"
+        className="growth-card group site-container rounded-2xl md:rounded-3xl relative overflow-hidden border border-[#032746]/20 shadow-accent-large p-8 sm:p-10 md:p-10 lg:px-12 lg:py-12 min-h-[320px] sm:min-h-[340px] md:min-h-[360px] flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-10"
       >
         <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
           <img

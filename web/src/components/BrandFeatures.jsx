@@ -162,7 +162,7 @@ const BrandFeatures = () => {
 
   return (
     <section ref={containerRef} className="relative py-12 pb-16 px-4 bg-dark overflow-hidden z-20">
-      <div className="max-w-7xl mx-auto space-y-20">
+      <div className="site-container space-y-20">
         
         {/* Header Segment */}
         <div className="features-header text-center space-y-8 mx-auto">

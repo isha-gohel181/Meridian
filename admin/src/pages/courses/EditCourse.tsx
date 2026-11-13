@@ -412,6 +412,7 @@ const EditCourse = () => {
     isSubscription: false,
     isPrivate: false,
     isFeatured: false,
+    featuredRank: "",
     enableWaitlist: false,
     coursePosition: "",
     // Mentor fields
@@ -629,6 +630,7 @@ const EditCourse = () => {
         isSubscription: course.isSubscription || false,
         isPrivate: course.isPrivate || false,
         isFeatured: course.isFeatured || false,
+        featuredRank: course.featuredRank ? String(course.featuredRank) : "",
         enableWaitlist: course.enableWaitlist || false,
         coursePosition: course.coursePosition || "",
         // Mentor fields
@@ -770,10 +772,16 @@ const EditCourse = () => {
   const handleInputChange = (e) => {
     const { name, value, type } = e.target;
     const checked = e.target.checked;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }));
+    setFormData((prev) => {
+      const next = {
+        ...prev,
+        [name]: type === "checkbox" ? checked : value,
+      };
+      if (name === "isFeatured" && type === "checkbox" && !checked) {
+        next.featuredRank = "";
+      }
+      return next;
+    });
     setFormErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
@@ -1833,9 +1841,29 @@ const EditCourse = () => {
                         />
                         <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
                         <span className="text-sm text-gray-700 dark:text-gray-200">
-                          Featured Course
+                          Featured course (home page, max 6)
                         </span>
                       </label>
+                      <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:gap-3 sm:pl-6">
+                        <label className="text-sm text-gray-700 dark:text-gray-200" htmlFor="featuredRank">
+                          Featured rank
+                        </label>
+                        <select
+                          id="featuredRank"
+                          name="featuredRank"
+                          value={formData.featuredRank}
+                          onChange={handleInputChange}
+                          disabled={!formData.isFeatured}
+                          className="max-w-[8rem] rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-600 dark:bg-gray-900 dark:text-white"
+                        >
+                          <option value="">No rank</option>
+                          {[1, 2, 3, 4, 5, 6].map((n) => (
+                            <option key={n} value={String(n)}>
+                              {n}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
                       <label className="flex items-center gap-2">
                         <input
                           type="checkbox"

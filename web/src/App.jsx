@@ -8,6 +8,7 @@ import Forum from './pages/Forum'
 import Gigs from './pages/Gigs'
 import News from './pages/News'
 import NewsDetail from './pages/NewsDetail'
+import EventDetail from './pages/EventDetail'
 import PersonalityTest from './pages/PersonalityTest'
 import CourseDetail from './pages/CourseDetail'
 import Login from './pages/Login'
@@ -331,6 +332,7 @@ const AppContent = () => {
             <Route path="/gig" element={<Gigs />} />
             <Route path="/news" element={<News />} />
             <Route path="/news/:id" element={<NewsDetail />} />
+            <Route path="/events/:id" element={<EventDetail />} />
             <Route path="/course-detail/:id" element={<CourseDetail />} />
             <Route path="/personality-test" element={<PersonalityTest />} />
             <Route path="/contact" element={<Contact />} />

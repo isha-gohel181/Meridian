@@ -50,8 +50,8 @@ const LandingProgramDates = () => {
   if (rows.length === 0) return null
 
   return (
-    <LandingReveal id="dates" className="scroll-mt-28 md:scroll-mt-32 bg-white px-4 py-20 sm:px-6 md:px-10 lg:px-14">
-      <div className="mx-auto max-w-7xl">
+    <LandingReveal id="dates" className="scroll-mt-28 bg-white py-20 md:scroll-mt-32">
+      <div className="site-container">
         <p className="mb-3 font-jetbrains text-[10px] font-bold uppercase tracking-[0.45em] text-accent">
           {t('landingDatesEyebrow')}
         </p>

@@ -83,6 +83,9 @@ export default function AddNews() {
     isPremium: false,
     image: null,
     video: null,
+    showOnLanding: false,
+    landingFeatured: false,
+    landingKind: "news",
   });
 
   const [tagInput, setTagInput] = useState<string>("");
@@ -286,6 +289,21 @@ export default function AddNews() {
     if (formData.video instanceof File) {
       fd.append("video", formData.video);
     }
+
+    const slugSource = fullTitle || formData.title || "";
+    if (slugSource) {
+      const slug = slugSource
+        .toLowerCase()
+        .trim()
+        .replace(/[^\w\s-]/g, "")
+        .replace(/[\s_-]+/g, "-")
+        .replace(/^-+|-+$/g, "");
+      if (slug) fd.append("slug", slug);
+    }
+
+    fd.append("showOnLanding", String(formData.showOnLanding || false));
+    fd.append("landingFeatured", String(formData.landingFeatured || false));
+    fd.append("landingKind", formData.landingKind || "news");
 
     return fd;
   };
@@ -575,6 +593,51 @@ export default function AddNews() {
                   className="w-4 h-4 text-yellow-600 bg-gray-100 border-gray-300 rounded focus:ring-yellow-500"
                 />
                 <span className="ml-2 text-sm text-gray-600 dark:text-gray-400">Mark as premium</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="p-5 rounded-xl border-2 border-indigo-200 bg-indigo-50/50 dark:bg-indigo-900/20 dark:border-indigo-800">
+            <h4 className="text-sm font-semibold text-indigo-900 dark:text-indigo-200 mb-3">
+              Home page — Events &amp; news
+            </h4>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <label className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
+                <input
+                  type="checkbox"
+                  name="showOnLanding"
+                  checked={formData.showOnLanding}
+                  onChange={handleInputChange}
+                  className="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                />
+                Show on website home
+              </label>
+              <label className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
+                <input
+                  type="checkbox"
+                  name="landingFeatured"
+                  checked={formData.landingFeatured}
+                  disabled={!formData.showOnLanding}
+                  onChange={handleInputChange}
+                  className="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 disabled:opacity-50"
+                />
+                Feature on home (one at a time)
+              </label>
+              <div className="md:col-span-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  Home label
+                </label>
+                <select
+                  name="landingKind"
+                  value={formData.landingKind}
+                  onChange={handleInputChange}
+                  disabled={!formData.showOnLanding}
+                  className="w-full px-4 py-2 border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600"
+                >
+                  <option value="news">News</option>
+                  <option value="vlog">Vlog</option>
+                  <option value="interview">Interview</option>
+                </select>
               </div>
             </div>
           </div>

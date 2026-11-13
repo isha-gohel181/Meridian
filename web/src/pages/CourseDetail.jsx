@@ -225,7 +225,7 @@ const CourseDetail = () => {
 
       {/* Always show Curriculum (The Blueprint) if modules exist */}
       {dynamicCurriculum.length > 0 && (
-        <section id="curriculum-section" className="section-reveal max-w-7xl mx-auto py-16 scroll-mt-32">
+        <section id="curriculum-section" className="section-reveal site-container py-16 scroll-mt-32">
           <div className="flex flex-col gap-6">
             <div className="mb-4 text-center md:text-left">
               <h2 className="font-newsreader italic text-4xl md:text-6xl text-normal font-extralight mb-4 tracking-tighter">

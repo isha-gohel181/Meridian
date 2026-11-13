@@ -63,6 +63,7 @@ import queryRouter from "./queryRoutes.js";
 import notificationRouter from "./notification.js";
 import job from "./jobPostRouter.js";
 import testimonialRouter from "./testimonialRoutes.js";
+import { getLandingActivityFeed } from "../controllers/landingFeedController.js";
 import bannerRouter from "./bannerRoutes.js";
 import personalityRouter from "./personalityRoutes.js";
 import zoomRouter from "./zoomRoutes.js"; // Zoom router
@@ -76,6 +77,8 @@ import { Route } from "express";
 router.get("/", (req, res) => {
   res.send("Hello World!");
 });
+
+router.get("/landing/activity-feed", getLandingActivityFeed);
 
 // User routes
 router.use("/", userRouter);

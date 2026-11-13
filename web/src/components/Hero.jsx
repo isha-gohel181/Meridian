@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { WHATSAPP_URL, SUPPORT_PHONE_TEL, getSupportPhoneDisplay } from '../constants/brand'
 import { useLanguage } from '../context/LanguageContext'
 
-const HERO_BG = '/meridian/hero_bg.png'
+const HERO_BG = '/meridian/hero_bg_1.png'
 
 const whatsAppHref = `${WHATSAPP_URL}?text=${encodeURIComponent(
   'Hello Meridian Group of Education, I would like to know more about your programs.'
@@ -27,7 +27,7 @@ const Hero = () => {
         <div className="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-white/50 to-transparent sm:h-32" />
       </div>
 
-      <div className="relative z-10 w-full max-w-7xl mx-auto">
+      <div className="relative z-10 w-full site-container">
         <div className="max-w-2xl flex flex-col items-start text-left space-y-6 md:space-y-7">
           <p className="font-jetbrains text-[10px] text-accent tracking-[0.45em] uppercase font-bold">
             {t('heroEyebrow')}

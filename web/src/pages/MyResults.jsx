@@ -118,7 +118,7 @@ const MyResults = () => {
       return (
          <div className="min-h-screen bg-[#f8fafc] relative selection:bg-amber-50/60 overflow-x-clip text-slate-900 flex flex-col">
             <DashboardHeader />
-            <main className="flex-grow flex flex-col p-6 pt-32 md:px-12 md:pb-12 md:pt-40 w-full max-w-7xl mx-auto space-y-8 animate-fade-in">
+            <main className="flex-grow flex flex-col p-6 pt-32 md:px-12 md:pb-12 md:pt-40 w-full site-container space-y-8 animate-fade-in">
                <div className="flex items-center gap-4 border-b border-slate-200 pb-4">
                   <button
                      onClick={() => {
@@ -281,7 +281,7 @@ const MyResults = () => {
       <div ref={containerRef} className="min-h-screen bg-[#f8fafc] relative selection:bg-amber-50/60 overflow-x-clip text-slate-700">
          <DashboardHeader />
 
-         <main className="relative pt-24 pb-20 z-10 w-full max-w-7xl mx-auto px-4 md:px-8">
+         <main className="site-container relative z-10 w-full pb-20 pt-24">
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 res-reveal">
                <div className="space-y-2">
                   <p className="font-mono text-xs text-[#D8B840] uppercase tracking-widest">{t('myActivity') || 'My Activity'}</p>

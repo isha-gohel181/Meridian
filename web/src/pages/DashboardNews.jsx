@@ -147,7 +147,7 @@ const DashboardNews = () => {
       <DashboardHeader />
 
       <main className="pt-24 pb-16 px-4 md:px-8 lg:px-12">
-        <div className="max-w-7xl mx-auto">
+        <div className="site-container">
           <DashboardPageHeader
             eyebrow={t('dispatchHub')}
             title={t('news')}

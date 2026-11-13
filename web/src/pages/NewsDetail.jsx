@@ -35,14 +35,14 @@ const NewsDetail = () => {
   }
 
   useEffect(() => {
-    if (slug && !diaryItem) dispatch(fetchNewsBySlug(slug))
-  }, [dispatch, slug, diaryItem])
+    if (slug) dispatch(fetchNewsBySlug(slug))
+  }, [dispatch, slug])
 
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [slug, articleData])
 
-  if (!diaryItem && loading && !articleData) {
+  if (loading && !articleData && !diaryItem) {
     return (
       <div className="min-h-screen bg-slate-50">
         {isDashboard && <DashboardHeader />}
@@ -53,7 +53,7 @@ const NewsDetail = () => {
     )
   }
 
-  if (!diaryItem && !articleData) {
+  if (!loading && !articleData && !diaryItem) {
     return (
       <div className="min-h-screen bg-slate-50">
         {isDashboard && <DashboardHeader />}
@@ -67,7 +67,7 @@ const NewsDetail = () => {
     )
   }
 
-  const article = diaryItem
+  const article = !articleData && diaryItem
     ? {
         category: diaryItem.kind === 'event' ? 'EVENT' : 'NEWS',
         title: diaryItem.title,

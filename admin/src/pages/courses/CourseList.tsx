@@ -58,6 +58,8 @@ interface Course {
     profilePicture: string;
   };
   isPublished: boolean;
+  isFeatured?: boolean;
+  featuredRank?: number | null;
   createdAt: string;
   salesCount: number;
   totalViews: number;
@@ -75,6 +77,7 @@ const CourseList: React.FC = () => {
   // State for search, filter, pagination
   const [searchInput, setSearchInput] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
+  const [featuredFilter, setFeaturedFilter] = useState("");
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const [viewMode, setViewMode] = useState<'grid' | 'table'>('table');
@@ -148,6 +151,7 @@ const CourseList: React.FC = () => {
   const handleResetFilters = () => {
     setSearchInput("");
     setStatusFilter("");
+    setFeaturedFilter("");
     setPage(1);
     setLimit(10);
   };
@@ -160,7 +164,9 @@ const CourseList: React.FC = () => {
       !statusFilter ||
       (statusFilter === "published" && course.isPublished) ||
       (statusFilter === "draft" && !course.isPublished);
-    return matchesSearch && matchesStatus;
+    const matchesFeatured =
+      !featuredFilter || (featuredFilter === "featured" && course.isFeatured);
+    return matchesSearch && matchesStatus && matchesFeatured;
   });
 
   const generatePageNumbers = () => {
@@ -252,8 +258,14 @@ const CourseList: React.FC = () => {
               setImageError({ isVisible: true, url: src });
             }}
         />
-        <div className="absolute top-3 left-3">
+        <div className="absolute top-3 left-3 flex flex-col gap-1">
           <StatusBadge isPublished={course.isPublished} />
+          {course.isFeatured ? (
+            <span className="inline-flex items-center gap-1 rounded-full border border-yellow-200 bg-yellow-50 px-2 py-0.5 text-xs font-medium text-yellow-800 dark:border-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300">
+              <Star className="h-3 w-3 fill-yellow-500 text-yellow-500" />
+              Featured{course.featuredRank ? ` · ${course.featuredRank}` : ""}
+            </span>
+          ) : null}
         </div>
         <div className="absolute top-3 right-3">
           <span className="bg-white/90 backdrop-blur-sm px-2 py-1 rounded-lg text-sm font-semibold text-gray-800">
@@ -425,6 +437,14 @@ const CourseList: React.FC = () => {
                 <option value="published">Published</option>
                 <option value="draft">Draft</option>
               </select>
+              <select
+                value={featuredFilter}
+                onChange={(e) => setFeaturedFilter(e.target.value)}
+                className="border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:border-transparent dark:bg-gray-900 dark:text-white min-w-[140px]"
+              >
+                <option value="">All courses</option>
+                <option value="featured">Featured only</option>
+              </select>
             </div>
             
             {/* Items per page */}
@@ -545,6 +565,12 @@ const CourseList: React.FC = () => {
                         </th>
                        
                         <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider dark:text-gray-300">
+                          Featured
+                        </th>
+                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider dark:text-gray-300">
+                          Rank
+                        </th>
+                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider dark:text-gray-300">
                           Status
                         </th>
                         <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider dark:text-gray-300">
@@ -600,7 +626,21 @@ const CourseList: React.FC = () => {
                           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                             {course.coursePosition}
                           </td>
-                         
+
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {course.isFeatured ? (
+                              <span className="inline-flex items-center gap-1 text-sm text-yellow-700 dark:text-yellow-400">
+                                <Star className="h-4 w-4 fill-yellow-500 text-yellow-500" />
+                                Yes
+                              </span>
+                            ) : (
+                              <span className="text-sm text-gray-400">—</span>
+                            )}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">
+                            {course.isFeatured && course.featuredRank ? course.featuredRank : "—"}
+                          </td>
+
                           <td className="px-6 py-4 whitespace-nowrap">
                             <StatusBadge isPublished={course.isPublished} />
                           </td>

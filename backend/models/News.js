@@ -154,6 +154,14 @@ const NewsSchema = new mongoose.Schema(
       enum: ["active", "deleted", "blocked", "published", "draft"],
       default: "active",
     },
+
+    showOnLanding: { type: Boolean, default: false },
+    landingFeatured: { type: Boolean, default: false },
+    landingKind: {
+      type: String,
+      enum: ["news", "vlog", "interview"],
+      default: "news",
+    },
   },
   {
     timestamps: true,
@@ -181,6 +189,7 @@ NewsSchema.index({ state: 1, city: 1 });
 NewsSchema.index({ schedulePublication: 1, scheduledDateTime: 1 });
 NewsSchema.index({ trendingTopic: 1 });
 NewsSchema.index({ newsType: 1 });
+NewsSchema.index({ showOnLanding: 1, status: 1, publishedAt: -1 });
 
 const News = mongoose.model("News", NewsSchema);
 export default News;

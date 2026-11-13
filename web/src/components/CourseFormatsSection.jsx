@@ -56,7 +56,7 @@ const CourseFormatsSection = () => {
   return (
     <section className="relative bg-dark py-20 md:py-28 px-4 md:px-8 lg:px-12 overflow-hidden">
       <div className="absolute top-0 right-0 w-72 h-72 bg-accent/8 rounded-full blur-3xl pointer-events-none" />
-      <div className="max-w-7xl mx-auto relative z-10">
+      <div className="site-container relative z-10">
         <div className="text-center max-w-3xl mx-auto mb-14 space-y-4">
           <div className="inline-flex items-center gap-3">
             <span className="w-8 h-[1px] bg-accent/40" />

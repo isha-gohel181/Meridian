@@ -46,7 +46,7 @@ const CuratedCatalog = () => {
   return (
     <section ref={containerRef} className="relative w-full py-20 px-4 md:px-12 bg-dark perspective-mesh overflow-x-hidden">
       {/* Header Section */}
-      <div className="catalog-header max-w-7xl mx-auto mb-12">
+      <div className="catalog-header site-container mb-12">
         <h1 className="font-newsreader text-[clamp(3.5rem,8vw,6rem)] italic leading-[0.9] text-normal mb-8">
           The Curated Catalog.
         </h1>
@@ -57,7 +57,7 @@ const CuratedCatalog = () => {
       </div>
 
       {/* Filter Row - Desktop Layout (Visible md+) */}
-      <div className="max-w-7xl mx-auto mb-24 hidden md:block">
+      <div className="site-container mb-24 hidden md:block">
         <div className="flex items-center gap-3">
           {['ALL DISCIPLINES', 'EDITORIAL DESIGN', 'CINEMATIC ARTS', 'TYPOGRAPHY', 'STRATEGY'].map((filter) => (
             <div key={filter} className="rolling-target">
@@ -87,7 +87,7 @@ const CuratedCatalog = () => {
       </div>
 
       {/* Filter Row - Mobile Layout (Visible <md) */}
-      <div className="max-w-7xl mx-auto mb-16 md:hidden relative flex gap-2">
+      <div className="site-container mb-16 md:hidden relative flex gap-2">
         {/* Left Side: Category Dropdown */}
         <div className="flex-grow">
           <button 
@@ -147,7 +147,7 @@ const CuratedCatalog = () => {
         </Link>
       </div>
 
-      <div ref={gridRef} className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-24">
+      <div ref={gridRef} className="site-container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-24">
         {loading ? (
           <div className="col-span-full h-40" />
         ) : error ? (

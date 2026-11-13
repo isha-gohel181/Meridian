@@ -44,6 +44,28 @@
   height: calc(100lvh - 7.5rem);
   overflow: hidden;
   background: var(--tavolo);
+  cursor: default;
+}
+
+@media (max-width: 767px) {
+  .meridian-book .corsa {
+    height: 220lvh;
+  }
+
+  .meridian-book .palco {
+    top: 5.5rem;
+    height: clamp(22rem, 68dvh, 34rem);
+    min-height: 22rem;
+    padding-inline: 0.5rem;
+    overflow-x: clip;
+    overflow-y: visible;
+    background:
+      radial-gradient(ellipse 80% 70% at 50% 45%, rgba(248, 250, 252, 0.9), var(--tavolo) 72%);
+  }
+
+  .meridian-book .scena {
+    perspective-origin: 50% 52%;
+  }
 }
 
 .meridian-book .cenno {
@@ -67,7 +89,7 @@
   position: absolute;
   inset: 0;
   perspective: 1700px;
-  perspective-origin: 50% 30%;
+  perspective-origin: 50% 58%;
 }
 
 .meridian-book .libro,
@@ -92,7 +114,7 @@
 }
 
 .meridian-book .dorso-retro {
-  background: var(--tela-scura);
+  background: linear-gradient(90deg, var(--tela-scura), var(--tela) 18%, var(--tela-scura));
   border-radius: 1px 3px 3px 1px;
 }
 
@@ -105,13 +127,13 @@
   inset: 0;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   overflow: hidden;
-  padding: 14%;
+  padding: 12% 14%;
   background: linear-gradient(90deg, rgba(3, 39, 70, 0.1), rgba(3, 39, 70, 0) 9%), var(--carta);
   font-family: var(--font-newsreader), 'Newsreader', Georgia, serif;
-  text-align: center;
+  text-align: left;
 }
 
 .meridian-book .pagina-base__capitolo {
@@ -125,10 +147,37 @@
 .meridian-book .pagina-base__frase {
   margin: 0;
   font-size: var(--testo, 20px);
-  line-height: 1.16;
+  line-height: 1.18;
   font-variation-settings: 'opsz' 36;
   color: var(--inchiostro);
   text-wrap: balance;
+  max-width: 14ch;
+}
+
+.meridian-book .pagina-base__highlights {
+  margin: 1em 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45em;
+  max-width: 95%;
+}
+
+.meridian-book .pagina-base__highlights li {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: 0.28em 0.65em;
+  border-radius: 999px;
+  font-family: var(--font-jetbrains), 'JetBrains Mono', monospace;
+  font-size: calc(var(--testo-piccolo, 9px) * 0.92);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--inchiostro);
+  background: linear-gradient(135deg, rgba(216, 184, 64, 0.55), rgba(216, 184, 64, 0.28));
+  border: 1px solid rgba(216, 184, 64, 0.45);
 }
 
 .meridian-book .pagina-base__ombra {
@@ -192,18 +241,47 @@
   left: 0;
   display: flex;
   height: 100%;
+  width: 100%;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
-  padding: 14%;
+  padding: 11% 12%;
   pointer-events: none;
   font-family: var(--font-newsreader), 'Newsreader', Georgia, serif;
   color: var(--inchiostro);
-  text-align: center;
+  text-align: left;
+}
+
+.meridian-book .pagina-testo__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.35em;
+  max-width: 88%;
+}
+
+.meridian-book .pagina-testo__badge {
+  display: inline-block;
+  margin: 0 0 0.15em;
+  padding: 0.22em 0.55em;
+  border-radius: 999px;
+  font-family: var(--font-jetbrains), 'JetBrains Mono', monospace;
+  font-size: calc(var(--testo-piccolo, 9px) * 0.88);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  line-height: 1.2;
+  color: var(--inchiostro);
+  background: var(--accento);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.35) inset;
+}
+
+.meridian-book .pagina-testo__badge[hidden] {
+  display: none;
 }
 
 .meridian-book .pagina-testo__n {
-  margin: 0 0 0.55em;
+  margin: 0;
   font-family: var(--font-newsreader), 'Newsreader', Georgia, serif;
   font-size: calc(var(--testo-piccolo, 11px) * 1.05);
   font-weight: 600;
@@ -214,11 +292,21 @@
 }
 
 .meridian-book .pagina-testo__riga {
-  margin: 0 auto;
-  max-width: 12em;
-  font-size: calc(var(--testo, 16px) * 0.92);
-  line-height: 1.2;
-  font-weight: 450;
+  margin: 0;
+  max-width: 15em;
+  font-size: calc(var(--testo, 16px) * 0.94);
+  line-height: 1.22;
+  font-weight: 520;
+  text-wrap: balance;
+}
+
+.meridian-book .pagina-testo__corpo {
+  margin: 0.25em 0 0;
+  max-width: 16em;
+  font-size: calc(var(--testo-piccolo, 10px) * 1.02);
+  line-height: 1.35;
+  font-weight: 420;
+  color: var(--tenue);
 }
 
 .meridian-book .segmento > .lato--retro {
@@ -280,45 +368,138 @@
   background:
     repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.07) 0 1px, transparent 1px 3px),
     repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.05) 0 1px, transparent 1px 3px),
-    linear-gradient(90deg, rgba(0, 0, 0, 0.28), rgba(0, 0, 0, 0) 7%, rgba(255, 255, 255, 0.1) 8%, rgba(0, 0, 0, 0) 12%),
+    linear-gradient(145deg, rgba(216, 184, 64, 0.18) 0%, transparent 35%),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.32), rgba(0, 0, 0, 0) 7%, rgba(255, 255, 255, 0.12) 8%, rgba(0, 0, 0, 0) 14%),
     var(--tela);
+}
+
+.meridian-book .copertina__fuori::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 5%;
+  background: linear-gradient(90deg, rgba(216, 184, 64, 0.65), rgba(216, 184, 64, 0.08));
+  opacity: 0.85;
+  pointer-events: none;
+}
+
+.meridian-book .copertina__foil {
+  position: absolute;
+  inset: 7% 8% 7% 10%;
+  border: 1px solid rgba(216, 184, 64, 0.45);
+  border-radius: 2px;
+  box-shadow: inset 0 0 0 1px rgba(255, 236, 180, 0.15);
+  pointer-events: none;
+}
+
+.meridian-book .copertina__foil::before,
+.meridian-book .copertina__foil::after {
+  content: '';
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-color: rgba(216, 184, 64, 0.75);
+  border-style: solid;
+  pointer-events: none;
+}
+
+.meridian-book .copertina__foil::before {
+  top: -1px;
+  right: -1px;
+  border-width: 2px 2px 0 0;
+}
+
+.meridian-book .copertina__foil::after {
+  bottom: -1px;
+  left: -1px;
+  border-width: 0 0 2px 2px;
+}
+
+.meridian-book .copertina__texture {
+  position: absolute;
+  inset: 0;
+  opacity: 0.35;
+  background-image: radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.12) 0.5px, transparent 0.6px);
+  background-size: 4px 4px;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+}
+
+.meridian-book .copertina__emblema {
+  position: absolute;
+  left: 50%;
+  top: 28%;
+  width: 42%;
+  transform: translateX(-50%);
+  filter: drop-shadow(0 2px 8px rgba(216, 184, 64, 0.35));
+  opacity: 0.95;
+  pointer-events: none;
 }
 
 .meridian-book .copertina__titolo {
   position: absolute;
-  left: 14%;
-  right: 10%;
-  top: 20%;
+  left: 12%;
+  right: 8%;
+  top: 52%;
   font-family: var(--font-newsreader), 'Newsreader', Georgia, serif;
-  font-size: calc(var(--titolo, 34px) * 0.7);
+  font-size: calc(var(--titolo, 34px) * 0.62);
   font-weight: 520;
   line-height: 0.95;
   letter-spacing: -0.03em;
   color: #d8b840;
   text-shadow: 0 -1px 0 rgba(1, 16, 32, 0.7), 0 1px 0 rgba(255, 236, 180, 0.35);
+  text-align: center;
 }
 
 .meridian-book .copertina__autore {
   position: absolute;
-  left: 14%;
-  right: 10%;
-  bottom: 12%;
+  left: 10%;
+  right: 8%;
+  bottom: 16%;
   font-family: var(--font-newsreader), 'Newsreader', Georgia, serif;
   font-size: calc(var(--testo-piccolo, 11px) * 1.05);
   font-weight: 500;
   letter-spacing: 0.01em;
   text-transform: none;
   color: #e5d576;
+  text-align: center;
   text-shadow: 0 -1px 0 rgba(1, 16, 32, 0.55), 0 1px 0 rgba(255, 236, 180, 0.28);
+}
+
+.meridian-book .copertina__tagline {
+  position: absolute;
+  left: 10%;
+  right: 8%;
+  bottom: 8%;
+  font-family: var(--font-jetbrains), 'JetBrains Mono', monospace;
+  font-size: calc(var(--testo-piccolo, 9px) * 0.82);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-align: center;
+  color: rgba(229, 213, 118, 0.88);
+  line-height: 1.25;
 }
 
 .meridian-book .copertina__dentro {
   transform: rotateY(180deg);
   background: linear-gradient(270deg, rgba(3, 39, 70, 0.12), rgba(3, 39, 70, 0) 10%), var(--risguardo);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
-.meridian-book .copertina__ex {
-  display: none;
+.meridian-book .pagina-marca--ex {
+  padding: 8%;
+}
+
+.meridian-book .pagina-marca--ex img {
+  width: min(82%, 240px);
+  max-width: 100%;
+  opacity: 0.92;
 }
 
 .meridian-book .copertina__luce {

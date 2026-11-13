@@ -105,7 +105,10 @@ const eventSchema = new mongoose.Schema({
   isDeleted: {
     type: Boolean,
     default: false
-  }
+  },
+  showOnLanding: { type: Boolean, default: false },
+  landingFeatured: { type: Boolean, default: false },
+  cardSummary: { type: String, maxlength: 280, trim: true }
 }, {
   timestamps: true
 });
@@ -115,6 +118,7 @@ eventSchema.index({ startDate: 1 });
 eventSchema.index({ category: 1 });
 eventSchema.index({ status: 1 });
 eventSchema.index({ isDeleted: 1 });
+eventSchema.index({ showOnLanding: 1, status: 1, startDate: 1 });
 
 const Event = mongoose.model('Event', eventSchema);
 export default Event;

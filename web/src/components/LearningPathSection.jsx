@@ -13,7 +13,7 @@ const LearningPathSection = () => {
 
   return (
     <section className="relative bg-gradient-to-b from-dark to-[#E8EEF3]/40 py-20 md:py-28 px-4 md:px-8 lg:px-12 overflow-hidden">
-      <div className="max-w-7xl mx-auto">
+      <div className="site-container">
         <div className="text-center max-w-2xl mx-auto mb-16 space-y-4">
           <span className="font-jetbrains text-[10px] text-accent tracking-[0.5em] uppercase font-bold">
             {t('pathEyebrow')}

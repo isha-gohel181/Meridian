@@ -7,7 +7,7 @@ const LandingFutureVision = () => {
 
   return (
     <section id="future" className="scroll-mt-28 md:scroll-mt-32 py-20 md:py-28 px-4 sm:px-6 lg:px-12 bg-white">
-      <div className="max-w-7xl mx-auto">
+      <div className="site-container">
         <div className="max-w-3xl mb-12 md:mb-16">
           <p className="font-jetbrains text-[10px] text-accent tracking-[0.45em] uppercase font-bold mb-3">{t('landingFutureEyebrow')}</p>
           <h2 className="font-newsreader text-3xl sm:text-4xl md:text-[2.5rem] text-brand-brown font-medium tracking-tight mb-4">

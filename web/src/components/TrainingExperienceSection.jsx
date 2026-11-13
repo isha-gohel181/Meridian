@@ -22,7 +22,7 @@ const TrainingExperienceSection = () => {
     <section className="relative bg-white py-20 md:py-28 px-4 md:px-8 lg:px-12 overflow-hidden border-y border-card-border">
       <div className="absolute -top-24 right-0 w-[420px] h-[420px] bg-accent/6 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto relative z-10">
+      <div className="site-container relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 items-center">
           <div className="lg:col-span-5 space-y-6 md:space-y-8">
             <div className="space-y-4">

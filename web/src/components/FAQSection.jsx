@@ -77,7 +77,7 @@ const FAQSection = ({ course }) => {
   }
 
   return (
-    <section ref={containerRef} className="max-w-7xl mx-auto py-20 relative px-4 sm:px-6">
+    <section ref={containerRef} className="site-container relative py-20">
 
       <div className="space-y-6 mb-12">
         <div className="flex items-center gap-3">

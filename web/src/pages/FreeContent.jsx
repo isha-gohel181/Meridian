@@ -149,7 +149,7 @@ const FreeContent = () => {
         <div className="absolute top-1/3 -right-40 w-96 h-96 bg-yellow-200/40 rounded-full blur-3xl" />
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="site-container relative z-10">
         {/* Breadcrumb Header */}
         <div className="free-hero-reveal flex items-center gap-2 text-xs font-bold text-slate-500 uppercase tracking-widest mb-6">
           <Link to="/" className="hover:text-amber-600 transition-colors">

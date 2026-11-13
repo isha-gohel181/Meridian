@@ -47,6 +47,17 @@ export const SUPPORT_PHONE_TEL = `+${SUPPORT_PHONE_E164}`;
 export const SUPPORT_PHONE_ALT_TEL = `+${SUPPORT_PHONE_ALT_E164}`;
 export const WHATSAPP_URL = `https://wa.me/${WHATSAPP_PHONE_E164}`;
 
+const DEFAULT_WHATSAPP_PREFILL =
+  'Hello Meridian Group of Education, I would like to enquire about your programmes.';
+
+/** wa.me link with optional prefilled chat message */
+export function getWhatsAppEnquiryUrl(
+  message = DEFAULT_WHATSAPP_PREFILL
+) {
+  const text = encodeURIComponent(message);
+  return `${WHATSAPP_URL}?text=${text}`;
+}
+
 export const ABOUT_US_PARAGRAPH =
   'At Meridian Group of Education, we believe education is more than the acquisition of knowledge—it is the foundation for curiosity, confidence, creativity, and lifelong growth.';
 

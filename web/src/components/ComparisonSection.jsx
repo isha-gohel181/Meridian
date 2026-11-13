@@ -142,7 +142,7 @@ const ComparisonSection = ({ course, section }) => {
 
 
   return (
-    <section ref={containerRef} className="max-w-7xl mx-auto mb-24 px-4 md:px-0">
+    <section ref={containerRef} className="site-container mb-24">
 
       {/* SOLOPRENEUR INTRO */}
       <div className="mb-24 text-center space-y-8">
