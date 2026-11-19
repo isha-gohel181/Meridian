@@ -21,9 +21,13 @@ export function getImageBase() {
 export function resolveMediaUrl(path) {
   if (!path) return '';
   if (path.startsWith('http://') || path.startsWith('https://')) return path;
-  const base = getImageBase();
-  const normalized = path.startsWith('/') ? path.slice(1) : path;
-  return `${base}/${normalized}`;
+  if (path.startsWith('/uploads/') || path.startsWith('uploads/')) {
+    const base = getImageBase();
+    const clean = path.startsWith('/') ? path : `/${path}`;
+    return `${base}${clean}`;
+  }
+  // Public static asset served by Vite frontend (e.g. /meridian/..., /dental_acadmy/...)
+  return path.startsWith('/') ? path : `/${path}`;
 }
 
 export function getSocketBase() {

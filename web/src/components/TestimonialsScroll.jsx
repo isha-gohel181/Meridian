@@ -1,10 +1,12 @@
 import { getApiBase, resolveMediaUrl } from '../utils/apiBase.js'
-import React, { useEffect, useState, useMemo } from 'react'
+import React, { useEffect, useState, useMemo, useRef } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useLanguage } from '../context/LanguageContext'
 import LandingReveal from './landing/LandingReveal'
 import CircularGallery from './ui/CircularGallery'
 import './landing/LandingVoices.css'
+
+const MotionFigure = motion.figure
 
 const EMPTY_REVIEWS = Object.freeze([])
 
@@ -173,6 +175,7 @@ const TestimonialCard = ({ item }) => (
 
 const VoicesStage = ({ items, eyebrow, title, sub, label }) => {
   const [active, setActive] = useState(0)
+  const galleryRef = useRef(null)
   const current = items[active] ?? items[0]
   const galleryItems = items.map((item) => ({
     image: item.photo,
@@ -180,11 +183,38 @@ const VoicesStage = ({ items, eyebrow, title, sub, label }) => {
     alt: item.meta ? `${item.name}, ${item.meta}` : item.name,
   }))
 
+  const handleGoTo = (index) => {
+    setActive(index)
+    galleryRef.current?.goTo(index)
+  }
+
+  const handlePrev = () => {
+    const prev = Math.max(0, active - 1)
+    setActive(prev)
+    galleryRef.current?.goTo(prev)
+  }
+
+  const handleNext = () => {
+    const next = Math.min(items.length - 1, active + 1)
+    setActive(next)
+    galleryRef.current?.goTo(next)
+  }
+
   return (
     <LandingReveal
       id="student-testimonials"
       className="relative scroll-mt-28 overflow-hidden bg-brand-brown text-white md:scroll-mt-32"
     >
+      {/* Top transition seam from slate-50 */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-slate-50/10 to-transparent"
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-12 top-0 h-px bg-gradient-to-r from-transparent via-accent/45 to-transparent"
+      />
+
       <div
         aria-hidden
         className="pointer-events-none absolute inset-x-0 top-0 h-[58%] opacity-[0.18]"
@@ -205,10 +235,6 @@ const VoicesStage = ({ items, eyebrow, title, sub, label }) => {
           WebkitMaskImage: HALFTONE_MASK,
         }}
       />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-12 top-0 h-px bg-gradient-to-r from-transparent via-accent/45 to-transparent"
-      />
 
       <div className="relative z-10 mx-auto max-w-4xl px-6 pb-2 pt-14 text-center sm:px-10 md:pt-20">
         {eyebrow ? (
@@ -228,7 +254,7 @@ const VoicesStage = ({ items, eyebrow, title, sub, label }) => {
         <div className="relative min-h-[7.5rem] md:min-h-[8.5rem]">
           <AnimatePresence mode="wait">
             {current && (
-              <motion.figure
+              <MotionFigure
                 key={current.id || `${current.name}-${active}`}
                 initial={{ opacity: 0, y: 18 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -251,20 +277,16 @@ const VoicesStage = ({ items, eyebrow, title, sub, label }) => {
                     </span>
                   ) : null}
                 </figcaption>
-              </motion.figure>
+              </MotionFigure>
             )}
           </AnimatePresence>
         </div>
       </div>
 
-      <div
-        className="landing-voices-gallery relative z-10 mt-4 md:mt-2"
-        data-lenis-prevent="true"
-        data-lenis-prevent-wheel="true"
-        data-lenis-prevent-touch="true"
-      >
+      <div className="landing-voices-gallery relative z-10 mt-4 md:mt-2">
         <div className="landing-voices-vignette" />
         <CircularGallery
+          ref={galleryRef}
           items={galleryItems}
           bend={2.6}
           textColor="#f7f1de"
@@ -280,27 +302,70 @@ const VoicesStage = ({ items, eyebrow, title, sub, label }) => {
           shadow={0}
           showTitles
           snap
+          loop={false}
+          captureVerticalWheel={false}
           autoScroll={0.4}
           openOnClick={false}
           intro
           onActiveChange={setActive}
           aria-label={label}
-          data-lenis-prevent=""
-          data-lenis-prevent-wheel=""
         />
       </div>
 
-      <div className="relative z-10 flex justify-center gap-2 pb-10 pt-1 md:pb-12">
-        {items.map((item, index) => (
-          <span
-            key={item.id || `${item.name}-${index}`}
-            className={`h-1.5 rounded-full transition-all duration-500 ${
-              index === active ? 'w-7 bg-accent' : 'w-1.5 bg-white/25'
-            }`}
-            aria-hidden
-          />
-        ))}
+      {/* Interactive pagination & navigation controls */}
+      <div className="relative z-10 flex items-center justify-center gap-4 pb-10 pt-2 md:pb-12">
+        <button
+          type="button"
+          onClick={handlePrev}
+          disabled={active === 0}
+          aria-label="Previous testimonial"
+          className={`inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/20 bg-white/5 text-white backdrop-blur-sm transition-all md:h-9 md:w-9 ${
+            active === 0 ? 'opacity-30 cursor-not-allowed' : 'hover:border-accent hover:bg-white/10 hover:text-accent'
+          }`}
+        >
+          <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+
+        <div className="flex items-center gap-2">
+          {items.map((item, index) => (
+            <button
+              key={item.id || `${item.name}-${index}`}
+              type="button"
+              onClick={() => handleGoTo(index)}
+              aria-label={`Go to testimonial ${index + 1}: ${item.name}`}
+              className={`h-2 rounded-full transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
+                index === active ? 'w-8 bg-accent shadow-sm' : 'w-2 bg-white/25 hover:bg-white/50'
+              }`}
+            />
+          ))}
+        </div>
+
+        <button
+          type="button"
+          onClick={handleNext}
+          disabled={active === items.length - 1}
+          aria-label="Next testimonial"
+          className={`inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/20 bg-white/5 text-white backdrop-blur-sm transition-all md:h-9 md:w-9 ${
+            active === items.length - 1 ? 'opacity-30 cursor-not-allowed' : 'hover:border-accent hover:bg-white/10 hover:text-accent'
+          }`}
+        >
+          <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
       </div>
+
+      {/* Bottom transition seam into LandingAbout (slate-50) */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-b from-transparent to-black/15"
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-12 bottom-0 h-px bg-gradient-to-r from-transparent via-accent/35 to-transparent"
+      />
     </LandingReveal>
   )
 }

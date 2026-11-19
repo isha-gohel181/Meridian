@@ -110,7 +110,13 @@ const Login = () => {
         <div className="login-card">
         <div className="login-card__header">
           <Link to="/" className="login-logo flex items-center gap-2.5">
-            <img src="/meridian/logo.jpeg" alt="Meridian Group of Education" className="h-11 w-auto object-contain" />
+            <img
+              src="/meridian/logo%202.png"
+              alt="Meridian Group of Education"
+              decoding="async"
+              draggable={false}
+              className="pointer-events-none h-11 w-auto object-contain"
+            />
           </Link>
         </div>
 

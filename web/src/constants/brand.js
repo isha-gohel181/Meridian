@@ -5,7 +5,9 @@ export const APP_SHORT_NAME = 'Meridian';
 export const APP_TAGLINE = 'Knowledge. Excellence. Impact.';
 export const BRAND_TAGLINE_SECONDARY = 'Empowering Minds. Inspiring Excellence.';
 export const CERTIFICATE_ORGANIZATION_DEFAULT = 'Meridian Group of Education';
-export const LOGO_PATH = '/meridian/logo.jpeg';
+export const LOGO_PATH = '/meridian/logo%202.png';
+export const LOGO_WHITE_PATH = '/meridian/logo-white.png';
+export const LOGO_EMBLEM_PATH = '/meridian/logo-emblem.png';
 /** Faculty photo — add file at web/public/meridian/mentor.jpg when available */
 export const MENTOR_IMAGE_PATH = '/meridian/mentor.jpg';
 /** Default course certificate artwork (full design — overlays add name, course, date, serial) */

@@ -26,9 +26,6 @@ if (process.env.NODE_ENV !== "production" || process.env.LOG_HTTP === "1") {
   });
 }
 
-// Serve static files
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-
 // CORS config — dynamic origin to support credentials (wildcard '*' is
 // incompatible with credentials:true per the browser spec)
 const ALLOWED_ORIGINS = [
@@ -67,6 +64,9 @@ const corsOptions = {
 app.use(cors(corsOptions));
 // Handle OPTIONS preflight for all routes (path-to-regexp v8+ compatible syntax)
 app.options("/{*splat}", cors(corsOptions));
+
+// Serve static files with CORS headers
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // Rate limiting
 const authLimiter = rateLimit({

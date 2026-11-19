@@ -418,7 +418,7 @@ const MeridianBook = () => {
                   <span className="copertina__texture" aria-hidden="true" />
                   <img
                     className="copertina__emblema"
-                    src="/meridian/logo%202.png"
+                    src="/meridian/logo-emblem.png"
                     alt=""
                     draggable={false}
                     aria-hidden="true"

@@ -240,7 +240,7 @@ const Checkout = () => {
                courseId: course._id || '',
                planId: selectedPlan.id || ''
             },
-            theme: { color: '#D8B840' }
+            theme: { color: '#C4A23A' }
          }
 
          const rzp = new window.Razorpay(options)

@@ -101,6 +101,7 @@ const CreateCertificateTemplate = lazy(
 );
 
 const AppMenuSettings = lazy(() => import("./pages/settings/AppMenuSettings"));
+const LandingSectionsSettings = lazy(() => import("./pages/settings/LandingSectionsSettings"));
 const TestSeriesList = lazy(() => import("./pages/TestSeries/TestSeriesList"));
 const AddEditTestSeries = lazy(() => import("./pages/TestSeries/AddEditTestSeries"));
 const EbookList = lazy(() => import("./pages/Ebooks/EbookList"));
@@ -294,6 +295,7 @@ export default function App() {
                 <Route path="/security-incidents" element={<SecurityIncidents />} />
                 <Route path="/live-classes" element={<ZoomMeetings />} />
                 <Route path="/settings/app-menu" element={<AppMenuSettings />} />
+                <Route path="/landing-sections" element={<LandingSectionsSettings />} />
 
 
                 {/* Test Series */}

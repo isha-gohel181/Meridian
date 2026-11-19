@@ -1,9 +1,11 @@
 import React, { useEffect, useMemo, useRef } from 'react'
 import { Link } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { WHATSAPP_URL } from '../../constants/brand'
 import { useLanguage } from '../../context/LanguageContext'
+import { resolveMediaUrl } from '../../utils/apiBase'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -29,61 +31,91 @@ function splitHeroTitle(title) {
   return [title.slice(0, half), title.slice(half)]
 }
 
-const HeroActions = ({ variant }) => {
-  const { t } = useLanguage()
+const HeroActions = ({
+  variant,
+  primaryCtaText,
+  primaryCtaLink,
+  secondaryCtaText,
+  secondaryCtaLink,
+}) => {
   const rest = variant === 'rest'
+  const isExternalSecondary =
+    secondaryCtaLink?.startsWith('http://') || secondaryCtaLink?.startsWith('https://')
 
   return (
-    <div className={`mt-8 flex flex-wrap items-center gap-3 ${rest ? 'flex-row' : 'flex-col sm:flex-row'}`}>
+    <div className={`mt-8 flex flex-wrap items-center gap-3 ${rest ? 'flex-row justify-start' : 'flex-col sm:flex-row justify-center'}`}>
       <Link
-        to="/courses"
+        to={primaryCtaLink || '/courses'}
         className={`inline-flex justify-center rounded-xl px-7 py-3.5 font-jetbrains text-xs font-bold uppercase tracking-[0.2em] transition-transform hover:scale-[1.02] active:scale-[0.98] ${
           rest ? 'bg-white text-brand-brown' : 'bg-brand-brown text-white'
         }`}
       >
-        {t('browseCourses')}
+        {primaryCtaText}
       </Link>
       <a
-        href={whatsAppHref}
-        target="_blank"
-        rel="noopener noreferrer"
+        href={secondaryCtaLink || whatsAppHref}
+        target={isExternalSecondary ? '_blank' : '_self'}
+        rel={isExternalSecondary ? 'noopener noreferrer' : undefined}
         className={`inline-flex items-center justify-center rounded-xl px-6 py-3.5 font-jetbrains text-xs font-semibold uppercase tracking-[0.15em] transition-transform hover:scale-[1.02] active:scale-[0.98] ${
           rest ? 'bg-brand-brown text-white' : 'bg-white text-brand-brown'
         }`}
       >
-        {t('landingCtaWhatsApp')}
+        {secondaryCtaText}
       </a>
     </div>
   )
 }
 
-const HeroCopy = ({ variant, parts, line2, heading }) => {
-  const { t } = useLanguage()
+const HeroCopy = ({
+  variant,
+  parts,
+  line2,
+  heading,
+  subline,
+  primaryCtaText,
+  primaryCtaLink,
+  secondaryCtaText,
+  secondaryCtaLink,
+}) => {
   const rest = variant === 'rest'
   const TitleTag = heading ? 'h1' : 'p'
 
-  const shellClass = rest
-    ? 'site-container flex min-h-[calc(100dvh-58px)] max-w-xl flex-col justify-center'
-    : 'site-container mx-auto flex w-full max-w-2xl flex-col items-center justify-center text-center'
+  if (rest) {
+    return (
+      <div className="site-container flex min-h-[calc(100dvh-58px)] flex-col justify-center items-start text-left">
+        <div className="w-full max-w-xl text-left">
+          <TitleTag
+            className="font-newsreader text-3xl font-medium leading-[1.12] tracking-[-0.02em] text-white sm:text-4xl md:text-5xl lg:text-[3.15rem]"
+          >
+            <span className="block">{parts[0]}</span>
+            {line2 ? <span className="mt-1 block">{line2}</span> : null}
+          </TitleTag>
+          <p className="mt-6 max-w-lg text-sm leading-relaxed text-white/85 sm:text-base md:text-lg">
+            {subline}
+          </p>
+          <HeroActions
+            variant={variant}
+            primaryCtaText={primaryCtaText}
+            primaryCtaLink={primaryCtaLink}
+            secondaryCtaText={secondaryCtaText}
+            secondaryCtaLink={secondaryCtaLink}
+          />
+        </div>
+      </div>
+    )
+  }
 
   return (
-    <div className={shellClass}>
+    <div className="site-container mx-auto flex w-full max-w-2xl flex-col items-center justify-center text-center">
       <TitleTag
-        className={`font-newsreader text-3xl font-medium leading-[1.12] tracking-[-0.02em] sm:text-4xl md:text-5xl lg:text-[3.15rem] ${
-          rest ? 'text-white' : 'text-brand-brown'
-        }`}
+        className="font-newsreader text-3xl font-medium leading-[1.12] tracking-[-0.02em] text-brand-brown sm:text-4xl md:text-5xl lg:text-[3.15rem]"
       >
         <span className="block">{parts[0]}</span>
         {line2 ? <span className="mt-1 block">{line2}</span> : null}
       </TitleTag>
-      <p
-        className={`mt-6 max-w-xl text-sm leading-relaxed sm:text-base md:text-lg ${
-          rest ? 'text-white/80' : 'mx-auto text-description'
-        }`}
-      >
-        {t('heroSubline')}
+      <p className="mt-6 max-w-xl text-sm leading-relaxed text-description sm:text-base md:text-lg mx-auto">
+        {subline}
       </p>
-      {rest ? <HeroActions variant={variant} /> : null}
     </div>
   )
 }
@@ -115,7 +147,16 @@ const LandingPortalHero = () => {
   const introCopyRef = useRef(null)
   const restCopyRef = useRef(null)
   const scrollHintRef = useRef(null)
-  const heroTitle = t('heroTitle')
+
+  const heroSettings = useSelector((state) => state.config?.settings?.landingHero) || {}
+  const heroTitle = heroSettings.title || t('heroTitle')
+  const heroSubline = heroSettings.subline || t('heroSubline')
+  const primaryCtaText = heroSettings.primaryCtaText || t('browseCourses')
+  const primaryCtaLink = heroSettings.primaryCtaLink || '/courses'
+  const secondaryCtaText = heroSettings.secondaryCtaText || t('landingCtaWhatsApp')
+  const secondaryCtaLink = heroSettings.secondaryCtaLink || whatsAppHref
+  const bgImage = heroSettings.bgImage ? resolveMediaUrl(heroSettings.bgImage) : HERO_BG
+
   const parts = useMemo(() => splitHeroTitle(heroTitle), [heroTitle])
   const line2 = parts[1] || ''
 
@@ -231,7 +272,7 @@ const LandingPortalHero = () => {
           <img
             ref={imgRef}
             alt=""
-            src={HERO_BG}
+            src={bgImage}
             className="absolute inset-0 h-full w-full object-cover object-center lg:object-[28%_center]"
             loading="eager"
             fetchPriority="high"
@@ -240,7 +281,7 @@ const LandingPortalHero = () => {
             ref={overlayRef}
             className="pointer-events-none absolute inset-0 mix-blend-overlay"
             style={{
-              background: 'linear-gradient(135deg, rgba(216, 184, 64, 0.28) 0%, rgba(3, 39, 70, 0.38) 100%)',
+              background: 'linear-gradient(135deg, rgba(196, 162, 58, 0.28) 0%, rgba(3, 39, 70, 0.38) 100%)',
             }}
             aria-hidden
           />
@@ -264,7 +305,7 @@ const LandingPortalHero = () => {
 
         <div
           ref={scrimRef}
-          className="pointer-events-none absolute inset-y-0 left-0 z-[2] w-[min(38rem,58%)] bg-gradient-to-r from-brand-brown/90 via-brand-brown/55 to-transparent opacity-0"
+          className="pointer-events-none absolute inset-y-0 left-0 z-[2] w-[min(44rem,65%)] bg-gradient-to-r from-brand-brown/95 via-brand-brown/70 to-transparent opacity-0"
           aria-hidden
         />
 
@@ -283,11 +324,31 @@ const LandingPortalHero = () => {
           ref={introCopyRef}
           className="absolute inset-x-0 top-[58px] z-[3] flex min-h-[calc(100dvh-58px)] justify-center"
         >
-          <HeroCopy variant="intro" parts={parts} line2={line2} heading />
+          <HeroCopy
+            variant="intro"
+            parts={parts}
+            line2={line2}
+            heading
+            subline={heroSubline}
+            primaryCtaText={primaryCtaText}
+            primaryCtaLink={primaryCtaLink}
+            secondaryCtaText={secondaryCtaText}
+            secondaryCtaLink={secondaryCtaLink}
+          />
         </div>
 
         <div ref={restCopyRef} className="absolute inset-x-0 top-[58px] z-[3] opacity-0" aria-hidden inert>
-          <HeroCopy variant="rest" parts={parts} line2={line2} heading={false} />
+          <HeroCopy
+            variant="rest"
+            parts={parts}
+            line2={line2}
+            heading={false}
+            subline={heroSubline}
+            primaryCtaText={primaryCtaText}
+            primaryCtaLink={primaryCtaLink}
+            secondaryCtaText={secondaryCtaText}
+            secondaryCtaLink={secondaryCtaLink}
+          />
         </div>
 
         <div

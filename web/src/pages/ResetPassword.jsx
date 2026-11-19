@@ -63,7 +63,13 @@ const ResetPassword = () => {
     <div className="reset-page">
       <div className="reset-page__panel">
         <Link to="/" className="reset-page__logo flex items-center gap-2.5">
-          <img src="/meridian/logo.jpeg" alt="Meridian Group of Education" className="h-11 w-auto object-contain" />
+          <img
+            src="/meridian/logo%202.png"
+            alt="Meridian Group of Education"
+            decoding="async"
+            draggable={false}
+            className="pointer-events-none h-11 w-auto object-contain"
+          />
         </Link>
 
         <p className="reset-page__eyebrow">{t('resetPasswordTitle')}</p>

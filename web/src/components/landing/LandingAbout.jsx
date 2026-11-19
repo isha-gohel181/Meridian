@@ -1,17 +1,28 @@
 import React from 'react'
+import { motion } from 'framer-motion'
 import { useLanguage } from '../../context/LanguageContext'
 import MeridianBook from './MeridianBook'
+import LandingReveal from './LandingReveal'
+import { STAGGER_CHILD_VARIANTS } from './landingRevealVariants'
+import SectionSeam from './SectionSeam'
+
+const MotionDiv = motion.div
 
 const LandingAbout = () => {
   const { t } = useLanguage()
 
   return (
-    <section
+    <LandingReveal
       id="about"
-      className="relative scroll-mt-28 border-y border-brand-brown/[0.06] bg-slate-50 md:scroll-mt-32"
+      stagger
+      className="relative scroll-mt-28 border-b border-brand-brown/[0.06] bg-slate-50 md:scroll-mt-32"
     >
+      <SectionSeam glow={true} className="absolute top-0 inset-x-0" />
       <div className="site-container grid items-start lg:grid-cols-12 lg:gap-6">
-        <div className="py-20 md:py-28 lg:sticky lg:top-32 lg:col-span-5 lg:py-28 lg:pr-4">
+        <MotionDiv
+          variants={STAGGER_CHILD_VARIANTS}
+          className="py-20 md:py-28 lg:sticky lg:top-32 lg:col-span-5 lg:py-28 lg:pr-4"
+        >
           <h2 className="font-newsreader text-3xl leading-[1.15] font-medium tracking-tight text-brand-brown sm:text-4xl md:text-[2.65rem]">
             {t('landingAboutTitle')}
           </h2>
@@ -24,12 +35,15 @@ const LandingAbout = () => {
             <p>{t('landingIntro')}</p>
             <p>{t('landingApproachSummary')}</p>
           </div>
-        </div>
-        <div className="min-w-0 max-md:-mx-[var(--site-gutter)] max-md:w-[calc(100%+2*var(--site-gutter))] lg:col-span-7">
+        </MotionDiv>
+        <MotionDiv
+          variants={STAGGER_CHILD_VARIANTS}
+          className="min-w-0 max-md:-mx-[var(--site-gutter)] max-md:w-[calc(100%+2*var(--site-gutter))] lg:col-span-7"
+        >
           <MeridianBook />
-        </div>
+        </MotionDiv>
       </div>
-    </section>
+    </LandingReveal>
   )
 }
 

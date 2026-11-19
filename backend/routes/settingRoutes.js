@@ -1,8 +1,9 @@
 import express from 'express';
-import { getSettings, getAllSettings, updateSettings } from '../controllers/settingController.js';
+import { getSettings, getAllSettings, updateSettings, uploadSettingImage } from '../controllers/settingController.js';
 import accessTokenAutoRefresh from '../middlewares/accessTokenAutoRefresh.js';
 import passport from 'passport';
 import { isAdmin } from '../middlewares/isAdmin.js';
+import { upload } from '../middlewares/upload-middleware.js';
 
 const router = express.Router();
 
@@ -36,6 +37,16 @@ router.put(
     passport.authenticate('jwt', { session: false }),
     isAdmin,
     updateSettings
+);
+
+// POST /settings/upload - Upload landing or setting image (Admin only)
+router.post(
+    '/upload',
+    accessTokenAutoRefresh,
+    passport.authenticate('jwt', { session: false }),
+    isAdmin,
+    upload.single('image'),
+    uploadSettingImage
 );
 
 export default router;

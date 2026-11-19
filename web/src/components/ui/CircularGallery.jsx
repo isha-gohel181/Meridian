@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import './CircularGallery.css';
 
 const DEFAULT_FONT = 'bold 30px Figtree';
@@ -227,7 +227,7 @@ const link = gl => {
   return { program, uniforms };
 };
 
-const CircularGallery = ({
+const CircularGallery = forwardRef(({
   items,
   bend = 3,
   textColor = '#ffffff',
@@ -245,6 +245,8 @@ const CircularGallery = ({
   grayscale = false,
   showTitles = true,
   snap = true,
+  loop = false,
+  captureVerticalWheel = false,
   autoScroll = 0,
   openOnClick = true,
   intro = true,
@@ -254,7 +256,7 @@ const CircularGallery = ({
   className = '',
   style,
   ...rest
-}) => {
+}, ref) => {
   const containerRef = useRef(null);
   const canvasRef = useRef(null);
   const labelsRef = useRef(null);
@@ -282,6 +284,8 @@ const CircularGallery = ({
     grayscale,
     showTitles,
     snap,
+    loop,
+    captureVerticalWheel,
     autoScroll,
     openOnClick,
     intro,
@@ -291,6 +295,31 @@ const CircularGallery = ({
   };
   const settingsRef = useRef(settings);
   settingsRef.current = settings;
+
+  useImperativeHandle(ref, () => ({
+    goTo: (index) => {
+      if (engineRef.current) {
+        engineRef.current.focus(index);
+      }
+    },
+    next: () => {
+      if (engineRef.current) {
+        const nextIdx = settingsRef.current.loop
+          ? (active + 1) % list.length
+          : Math.min(active + 1, list.length - 1);
+        engineRef.current.focus(nextIdx);
+      }
+    },
+    prev: () => {
+      if (engineRef.current) {
+        const prevIdx = settingsRef.current.loop
+          ? (active - 1 + list.length) % list.length
+          : Math.max(active - 1, 0);
+        engineRef.current.focus(prevIdx);
+      }
+    },
+    wake: () => engineRef.current?.wake(),
+  }), [active, list.length]);
 
   useEffect(() => {
     let alive = true;
@@ -705,7 +734,15 @@ const CircularGallery = ({
         state.hovered === null &&
         !state.keyboard &&
         idle;
-      if (auto) state.target += s.autoScroll * state.spacing * 0.25 * dt;
+      if (auto) {
+        const nextTarget = state.target + s.autoScroll * state.spacing * 0.25 * dt;
+        if (!s.loop) {
+          const maxTarget = (s.items.length - 1) * state.spacing;
+          state.target = clamp(nextTarget, 0, maxTarget);
+        } else {
+          state.target = nextTarget;
+        }
+      }
       const follow = reduce ? 1 : 1 - Math.pow(1 - s.scrollEase, dt * 60);
       const before = state.scroll;
       state.scroll += (state.target - state.scroll) * follow;
@@ -826,7 +863,12 @@ const CircularGallery = ({
     const snapNow = () => {
       const s = settingsRef.current;
       if (!s.snap && state.open < 0.5) return;
-      setSlot(nearest());
+      const slot = nearest();
+      if (!s.loop) {
+        setSlot(clamp(slot, 0, s.items.length - 1));
+      } else {
+        setSlot(slot);
+      }
     };
 
     const onPointerDown = event => {
@@ -861,7 +903,11 @@ const CircularGallery = ({
           setPointer(null);
         }
         if (drag.moved) {
-          state.target = drag.start - dx * (settingsRef.current.scrollSpeed / 2);
+          const s = settingsRef.current;
+          const nextTarget = drag.start - dx * (s.scrollSpeed / 2);
+          state.target = s.loop
+            ? nextTarget
+            : clamp(nextTarget, 0, (s.items.length - 1) * Math.max(state.spacing, 1));
           drag.samples.push({ x: event.clientX, t: performance.now() });
           if (drag.samples.length > 6) drag.samples.shift();
           state.lastInput = performance.now();
@@ -918,12 +964,41 @@ const CircularGallery = ({
     };
 
     const onWheel = event => {
+      const s = settingsRef.current;
+      const isHorizontal = Math.abs(event.deltaX) > Math.abs(event.deltaY);
+
+      // If user is scrolling vertically and captureVerticalWheel is false,
+      // allow the event to bubble so page scroll continues without interruption!
+      if (!isHorizontal && !s.captureVerticalWheel) {
+        return;
+      }
+
       const unit = event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? view.height : 1;
-      const delta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY;
+      const delta = isHorizontal ? event.deltaX : event.deltaY;
       if (!delta) return;
+
+      const currentSlot = nearest();
+      const maxSlot = s.items.length - 1;
+
+      // When loop is false, if user is at boundary and scrolling further out,
+      // release the event so page scroll continues naturally into adjacent sections!
+      if (!s.loop) {
+        if ((currentSlot >= maxSlot && delta > 0) || (currentSlot <= 0 && delta < 0)) {
+          return;
+        }
+      }
+
       event.preventDefault();
       event.stopPropagation();
-      state.target += delta * unit * (settingsRef.current.scrollSpeed / 2);
+      const speed = s.scrollSpeed / 2;
+      const nextTarget = state.target + delta * unit * speed;
+
+      if (!s.loop) {
+        state.target = clamp(nextTarget, 0, maxSlot * Math.max(state.spacing, 1));
+      } else {
+        state.target = nextTarget;
+      }
+
       state.lastInput = performance.now();
       clearTimeout(snapTimer);
       snapTimer = setTimeout(snapNow, 140);
@@ -1070,8 +1145,6 @@ const CircularGallery = ({
       role="region"
       aria-roledescription="carousel"
       aria-label="Image gallery"
-      data-lenis-prevent=""
-      data-lenis-prevent-wheel=""
       {...rest}
     >
       <canvas key={surfaceKey} ref={canvasRef} className={CLASSES.canvas} aria-hidden="true" />
@@ -1116,6 +1189,6 @@ const CircularGallery = ({
       </div>
     </div>
   );
-};
+});
 
 export default CircularGallery;

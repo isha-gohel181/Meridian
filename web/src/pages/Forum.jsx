@@ -650,14 +650,14 @@ const QuestionCard = ({ question }) => {
                            height="26" 
                            viewBox="0 0 24 24" 
                            fill="none" 
-                           stroke="#D8B840" 
+                           stroke="#C4A23A" 
                            strokeWidth="3.5" 
                            strokeLinecap="round" 
                            strokeLinejoin="round" 
-                           style={{ stroke: '#D8B840', color: '#D8B840' }}
+                           style={{ stroke: '#C4A23A', color: '#C4A23A' }}
                          >
-                           <line x1="12" y1="5" x2="12" y2="19" style={{ stroke: '#D8B840' }} />
-                           <line x1="5" y1="12" x2="19" y2="12" style={{ stroke: '#D8B840' }} />
+                           <line x1="12" y1="5" x2="12" y2="19" style={{ stroke: '#C4A23A' }} />
+                           <line x1="5" y1="12" x2="19" y2="12" style={{ stroke: '#C4A23A' }} />
                          </svg>
                       </div>
                       <span className="text-white font-black tracking-[0.35em] text-[12px]">{t('startNewTopic')}</span>

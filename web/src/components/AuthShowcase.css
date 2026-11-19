@@ -48,7 +48,7 @@
   font-weight: 700;
   letter-spacing: 0.35em;
   text-transform: uppercase;
-  color: #D8B840;
+  color: #C4A23A;
   margin-bottom: 0.75rem;
 }
 
@@ -199,7 +199,7 @@
   font-size: 1.65rem;
   font-style: italic;
   font-weight: 600;
-  color: #D8B840;
+  color: #C4A23A;
   line-height: 1.1;
 }
 
@@ -228,7 +228,7 @@
 }
 
 .auth-showcase__dot.is-active {
-  background: #D8B840;
+  background: #C4A23A;
   transform: scale(1.15);
 }
 

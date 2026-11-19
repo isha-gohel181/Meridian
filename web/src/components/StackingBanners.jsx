@@ -109,7 +109,7 @@ const StackingBanners = () => {
             <div className="pt-4 md:pt-6 flex items-center gap-8 group/all">
               <button 
                 onClick={() => navigate('/courses')}
-                className="px-12 py-6 rounded-xl font-montserrat text-[12px] font-bold tracking-[0.3em] relative group/btn overflow-hidden transition-all hover:scale-105 active:scale-95 bg-brand-brown text-white w-fit shadow-[0_10px_40px_rgba(24, 120, 192,0.25)]"
+                className="px-12 py-6 rounded-xl font-montserrat text-[12px] font-bold tracking-[0.3em] relative group/btn overflow-hidden transition-all hover:scale-105 active:scale-95 bg-brand-brown text-white w-fit shadow-[0_10px_40px_rgba(3,39,70,0.25)]"
               >
                 <RollingText text={t('exploreAll') || 'EXPLORE ALL'} className="relative z-10" />
                 <div className="absolute inset-0 bg-white/20 translate-y-full group-hover/btn:translate-y-0 transition-transform duration-500"></div>

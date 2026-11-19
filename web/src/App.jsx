@@ -224,7 +224,7 @@ const AppContent = () => {
       if (e.ctrlKey && (e.key === '=' || e.key === '-' || e.key === '+' || e.key === '0')) {
         e.preventDefault()
       }
-      
+
       // Disable DevTools shortcuts globally
       if (
         e.key === 'F12' ||
@@ -243,7 +243,7 @@ const AppContent = () => {
         e.preventDefault()
       }
     }
-    
+
     const handleContextMenu = (e) => {
       e.preventDefault();
       return false;
@@ -317,73 +317,73 @@ const AppContent = () => {
       {/* 1. Navbar stays fixed above the perspective wrap */}
       {!isCleanPage && <Navbar isLoaded={isLoaded} />}
 
-      {/* 2. Main Site Content Wrapper (Perspective Ready) */}
+      {/* Main Site Content Wrapper (Perspective Ready) */}
       <div
         id="content-wrapper"
         className={`relative min-h-screen origin-right ${isCleanPage ? 'bg-dark' : ''} opacity-0 pointer-events-none`}
       >
         <main>
           <SecureWrapper>
-          <Routes>
-            {/* Public Routes */}
-            <Route path="/" element={<Home />} />
-            <Route path="/courses" element={<Courses />} />
-            <Route path="/forum" element={<Forum />} />
-            <Route path="/gig" element={<Gigs />} />
-            <Route path="/news" element={<News />} />
-            <Route path="/news/:id" element={<NewsDetail />} />
-            <Route path="/events/:id" element={<EventDetail />} />
-            <Route path="/course-detail/:id" element={<CourseDetail />} />
-            <Route path="/personality-test" element={<PersonalityTest />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/about-us" element={<AboutUs />} />
-            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-            <Route path="/terms-conditions" element={<Terms />} />
-            <Route path="/refund-policy" element={<RefundPolicy />} />
+            <Routes>
+              {/* Public Routes */}
+              <Route path="/" element={<Home />} />
+              <Route path="/courses" element={<Courses />} />
+              <Route path="/forum" element={<Forum />} />
+              <Route path="/gig" element={<Gigs />} />
+              <Route path="/news" element={<News />} />
+              <Route path="/news/:id" element={<NewsDetail />} />
+              <Route path="/events/:id" element={<EventDetail />} />
+              <Route path="/course-detail/:id" element={<CourseDetail />} />
+              <Route path="/personality-test" element={<PersonalityTest />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/about-us" element={<AboutUs />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/terms-conditions" element={<Terms />} />
+              <Route path="/refund-policy" element={<RefundPolicy />} />
 
-            {/* Auth Routes */}
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/reset-password" element={<ResetPassword />} />
-            <Route path="/checkout" element={<Checkout />} />
+              {/* Auth Routes */}
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<Signup />} />
+              <Route path="/reset-password" element={<ResetPassword />} />
+              <Route path="/checkout" element={<Checkout />} />
 
-            {/* Nested Tactical Dashboard (v2.1 Routing) */}
-            <Route path="/dashboard">
-              <Route index element={<Dashboard />} />
-              <Route path="profile" element={<Profile />} />
-              <Route path="purchases" element={<Purchases />} />
-              <Route path="my-courses" element={<MyCourses />} />
-              <Route path="live-classes" element={<DashboardLiveClasses />} />
-              <Route path="courses" element={<DashboardCourses />} />
-              <Route path="personality-test" element={<DashboardPersonality />} />
-              <Route path="forum" element={<DashboardForum />} />
-              <Route path="news" element={<DashboardNews />} />
-              <Route path="news/:id" element={<NewsDetail />} />
-              <Route path="support" element={<DashboardSupport />} />
-              <Route path="messages" element={<DashboardMessages />} />
-              <Route path="course/:id" element={<DashboardCoursePlayer />} />
-              <Route path="quiz/:courseId/:id" element={<DashboardQuiz />} />
-              <Route path="quiz/:id" element={<DashboardQuiz />} />
-              <Route path="assignment/:courseId/:id" element={<DashboardAssignment />} />
-              <Route path="reading/:courseId/:id" element={<DashboardReading />} />
-              <Route path="file/:courseId/:id" element={<DashboardFileLesson />} />
-              <Route path="job-posts" element={<DashboardJobPosts />} />
-              <Route path="job/:id" element={<JobDetail />} />
-              <Route path="my-forum" element={<MyForum />} />
-              <Route path="my-submissions" element={<MySubmissions />} />
-              <Route path="my-results" element={<MyResults />} />
-              <Route path="notifications" element={<Notifications />} />
+              {/* Nested Tactical Dashboard (v2.1 Routing) */}
+              <Route path="/dashboard">
+                <Route index element={<Dashboard />} />
+                <Route path="profile" element={<Profile />} />
+                <Route path="purchases" element={<Purchases />} />
+                <Route path="my-courses" element={<MyCourses />} />
+                <Route path="live-classes" element={<DashboardLiveClasses />} />
+                <Route path="courses" element={<DashboardCourses />} />
+                <Route path="personality-test" element={<DashboardPersonality />} />
+                <Route path="forum" element={<DashboardForum />} />
+                <Route path="news" element={<DashboardNews />} />
+                <Route path="news/:id" element={<NewsDetail />} />
+                <Route path="support" element={<DashboardSupport />} />
+                <Route path="messages" element={<DashboardMessages />} />
+                <Route path="course/:id" element={<DashboardCoursePlayer />} />
+                <Route path="quiz/:courseId/:id" element={<DashboardQuiz />} />
+                <Route path="quiz/:id" element={<DashboardQuiz />} />
+                <Route path="assignment/:courseId/:id" element={<DashboardAssignment />} />
+                <Route path="reading/:courseId/:id" element={<DashboardReading />} />
+                <Route path="file/:courseId/:id" element={<DashboardFileLesson />} />
+                <Route path="job-posts" element={<DashboardJobPosts />} />
+                <Route path="job/:id" element={<JobDetail />} />
+                <Route path="my-forum" element={<MyForum />} />
+                <Route path="my-submissions" element={<MySubmissions />} />
+                <Route path="my-results" element={<MyResults />} />
+                <Route path="notifications" element={<Notifications />} />
 
 
-            </Route>
+              </Route>
 
-            {/* Tactical Redirects for Legacy Paths */}
-            <Route path="/profile" element={<Navigate to="/dashboard/profile" replace />} />
-            <Route path="/purchases" element={<Navigate to="/dashboard/purchases" replace />} />
-            <Route path="/my-courses" element={<Navigate to="/dashboard/my-courses" replace />} />
-            <Route path="/dashboard-home" element={<Navigate to="/dashboard" replace />} />
+              {/* Tactical Redirects for Legacy Paths */}
+              <Route path="/profile" element={<Navigate to="/dashboard/profile" replace />} />
+              <Route path="/purchases" element={<Navigate to="/dashboard/purchases" replace />} />
+              <Route path="/my-courses" element={<Navigate to="/dashboard/my-courses" replace />} />
+              <Route path="/dashboard-home" element={<Navigate to="/dashboard" replace />} />
 
-          </Routes>
+            </Routes>
           </SecureWrapper>
         </main>
         {!isCleanPage && <Footer />}

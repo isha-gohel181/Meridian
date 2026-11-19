@@ -86,6 +86,11 @@ const navItems: NavItem[] = [
     path: "/banner",
   },
   {
+    icon: <PageIcon />,
+    name: "Landing Page",
+    path: "/landing-sections",
+  },
+  {
     icon: <CalenderIcon />,
     name: "Events",
     path: "/events",

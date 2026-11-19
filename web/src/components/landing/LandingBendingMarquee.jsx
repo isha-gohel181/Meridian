@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react'
 import { useLanguage } from '../../context/LanguageContext'
+import LandingReveal from './LandingReveal'
 import './LandingBendingMarquee.css'
 
 const LandingBendingMarquee = () => {
@@ -27,14 +28,14 @@ const LandingBendingMarquee = () => {
   )
 
   return (
-    <section className="relative w-full bg-slate-50 py-8 sm:py-10" aria-hidden>
+    <LandingReveal variant="fade" className="relative w-full bg-slate-50 py-8 sm:py-10" aria-hidden>
       <div className="landing-simple-marquee bg-brand-brown py-3.5 font-newsreader text-[1.15rem] font-semibold tracking-wide text-white sm:py-4 sm:text-[1.35rem]">
         <div className="landing-simple-marquee__track">
           {sequence}
           {sequence}
         </div>
       </div>
-    </section>
+    </LandingReveal>
   )
 }
 

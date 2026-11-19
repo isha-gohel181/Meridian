@@ -2,8 +2,8 @@
   position: relative;
   height: 18rem;
   width: 100%;
-  touch-action: none;
-  overscroll-behavior: contain;
+  touch-action: pan-y;
+  overscroll-behavior: auto;
 }
 
 @media (min-width: 640px) {

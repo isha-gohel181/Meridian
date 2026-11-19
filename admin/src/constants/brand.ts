@@ -3,7 +3,8 @@ export const APP_DISPLAY_NAME = "Meridian Group of Education";
 export const APP_SHORT_NAME = "Meridian";
 export const APP_TAGLINE = "Knowledge. Excellence. Impact.";
 export const CERTIFICATE_ORGANIZATION_DEFAULT = "Meridian Group of Education";
-export const LOGO_PATH = "/meridian/logo.jpeg";
+export const LOGO_PATH = "/meridian/logo-white.png";
+export const LOGO_EMBLEM_PATH = "/meridian/logo-emblem.png";
 export const CERTIFICATE_DEFAULT_IMAGE = "/dental_acadmy/certificate.png";
 
 /**

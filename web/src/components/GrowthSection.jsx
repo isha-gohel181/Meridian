@@ -64,7 +64,7 @@ const GrowthSection = () => {
             aria-hidden
             className="w-full h-full object-cover object-center opacity-[0.12] mix-blend-overlay group-hover:scale-105 transition-transform duration-1000 ease-out"
           />
-          <div className="absolute inset-0 bg-gradient-to-br from-[#D8B840] via-[#a85614] to-[#032746]" />
+          <div className="absolute inset-0 bg-gradient-to-br from-[#C4A23A] via-[#a85614] to-[#032746]" />
           <div className="absolute inset-0 bg-gradient-to-r from-white/10 via-transparent to-white/5" />
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(255,255,255,0.28),transparent_55%)]" />
 

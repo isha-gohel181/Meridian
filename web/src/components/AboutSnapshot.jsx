@@ -84,7 +84,7 @@ const AboutSnapshot = () => {
                </div>
                
                <h2 className="snapshot-text text-4xl md:text-5xl font-black text-slate-900 leading-[1.1] mb-6">
-                  About <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#D8B840] to-[#032746]">Meridian Group of Education</span>
+                  About <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#C4A23A] to-[#032746]">Meridian Group of Education</span>
                </h2>
                
                <p className="snapshot-text text-lg text-slate-600 mb-8 leading-relaxed font-medium">
