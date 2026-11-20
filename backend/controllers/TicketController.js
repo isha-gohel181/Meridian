@@ -1,5 +1,6 @@
 import TicketService from '../service/TicketService.js';
 import { getMemoryCache } from '../config/memoryCache.js';
+import { mapMulterAttachments } from '../utils/mediaStorage.js';
 
 const ticketService = new TicketService();
 
@@ -9,7 +10,9 @@ export const createTicket = async (req, res) => {
     //console.log('📎 Uploaded Files:', req.files);
 
     // const attachments = req.files?.attachments?.map(file => file.path) || [];
-    const attachments = req.files?.map(file => file.path) || [];
+    const attachments = req.files?.length
+      ? (await mapMulterAttachments(req.files, 'support-tickets')).map((a) => a.url)
+      : [];
 
     
 
@@ -337,7 +340,9 @@ export const addMessage = async (req, res) => {
 
     const { id } = req.params;
     const { message } = req.body;
-    const attachments = req.files?.map(file => file.path) || [];
+    const attachments = req.files?.length
+      ? (await mapMulterAttachments(req.files, 'support-tickets')).map((a) => a.url)
+      : [];
     
     const userId = req.user._id;
     const isUserAdmin = req.user.role === 'admin';

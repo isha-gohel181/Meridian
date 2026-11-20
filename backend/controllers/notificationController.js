@@ -1,4 +1,5 @@
 import notificationService from "../service/notificationService.js";
+import { persistImageFile } from "../utils/mediaStorage.js";
 import mongoose from "mongoose";
 
 export const getAllNotifications = async (req, res) => {
@@ -98,7 +99,7 @@ export const sendNotification = async (req, res) => {
     // ✅ Handle uploaded image
     let notificationData = { title, description, ...data };
     if (req.file) {
-      notificationData.image = `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}`;
+      notificationData.image = (await persistImageFile(req.file, 'notifications')).url;
     }
 
     // Send notification to all students
@@ -150,7 +151,7 @@ export const sendNotificationToCourse = async (req, res) => {
     // ✅ Handle uploaded image
     let notificationData = { title, description, ...data };
     if (req.file) {
-      notificationData.image = `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}`;
+      notificationData.image = (await persistImageFile(req.file, 'notifications')).url;
     }
 
     // Send notification to course students

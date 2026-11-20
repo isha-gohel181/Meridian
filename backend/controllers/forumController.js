@@ -33,6 +33,7 @@ import notificationService from "../service/notificationService.js";
 import notification from "../utils/notificationService.js"
 import fcmTokenss from "../models/fcmTokens.js";
 import Notification from "../models/Notifications.js";
+import { forumAttachmentMeta } from '../utils/mediaStorage.js';
 
 const forumService = new ForumService();
 
@@ -82,12 +83,9 @@ export const createThread = async (req, res) => {
     const threadData = {
       ...req.body,
       createdBy: req.user._id,
-      attachments:
-        req.files?.map((file) => ({
-          type: file.path || file.filename,
-          originalName: file.originalname,
-          fileType: file.mimetype,
-        })) || [],
+      attachments: req.files?.length
+        ? await Promise.all(req.files.map((file) => forumAttachmentMeta(file)))
+        : [],
     };
     //console.log("Creating thread with data:", threadData);
 
@@ -211,11 +209,9 @@ export const updateThread = async (req, res) => {
 
     // Only update attachments if new files are uploaded
     if (req.files && req.files.length > 0) {
-      threadData.attachments = req.files.map((file) => ({
-        type: file.path || file.filename,
-        originalName: file.originalname,
-        fileType: file.mimetype,
-      }));
+      threadData.attachments = await Promise.all(
+        req.files.map((file) => forumAttachmentMeta(file))
+      );
     }
 
     const updated = await forumService.updateThread(id, threadData, userId, isAdmin);
@@ -380,12 +376,9 @@ export const createReply = async (req, res) => {
       ...req.body,
       threadId,
       repliedBy: req.user._id,
-      attachments:
-        req.files?.map((file) => ({
-          type: file.path || file.filename,
-          originalName: file.originalname,
-          fileType: file.mimetype,
-        })) || [],
+      attachments: req.files?.length
+        ? await Promise.all(req.files.map((file) => forumAttachmentMeta(file)))
+        : [],
     };
 
     const reply = await forumService.createReply(replyData);
@@ -482,11 +475,9 @@ export const updateReply = async (req, res) => {
 
     // Only update attachments if new files are uploaded
     if (req.files && req.files.length > 0) {
-      replyData.attachments = req.files.map((file) => ({
-        type: file.path || file.filename,
-        originalName: file.originalname,
-        fileType: file.mimetype,
-      }));
+      replyData.attachments = await Promise.all(
+        req.files.map((file) => forumAttachmentMeta(file))
+      );
     }
 
     const updated = await forumService.updateReply(id, replyData, userId);

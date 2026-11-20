@@ -26,6 +26,12 @@ import UserRefreshToken from "../models/UserRefreshToken.js";
 import DeviceApproval from "../models/DeviceApproval.js";
 import LoginLog from "../models/LoginLog.js";
 import axios from "axios";
+import {
+  destroyByStoredUrl,
+  isCloudinaryUrl,
+  persistImageFile,
+  singleUploadUrl,
+} from "../utils/mediaStorage.js";
 
 const userService = new UserService();
 
@@ -632,20 +638,23 @@ export const updateProfile = async (req, res) => {
     if (req.files?.profilePicture?.[0]) {
       if (
         currentUser?.profilePicture &&
-        currentUser.profilePicture !== "default-profile.png"
+        currentUser.profilePicture !== "default-profile.png" &&
+        isCloudinaryUrl(currentUser.profilePicture)
       ) {
-        oldImagePath = path.join("uploads", currentUser.profilePicture);
+        await destroyByStoredUrl(currentUser.profilePicture);
       }
-      updateData.profilePicture = req.files.profilePicture[0].filename;
+      updateData.profilePicture = (await persistImageFile(req.files.profilePicture[0], "users/profiles")).url;
     }
 
-    // Handle documentation uploads
     if (req.files?.documentation?.length) {
-      const documentationArray = req.files.documentation.map((file, index) => {
+      const documentationArray = [];
+      for (let index = 0; index < req.files.documentation.length; index++) {
+        const file = req.files.documentation[index];
         const docName =
           req.body[`documentation[${index}].name`] || file.originalname;
-        return { name: docName, Doc: file.filename };
-      });
+        const docUrl = await singleUploadUrl(file, "users/documentation");
+        documentationArray.push({ name: docName, Doc: docUrl });
+      }
 
       updateData.documentation = currentUser?.documentation?.length
         ? [...currentUser.documentation, ...documentationArray]
@@ -718,12 +727,6 @@ export const updateProfile = async (req, res) => {
     }
 
     // Delete old profile picture if needed
-    if (oldImagePath) {
-      try {
-        await fs.unlink(oldImagePath);
-      } catch { }
-    }
-
     return res.status(200).json({
       success: true,
       message: "Profile updated successfully",

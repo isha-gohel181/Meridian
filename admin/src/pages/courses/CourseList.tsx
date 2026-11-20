@@ -67,7 +67,7 @@ interface Course {
   isDeleted: boolean;
 }
 
-const VITE_IMAGE_URL = import.meta.env.VITE_BASE_URL;
+import { resolveMediaUrl } from "../../utils/apiBase";
 
 const CourseList: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -248,7 +248,7 @@ const CourseList: React.FC = () => {
     <div className="group bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-lg hover:border-indigo-200 dark:hover:border-indigo-800 transition-all duration-300">
       <div className="relative">
         <img
-          src={VITE_IMAGE_URL + "/" + course.thumbnail}
+          src={resolveMediaUrl(course.thumbnail)}
           alt={course.title}
           className="w-full h-48 object-cover rounded-t-xl"
           onError={(e) => {
@@ -594,7 +594,7 @@ const CourseList: React.FC = () => {
                           <td className="px-6 py-4 whitespace-nowrap">
                             <div className="flex items-center gap-4">
                               <img
-                                src={VITE_IMAGE_URL + "/" + course.thumbnail}
+                                src={resolveMediaUrl(course.thumbnail)}
                                 alt={course.title}
                                 className="w-16 h-12 rounded-lg object-cover border border-gray-200 dark:border-gray-600"
                                 onError={(e) => {

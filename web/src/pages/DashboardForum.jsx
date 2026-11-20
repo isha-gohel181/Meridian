@@ -213,7 +213,7 @@ const DashboardForum = () => {
                   if (pic.startsWith('http')) return pic;
                   const rawBase = getApiBase();
                   const baseUrl = rawBase.replace(/\/api\/v1\/?$/, '');
-                  return `${baseUrl}/uploads/profiles/${pic}`;
+                  return resolveMediaUrl(pic);
                 })()}
                 alt={question.author}
                 className="w-10 h-10 rounded-full object-cover border border-slate-200"
@@ -328,7 +328,7 @@ const DashboardForum = () => {
                       if (pic.startsWith('http')) return pic;
                       const rawBase = getApiBase();
                       const baseUrl = rawBase.replace(/\/api\/v1\/?$/, '');
-                      return `${baseUrl}/uploads/profiles/${pic}`;
+                      return resolveMediaUrl(pic);
                     })()}
                     alt={reply.author}
                     className="flex-shrink-0 w-8 h-8 rounded-full object-cover border border-white/10"

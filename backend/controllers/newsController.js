@@ -1,4 +1,9 @@
 import NewsService from "../service/newsService.js";
+import {
+  isCloudinaryUrl,
+  persistImageFile,
+  singleUploadUrl,
+} from "../utils/mediaStorage.js";
 import { getMemoryCache } from "../config/memoryCache.js";
 import mongoose from "mongoose";
 import {
@@ -7,25 +12,16 @@ import {
   ensureNewsSlug,
 } from "../service/landingFeedService.js";
 
-// Helper function to generate image URL from file path
-const generateImageUrl = (filePath, req) => {
-  const normalizedPath = filePath.replace(/\\/g, "/");
-  const uploadsIndex = normalizedPath.indexOf("uploads/");
+async function storeNewsImage(file, subfolder = "news") {
+  if (!file) return null;
+  const { url } = await persistImageFile(file, subfolder);
+  return url;
+}
 
-  if (uploadsIndex !== -1) {
-    const relativePath = normalizedPath.substring(uploadsIndex);
-    const pathParts = relativePath.split("/");
-    const filename = pathParts.pop();
-    const directory = pathParts.join("/");
-    const encodedFilename = encodeURIComponent(filename);
-    const encodedPath = `${directory}/${encodedFilename}`;
-
-    const protocol = req.protocol || "http";
-    const host = req.get("host") || "localhost:5000";
-    return `${protocol}://${host}/${encodedPath}`;
-  }
-  return `/${normalizedPath}`;
-};
+async function storeNewsAsset(file, subfolder = "news") {
+  if (!file) return null;
+  return singleUploadUrl(file, subfolder);
+}
 
 
 
@@ -52,29 +48,31 @@ export const getAllCategories = async (req, res) => {
 const cleanImageUrl = (url) => {
   if (!url) return null;
 
+  if (isCloudinaryUrl(url)) {
+    return url;
+  }
+
   // If it's already relative (starts with /uploads), return as is
   if (url.startsWith("/uploads/")) {
     return url;
   }
 
-  // If it's a full URL (http/https), strip the domain part
+  // If it's a full URL (http/https), strip the domain part unless Cloudinary
   if (url.startsWith("http://") || url.startsWith("https://")) {
     try {
       const parsed = new URL(url);
       let path = parsed.pathname;
 
-      // Optional: query params ya hash remove kar do agar nahi chahiye
-      // path = path.split('?')[0];
-
-      // Ensure it starts with /uploads
       if (path.startsWith("/uploads/")) {
         return path;
       }
 
-      // Fallback: agar uploads nahi mila to bhi relative return kar do
+      if (parsed.hostname?.includes("res.cloudinary.com")) {
+        return url;
+      }
+
       return path.startsWith("/") ? path : `/${path}`;
     } catch (e) {
-      // Invalid URL, return as is or null
       return url;
     }
   }
@@ -94,11 +92,9 @@ export const createNews = async (req, res) => {
     let imageUrl = req.body.imageUrl; // Allow imageUrl from body if no file uploaded
 
     if (req.file && req.file.fieldname === "image") {
-      // Main image from single upload (fallback)
-      imageUrl = generateImageUrl(req.file.path, req);
+      imageUrl = await storeNewsImage(req.file, "news");
     } else if (req.files && req.files.image && req.files.image[0]) {
-      // Main image from fields upload (multer.fields())
-      imageUrl = generateImageUrl(req.files.image[0].path, req);
+      imageUrl = await storeNewsImage(req.files.image[0], "news");
     }
 
     // Handle content - Editor.js block format with images
@@ -146,8 +142,8 @@ export const createNews = async (req, res) => {
 
     // Process content image files and create image blocks
     if (contentFiles.length > 0) {
-      contentFiles.forEach((file) => {
-        const imageUrl = generateImageUrl(file.path, req);
+      for (const file of contentFiles) {
+        const imageUrl = await storeNewsImage(file, "news/content");
         contentImageUrls.push(imageUrl);
 
         // Create image block in Editor.js format
@@ -186,7 +182,7 @@ export const createNews = async (req, res) => {
           }
           contentBlocks.blocks.push(imageBlock);
         }
-      });
+      }
     }
 
     // If contentBlocks is null but we have text content, create paragraph blocks
@@ -311,7 +307,7 @@ export const createNews = async (req, res) => {
     // Handle video upload
     let videoUrl = req.body.videoUrl;
     if (req.files && req.files.video && req.files.video[0]) {
-      videoUrl = generateImageUrl(req.files.video[0].path, req);
+      videoUrl = await storeNewsAsset(req.files.video[0], "news/video");
     }
 
     // Handle coloredHeading and restHeading
@@ -847,11 +843,10 @@ export const updateNews = async (req, res) => {
     // Handle image upload if file is present
     if (req.file && req.file.fieldname === "image") {
       // Main image from single upload
-      updateData.imageUrl = generateImageUrl(req.file.path, req);
+      updateData.imageUrl = await storeNewsImage(req.file, "news");
       updateData.coverImage = updateData.imageUrl;
     } else if (req.files && req.files.image && req.files.image[0]) {
-      // Main image from fields upload (multer.fields())
-      updateData.imageUrl = generateImageUrl(req.files.image[0].path, req);
+      updateData.imageUrl = await storeNewsImage(req.files.image[0], "news");
       updateData.coverImage = updateData.imageUrl;
     } else if (req.body.imageUrl) {
       // Use imageUrl from body if no file uploaded
@@ -864,7 +859,7 @@ export const updateNews = async (req, res) => {
 
     // Handle video upload
     if (req.files && req.files.video && req.files.video[0]) {
-      updateData.videoUrl = generateImageUrl(req.files.video[0].path, req);
+      updateData.videoUrl = await storeNewsAsset(req.files.video[0], "news/video");
       updateData.video = updateData.videoUrl;
     } else if (req.body.videoUrl) {
       updateData.video = req.body.video || req.body.videoUrl;
@@ -1767,42 +1762,16 @@ export const uploadContentImage = async (req, res) => {
       });
     }
 
-    // Extract relative path from uploads directory
-    const filePath = req.file.path.replace(/\\/g, "/"); // Replace backslashes with forward slashes for Windows
+    const imageUrl = await storeNewsImage(req.file, "news/content");
 
-    // Find the 'uploads' directory in the path and extract everything after it
-    const uploadsIndex = filePath.indexOf("uploads/");
-    if (uploadsIndex !== -1) {
-      const relativePath = filePath.substring(uploadsIndex);
-
-      // Split path into directory and filename to encode filename separately
-      const pathParts = relativePath.split("/");
-      const filename = pathParts.pop(); // Get the filename
-      const directory = pathParts.join("/"); // Get the directory path
-
-      // URL encode the filename to handle spaces and special characters
-      const encodedFilename = encodeURIComponent(filename);
-      const encodedPath = `${directory}/${encodedFilename}`;
-
-      // Get base URL from request or use default
-      const protocol = req.protocol || "http";
-      const host = req.get("host") || "localhost:5000";
-      const imageUrl = `${protocol}://${host}/${encodedPath}`;
-
-      return res.status(200).json({
-        success: true,
-        message: "Content image uploaded successfully",
-        data: {
-          url: imageUrl,
-          filename: filename,
-        },
-      });
-    } else {
-      return res.status(500).json({
-        success: false,
-        message: "Failed to process uploaded file",
-      });
-    }
+    return res.status(200).json({
+      success: true,
+      message: "Content image uploaded successfully",
+      data: {
+        url: imageUrl,
+        filename: req.file.originalname,
+      },
+    });
   } catch (error) {
     console.error("Upload Content Image Error:", error);
     return res.status(500).json({
@@ -1822,43 +1791,22 @@ export const uploadContentVideo = async (req, res) => {
       });
     }
 
-    // Extract relative path from uploads directory
-    const filePath = req.file.path.replace(/\\/g, "/"); // Replace backslashes with forward slashes for Windows
+    const stored = await storeNewsAsset(req.file, "news/video");
+    const protocol = req.protocol || "http";
+    const host = req.get("host") || "localhost:5000";
+    const videoUrl = stored.startsWith("http")
+      ? stored
+      : `${protocol}://${host}${stored.startsWith("/") ? stored : `/${stored}`}`;
 
-    // Find the 'uploads' directory in the path and extract everything after it
-    const uploadsIndex = filePath.indexOf("uploads/");
-    if (uploadsIndex !== -1) {
-      const relativePath = filePath.substring(uploadsIndex);
-
-      // Split path into directory and filename to encode filename separately
-      const pathParts = relativePath.split("/");
-      const filename = pathParts.pop(); // Get the filename
-      const directory = pathParts.join("/"); // Get the directory path
-
-      // URL encode the filename to handle spaces and special characters
-      const encodedFilename = encodeURIComponent(filename);
-      const encodedPath = `${directory}/${encodedFilename}`;
-
-      // Get base URL from request or use default
-      const protocol = req.protocol || "http";
-      const host = req.get("host") || "localhost:5000";
-      const videoUrl = `${protocol}://${host}/${encodedPath}`;
-
-      return res.status(200).json({
-        success: true,
-        message: "Content video uploaded successfully",
-        data: {
-          url: videoUrl,
-          path: `/${encodedPath}`,
-          filename: filename,
-        },
-      });
-    } else {
-      return res.status(500).json({
-        success: false,
-        message: "Failed to process uploaded file",
-      });
-    }
+    return res.status(200).json({
+      success: true,
+      message: "Content video uploaded successfully",
+      data: {
+        url: videoUrl,
+        path: stored.startsWith("/") ? stored : `/${stored}`,
+        filename: req.file.originalname,
+      },
+    });
   } catch (error) {
     console.error("Upload Content Video Error:", error);
     return res.status(500).json({
@@ -1878,42 +1826,15 @@ export const uploadEditorImage = async (req, res) => {
       });
     }
 
-    // Extract relative path from uploads directory
-    const filePath = req.file.path.replace(/\\/g, "/");
+    const imageUrl = await storeNewsImage(req.file, "news/editor");
 
-    // Find the 'uploads' directory in the path and extract everything after it
-    const uploadsIndex = filePath.indexOf("uploads/");
-    if (uploadsIndex !== -1) {
-      const relativePath = filePath.substring(uploadsIndex);
-
-      // Split path into directory and filename to encode filename separately
-      const pathParts = relativePath.split("/");
-      const filename = pathParts.pop();
-      const directory = pathParts.join("/");
-
-      // URL encode the filename to handle spaces and special characters
-      const encodedFilename = encodeURIComponent(filename);
-      const encodedPath = `${directory}/${encodedFilename}`;
-
-      // Get base URL from request or use default
-      const protocol = req.protocol || "http";
-      const host = req.get("host") || "localhost:5000";
-      const imageUrl = `${protocol}://${host}/${encodedPath}`;
-
-      // Return EditorJS expected format
-      return res.status(200).json({
-        success: 1,
-        file: {
-          url: imageUrl,
-          name: filename || req.file.originalname,
-        },
-      });
-    } else {
-      return res.status(500).json({
-        success: 0,
-        message: "Failed to process uploaded file",
-      });
-    }
+    return res.status(200).json({
+      success: 1,
+      file: {
+        url: imageUrl,
+        name: req.file.originalname,
+      },
+    });
   } catch (error) {
     console.error("Upload Editor Image Error:", error);
     return res.status(500).json({

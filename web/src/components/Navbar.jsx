@@ -7,6 +7,7 @@ import { useLanguage } from '../context/LanguageContext'
 
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useSmoothScroll } from '../context/SmoothScrollContext'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -27,13 +28,15 @@ const Navbar = ({ isLoaded }) => {
   const line2Ref = useRef(null)
   const line3Ref = useRef(null)
 
-  const scrollToSection = useCallback((hash) => {
-    const id = hash.replace(/^#/, '')
-    const el = document.getElementById(id)
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    }
-  }, [])
+  const { scrollToId } = useSmoothScroll()
+
+  const scrollToSection = useCallback(
+    (hash) => {
+      const id = hash.replace(/^#/, '')
+      scrollToId(id)
+    },
+    [scrollToId]
+  )
 
   const handleHashNav = useCallback(
     (e, hash) => {
@@ -41,9 +44,10 @@ const Navbar = ({ isLoaded }) => {
       setIsOpen(false)
       const id = hash.replace(/^#/, '')
       if (location.pathname !== '/') {
-        navigate('/')
-        setTimeout(() => scrollToSection(id), 80)
+        navigate(`/#${id}`)
+        setTimeout(() => scrollToSection(id), 120)
       } else {
+        navigate(`/#${id}`, { replace: true })
         scrollToSection(id)
       }
     },

@@ -18,6 +18,7 @@ import LandingProgramDates from '../components/landing/LandingProgramDates'
 import LandingHomeClose from '../components/landing/LandingHomeClose'
 import LandingContactCta from '../components/landing/LandingContactCta'
 import SectionSeam from '../components/landing/SectionSeam'
+import FixedWatermark from '../components/FixedWatermark'
 
 const Home = () => {
   const dispatch = useDispatch()
@@ -29,7 +30,9 @@ const Home = () => {
 
   return (
     <div className="w-full bg-slate-50">
+      <FixedWatermark />
       <LandingPortalHero />
+      <SectionSeam glow={true} lineColor="via-accent/25" />
       <LandingStats />
       <SectionSeam glow={false} lineColor="via-accent/20" />
       <LandingBendingMarquee />
@@ -37,10 +40,12 @@ const Home = () => {
       <SectionSeam glow={true} lineColor="via-accent/30" />
       <LandingCoursesSection />
       <TestimonialsScroll variant="landing" />
+      <SectionSeam glow={false} lineColor="via-accent/20" />
       <LandingAbout />
       <LandingDiary />
       <SectionSeam glow={false} lineColor="via-accent/20" />
       <LandingWhyChoose />
+      <SectionSeam glow={true} lineColor="via-accent/30" />
       <LandingMissionVision />
       <LandingMarqueeStrip />
       <LandingFacultyRoster />

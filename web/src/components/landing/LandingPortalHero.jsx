@@ -6,6 +6,8 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { WHATSAPP_URL } from '../../constants/brand'
 import { useLanguage } from '../../context/LanguageContext'
 import { resolveMediaUrl } from '../../utils/apiBase'
+import { useSmoothScroll } from '../../context/SmoothScrollContext'
+import { LANDING_FIRST_SECTION_AFTER_HERO } from '../../constants/landingSections'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -135,6 +137,7 @@ const ScrollChevron = () => (
 
 const LandingPortalHero = () => {
   const { t } = useLanguage()
+  const { scrollToId } = useSmoothScroll()
   const sectionRef = useRef(null)
   const panelLRef = useRef(null)
   const panelRRef = useRef(null)
@@ -260,8 +263,13 @@ const LandingPortalHero = () => {
     }
   }, [parts, line2])
 
+  const handleScrollHint = () => {
+    scrollToId(LANDING_FIRST_SECTION_AFTER_HERO)
+  }
+
   return (
     <section
+      id="hero"
       ref={sectionRef}
       className="relative w-full bg-slate-50"
       style={{ minHeight: `${SECTION_SCROLL_VH}vh` }}
@@ -351,16 +359,18 @@ const LandingPortalHero = () => {
           />
         </div>
 
-        <div
+        <button
+          type="button"
           ref={scrollHintRef}
-          className="pointer-events-none absolute bottom-8 left-1/2 z-[3] flex -translate-x-1/2 flex-col items-center gap-2"
+          onClick={handleScrollHint}
+          className="absolute bottom-8 left-1/2 z-[3] flex -translate-x-1/2 flex-col items-center gap-2 rounded-lg border-0 bg-transparent p-2 text-inherit transition-opacity hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-brown/40"
           aria-label={t('landingPortalScrollAria')}
         >
           <span className="font-jetbrains text-[10px] font-bold uppercase tracking-[0.4em] text-brand-brown/75">
             {t('landingPortalScrollHint')}
           </span>
           <ScrollChevron />
-        </div>
+        </button>
       </div>
     </section>
   )

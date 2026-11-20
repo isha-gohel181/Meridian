@@ -1,5 +1,6 @@
 import express from 'express';
 import multer from 'multer';
+import { upload as sharedUpload } from '../middlewares/upload-middleware.js';
 import { createCertificateTemplate, getCertificateTemplate, getAllCertificateTemplates, updateCertificateTemplate, deleteCertificateTemplate } from '../controllers/certificateTemplateController.js';
 import accessTokenAutoRefresh from '../middlewares/accessTokenAutoRefresh.js';
 import passport from 'passport';
@@ -7,16 +8,7 @@ import { isAdmin } from '../middlewares/isAdmin.js';
 
 const certificateTemplateRouter = express.Router();
 
-// Configure multer for file uploads
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'uploads/'); // Ensure this directory exists
-  },
-  filename: (req, file, cb) => {
-    cb(null, `${Date.now()}-${file.originalname}`);
-  },
-});
-const upload = multer({ storage, limits: { fileSize: 5 * 1024 * 1024 } }); // Limit file size to 5MB
+const upload = sharedUpload;
 
 // Create a certificate template (admin only)
 certificateTemplateRouter.post(

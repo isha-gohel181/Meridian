@@ -20,14 +20,26 @@ export function getImageBase() {
 /** Build absolute URL for uploads / media paths from the API host */
 export function resolveMediaUrl(path) {
   if (!path) return '';
-  if (path.startsWith('http://') || path.startsWith('https://')) return path;
-  if (path.startsWith('/uploads/') || path.startsWith('uploads/')) {
+  const value = String(path).trim();
+  if (value.startsWith('http://') || value.startsWith('https://')) return value;
+  if (value.startsWith('/meridian/') || value.startsWith('meridian/')) {
+    return value.startsWith('/') ? value : `/${value}`;
+  }
+  if (value.startsWith('/uploads/') || value.startsWith('uploads/')) {
     const base = getImageBase();
-    const clean = path.startsWith('/') ? path : `/${path}`;
+    const clean = value.startsWith('/') ? value : `/${value}`;
     return `${base}${clean}`;
   }
-  // Public static asset served by Vite frontend (e.g. /meridian/..., /dental_acadmy/...)
-  return path.startsWith('/') ? path : `/${path}`;
+  if (value.startsWith('/')) {
+    const base = getImageBase();
+    return `${base}${value}`;
+  }
+  if (!value.includes('/')) {
+    const base = getImageBase();
+    return `${base}/uploads/profiles/${value}`;
+  }
+  const base = getImageBase();
+  return `${base}/${value}`;
 }
 
 export function getSocketBase() {

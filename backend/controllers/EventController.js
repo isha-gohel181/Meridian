@@ -3,6 +3,7 @@ import getRazorpayInstance, { getRazorpayKeys } from '../config/razorpay.js';
 import Setting from '../models/setting.js';
 import User from '../models/user.js';
 import Event from '../models/Event.js';
+import { fieldUploadUrl, mapMulterAttachments } from '../utils/mediaStorage.js';
 
 const eventService = new EventService();
 
@@ -55,16 +56,11 @@ export const createEvent = async (req, res) => {
       price: price
     };
 
-    // Handle file uploads
     if (req.files?.thumbnail) {
-      eventData.thumbnail = req.files.thumbnail[0].path.replace(/\\/g, '/');
+      eventData.thumbnail = await fieldUploadUrl(req.files, 'thumbnail', 'events');
     }
     if (req.files?.attachments) {
-      eventData.attachments = req.files.attachments.map(file => ({
-        name: file.originalname,
-        url: file.path.replace(/\\/g, '/'),
-        type: file.mimetype
-      }));
+      eventData.attachments = await mapMulterAttachments(req.files.attachments, 'events/attachments');
     }
 
     const event = await eventService.create(eventData);
@@ -185,16 +181,11 @@ export const updateEvent = async (req, res) => {
       console.error('Failed to parse nested objects:', e);
     }
 
-    // Handle file uploads
     if (req.files?.thumbnail) {
-      updateData.thumbnail = req.files.thumbnail[0].path.replace(/\\/g, '/');
+      updateData.thumbnail = await fieldUploadUrl(req.files, 'thumbnail', 'events');
     }
     if (req.files?.attachments) {
-      updateData.attachments = req.files.attachments.map(file => ({
-        name: file.originalname,
-        url: file.path.replace(/\\/g, '/'),
-        type: file.mimetype
-      }));
+      updateData.attachments = await mapMulterAttachments(req.files.attachments, 'events/attachments');
     }
 
     const event = await eventService.update(id, updateData);

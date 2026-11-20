@@ -216,13 +216,6 @@ const LandingCoursesSection = () => {
                         isActive ? 'bg-brand-brown text-white' : 'bg-white text-brand-brown hover:bg-slate-50'
                       }`}
                     >
-                      <span
-                        className={`w-10 shrink-0 font-newsreader text-2xl font-medium leading-none ${
-                          isActive ? 'text-accent' : 'text-brand-brown/25'
-                        }`}
-                      >
-                        {String(index + 1).padStart(2, '0')}
-                      </span>
                       <span className="min-w-0 flex-1">
                         <span className="block text-xs font-semibold text-accent">{item.chip}</span>
                         <span className="mt-1 block font-newsreader text-lg leading-snug md:text-xl">{item.title}</span>

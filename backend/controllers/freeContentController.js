@@ -2,6 +2,7 @@ import FreeContentService from '../service/FreeContentService.js';
 import FreeQuiz from '../models/FreeQuiz.js';
 import FreeQuizAttempt from '../models/FreeQuizAttempt.js';
 import FreeQuizSubmission from '../models/FreeQuizSubmission.js';
+import { fieldUploadUrl, singleUploadUrl } from '../utils/mediaStorage.js';
 
 const freeContentService = new FreeContentService();
 
@@ -9,17 +10,11 @@ export const createFreeContent = async (req, res) => {
   try {
     const data = { ...req.body };
     if (req.files) {
-      if (req.files.thumbnail && req.files.thumbnail[0]) {
-        let normalizedPath = req.files.thumbnail[0].path.replace(/\\/g, "/");
-        const upIndex = normalizedPath.indexOf("uploads/");
-        if (upIndex !== -1) normalizedPath = normalizedPath.substring(upIndex);
-        data.thumbnail = normalizedPath.startsWith("/") ? normalizedPath : `/${normalizedPath}`;
+      if (req.files.thumbnail?.[0]) {
+        data.thumbnail = await fieldUploadUrl(req.files, 'thumbnail', 'free-content');
       }
-      if (req.files.pdfFile && req.files.pdfFile[0]) {
-        let normalizedPath = req.files.pdfFile[0].path.replace(/\\/g, "/");
-        const upIndex = normalizedPath.indexOf("uploads/");
-        if (upIndex !== -1) normalizedPath = normalizedPath.substring(upIndex);
-        data.fileUrl = normalizedPath.startsWith("/") ? normalizedPath : `/${normalizedPath}`;
+      if (req.files.pdfFile?.[0]) {
+        data.fileUrl = await singleUploadUrl(req.files.pdfFile[0], 'free-content/pdf');
       }
     }
     
@@ -86,17 +81,11 @@ export const updateFreeContent = async (req, res) => {
   try {
     const data = { ...req.body };
     if (req.files) {
-      if (req.files.thumbnail && req.files.thumbnail[0]) {
-        let normalizedPath = req.files.thumbnail[0].path.replace(/\\/g, "/");
-        const upIndex = normalizedPath.indexOf("uploads/");
-        if (upIndex !== -1) normalizedPath = normalizedPath.substring(upIndex);
-        data.thumbnail = normalizedPath.startsWith("/") ? normalizedPath : `/${normalizedPath}`;
+      if (req.files.thumbnail?.[0]) {
+        data.thumbnail = await fieldUploadUrl(req.files, 'thumbnail', 'free-content');
       }
-      if (req.files.pdfFile && req.files.pdfFile[0]) {
-        let normalizedPath = req.files.pdfFile[0].path.replace(/\\/g, "/");
-        const upIndex = normalizedPath.indexOf("uploads/");
-        if (upIndex !== -1) normalizedPath = normalizedPath.substring(upIndex);
-        data.fileUrl = normalizedPath.startsWith("/") ? normalizedPath : `/${normalizedPath}`;
+      if (req.files.pdfFile?.[0]) {
+        data.fileUrl = await singleUploadUrl(req.files.pdfFile[0], 'free-content/pdf');
       }
     }
     

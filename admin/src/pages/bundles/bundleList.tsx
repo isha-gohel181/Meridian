@@ -21,6 +21,7 @@ import PageBreadcrumb from "../../components/common/PageBreadCrumb";
 import PageMeta from "../../components/common/PageMeta";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { resolveMediaUrl } from "../../utils/apiBase";
 
 interface Bundle {
   _id: string;
@@ -38,8 +39,6 @@ interface Bundle {
   updatedAt: string;
   __v: number;
 }
-
-const VITE_IMAGE_URL = import.meta.env.VITE_BASE_URL;
 
 const BundleList: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -265,7 +264,7 @@ const BundleList: React.FC = () => {
                     </td>
                     <td className="px-6 py-4 text-sm text-gray-700 dark:text-gray-300">
                      <img
-                       src={VITE_IMAGE_URL + "/" + bundle.thumbnail}
+                       src={resolveMediaUrl(bundle.thumbnail)}
                        alt={bundle.title}
                        className="w-14 h-10 rounded-sm object-cover"
                        onError={(e) => {

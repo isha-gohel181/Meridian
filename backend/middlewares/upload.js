@@ -24,18 +24,7 @@ const ALLOWED_MIME = [
   'audio/webm'
 ];
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    const today = new Date().toISOString().slice(0, 10);
-    const dir = path.join(process.cwd(), 'uploads', 'course', today);
-    fs.mkdirSync(dir, { recursive: true });
-    cb(null, dir);
-  },
-  filename: (req, file, cb) => {
-    const safe = `${Date.now()}-${file.originalname.replace(/\s+/g, '_')}`;
-    cb(null, safe);
-  }
-});
+const storage = multer.memoryStorage();
 
 const fileFilter = (req, file, cb) => {
   if (ALLOWED_MIME.includes(file.mimetype)) cb(null, true);

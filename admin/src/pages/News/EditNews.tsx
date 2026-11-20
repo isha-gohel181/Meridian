@@ -26,6 +26,7 @@ import {
   Loader2,
   Trash2,
 } from "lucide-react";
+import { resolveMediaUrl } from "../../utils/apiBase";
 
 const predefinedTags = [
   "breaking",
@@ -56,13 +57,7 @@ const PREDEFINED_CATEGORIES = [
   "OTHER"
 ];
 
-const IMAGE_BASE_URL = import.meta.env.VITE_IMAGE_URL || import.meta.env.VITE_BASE_URL || "";
-
-const getImageUrl = (url?: string | null) => {
-  if (!url) return "";
-  if (/^https?:\/\//.test(url)) return url;
-  return `${IMAGE_BASE_URL}/${url}`;
-};
+const getImageUrl = (url?: string | null) => (url ? resolveMediaUrl(url) : "");
 
 export default function EditNews() {
   const { id } = useParams<{ id: string }>();

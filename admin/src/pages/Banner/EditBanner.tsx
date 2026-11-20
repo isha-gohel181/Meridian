@@ -9,6 +9,7 @@ import { fetchEvents } from "../../store/slices/event";
 import { fetchJobs } from "../../store/slices/job";
 import PageBreadcrumb from "../../components/common/PageBreadCrumb";
 import PageMeta from "../../components/common/PageMeta";
+import { resolveMediaUrl } from "../../utils/apiBase";
 
 const typeOptions = [
   { value: "course", label: "Course" },
@@ -54,8 +55,6 @@ const EditBanner: React.FC = () => {
   const [loadingRef, setLoadingRef] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const prevLoading = React.useRef(loading);
-
-  const ImageBaseURL = import.meta.env.VITE_IMAGE_URL;
 
   useEffect(() => {
     if (id) dispatch(fetchBannerById(id));
@@ -191,7 +190,7 @@ const EditBanner: React.FC = () => {
           />
           {typeof image === "string" && image && (
             <img
-              src={`${ImageBaseURL}/${image}`}
+              src={typeof image === "string" ? resolveMediaUrl(image) : ""}
               alt="Current"
               className="w-24 h-16 mt-2 object-cover rounded"
             />
@@ -209,7 +208,11 @@ const EditBanner: React.FC = () => {
           />
           {mobileImage && (
             <img
-              src={`${ImageBaseURL}/${mobileImage}`}
+              src={
+                typeof mobileImage === "string"
+                  ? resolveMediaUrl(mobileImage)
+                  : ""
+              }
               alt="Current"
               className="w-24 h-16 mt-2 object-cover rounded"
             />

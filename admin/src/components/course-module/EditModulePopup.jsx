@@ -3,8 +3,6 @@ import { X, Save, Loader2, Trash2 } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { getModuleById, updateModule } from "../../store/slices/module";
 
-const IMAGE_BASE_URL = import.meta.env.VITE_IMAGE_URL || "";
-
 const EditModulePopup = ({ module, courseId, onClose, onModuleUpdated }) => {
     const dispatch = useDispatch();
     const moduleId = module._id || module.id;

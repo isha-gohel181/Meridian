@@ -8,6 +8,7 @@ import { generateOrderNumber } from "../utils/generateOrderNo.js";
 import axios from 'axios';
 import crypto from 'crypto';
 import { getRazorpayKeys, verifyRazorpaySignature } from "../config/razorpay.js";
+import { fieldUploadUrl } from "../utils/mediaStorage.js";
 
 // GET /api/test-series - Fetch all active test series for the app
 export const getTestSeriesList = async (req, res) => {
@@ -53,7 +54,7 @@ export const createTestSeries = async (req, res) => {
       testSeriesData.isActive = testSeriesData.isActive === 'true' || testSeriesData.isActive === true;
     }
     if (req.files && req.files.coverImage && req.files.coverImage.length > 0) {
-      testSeriesData.coverImage = `/uploads/${req.files.coverImage[0].filename}`;
+      testSeriesData.coverImage = await fieldUploadUrl(req.files, 'coverImage', 'test-series');
     }
     if (testSeriesData.quizData) {
       try {
@@ -81,7 +82,7 @@ export const updateTestSeries = async (req, res) => {
       testSeriesData.isActive = testSeriesData.isActive === 'true' || testSeriesData.isActive === true;
     }
     if (req.files && req.files.coverImage && req.files.coverImage.length > 0) {
-      testSeriesData.coverImage = `/uploads/${req.files.coverImage[0].filename}`;
+      testSeriesData.coverImage = await fieldUploadUrl(req.files, 'coverImage', 'test-series');
     }
     if (testSeriesData.quizData) {
       try {

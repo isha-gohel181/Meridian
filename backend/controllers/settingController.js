@@ -1,4 +1,5 @@
 import Setting from '../models/setting.js';
+import { persistImageFile } from '../utils/mediaStorage.js';
 
 const SENSITIVE_SETTING_KEYS = new Set([
   'RAZORPAY_KEY_SECRET',
@@ -120,14 +121,15 @@ export const uploadSettingImage = async (req, res) => {
     if (!req.file) {
       return res.status(400).json({ message: "No image file provided" });
     }
-    const relativeUrl = `/uploads/${req.file.filename}`;
+  const { url } = await persistImageFile(req.file, 'settings');
     return res.status(200).json({
       success: true,
       message: "Image uploaded successfully",
-      url: relativeUrl
+      url,
     });
   } catch (err) {
     console.error("Upload Setting Image Error:", err);
-    return res.status(500).json({ message: "Failed to upload image", error: err.message });
+    const status = err.statusCode || 500;
+    return res.status(status).json({ message: "Failed to upload image", error: err.message });
   }
 };

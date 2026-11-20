@@ -28,29 +28,7 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
-// Dynamic storage based on field name
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    const today = new Date().toISOString().slice(0, 10);
-    
-    // Use different directories based on field name
-    if (file.fieldname === 'content' || file.fieldname === 'contentImages') {
-      const dir = path.join(process.cwd(), 'uploads', 'news', 'content', today);
-      fs.mkdirSync(dir, { recursive: true });
-      cb(null, dir);
-    } else {
-      // Main image or other fields
-      const dir = path.join(process.cwd(), 'uploads', 'news', today);
-      fs.mkdirSync(dir, { recursive: true });
-      cb(null, dir);
-    }
-  },
-  filename: (req, file, cb) => {
-    const originalName = file.originalname;
-    const safe = originalName.replace(/[\/\\]/g, '_').trim();
-    cb(null, safe);
-  }
-});
+const storage = multer.memoryStorage();
 
 // Create multer instance with fields support
 const upload = multer({

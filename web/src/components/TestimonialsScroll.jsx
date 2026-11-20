@@ -2,6 +2,7 @@ import { getApiBase, resolveMediaUrl } from '../utils/apiBase.js'
 import React, { useEffect, useState, useMemo, useRef } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useLanguage } from '../context/LanguageContext'
+import { useSelector } from 'react-redux'
 import LandingReveal from './landing/LandingReveal'
 import CircularGallery from './ui/CircularGallery'
 import './landing/LandingVoices.css'
@@ -372,6 +373,7 @@ const VoicesStage = ({ items, eyebrow, title, sub, label }) => {
 
 const TestimonialsScroll = ({ reviews, variant = 'default' }) => {
   const { t } = useLanguage()
+  const landingCopy = useSelector((state) => state.config?.settings?.landingTestimonials) || {}
   const propReviews = Array.isArray(reviews) ? reviews : EMPTY_REVIEWS
   const [apiTestimonials, setApiTestimonials] = useState([])
   const isLanding = variant === 'landing'
@@ -445,13 +447,16 @@ const TestimonialsScroll = ({ reviews, variant = 'default' }) => {
   if (displayTestimonials.length === 0) return null
 
   if (isLanding) {
+    const eyebrow = landingCopy.eyebrow || t('testimonialsEyebrow')
+    const title = landingCopy.title || t('testimonialsTitle')
+    const sub = landingCopy.subtitle || landingCopy.sub || t('testimonialsSub')
     return (
       <VoicesStage
         items={displayTestimonials}
-        eyebrow={t('testimonialsEyebrow')}
-        title={t('testimonialsTitle')}
-        sub={t('testimonialsSub')}
-        label={t('testimonialsTitle')}
+        eyebrow={eyebrow}
+        title={title}
+        sub={sub}
+        label={title}
       />
     )
   }

@@ -11,6 +11,7 @@ import fs from "fs";
 import Course from "../models/Course.js"; // Import Course model
 import CourseEnrollment from "../models/CourseEnrollment.js"; // Import CourseEnrollment model
 import notificationService from "../service/notificationService.js"; // Import notification service
+import { mapChatFiles } from "../utils/mediaStorage.js";
 
 const getAdminUserIds = async () => {
   const admins = await User.find({ role: { $in: ['admin', 'super_admin'] } }).select('_id').lean();
@@ -369,33 +370,7 @@ export const sendMessage = async (req, res) => {
     // Build files array if uploaded
     let filesArr = [];
     if (Array.isArray(req.files) && req.files.length > 0) {
-      filesArr = req.files.map((f) => {
-        const uploadedPath = f.path;
-        const parts = uploadedPath.split(path.sep);
-        const idx = parts.lastIndexOf("uploads");
-        const relative =
-          idx >= 0
-            ? parts.slice(idx).join("/")
-            : `uploads/${new Date().toISOString().slice(0, 10)}/${f.filename}`;
-        const url = `/${relative.replace(/\\/g, "/")}`;
-        const originalName = f.originalname || f.filename;
-        const size = f.size;
-        const ext = (originalName || "").toLowerCase().split(".").pop();
-        let determinedType = "other";
-        if (f.mimetype.startsWith("image/") || ["jpg", "jpeg", "png", "gif", "webp", "svg"].includes(ext))
-          determinedType = "image";
-        else if (f.mimetype === "application/pdf" || ["pdf", "doc", "docx", "txt", "rtf"].includes(ext))
-          determinedType = "document";
-        else if (f.mimetype.startsWith("audio/") || ["mp3", "wav", "m4a", "ogg", "aac", "webm", "amr"].includes(ext))
-          determinedType = "voice";
-
-        return {
-          url,
-          name: originalName,
-          type: determinedType,
-          size,
-        };
-      });
+      filesArr = await mapChatFiles(req.files);
 
       // set backward-compatible single-file fields to first file
       const first = filesArr[0];
@@ -1140,33 +1115,7 @@ export const sendGroupMessage = async (req, res) => {
     // Build files array if uploaded
     let filesArr = [];
     if (Array.isArray(req.files) && req.files.length > 0) {
-      filesArr = req.files.map((f) => {
-        const uploadedPath = f.path;
-        const parts = uploadedPath.split(path.sep);
-        const idx = parts.lastIndexOf("uploads");
-        const relative =
-          idx >= 0
-            ? parts.slice(idx).join("/")
-            : `uploads/${new Date().toISOString().slice(0, 10)}/${f.filename}`;
-        const url = `/${relative.replace(/\\/g, "/")}`;
-        const originalName = f.originalname || f.filename;
-        const size = f.size;
-        const ext = (originalName || "").toLowerCase().split(".").pop();
-        let determinedType = "other";
-        if (f.mimetype.startsWith("image/") || ["jpg", "jpeg", "png", "gif", "webp", "svg"].includes(ext))
-          determinedType = "image";
-        else if (f.mimetype === "application/pdf" || ["pdf", "doc", "docx", "txt", "rtf"].includes(ext))
-          determinedType = "document";
-        else if (f.mimetype.startsWith("audio/") || ["mp3", "wav", "m4a", "ogg", "aac", "webm", "amr"].includes(ext))
-          determinedType = "voice";
-
-        return {
-          url,
-          name: originalName,
-          type: determinedType,
-          size,
-        };
-      });
+      filesArr = await mapChatFiles(req.files);
 
       // compatibility - first file
       const first = filesArr[0];
@@ -1612,34 +1561,7 @@ export const sendCourseChatMessage = async (req, res) => {
     // Handle multiple uploaded files (req.files) - build files array
     let filesArr = [];
     if (Array.isArray(req.files) && req.files.length > 0) {
-      filesArr = req.files.map((f) => {
-        const uploadedPath = f.path;
-        const parts = uploadedPath.split(path.sep);
-        const idx = parts.lastIndexOf("uploads");
-        const relative =
-          idx >= 0
-            ? parts.slice(idx).join("/")
-            : `uploads/course/${new Date().toISOString().slice(0, 10)}/${f.filename
-            }`;
-        const url = `/${relative.replace(/\\/g, "/")}`;
-        const originalName = f.originalname || f.filename;
-        const size = f.size;
-        const ext = (originalName || "").toLowerCase().split(".").pop();
-        let determinedType = "other";
-        if (f.mimetype.startsWith("image/") || ["jpg", "jpeg", "png", "gif", "webp", "svg"].includes(ext))
-          determinedType = "image";
-        else if (f.mimetype === "application/pdf" || ["pdf", "doc", "docx", "txt", "rtf"].includes(ext))
-          determinedType = "document";
-        else if (f.mimetype.startsWith("audio/") || ["mp3", "wav", "m4a", "ogg", "aac", "webm", "amr"].includes(ext))
-          determinedType = "voice";
-
-        return {
-          url,
-          name: originalName,
-          type: determinedType,
-          size,
-        };
-      });
+      filesArr = await mapChatFiles(req.files);
 
       // set backward-compatible single-file fields to first file
       const first = filesArr[0];

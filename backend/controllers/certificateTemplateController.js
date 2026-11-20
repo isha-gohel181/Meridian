@@ -1,6 +1,5 @@
 import CertificateTemplateService from "../service/certificateTemplateService.js";
-import path from "path";
-import fs from "fs";
+import { persistImageFile, replaceStoredImage } from "../utils/mediaStorage.js";
 
 const certificateTemplateService = new CertificateTemplateService();
 
@@ -20,24 +19,22 @@ export const createCertificateTemplate = async (req, res) => {
 
     // Add file paths to templateData if files exist
     if (files["image"]) {
-      templateData.image = path.join("uploads", files["image"][0].filename);
+      templateData.image = (await persistImageFile(files["image"][0], "certificates/templates")).url;
     }
     if (files["elements[platform_signature][image]"]) {
       templateData.elements = templateData.elements || {};
       templateData.elements.platform_signature =
         templateData.elements.platform_signature || {};
-      templateData.elements.platform_signature.image = path.join(
-        "uploads",
-        files["elements[platform_signature][image]"][0].filename
-      );
+      templateData.elements.platform_signature.image = (
+        await persistImageFile(files["elements[platform_signature][image]"][0], "certificates/signatures")
+      ).url;
     }
     if (files["elements[stamp][image]"]) {
       templateData.elements = templateData.elements || {};
       templateData.elements.stamp = templateData.elements.stamp || {};
-      templateData.elements.stamp.image = path.join(
-        "uploads",
-        files["elements[stamp][image]"][0].filename
-      );
+      templateData.elements.stamp.image = (
+        await persistImageFile(files["elements[stamp][image]"][0], "certificates/stamps")
+      ).url;
     }
 
     const template = await certificateTemplateService.createCertificateTemplate(
@@ -142,9 +139,9 @@ export const updateCertificateTemplate = async (req, res) => {
 
     // Process new uploaded files
     if (files["image"]) {
-      templateData.image = path
-        .join("uploads", files["image"][0].filename)
-        .replace(/\\/g, "/");
+      const { url } = await persistImageFile(files["image"][0], "certificates/templates");
+      await replaceStoredImage(existingTemplate.image, url);
+      templateData.image = url;
     } else {
       templateData.image = existingTemplate.image;
     }
@@ -152,23 +149,27 @@ export const updateCertificateTemplate = async (req, res) => {
       templateData.elements = templateData.elements || {};
       templateData.elements.platform_signature =
         templateData.elements.platform_signature || {};
-      templateData.elements.platform_signature.image = path
-        .join(
-          "uploads",
-          files["elements[platform_signature][image]"][0].filename
-        )
-        .replace(/\\/g, "/");
-    } else {
+      const { url } = await persistImageFile(
+        files["elements[platform_signature][image]"][0],
+        "certificates/signatures"
+      );
+      await replaceStoredImage(existingTemplate.elements?.platform_signature?.image, url);
+      templateData.elements.platform_signature.image = url;
+    } else if (existingTemplate.elements?.platform_signature) {
+      templateData.elements = templateData.elements || {};
+      templateData.elements.platform_signature = templateData.elements.platform_signature || {};
       templateData.elements.platform_signature.image =
         existingTemplate.elements.platform_signature.image;
     }
     if (files["elements[stamp][image]"]) {
       templateData.elements = templateData.elements || {};
       templateData.elements.stamp = templateData.elements.stamp || {};
-      templateData.elements.stamp.image = path
-        .join("uploads", files["elements[stamp][image]"][0].filename)
-        .replace(/\\/g, "/");
-    } else {
+      const { url } = await persistImageFile(files["elements[stamp][image]"][0], "certificates/stamps");
+      await replaceStoredImage(existingTemplate.elements?.stamp?.image, url);
+      templateData.elements.stamp.image = url;
+    } else if (existingTemplate.elements?.stamp) {
+      templateData.elements = templateData.elements || {};
+      templateData.elements.stamp = templateData.elements.stamp || {};
       templateData.elements.stamp.image = existingTemplate.elements.stamp.image;
     }
 

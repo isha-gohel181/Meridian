@@ -1,4 +1,4 @@
-import { getImageBase } from "../../utils/apiBase";
+import { resolveMediaUrl } from "../../utils/apiBase";
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
@@ -48,10 +48,6 @@ const EditJob: React.FC = () => {
     message: "",
     type: "",
   });
-  // Base URL for images
-  const IMAGE_BASE_URL =
-    getImageBase() + "/";
-
   const [formData, setFormData] = useState<JobFormData>({
     title: "",
     description: "",
@@ -128,7 +124,7 @@ const EditJob: React.FC = () => {
         }
       }
     }
-  }, [id, jobs, IMAGE_BASE_URL]);
+  }, [id, jobs]);
 
   // Reset currency if mode changes from full-time
   useEffect(() => {
@@ -627,8 +623,9 @@ const EditJob: React.FC = () => {
                     </p>
                     <img
                       src={
-                        existingImageUrl ||
-                        URL.createObjectURL(formData.thumbnail!)
+                        existingImageUrl
+                          ? resolveMediaUrl(existingImageUrl)
+                          : URL.createObjectURL(formData.thumbnail!)
                       }
                       alt={
                         existingImageUrl

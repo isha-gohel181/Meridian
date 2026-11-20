@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createModule } from "../../store/slices/module";
 
-const IMAGE_BASE_URL = import.meta.env.VITE_IMAGE_URL || "";
 import {
   createLesson,
   deleteLesson,

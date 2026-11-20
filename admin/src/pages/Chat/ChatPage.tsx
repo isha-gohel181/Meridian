@@ -27,6 +27,7 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import axiosInstance from "../../services/axiosConfig";
 import PageMeta from "../../components/common/PageMeta";
+import { resolveMediaUrl } from "../../utils/apiBase";
 
 interface Message {
   _id: string;
@@ -71,31 +72,6 @@ const ChatPage: React.FC = () => {
   console.log("ChatPage rendering...");
   const currentUser = useSelector(selectCurrentUser);
   const token = useSelector(selectToken);
-
-  const resolveMediaUrl = (path: string | undefined) => {
-    if (!path) return "";
-    if (path.startsWith("http")) return path;
-
-    let baseUrl = import.meta.env.VITE_IMAGE_URL || `${import.meta.env.VITE_BASE_URL}/uploads`;
-
-    // Auto-detect local development
-    if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
-      baseUrl = `${import.meta.env.VITE_BASE_URL}/uploads`;
-    }
-
-    // If the path already starts with /uploads, and the baseUrl also ends with /uploads, fix it
-    const cleanPath = path.startsWith("/") ? path.slice(1) : path;
-
-    let resolvedUrl = "";
-    if (cleanPath.startsWith("uploads/") && baseUrl.endsWith("/uploads")) {
-      resolvedUrl = `${baseUrl.replace(/\/uploads$/, "")}/${cleanPath}`;
-    } else {
-      resolvedUrl = `${baseUrl}/${cleanPath}`;
-    }
-
-    // console.log(`Resolving media: ${path} -> ${resolvedUrl}`);
-    return resolvedUrl;
-  };
 
   const { students } = useSelector((state: any) => state.students);
   const dispatch = useAppDispatch();
@@ -145,7 +121,9 @@ const ChatPage: React.FC = () => {
           unreadCount: r.unreadCount || 0,
           lastMessage: r.lastMessage?.message || (r.lastMessage?.fileUrl ? "Sent a file" : ""),
           participantId: otherParticipant?._id,
-          image: otherParticipant?.profilePicture ? `${import.meta.env.VITE_IMAGE_URL}/${otherParticipant.profilePicture}` : undefined,
+          image: otherParticipant?.profilePicture
+            ? resolveMediaUrl(otherParticipant.profilePicture)
+            : undefined,
           updatedAt: r.lastMessage?.createdAt || r.updatedAt || new Date(0).toISOString()
         };
       });
@@ -156,7 +134,9 @@ const ChatPage: React.FC = () => {
         name: r.courseId?.title || "Course Chat",
         unreadCount: r.unreadCount || 0,
         lastMessage: r.lastMessage?.message || "Course Chat",
-        image: r.courseId?.thumbnail ? `${import.meta.env.VITE_IMAGE_URL}/${r.courseId.thumbnail}` : undefined,
+        image: r.courseId?.thumbnail
+          ? resolveMediaUrl(r.courseId.thumbnail)
+          : undefined,
         updatedAt: r.lastMessage?.createdAt || r.updatedAt || new Date(0).toISOString()
       }));
 
@@ -222,7 +202,7 @@ const ChatPage: React.FC = () => {
         id: s._id,
         type: 'direct',
         name: s.fullName || s.name,
-        image: s.profilePicture ? `${import.meta.env.VITE_IMAGE_URL}/${s.profilePicture}` : undefined,
+        image: s.profilePicture ? resolveMediaUrl(s.profilePicture) : undefined,
         unreadCount: 0,
         participantId: s._id,
         updatedAt: new Date(0).toISOString()

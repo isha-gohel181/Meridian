@@ -35,6 +35,7 @@ import { Link, useNavigate } from "react-router-dom";
 import EnrollStudentPopup from "../../components/students/EnrollStudentPopup";
 import CreateStudentPopup from "../../components/students/CreateStudentPopup";
 import BulkUploadPopup from "../../components/students/BulkUploadPopup";
+import { resolveMediaUrl } from "../../utils/apiBase";
 
 interface Student {
   _id: string;
@@ -613,9 +614,9 @@ const StudentList: React.FC = () => {
                         <img
                           src={
                             student?.profilePicture || student?.image
-                              ? `${import.meta.env.VITE_IMAGE_URL}/${
+                              ? resolveMediaUrl(
                                   student?.profilePicture || student?.image
-                                }`
+                                )
                               : `https://placehold.co/40x40?text=${(
                                   student?.fullName ||
                                   student?.name ||

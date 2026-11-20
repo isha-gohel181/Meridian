@@ -1,4 +1,5 @@
 import BlogPostService from '../service/blogPostService.js';
+import { persistImageFile } from '../utils/mediaStorage.js';
 import { getMemoryCache } from '../config/memoryCache.js';
 
 // Use the imported instance directly (no 'new')
@@ -11,7 +12,7 @@ export const createBlogPost = async (req, res) => {
       description: req.body.description,
       status: req.body.status === 'true' || req.body.status === true ? true : req.body.status === 'false' ? false : undefined,
       createdBy: req.user._id,
-      thumbnail: req.file ? req.file.path.replace(/\\/g, '/') : null
+      thumbnail: req.file ? (await persistImageFile(req.file, 'blog')).url : null
     };
 
     const blogPost = await blogPostService.create(blogPostData);
@@ -124,7 +125,7 @@ export const updateBlogPost = async (req, res) => {
       title: req.body.title,
       description: req.body.description,
       status: req.body.status === 'true' || req.body.status === true ? true : req.body.status === 'false' ? false : undefined,
-      thumbnail: req.file ? req.file.path.replace(/\\/g, '/') : req.body.thumbnail
+      thumbnail: req.file ? (await persistImageFile(req.file, 'blog')).url : req.body.thumbnail
     };
 
     const blogPost = await blogPostService.update(id, updateData);

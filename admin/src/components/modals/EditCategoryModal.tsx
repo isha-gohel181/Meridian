@@ -18,6 +18,7 @@ import {
   AlertTriangle,
 } from "lucide-react";
 import toast from "react-hot-toast";
+import { resolveMediaUrl } from "../../utils/apiBase";
 import PopupAlert from "../popUpAlert";
 
 interface Category {
@@ -160,7 +161,7 @@ const EditCategoryModal: React.FC<EditCategoryModalProps> = ({
       });
       setCategoryImagePreview(
         categoryData.image
-          ? `${import.meta.env.VITE_IMAGE_URL}/${categoryData.image}`
+          ? resolveMediaUrl(categoryData.image)
           : null
       );
 

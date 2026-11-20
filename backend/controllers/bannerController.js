@@ -1,15 +1,24 @@
 import * as bannerService from '../services/bannerService.js';
+import { fieldUploadUrl, replaceStoredImage } from '../utils/mediaStorage.js';
+
+async function applyBannerFiles(data, files, existing) {
+  const next = { ...data };
+  if (files?.image?.[0]) {
+    const url = await fieldUploadUrl(files, 'image', 'banners');
+    if (existing?.image) await replaceStoredImage(existing.image, url);
+    next.image = url;
+  }
+  if (files?.mobileImage?.[0]) {
+    const url = await fieldUploadUrl(files, 'mobileImage', 'banners');
+    if (existing?.mobileImage) await replaceStoredImage(existing.mobileImage, url);
+    next.mobileImage = url;
+  }
+  return next;
+}
 
 export const createBanner = async (req, res) => {
   try {
-    let data = req.body;
-    // Handle image and mobileImage from req.files
-    if (req.files && req.files['image'] && req.files['image'][0]) {
-      data = { ...data, image: req.files['image'][0].filename };
-    }
-    if (req.files && req.files['mobileImage'] && req.files['mobileImage'][0]) {
-      data = { ...data, mobileImage: req.files['mobileImage'][0].filename };
-    }
+    const data = await applyBannerFiles(req.body, req.files, null);
     const banner = await bannerService.createBanner(data);
     res.status(201).json({
       success: true,
@@ -29,7 +38,6 @@ export const createBanner = async (req, res) => {
 
 export const getBanners = async (req, res) => {
   try {
-    // Convert isActive to boolean if present
     const filter = { ...req.query };
     if (filter.isActive !== undefined) {
       filter.isActive = filter.isActive === 'true' || filter.isActive === true;
@@ -78,13 +86,8 @@ export const getBanner = async (req, res) => {
 
 export const updateBanner = async (req, res) => {
   try {
-    let data = req.body;
-    if (req.files && req.files['image'] && req.files['image'][0]) {
-      data = { ...data, image: req.files['image'][0].filename };
-    }
-    if (req.files && req.files['mobileImage'] && req.files['mobileImage'][0]) {
-      data = { ...data, mobileImage: req.files['mobileImage'][0].filename };
-    }
+    const existing = await bannerService.getBanner(req.params.id);
+    const data = await applyBannerFiles(req.body, req.files, existing);
     const banner = await bannerService.updateBanner(req.params.id, data);
     if (!banner) return res.status(404).json({
       success: false,

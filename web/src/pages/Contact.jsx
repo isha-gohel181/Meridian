@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useLayoutEffect, useRef } from 'react';
+import { useSmoothScroll } from '../context/SmoothScrollContext';
 import { useDispatch, useSelector } from 'react-redux';
 import { gsap } from 'gsap';
 import { submitContactQuery, resetSupportState } from '../redux/slices/supportSlice';
@@ -18,6 +19,7 @@ import {
 const Contact = () => {
     const dispatch = useDispatch();
     const { t } = useLanguage();
+    const { scrollToId } = useSmoothScroll();
     const { user } = useSelector((state) => state.auth);
     const { submitting, error, success } = useSelector((state) => state.support);
 
@@ -40,9 +42,7 @@ const Contact = () => {
         window.scrollTo(0, 0);
 
         if (window.location.hash === '#enquiry') {
-            requestAnimationFrame(() => {
-                document.getElementById('enquiry')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            });
+            requestAnimationFrame(() => scrollToId('enquiry'));
         }
 
         // GSAP Animations
@@ -72,7 +72,7 @@ const Contact = () => {
         }, containerRef);
 
         return () => ctx.revert();
-    }, [dispatch]);
+    }, [dispatch, scrollToId]);
 
     // Prefill user data if auth state changes
     /* eslint-disable react-hooks/set-state-in-effect -- intentional sync when auth user loads */

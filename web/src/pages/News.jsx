@@ -1,4 +1,4 @@
-import { getApiBase } from '../utils/apiBase.js';
+import { resolveMediaUrl } from '../utils/apiBase.js';
 import React, { useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { Link } from 'react-router-dom'
@@ -142,10 +142,7 @@ const News = () => {
     image: (() => {
         const url = n.imageUrl || n.coverImage || n.image;
         if (!url) return '/news_placeholder.png';
-        const rawBase = getApiBase();
-        const baseUrl = rawBase.replace(/\/api\/v1\/?$/, '');
-        const finalUrl = url.startsWith('http') ? url : `${baseUrl}/uploads/news/${url}`;
-        return encodeURI(finalUrl);
+        return encodeURI(resolveMediaUrl(url));
     })()
   }))
 

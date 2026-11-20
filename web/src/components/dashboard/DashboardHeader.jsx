@@ -1,4 +1,4 @@
-import { getApiBase } from '../../utils/apiBase.js';
+import { resolveMediaUrl } from '../../utils/apiBase.js';
 import React, { useState, useEffect, useRef } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
@@ -44,11 +44,8 @@ const DashboardHeader = () => {
 
   const getProfileImage = (pic) => {
     if (!pic || pic === 'default-profile.png') return null
-    if (pic.startsWith('http') || pic.startsWith('blob:')) return pic
-    const rawBase = getApiBase()
-    const baseUrl = rawBase.replace(/\/api\/v1\/?$/, '')
-    const cleanPath = pic.startsWith('/') ? pic : `/uploads/${pic}`
-    return `${baseUrl}${cleanPath}`
+    if (pic.startsWith('blob:')) return pic
+    return resolveMediaUrl(pic)
   }
 
   const avatarUrl = getProfileImage(currentUser?.profilePicture)

@@ -3,7 +3,7 @@ import { getSettings, getAllSettings, updateSettings, uploadSettingImage } from 
 import accessTokenAutoRefresh from '../middlewares/accessTokenAutoRefresh.js';
 import passport from 'passport';
 import { isAdmin } from '../middlewares/isAdmin.js';
-import { upload } from '../middlewares/upload-middleware.js';
+import imageUploadMemory from '../middlewares/imageUploadMemory.js';
 
 const router = express.Router();
 
@@ -45,7 +45,7 @@ router.post(
     accessTokenAutoRefresh,
     passport.authenticate('jwt', { session: false }),
     isAdmin,
-    upload.single('image'),
+    imageUploadMemory.single('image'),
     uploadSettingImage
 );
 

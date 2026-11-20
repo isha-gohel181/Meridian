@@ -1,5 +1,7 @@
-import React from 'react'
+import React, { useMemo } from 'react'
+import { useSelector } from 'react-redux'
 import { useLanguage } from '../../context/LanguageContext'
+import { resolveMediaUrl } from '../../utils/apiBase'
 import ScrollStack, { ScrollStackItem } from '../ui/ScrollStack'
 
 /**
@@ -42,6 +44,28 @@ const CARD_STYLE = {
 
 const LandingStatementFold = () => {
   const { t } = useLanguage()
+  const statementSettings = useSelector((state) => state.config?.settings?.landingStatement) || {}
+
+  const cards = useMemo(() => {
+    if (Array.isArray(statementSettings.items) && statementSettings.items.length > 0) {
+      return statementSettings.items.map((item, idx) => ({
+        index: item.index || String(idx + 1).padStart(2, '0'),
+        before: item.before ?? '',
+        accent: item.accent ?? '',
+        after: item.after ?? '',
+        image: item.image ? resolveMediaUrl(item.image) : STATEMENT_CARDS[idx]?.image ?? '/meridian/statement-01.jpg',
+        imageAlt: item.imageAlt || `Statement card ${idx + 1}`,
+      }))
+    }
+    return STATEMENT_CARDS.map((card) => ({
+      index: t(card.indexKey),
+      before: t(card.beforeKey),
+      accent: t(card.accentKey),
+      after: t(card.afterKey),
+      image: card.image,
+      imageAlt: t(card.altKey),
+    }))
+  }, [statementSettings.items, t])
 
   return (
     <section id="statement" className="scroll-mt-28 md:scroll-mt-32 bg-slate-50">
@@ -57,9 +81,9 @@ const LandingStatementFold = () => {
         holdDistance={240}
         className="py-8 md:py-12"
       >
-        {STATEMENT_CARDS.map((card) => (
+        {cards.map((card, cardIdx) => (
           <ScrollStackItem
-            key={card.indexKey}
+            key={`${card.index}-${cardIdx}`}
             itemClassName="overflow-hidden border border-brand-brown/[0.08] bg-slate-50 p-6 text-brand-brown shadow-none sm:p-8 md:p-10 lg:p-12"
             style={CARD_STYLE}
           >
@@ -71,15 +95,15 @@ const LandingStatementFold = () => {
                     style={{ WebkitTextStroke: '1px rgba(3, 39, 70, 0.35)' }}
                     aria-hidden
                   >
-                    {t(card.indexKey)}
+                    {card.index}
                   </span>
                   <p
                     className="pt-2 font-newsreader text-[clamp(1.5rem,3.6vw,3.25rem)] font-medium leading-[1.15] tracking-tight text-brand-brown"
                     style={{ maxWidth: '22ch' }}
                   >
-                    {t(card.beforeKey)}{' '}
-                    <span className="text-accent">{t(card.accentKey)}</span>
-                    {t(card.afterKey)}
+                    {card.before}{' '}
+                    <span className="text-accent">{card.accent}</span>
+                    {card.after}
                   </p>
                 </div>
               </div>
@@ -92,7 +116,7 @@ const LandingStatementFold = () => {
                   />
                   <img
                     src={card.image}
-                    alt={t(card.altKey)}
+                    alt={card.imageAlt}
                     className="relative z-[1] h-full w-full object-cover object-center"
                     loading="lazy"
                     decoding="async"

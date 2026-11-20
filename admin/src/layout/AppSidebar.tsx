@@ -88,7 +88,13 @@ const navItems: NavItem[] = [
   {
     icon: <PageIcon />,
     name: "Landing Page",
-    path: "/landing-sections",
+    subItems: [
+      { name: "Hero Portal Section", path: "/landing-sections/hero" },
+      { name: "Testimonials", path: "/testimonials" },
+      { name: "Why Choose Meridian", path: "/landing-sections/why-choose" },
+      { name: "Outcomes & Stats", path: "/landing-sections/outcomes" },
+      { name: "Statement Cards", path: "/landing-sections/statement" },
+    ],
   },
   {
     icon: <CalenderIcon />,
@@ -151,11 +157,6 @@ const navItems: NavItem[] = [
     icon: <TableIcon />,
     name: "Device Approvals",
     path: "/device-approvals"
-  },
-  {
-    icon: <MessageCircle />,
-    name: "Testimonials",
-    path: "/testimonials"
   },
   // {
   //   icon: <Bot />,

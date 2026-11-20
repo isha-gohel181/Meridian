@@ -2,7 +2,7 @@ import CourseCategoryService from '../service/CourseCategoryService.js';
 import { getMemoryCache } from '../config/memoryCache.js';
 import { upload } from '../middlewares/upload-middleware.js'; // Import upload middleware
 import path from 'path';
-import fs from 'fs/promises'; // For file system operations
+import { persistImageFile, replaceStoredImage } from '../utils/mediaStorage.js';
 
 const categoryService = new CourseCategoryService();
 
@@ -24,7 +24,7 @@ export const createCategory = async (req, res) => {
     const categoryData = { ...req.body };
     //console.log('📥 Category Data:', categoryData);
     if (req.file) {
-      categoryData.image = req.file.filename; // Store image filename
+      categoryData.image = (await persistImageFile(req.file, 'categories')).url;
     }
 
 
@@ -61,15 +61,6 @@ export const createCategory = async (req, res) => {
     });
   } catch (err) {
     console.error('❌ Create Category Error:', err);
-    // Delete uploaded file if creation fails
-    if (req.file) {
-      try {
-        await fs.unlink(req.file.path);
-        //console.log(`🗑️ Deleted uploaded file due to error: ${req.file.path}`);
-      } catch (unlinkErr) {
-        console.warn(`⚠️ Failed to delete uploaded file: ${req.file.path}`, unlinkErr.message);
-      }
-    }
     if (err.message === 'Name and status are required' || err.message === 'Category slug already exists') {
       return res.status(400).json({
         success: false,
@@ -201,7 +192,10 @@ export const updateCategory = async (req, res) => {
 
     const updateData = { ...req.body };
     if (req.file) {
-      updateData.image = req.file.filename; // Store new image filename
+      const existing = await categoryService.getById(id).catch(() => null);
+      const { url } = await persistImageFile(req.file, 'categories');
+      if (existing?.image) await replaceStoredImage(existing.image, url);
+      updateData.image = url;
     }
 
     const updatedCategory = await categoryService.updateById(id, updateData);
@@ -235,15 +229,6 @@ export const updateCategory = async (req, res) => {
       err: {},
     });
   } catch (err) {
-    // Delete uploaded file if update fails
-    if (req.file) {
-      try {
-        await fs.unlink(req.file.path);
-        //console.log(`🗑️ Deleted uploaded file due to error: ${req.file.path}`);
-      } catch (unlinkErr) {
-        console.warn(`⚠️ Failed to delete uploaded file: ${req.file.path}`, unlinkErr.message);
-      }
-    }
     console.error('❌ Update Category Error:', err);
     if (err.message === 'Category not found' || err.message === 'No valid fields to update' || err.message === 'Category slug already exists') {
       return res.status(400).json({

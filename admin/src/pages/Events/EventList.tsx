@@ -17,6 +17,7 @@ import {
   Clock,
   Users,
 } from "lucide-react";
+import { resolveMediaUrl } from "../../utils/apiBase";
 
 interface Event {
   _id: string;
@@ -48,8 +49,6 @@ interface Event {
   showOnLanding?: boolean;
   landingFeatured?: boolean;
 }
-
-const VITE_IMAGE_URL = import.meta.env.VITE_BASE_URL;
 
 const EventList: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -298,7 +297,7 @@ const EventList: React.FC = () => {
                   </td>
                   <td className="px-6 py-4 text-sm text-gray-700 dark:text-gray-300">
                     <img
-                      src={event.thumbnail ? `${VITE_IMAGE_URL}/${event.thumbnail}` : "https://placehold.co/150x150"}
+                      src={event.thumbnail ? resolveMediaUrl(event.thumbnail) : "https://placehold.co/150x150"}
                       alt={event.title}
                       className="w-14 h-10 rounded-sm object-cover"
                       onError={(e) => {

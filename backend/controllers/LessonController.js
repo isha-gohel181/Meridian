@@ -2,6 +2,7 @@ import LessonService from '../service/LessonService.js';
 import { getMemoryCache } from '../config/memoryCache.js';
 import Lesson from '../models/Lesson.js';
 import NotificationService from "../service/notificationService.js";
+import { fieldUploadUrl, singleUploadUrl } from '../utils/mediaStorage.js';
 
 const lessonService = new LessonService();
 
@@ -13,11 +14,11 @@ export const createLesson = async (req, res) => {
 
     // For multer.fields(), req.files is an object with arrays per field name
     if (req.files) {
-      if (req.files['fileUrl'] && req.files['fileUrl'][0]) {
-        lessonData.fileUrl = `/uploads/${req.files['fileUrl'][0].filename}`;
+      if (req.files['fileUrl']?.[0]) {
+        lessonData.fileUrl = await singleUploadUrl(req.files['fileUrl'][0], 'lessons/files');
       }
-      if (req.files['image'] && req.files['image'][0]) {
-        lessonData.image = `/uploads/${req.files['image'][0].filename}`;
+      if (req.files['image']?.[0]) {
+        lessonData.image = await fieldUploadUrl(req.files, 'image', 'lessons');
       }
     }
 
@@ -106,11 +107,11 @@ export const updateLesson = async (req, res) => {
     const lessonData = { ...req.body };
 
     if (req.files) {
-      if (req.files['fileUrl'] && req.files['fileUrl'][0]) {
-        lessonData.fileUrl = `/uploads/${req.files['fileUrl'][0].filename}`;
+      if (req.files['fileUrl']?.[0]) {
+        lessonData.fileUrl = await singleUploadUrl(req.files['fileUrl'][0], 'lessons/files');
       }
-      if (req.files['image'] && req.files['image'][0]) {
-        lessonData.image = `/uploads/${req.files['image'][0].filename}`;
+      if (req.files['image']?.[0]) {
+        lessonData.image = await fieldUploadUrl(req.files, 'image', 'lessons');
       }
     }
 

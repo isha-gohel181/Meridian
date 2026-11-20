@@ -13,26 +13,7 @@ const ALLOWED_MIME = [
   'image/jfif', // JPEG File Interchange Format
 ];
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    const today = new Date().toISOString().slice(0, 10);
-    const dir = path.join(process.cwd(), 'uploads', 'news', today);
-    fs.mkdirSync(dir, { recursive: true });
-    cb(null, dir);
-  },
-  filename: (req, file, cb) => {
-    // Use original filename from multipart form data
-    // Only sanitize for security (remove path separators)
-    const originalName = file.originalname;
-    // Remove path separators to prevent path traversal attacks
-    // Keep spaces and most special characters as they are in the original
-    const safe = originalName
-      .replace(/[\/\\]/g, '_') // Replace path separators only
-      .trim(); // Remove leading/trailing whitespace
-    
-    cb(null, safe);
-  }
-});
+const storage = multer.memoryStorage();
 
 const fileFilter = (req, file, cb) => {
   // Check MIME type

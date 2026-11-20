@@ -1,5 +1,18 @@
 import testimonialService from '../service/testimonialService.js';
 import Testimonial from '../models/Testimonial.js';
+import { fieldUploadUrl, replaceStoredImage, singleUploadUrl } from '../utils/mediaStorage.js';
+async function testimonialMediaFromFiles(files, existing) {
+  const out = {};
+  if (files?.image?.[0]) {
+    const image = await fieldUploadUrl(files, 'image', 'testimonials');
+    if (existing?.image) await replaceStoredImage(existing.image, image);
+    out.image = image;
+  }
+  if (files?.video?.[0]) {
+    out.video = await singleUploadUrl(files.video[0], 'testimonials/video');
+  }
+  return out;
+}
 
 // Admin: Add testimonial manually
 export const addTestimonialAdmin = async (req, res) => {
@@ -9,8 +22,7 @@ export const addTestimonialAdmin = async (req, res) => {
       return res.status(400).json({ success: false, message: 'Name and message are required.' });
     }
 
-    const image = req.files?.image?.[0]?.path?.replace(/\\/g, '/');
-    const video = req.files?.video?.[0]?.path?.replace(/\\/g, '/');
+    const media = await testimonialMediaFromFiles(req.files, null);
 
     const testimonial = await testimonialService.createTestimonial({
       name,
@@ -22,8 +34,7 @@ export const addTestimonialAdmin = async (req, res) => {
       tag,
       outcome,
       showOnLanding: showOnLanding === undefined || showOnLanding === 'true' || showOnLanding === true,
-      image,
-      video,
+      ...media,
     }, true);
     res.json({ success: true, message: 'Testimonial added and approved.', data: testimonial });
   } catch (err) {
@@ -64,12 +75,9 @@ export const updateTestimonialAdmin = async (req, res) => {
       update.showOnLanding = showOnLanding === 'true' || showOnLanding === true;
     }
 
-    if (req.files?.image?.[0]) {
-      update.image = req.files.image[0].path.replace(/\\/g, '/');
-    }
-    if (req.files?.video?.[0]) {
-      update.video = req.files.video[0].path.replace(/\\/g, '/');
-    }
+    const existing = await Testimonial.findById(id).lean();
+    const media = await testimonialMediaFromFiles(req.files, existing);
+    Object.assign(update, media);
 
     const testimonial = await testimonialService.updateTestimonial(id, update);
     if (!testimonial) return res.status(404).json({ success: false, message: 'Testimonial not found.' });
@@ -134,11 +142,9 @@ export const submitTestimonial = async (req, res) => {
       }
     }
 
-    const image = req.files?.image?.[0]?.path?.replace(/\\/g, '/');
-    const video = req.files?.video?.[0]?.path?.replace(/\\/g, '/');
+    const media = await testimonialMediaFromFiles(req.files, null);
 
-    // Include name and userId in testimonial data if provided
-    const testimonialData = { message, rating, role, courseId, image, video };
+    const testimonialData = { message, rating, role, courseId, ...media };
     if (finalUserId) {
       testimonialData.userId = finalUserId;
     }

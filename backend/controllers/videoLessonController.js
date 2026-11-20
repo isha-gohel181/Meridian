@@ -1,6 +1,7 @@
 import videoLessonService from '../service/videoLessonService.js';
 import fs from "fs";
 import path from "path";
+import { singleUploadUrl } from "../utils/mediaStorage.js";
 
 class VideoLessonController {
   // Create a new video lesson with file upload
@@ -9,8 +10,8 @@ class VideoLessonController {
       let videoFilePath = null;
 
       if (req.file) {
-        // Multer upload
-        videoFilePath = req.file.path;
+        const stored = await singleUploadUrl(req.file, 'lessons/video');
+        videoFilePath = path.join(process.cwd(), stored.replace(/^\//, ''));
       } else if (req.body.filePath) {
         // Chunked upload
         videoFilePath = path.resolve(req.body.filePath);
@@ -57,7 +58,8 @@ class VideoLessonController {
       let videoFilePath = null;
 
       if (req.file) {
-        videoFilePath = req.file.path;
+        const stored = await singleUploadUrl(req.file, 'lessons/video');
+        videoFilePath = path.join(process.cwd(), stored.replace(/^\//, ''));
       } else if (req.body.filePath) {
         videoFilePath = path.resolve(req.body.filePath);
         if (!fs.existsSync(videoFilePath)) {

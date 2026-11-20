@@ -6,6 +6,7 @@ import { generateOrderNumber } from "../utils/generateOrderNo.js";
 import axios from 'axios';
 import crypto from 'crypto';
 import { getRazorpayKeys, verifyRazorpaySignature } from "../config/razorpay.js";
+import { persistImageFile } from "../utils/mediaStorage.js";
 
 // GET /api/ebooks - Fetch all active ebooks
 export const getEbooks = async (req, res) => {
@@ -38,7 +39,7 @@ export const createEbook = async (req, res) => {
       ebookData.isActive = ebookData.isActive === 'true' || ebookData.isActive === true;
     }
     if (req.file) {
-      ebookData.coverImage = `/uploads/${req.file.filename}`;
+      ebookData.coverImage = (await persistImageFile(req.file, 'ebooks')).url;
     }
     const ebook = new Ebook(ebookData);
     await ebook.save();
@@ -56,7 +57,7 @@ export const updateEbook = async (req, res) => {
       ebookData.isActive = ebookData.isActive === 'true' || ebookData.isActive === true;
     }
     if (req.file) {
-      ebookData.coverImage = `/uploads/${req.file.filename}`;
+      ebookData.coverImage = (await persistImageFile(req.file, 'ebooks')).url;
     }
     const ebook = await Ebook.findByIdAndUpdate(req.params.id, ebookData, { new: true, runValidators: true });
     if (!ebook) {

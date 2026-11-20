@@ -3,6 +3,7 @@ import { getMemoryCache } from '../config/memoryCache.js';
 import emailService from '../utils/emailService.js';
 import notificationService from '../service/notificationService.js';
 import User from '../models/user.js';
+import { persistImageFile, singleUploadUrl } from '../utils/mediaStorage.js';
 
 
 const jobPostService = JobPostService;
@@ -96,7 +97,7 @@ export const createJobPost = async (req, res) => {
         });
       }
 
-      jobPostData.thumbnail = req.file.path.replace(/\\/g, '/');
+      jobPostData.thumbnail = (await persistImageFile(req.file, 'jobs')).url;
     }
 
     const jobPost = await jobPostService.create(jobPostData);
@@ -268,7 +269,7 @@ export const submitProposal = async (req, res) => {
         });
       }
 
-      proposal.cv = req.file.path.replace(/\\/g, '/');
+      proposal.cv = await singleUploadUrl(req.file, 'jobs/cv');
     }
 
     const updatedJob = await jobPostService.submitProposal(jobId, proposal);
@@ -395,7 +396,7 @@ export const updateJobPost = async (req, res) => {
         });
       }
 
-      updateData.thumbnail = req.file.path.replace(/\\/g, '/');
+      updateData.thumbnail = (await persistImageFile(req.file, 'jobs')).url;
     }
 
     // Remove undefined values and empty objects

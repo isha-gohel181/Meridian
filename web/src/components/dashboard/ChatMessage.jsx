@@ -1,4 +1,4 @@
-import { getApiBase } from '../../utils/apiBase.js';
+import { getApiBase, resolveMediaUrl } from '../../utils/apiBase.js';
 import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -184,12 +184,8 @@ const ChatMessage = ({ msg, isSent, onReply, isSupportChat }) => {
     const getAttachmentUrl = (file) => {
         const rawUrl = file?.url || file?.path || file?.urlPreview || file?.preview;
         if (!rawUrl) return '';
-        if (rawUrl.startsWith('http') || rawUrl.startsWith('blob:')) {
-            return rawUrl;
-        }
-        const rawBase = import.meta.env.VITE_IMAGE_URL || getApiBase();
-        const baseUrl = rawBase.replace(/\/api\/v1\/?$/, '');
-        return `${baseUrl}${rawUrl.startsWith('/') ? '' : '/'}${rawUrl}`;
+        if (rawUrl.startsWith('blob:')) return rawUrl;
+        return resolveMediaUrl(rawUrl);
     };
 
     const imageAttachments = attachments.filter(file => {

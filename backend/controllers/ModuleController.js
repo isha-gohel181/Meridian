@@ -3,27 +3,16 @@ import { getMemoryCache } from '../config/memoryCache.js';
 import mongoose from 'mongoose';
 import Module from '../models/Module.js';
 import NotificationService from "../service/notificationService.js";
-
+import { persistImageFile, replaceStoredImage } from "../utils/mediaStorage.js";
 const moduleService = new ModuleService();
 
 export const createModule = async (req, res) => {
   try {
     // Attach uploaded image path (if any) to payload and normalize to '/uploads/...' URL
     const payload = { ...req.body };
-    if (req.file && req.file.path) {
-      const rawPath = req.file.path.replace(/\\/g, '/');
-      const uploadsIndex = rawPath.indexOf('uploads/');
-      if (uploadsIndex !== -1) {
-        const relativePath = rawPath.substring(uploadsIndex);
-        const pathParts = relativePath.split('/');
-        const filename = pathParts.pop();
-        const directory = pathParts.join('/');
-        const encodedFilename = encodeURIComponent(filename);
-        const encodedPath = `${directory}/${encodedFilename}`;
-        payload.image = `/${encodedPath}`; // store as '/uploads/...'
-      } else {
-        payload.image = rawPath.replace(/^\//, '');
-      }
+    if (req.file) {
+      const { url } = await persistImageFile(req.file, 'modules');
+      payload.image = url;
     }
 
     const module = await moduleService.create(payload);
@@ -86,20 +75,11 @@ export const updateModule = async (req, res) => {
   try {
     const { id } = req.params;
     const payload = { ...req.body };
-    if (req.file && req.file.path) {
-      const rawPath = req.file.path.replace(/\\/g, '/');
-      const uploadsIndex = rawPath.indexOf('uploads/');
-      if (uploadsIndex !== -1) {
-        const relativePath = rawPath.substring(uploadsIndex);
-        const pathParts = relativePath.split('/');
-        const filename = pathParts.pop();
-        const directory = pathParts.join('/');
-        const encodedFilename = encodeURIComponent(filename);
-        const encodedPath = `${directory}/${encodedFilename}`;
-        payload.image = `/${encodedPath}`; // store as '/uploads/...'
-      } else {
-        payload.image = rawPath.replace(/^\//, '');
-      }
+    if (req.file) {
+      const existing = await Module.findById(id).select('image').lean();
+      const { url } = await persistImageFile(req.file, 'modules');
+      if (existing?.image) await replaceStoredImage(existing.image, url);
+      payload.image = url;
     }
 
     const updated = await moduleService.updateById(id, payload);

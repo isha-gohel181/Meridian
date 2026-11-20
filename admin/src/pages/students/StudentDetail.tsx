@@ -51,7 +51,7 @@ import { getStudentForumPosts, getStudentForumReplies, getStudentJobPosts } from
 import axiosInstance from "../../services/axiosConfig";
 import { downloadCertificateByUserAndCourse } from "../../utils/certificateDownload";
 
-const ImageUrl = import.meta.env.VITE_IMAGE_URL;
+import { resolveMediaUrl } from "../../utils/apiBase";
 
 function StudentDetail() {
   const params = useParams();
@@ -1319,7 +1319,7 @@ function StudentDetail() {
                       </div>
                       <div className="flex items-center space-x-2">
                         <a
-                          href={doc.Doc ? `${ImageUrl}/${doc.Doc}` : "#"}
+                          href={doc.Doc ? resolveMediaUrl(doc.Doc) : "#"}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="inline-flex items-center px-3 py-1.5 text-xs font-medium text-blue-600 bg-blue-100 rounded-md hover:bg-blue-200 transition-colors"
@@ -1328,7 +1328,7 @@ function StudentDetail() {
                           View
                         </a>
                         {/* <a
-                          href={doc.Doc ? `${ImageUrl}/${doc.Doc}` : "#"}
+                          href={doc.Doc ? resolveMediaUrl(doc.Doc) : "#"}
                           download
                           className="inline-flex items-center px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors"
                         >
@@ -1336,7 +1336,7 @@ function StudentDetail() {
                           Download
                         </a> */}
                         <a
-                          href={doc.Doc ? `${ImageUrl}/${doc.Doc}` : "#"}
+                          href={doc.Doc ? resolveMediaUrl(doc.Doc) : "#"}
                           download={doc.name || `document-${index + 1}.pdf`}
                           className="inline-flex items-center px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors"
                         >

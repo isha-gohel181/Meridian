@@ -1,4 +1,4 @@
-import { getApiBase } from '../utils/apiBase.js';
+import { resolveMediaUrl } from '../utils/apiBase.js';
 import React, { useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
@@ -11,10 +11,7 @@ import { useLanguage } from '../context/LanguageContext'
 const buildImageUrl = (n) => {
   const url = n.imageUrl || n.coverImage || n.image
   if (!url) return '/news_placeholder.png'
-  const rawBase = getApiBase()
-  const baseUrl = rawBase.replace(/\/api\/v1\/?$/, '')
-  const finalUrl = url.startsWith('http') ? url : `${baseUrl}/uploads/news/${url}`
-  return encodeURI(finalUrl)
+  return encodeURI(resolveMediaUrl(url))
 }
 
 const formatArticle = (n) => ({

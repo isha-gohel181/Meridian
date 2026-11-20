@@ -1,5 +1,6 @@
 import CourseFeedback from "../models/CourseFeedback.js";
 import { getMemoryCache } from "../config/memoryCache.js";
+import { singleUploadUrl } from "../utils/mediaStorage.js";
 
 export const submitFeedback = async (req, res) => {
   try {
@@ -10,7 +11,7 @@ export const submitFeedback = async (req, res) => {
       return res.status(400).json({ success: false, message: "Missing required fields" });
     }
 
-    let attachment = req.file?.path?.replace(/\\/g, "/");
+    let attachment = req.file ? await singleUploadUrl(req.file, 'course-feedback') : undefined;
 
     // Check if feedback already exists for this user and course
     let feedback = await CourseFeedback.findOne({ user: userId, course: courseId });

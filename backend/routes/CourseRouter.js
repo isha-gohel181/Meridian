@@ -1,5 +1,6 @@
 import express from 'express';
 import multer from 'multer';
+import { upload as sharedUpload } from '../middlewares/upload-middleware.js';
 import { createCourse, getCourseById, getAllCourses, updateCourse, deleteCourse, getCourseContents, getCourseAttachments,getMyCourses,getCoursesByCategory,getCourseBySlug ,getAllCourseAttachments ,filterCourses, sortCourses, disableDripForUser, addContentSection, updateContentSection, deleteContentSection, reorderContentSections, getContentSections, updateCourseBranding, getCourseLandingPage, uploadCourseEditorImage, uploadCourseEditorVideo, addReview, deleteReview, updateReview } from '../controllers/CourseController.js';
 // import { createCourse, getCourseById, getAllCourses, updateCourse, deleteCourse, getCourseContents, getCourseAttachments,getMyCourses  } from '../controllers/CourseController.js';
 import accessTokenAutoRefresh from '../middlewares/accessTokenAutoRefresh.js';
@@ -13,16 +14,7 @@ import courseContentVideoUpload from '../middlewares/courseContentVideoUpload.js
 
 const courseRouter = express.Router();
 
-// Configure multer for file uploads
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'uploads/'); // Ensure this directory exists
-  },
-  filename: (req, file, cb) => {
-    cb(null, `${Date.now()}-${file.originalname}`);
-  },
-});
-const upload = multer({ storage });
+const upload = sharedUpload;
 
 
 courseRouter.get(

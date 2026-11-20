@@ -1,9 +1,8 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
+import React, { useCallback, useMemo, useRef, useState } from 'react'
+import { motion, useReducedMotion } from 'framer-motion'
 import { useSelector } from 'react-redux'
 import clsx from 'clsx'
 import { useLanguage } from '../../context/LanguageContext'
-import { resolveMediaUrl } from '../../utils/apiBase'
 import LandingReveal from './LandingReveal'
 
 const ITEM_KEYS = [
@@ -23,9 +22,6 @@ const ITEM_IMAGES = [
   '/meridian/stats_community.jpg',
 ]
 
-const PREVIEW_ID = 'why-meridian-preview'
-
-const MotionImg = motion.img
 const MotionLi = motion.li
 const MotionP = motion.p
 const MotionAccent = motion.div
@@ -79,45 +75,12 @@ function buildRowMotion(prefersReduced) {
   }
 }
 
-function WhyPreviewCard({ activeItem, prefersReduced, previewId }) {
-  const rawSrc = activeItem?.image || ITEM_IMAGES[0]
-  const src = resolveMediaUrl(rawSrc)
-  const altText = activeItem?.title || 'Preview'
-  const transition = prefersReduced
-    ? { duration: 0.15, ease: 'easeOut' }
-    : { duration: 0.38, ease: [0.22, 1, 0.36, 1] }
-
-  return (
-    <div
-      {...(previewId ? { id: previewId, 'aria-live': 'polite' } : { 'aria-hidden': true })}
-      className="relative aspect-[4/3] w-full min-h-[200px] max-w-md overflow-hidden rounded-2xl border border-white/[0.12] bg-black/30 shadow-[0_28px_90px_-24px_rgba(0,0,0,0.55),0_0_0_1px_rgba(255,255,255,0.06)_inset] backdrop-blur-[2px]"
-    >
-      <AnimatePresence mode="sync">
-        <MotionImg
-          key={src}
-          src={src}
-          alt={altText}
-          decoding="async"
-          loading="lazy"
-          className="absolute inset-0 h-full w-full object-cover"
-          initial={prefersReduced ? { opacity: 0 } : { opacity: 0, scale: 1.04 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={prefersReduced ? { opacity: 0 } : { opacity: 0, scale: 1.02 }}
-          transition={transition}
-        />
-      </AnimatePresence>
-    </div>
-  )
-}
-
 const LandingWhyChoose = () => {
   const { t } = useLanguage()
   const prefersReduced = useReducedMotion()
   const olRef = useRef(null)
 
   const [activeIndex, setActiveIndex] = useState(null)
-  const [showPreviewPanel, setShowPreviewPanel] = useState(false)
-
   const whySettings = useSelector((state) => state.config?.settings?.landingWhyChoose) || {}
 
   const eyebrow = whySettings.eyebrow || t('landingWhyEyebrow')
@@ -140,19 +103,6 @@ const LandingWhyChoose = () => {
       image: ITEM_IMAGES[idx % ITEM_IMAGES.length],
     }))
   }, [whySettings.items, t])
-
-  useEffect(() => {
-    if (typeof window === 'undefined' || typeof matchMedia === 'undefined') return
-    const mq = window.matchMedia('(min-width: 768px)')
-    const sync = () => setShowPreviewPanel(mq.matches)
-    sync()
-    mq.addEventListener('change', sync)
-    return () => mq.removeEventListener('change', sync)
-  }, [])
-
-  const displayIndex =
-    activeIndex != null && activeIndex >= 0 && activeIndex < items.length ? activeIndex : 0
-  const activeItem = items[displayIndex] ?? items[0]
 
   const resetActive = useCallback(() => {
     setActiveIndex(null)
@@ -195,15 +145,14 @@ const LandingWhyChoose = () => {
           </p>
         </div>
 
-        <div className="relative md:grid md:grid-cols-12 md:gap-10 lg:gap-14" onMouseLeave={resetActive}>
-          <ol ref={olRef} className="border-t border-white/10 md:col-span-7">
+        <div className="relative" onMouseLeave={resetActive}>
+          <ol ref={olRef} className="min-w-0 border-t border-white/10">
             {items.map((item, index) => {
               const isRowLit = activeIndex === index
               return (
                 <MotionLi
                   key={item.number || index}
                   tabIndex={0}
-                  aria-describedby={showPreviewPanel ? PREVIEW_ID : undefined}
                   variants={rowMotion.li}
                   animate={isRowLit ? 'active' : 'rest'}
                   initial={false}
@@ -214,7 +163,7 @@ const LandingWhyChoose = () => {
                   onFocus={() => setActiveIndex(index)}
                   onBlur={handleRowBlur}
                   className={clsx(
-                    'group relative grid gap-3 border-b border-white/10 py-8 outline-none md:grid-cols-12 md:items-baseline md:gap-8 md:py-10',
+                    'group relative flex flex-col gap-3 border-b border-white/10 py-8 outline-none md:flex-row md:items-center md:gap-6 md:py-9 lg:gap-10 lg:py-10',
                     'focus-visible:ring-2 focus-visible:ring-accent/80 focus-visible:ring-offset-2 focus-visible:ring-offset-brand-brown',
                   )}
                 >
@@ -228,12 +177,12 @@ const LandingWhyChoose = () => {
                   />
                   <span
                     aria-hidden
-                    className="font-newsreader text-[clamp(3.25rem,8vw,5rem)] font-medium leading-none text-transparent transition-colors duration-300 group-hover:text-accent group-focus-visible:text-accent md:col-span-2"
+                    className="shrink-0 font-newsreader text-4xl font-medium leading-none text-transparent transition-colors duration-300 group-hover:text-accent group-focus-visible:text-accent md:w-20 md:text-5xl"
                     style={{ WebkitTextStroke: '1px rgba(196, 162, 58, 0.55)' }}
                   >
                     {item.number}
                   </span>
-                  <h3 className="font-newsreader text-2xl font-medium tracking-tight text-white transition-colors duration-300 group-hover:text-accent group-focus-visible:text-accent md:col-span-4 md:text-[1.65rem]">
+                  <h3 className="font-newsreader text-2xl font-medium tracking-tight text-white transition-colors duration-300 group-hover:text-accent group-focus-visible:text-accent md:min-w-[10rem] md:max-w-[38%] md:flex-1 md:shrink-0 md:text-[1.65rem]">
                     {item.title}
                   </h3>
                   <MotionP
@@ -242,7 +191,7 @@ const LandingWhyChoose = () => {
                     initial={false}
                     whileHover={prefersReduced ? undefined : 'hover'}
                     transition={rowMotion.descTransition}
-                    className="text-sm leading-relaxed text-white/70 md:col-span-6 md:text-[15px] md:leading-relaxed"
+                    className="min-w-0 flex-1 text-sm leading-relaxed text-white/70 md:text-[15px] md:leading-relaxed"
                   >
                     {item.desc}
                   </MotionP>
@@ -250,16 +199,6 @@ const LandingWhyChoose = () => {
               )
             })}
           </ol>
-
-          <aside className="hidden md:col-span-5 md:block">
-            <div className="sticky top-28">
-              <WhyPreviewCard
-                activeItem={activeItem}
-                prefersReduced={prefersReduced}
-                previewId={PREVIEW_ID}
-              />
-            </div>
-          </aside>
         </div>
       </div>
     </LandingReveal>

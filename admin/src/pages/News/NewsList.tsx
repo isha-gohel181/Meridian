@@ -19,14 +19,9 @@ import { useNavigate } from "react-router-dom";
 import PageBreadcrumb from "../../components/common/PageBreadCrumb";
 import PageMeta from "../../components/common/PageMeta";
 import PopupAlert from "../../components/popUpAlert";
+import { resolveMediaUrl } from "../../utils/apiBase";
 
-const IMAGE_BASE_URL = import.meta.env.VITE_IMAGE_URL || import.meta.env.VITE_BASE_URL || "";
-
-const getImageUrl = (url?: string | null) => {
-  if (!url) return "";
-  if (/^https?:\/\//.test(url)) return url;
-  return `${IMAGE_BASE_URL}/${url}`;
-};
+const getImageUrl = (url?: string | null) => (url ? resolveMediaUrl(url) : "");
 
 export default function NewsList() {
   const dispatch = useAppDispatch();

@@ -1,4 +1,4 @@
-import { getApiBase } from '../utils/apiBase.js';
+import { resolveMediaUrl } from '../utils/apiBase.js';
 import React, { useEffect, useRef, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
@@ -144,13 +144,8 @@ const CourseDetail = () => {
             const parts = rawUrl.split(/[\\/]uploads[\\/]/);
             rawUrl = '/uploads/' + parts[parts.length - 1];
         }
-        if (rawUrl.startsWith('http') || rawUrl.startsWith('blob:')) {
-            apiImage = rawUrl;
-        } else {
-            const rawBase = import.meta.env.VITE_IMAGE_URL || getApiBase();
-            const baseUrl = rawBase.replace(/\/api\/v1\/?$/, '');
-            apiImage = `${baseUrl}${rawUrl.startsWith('/') ? '' : '/'}${rawUrl}`;
-        }
+        apiImage =
+          rawUrl.startsWith('blob:') ? rawUrl : resolveMediaUrl(rawUrl);
     }
 
     return {
@@ -166,13 +161,8 @@ const CourseDetail = () => {
                   const parts = rawUrl.split(/[\\/]uploads[\\/]/);
                   rawUrl = '/uploads/' + parts[parts.length - 1];
               }
-              if (rawUrl.startsWith('http') || rawUrl.startsWith('blob:')) {
-                  lessonImage = rawUrl;
-              } else {
-                  const rawBase = import.meta.env.VITE_IMAGE_URL || getApiBase();
-                  const baseUrl = rawBase.replace(/\/api\/v1\/?$/, '');
-                  lessonImage = `${baseUrl}${rawUrl.startsWith('/') ? '' : '/'}${rawUrl}`;
-              }
+              lessonImage =
+                rawUrl.startsWith('blob:') ? rawUrl : resolveMediaUrl(rawUrl);
           }
 
           return {

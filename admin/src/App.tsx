@@ -101,7 +101,10 @@ const CreateCertificateTemplate = lazy(
 );
 
 const AppMenuSettings = lazy(() => import("./pages/settings/AppMenuSettings"));
-const LandingSectionsSettings = lazy(() => import("./pages/settings/LandingSectionsSettings"));
+const LandingHeroSettings = lazy(() => import("./pages/settings/LandingHeroSettings"));
+const LandingWhyChooseSettings = lazy(() => import("./pages/settings/LandingWhyChooseSettings"));
+const LandingOutcomesSettings = lazy(() => import("./pages/settings/LandingOutcomesSettings"));
+const LandingStatementSettings = lazy(() => import("./pages/settings/LandingStatementSettings"));
 const TestSeriesList = lazy(() => import("./pages/TestSeries/TestSeriesList"));
 const AddEditTestSeries = lazy(() => import("./pages/TestSeries/AddEditTestSeries"));
 const EbookList = lazy(() => import("./pages/Ebooks/EbookList"));
@@ -295,7 +298,12 @@ export default function App() {
                 <Route path="/security-incidents" element={<SecurityIncidents />} />
                 <Route path="/live-classes" element={<ZoomMeetings />} />
                 <Route path="/settings/app-menu" element={<AppMenuSettings />} />
-                <Route path="/landing-sections" element={<LandingSectionsSettings />} />
+                <Route path="/landing-sections" element={<Navigate to="/landing-sections/hero" replace />} />
+                <Route path="/landing-sections/hero" element={<LandingHeroSettings />} />
+                <Route path="/landing-sections/testimonials" element={<Navigate to="/testimonials" replace />} />
+                <Route path="/landing-sections/why-choose" element={<LandingWhyChooseSettings />} />
+                <Route path="/landing-sections/outcomes" element={<LandingOutcomesSettings />} />
+                <Route path="/landing-sections/statement" element={<LandingStatementSettings />} />
 
 
                 {/* Test Series */}

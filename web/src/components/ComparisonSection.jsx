@@ -1,4 +1,4 @@
-import { getApiBase } from '../utils/apiBase.js';
+import { resolveMediaUrl } from '../utils/apiBase.js';
 import React, { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/all'
@@ -182,14 +182,7 @@ const ComparisonSection = ({ course, section }) => {
           </div>
 
           <img
-            src={(() => {
-                const img = course.coverImage;
-                if (!img) return comparisonImg;
-                if (img.startsWith('http')) return img;
-                const rawBase = import.meta.env.VITE_IMAGE_URL || getApiBase();
-                const baseUrl = rawBase.replace(/\/api\/v1\/?$/, '');
-                return `${baseUrl}${img.startsWith('/') ? '' : '/'}${img}`;
-            })()} 
+            src={course.coverImage ? resolveMediaUrl(course.coverImage) : comparisonImg} 
             alt={sanitize(course.title)}
             className="w-full object-cover transition-all duration-700 group-hover:scale-[1.01]"
           />

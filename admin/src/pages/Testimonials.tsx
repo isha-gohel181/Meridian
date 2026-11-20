@@ -3,7 +3,15 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../store';
 import { fetchTestimonials, addTestimonial, resetTestimonialState, deleteTestimonial, updateTestimonial } from '../store/slices/testimonial';
-import { Star, Plus, X, MessageCircle, User, Briefcase, Loader2, AlertCircle, CheckCircle, Search, Trash2, Edit, Image as ImageIcon } from 'lucide-react';
+import { Star, Plus, X, MessageCircle, User, Briefcase, Loader2, AlertCircle, CheckCircle, Search, Trash2, Edit, Image as ImageIcon, Save, RotateCcw } from 'lucide-react';
+import axiosInstance from '../services/axiosConfig';
+import toast from 'react-hot-toast';
+import PageMeta from '../components/common/PageMeta';
+import PageBreadcrumb from '../components/common/PageBreadCrumb';
+import {
+  DEFAULT_LANDING_TESTIMONIALS,
+  LandingTestimonialsConfig,
+} from './settings/landingSectionConfig';
 
 interface TestimonialData {
     _id?: string;
@@ -146,6 +154,10 @@ const TestimonialsPage: React.FC = () => {
     const [imageFile, setImageFile] = useState<File | null>(null);
     const [imagePreview, setImagePreview] = useState<string | null>(null);
 
+    const [landingCopy, setLandingCopy] = useState<LandingTestimonialsConfig>(DEFAULT_LANDING_TESTIMONIALS);
+    const [savingLandingCopy, setSavingLandingCopy] = useState(false);
+    const [landingCopyLoaded, setLandingCopyLoaded] = useState(false);
+
     const resetForm = () => {
         setFormData({ ...emptyFormData });
         setImageFile(null);
@@ -184,13 +196,56 @@ const TestimonialsPage: React.FC = () => {
         }
     }, [dispatch]);
 
+    const fetchLandingSectionCopy = useCallback(async () => {
+        try {
+            const res = await axiosInstance.get('/settings/all');
+            const settings = res.data?.settings || {};
+            if (settings.landingTestimonials && typeof settings.landingTestimonials === 'object') {
+                const raw = settings.landingTestimonials as Partial<LandingTestimonialsConfig>;
+                setLandingCopy({
+                    eyebrow: raw.eyebrow ?? DEFAULT_LANDING_TESTIMONIALS.eyebrow,
+                    title: raw.title ?? DEFAULT_LANDING_TESTIMONIALS.title,
+                    subtitle: raw.subtitle ?? DEFAULT_LANDING_TESTIMONIALS.subtitle,
+                });
+            }
+        } catch (err) {
+            console.error('Failed to load landing testimonial headings', err);
+        } finally {
+            setLandingCopyLoaded(true);
+        }
+    }, []);
+
+    const handleSaveLandingCopy = async () => {
+        setSavingLandingCopy(true);
+        try {
+            await axiosInstance.put('/settings', { landingTestimonials: landingCopy });
+            toast.success('Landing page section headings saved!');
+        } catch (err: unknown) {
+            const message =
+                err && typeof err === 'object' && 'response' in err
+                    ? (err as { response?: { data?: { message?: string } } }).response?.data?.message
+                    : undefined;
+            toast.error(message || 'Failed to save section headings');
+        } finally {
+            setSavingLandingCopy(false);
+        }
+    };
+
+    const handleResetLandingCopy = () => {
+        if (window.confirm('Reset home page headings to defaults?')) {
+            setLandingCopy(DEFAULT_LANDING_TESTIMONIALS);
+            toast.success('Headings reset (click Save to publish).');
+        }
+    };
+
     useEffect(() => {
         fetchTestimonialsData();
+        fetchLandingSectionCopy();
 
         return () => {
             dispatch(resetTestimonialState());
         };
-    }, [fetchTestimonialsData, dispatch]);
+    }, [fetchTestimonialsData, fetchLandingSectionCopy, dispatch]);
 
     // Filter testimonials based on search term and status
     const filteredTestimonials = testimonials.filter(testimonial => {
@@ -422,6 +477,67 @@ const TestimonialsPage: React.FC = () => {
 
     return (
         <div className="container mx-auto px-4 py-8">
+            <PageMeta title="Landing — Testimonials" />
+            <PageBreadcrumb pageTitle="Testimonials" />
+
+            {/* Landing page section headings */}
+            {landingCopyLoaded && (
+                <section className="mb-8 rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+                    <h2 className="mb-1 text-sm font-semibold uppercase tracking-wider text-gray-500">
+                        Home page voices section
+                    </h2>
+                    <p className="mb-4 text-xs text-gray-500 dark:text-gray-400">
+                        Headings shown above the testimonial carousel on the public landing page.
+                    </p>
+                    <div className="grid gap-4 md:grid-cols-2">
+                        <div>
+                            <label className="mb-1 block text-xs font-semibold uppercase text-gray-500">Eyebrow</label>
+                            <input
+                                value={landingCopy.eyebrow}
+                                onChange={(e) => setLandingCopy((p) => ({ ...p, eyebrow: e.target.value }))}
+                                className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+                            />
+                        </div>
+                        <div>
+                            <label className="mb-1 block text-xs font-semibold uppercase text-gray-500">Title</label>
+                            <input
+                                value={landingCopy.title}
+                                onChange={(e) => setLandingCopy((p) => ({ ...p, title: e.target.value }))}
+                                className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+                            />
+                        </div>
+                        <div className="md:col-span-2">
+                            <label className="mb-1 block text-xs font-semibold uppercase text-gray-500">Subtitle</label>
+                            <textarea
+                                rows={2}
+                                value={landingCopy.subtitle}
+                                onChange={(e) => setLandingCopy((p) => ({ ...p, subtitle: e.target.value }))}
+                                className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+                            />
+                        </div>
+                    </div>
+                    <div className="mt-4 flex flex-wrap justify-end gap-3">
+                        <button
+                            type="button"
+                            onClick={handleResetLandingCopy}
+                            className="inline-flex items-center gap-2 rounded-lg border border-gray-300 px-4 py-2 text-xs font-semibold uppercase text-gray-700 dark:border-gray-600 dark:text-gray-200"
+                        >
+                            <RotateCcw className="h-4 w-4" />
+                            Reset headings
+                        </button>
+                        <button
+                            type="button"
+                            onClick={handleSaveLandingCopy}
+                            disabled={savingLandingCopy}
+                            className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-5 py-2 text-xs font-semibold uppercase text-white hover:bg-blue-700 disabled:opacity-50"
+                        >
+                            {savingLandingCopy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
+                            Save headings
+                        </button>
+                    </div>
+                </section>
+            )}
+
             {/* Success/Error Popup */}
             <Popup
                 isVisible={popup.isVisible}
@@ -443,10 +559,10 @@ const TestimonialsPage: React.FC = () => {
             <div className="flex flex-col sm:flex-row justify-between items-center mb-6">
                 <div className="mb-4 sm:mb-0">
                     <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
-                        Testimonials Management
+                        Testimonials list
                     </h1>
                     <p className="text-sm text-gray-600 dark:text-gray-400 mt-1 max-w-xl">
-                        Approved testimonials with &quot;Show on landing page&quot; appear in the website home review section.
+                        Add, approve, and choose which quotes appear on the home page carousel (&quot;Show on landing page&quot;).
                     </p>
                 </div>
                 <button

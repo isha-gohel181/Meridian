@@ -1,6 +1,19 @@
 import TextLessonService from "../service/textLessonService.js";
 import { getMemoryCache } from "../config/memoryCache.js";
 import NotificationService from "../service/notificationService.js"; // Import notification service
+import { persistUploadFile } from "../utils/mediaStorage.js";
+
+async function attachmentFromMulter(file) {
+  const stored = await persistUploadFile(file, {
+    imageFolder: "meridian/lessons",
+    diskSubdir: "lessons",
+  });
+  return {
+    fileName: file.originalname,
+    file: stored,
+    uploadedAt: new Date(),
+  };
+}
 
 /** Multipart forms may repeat keys; Mongoose needs a single ObjectId string. */
 const scalarField = (value) => {
@@ -24,17 +37,9 @@ export const createTextLesson = async (req, res) => {
     );
 
     if (req.file) {
-      attachments.push({
-        fileName: req.file.originalname,
-        file: (req.file.path || req.file.filename || "").replace(/\\/g, "/"),
-        uploadedAt: new Date(),
-      });
+      attachments.push(await attachmentFromMulter(req.file));
     } else if (uploadedFiles.length > 0) {
-      attachments = uploadedFiles.map((file) => ({
-        fileName: file.originalname,
-        file: (file.path || file.filename || "").replace(/\\/g, "/"),
-        uploadedAt: new Date(),
-      }));
+      attachments = await Promise.all(uploadedFiles.map(attachmentFromMulter));
     }
 
     const lessonData = {

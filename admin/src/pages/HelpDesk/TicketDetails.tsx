@@ -1,4 +1,4 @@
-import { getImageBase } from "../../utils/apiBase";
+import { resolveMediaUrl } from "../../utils/apiBase";
 import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import {
@@ -63,9 +63,6 @@ const TicketDetails: React.FC<{ isEditMode: boolean }> = ({ isEditMode }) => {
     message: "",
     type: "",
   });
-  const ImageUrl =
-    getImageBase() + "/uploads/";
-
   useEffect(() => {
     if (ticketId && !ticket) {
       dispatch(fetchSupportTicketById(ticketId));
@@ -110,7 +107,7 @@ const TicketDetails: React.FC<{ isEditMode: boolean }> = ({ isEditMode }) => {
   };
 
   const handleFileDownload = (filePath: string) => {
-    let fileUrl = `${ImageUrl}/${getFileName(filePath)}`;
+    let fileUrl = resolveMediaUrl(filePath);
     fileUrl = normalizeUrl(fileUrl);
     const link = document.createElement("a");
     link.href = fileUrl;
@@ -121,7 +118,7 @@ const TicketDetails: React.FC<{ isEditMode: boolean }> = ({ isEditMode }) => {
   };
 
   const handleFileView = (filePath: string) => {
-    let fileUrl = `${ImageUrl}/${getFileName(filePath)}`;
+    let fileUrl = resolveMediaUrl(filePath);
     fileUrl = normalizeUrl(fileUrl);
     window.open(fileUrl, "_blank");
   };

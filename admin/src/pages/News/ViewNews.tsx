@@ -20,15 +20,9 @@ import {
 } from "lucide-react";
 import PageBreadcrumb from "../../components/common/PageBreadCrumb";
 import PageMeta from "../../components/common/PageMeta";
+import { resolveMediaUrl } from "../../utils/apiBase";
 
-const IMAGE_BASE_URL =
-  import.meta.env.VITE_IMAGE_URL || import.meta.env.VITE_BASE_URL || "";
-
-const getImageUrl = (url?: string | null) => {
-  if (!url) return "";
-  if (/^https?:\/\//.test(url)) return url;
-  return `${IMAGE_BASE_URL}/${url}`;
-};
+const getImageUrl = (url?: string | null) => (url ? resolveMediaUrl(url) : "");
 
 // Helper to safely extract text from possibly structured values
 const extractText = (val: any): string => {

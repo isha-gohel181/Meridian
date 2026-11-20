@@ -13,6 +13,7 @@ import {
   Pencil,
   Trash2,
 } from "lucide-react";
+import { resolveMediaUrl } from "../../utils/apiBase";
 
 const Banner: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -23,7 +24,7 @@ const Banner: React.FC = () => {
   const [statusFilter, setStatusFilter] = useState("");
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
-  const VITE_IMAGE = import.meta.env.VITE_IMAGE_URL;
+  const bannerImageUrl = (path: string) => resolveMediaUrl(path);
 
   useEffect(() => {
     dispatch(fetchBanners());
@@ -164,7 +165,7 @@ const Banner: React.FC = () => {
                   </td>
                   <td className="px-6 py-4 text-sm text-gray-700 dark:text-gray-300">
                     <img
-                      src={`${VITE_IMAGE}/${banner.image}`}
+                      src={bannerImageUrl(banner.image)}
                       alt={banner.title}
                       className="w-14 h-10 rounded-sm object-cover"
                       onError={(e) => {

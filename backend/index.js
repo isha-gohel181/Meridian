@@ -18,10 +18,12 @@ import mongoose from 'mongoose';
 import path from 'path';
 
 dotenv.config();
+import './config/cloudinary.js';
 import './cron/wordPressNewsCron.js';
 
-// Serve uploads directory so uploaded files are reachable
-app.use('/uploads', (await import('express')).default.static(path.join(process.cwd(), 'uploads')));
+if (process.env.SERVE_LEGACY_UPLOADS !== 'false') {
+  app.use('/uploads', (await import('express')).default.static(path.join(process.cwd(), 'uploads')));
+}
 
 // Create the HTTP server for Express and Socket.io
 const server = http.createServer(app);

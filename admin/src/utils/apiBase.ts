@@ -19,10 +19,29 @@ export function getImageBase(): string {
 
 export function resolveMediaUrl(path: string): string {
   if (!path) return "";
-  if (path.startsWith("http://") || path.startsWith("https://")) return path;
-  const base = getImageBase();
-  const normalized = path.startsWith("/") ? path.slice(1) : path;
-  return `${base}/${normalized}`;
+  const value = String(path).trim();
+  if (value.startsWith("http://") || value.startsWith("https://")) return value;
+  if (value.startsWith("/meridian/") || value.startsWith("meridian/")) {
+    const webPublic = (
+      import.meta.env.VITE_WEB_URL ||
+      import.meta.env.VITE_PUBLIC_WEB_URL ||
+      ""
+    ).replace(/\/+$/, "");
+    const rel = value.startsWith("/") ? value : `/${value}`;
+    return webPublic ? `${webPublic}${rel}` : rel;
+  }
+  if (value.startsWith("/uploads/") || value.startsWith("uploads/")) {
+    const base = getImageBase();
+    const clean = value.startsWith("/") ? value : `/${value}`;
+    return `${base}${clean}`;
+  }
+  if (value.startsWith("/")) {
+    return `${getImageBase()}${value}`;
+  }
+  if (!value.includes("/")) {
+    return `${getImageBase()}/uploads/profiles/${value}`;
+  }
+  return `${getImageBase()}/${value}`;
 }
 
 export function getSocketBase(): string {

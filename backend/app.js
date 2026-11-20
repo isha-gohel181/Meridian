@@ -65,8 +65,10 @@ app.use(cors(corsOptions));
 // Handle OPTIONS preflight for all routes (path-to-regexp v8+ compatible syntax)
 app.options("/{*splat}", cors(corsOptions));
 
-// Serve static files with CORS headers
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+// Legacy local uploads (PDF/video and pre-migration images)
+if (process.env.SERVE_LEGACY_UPLOADS !== 'false') {
+  app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+}
 
 // Rate limiting
 const authLimiter = rateLimit({

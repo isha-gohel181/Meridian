@@ -36,12 +36,8 @@ export const bulkUploadQuizQuestions = async (req, res) => {
       return res.status(400).json({ success: false, message: 'No file uploaded' });
     }
     
-    // The file is saved to disk because of the default multer config
-    const fileBuffer = fs.readFileSync(req.file.path);
+    const fileBuffer = req.file.buffer || fs.readFileSync(req.file.path);
     const parsedQuestions = await parseQuizFile(fileBuffer, req.file.mimetype, req.file.originalname);
-    
-    // Clean up the uploaded file
-    try { fs.unlinkSync(req.file.path); } catch (e) {}
     
     res.status(200).json({ success: true, message: 'Questions parsed successfully', questions: parsedQuestions });
   } catch (err) {

@@ -51,6 +51,7 @@ import SecureWrapper from './components/SecureWrapper'
 import Lenis from '@studio-freight/lenis'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { SmoothScrollProvider } from './context/SmoothScrollContext'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -111,13 +112,37 @@ const AppContent = () => {
       ScrollTrigger.update()
     })
 
+    ScrollTrigger.scrollerProxy(document.documentElement, {
+      scrollTop(value) {
+        if (arguments.length) {
+          lenis.scrollTo(value, { immediate: true })
+        }
+        return lenis.scroll
+      },
+      getBoundingClientRect() {
+        return {
+          top: 0,
+          left: 0,
+          width: window.innerWidth,
+          height: window.innerHeight,
+        }
+      },
+      pinType: document.documentElement.style.transform ? 'transform' : 'fixed',
+    })
+
+    const onScrollerRefresh = () => lenis.resize()
+    ScrollTrigger.addEventListener('refresh', onScrollerRefresh)
+
     const updateLenis = (time) => {
       lenis.raf(time * 1000)
     }
 
     gsap.ticker.add(updateLenis)
+    gsap.ticker.lagSmoothing(0)
 
     return () => {
+      ScrollTrigger.removeEventListener('refresh', onScrollerRefresh)
+      ScrollTrigger.scrollerProxy(document.documentElement, {})
       lenis.destroy()
       gsap.ticker.remove(updateLenis)
     }
@@ -311,7 +336,7 @@ const AppContent = () => {
   }, [location.pathname])
 
   return (
-    <>
+    <SmoothScrollProvider lenisRef={lenisRef}>
       {/* <Preloader onComplete={() => setIsLoaded(true)} /> */}
 
       {/* 1. Navbar stays fixed above the perspective wrap */}
@@ -391,7 +416,7 @@ const AppContent = () => {
 
       {/* Support Protocol - Persistent on Dashboards (Excluded on Messages page) */}
       {isDashboard && location.pathname !== '/dashboard/messages' && <GlobalChatButton />}
-    </>
+    </SmoothScrollProvider>
   )
 }
 

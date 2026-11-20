@@ -13,8 +13,31 @@ import axios from 'axios';
 import CourseEnrollment from "../models/CourseEnrollment.js";
 import CoursePlan from "../models/CoursePlan.js";
 import { CERTIFICATE_ORGANIZATION_DEFAULT } from "../utils/appBrand.js";
+import { fieldUploadUrl, persistImageFile, singleUploadUrl } from "../utils/mediaStorage.js";
 
 const courseService = new CourseService();
+
+const COURSE_IMAGE_FIELDS = [
+  "thumbnail",
+  "coverImage",
+  "verticalCarouselImage",
+  "featuredImageBanner",
+  "mentorImage",
+  "certificateImage",
+];
+
+async function mergeCourseUploads(files, body = {}) {
+  const merged = {};
+  for (const field of COURSE_IMAGE_FIELDS) {
+    const uploaded = await fieldUploadUrl(files, field, `courses/${field}`);
+    if (uploaded) merged[field] = uploaded;
+    else if (body[field] !== undefined && body[field] !== "") merged[field] = body[field];
+  }
+  const demo = await fieldUploadUrl(files, "demoVideo", "courses/demo");
+  if (demo) merged.demoVideo = demo;
+  else if (body.demoVideo !== undefined) merged.demoVideo = body.demoVideo;
+  return merged;
+}
 
 // Helper to parse accessDuration string
 function parseAccessDuration(durationStr) {
@@ -195,19 +218,13 @@ export const createCourse = async (req, res) => {
       }
     }
 
-    // Merge file paths into course data
+    const fileUploads = await mergeCourseUploads(req.files, req.body);
+
     const courseData = {
       ...req.body,
+      ...fileUploads,
       instructorId,
-      // thumbnail: req.files?.thumbnail ? req.files.thumbnail[0].path : undefined,
-      // coverImage: req.files?.coverImage ? req.files.coverImage[0].path : undefined,
-      thumbnail: req.files?.thumbnail?.[0]?.path.replace(/\\/g, "/"),
-      coverImage: req.files?.coverImage?.[0]?.path.replace(/\\/g, "/"),
-      verticalCarouselImage: req.files?.verticalCarouselImage?.[0]?.path.replace(/\\/g, "/"),
-      featuredImageBanner: req.files?.featuredImageBanner?.[0]?.path.replace(/\\/g, "/"),
-      mentorImage: req.files?.mentorImage?.[0]?.path.replace(/\\/g, "/") || req.body.mentorImage,
-      certificateImage: req.files?.certificateImage?.[0]?.path.replace(/\\/g, "/") || req.body.certificateImage,
-      demoVideo: req.files?.demoVideo?.[0]?.path ? req.files.demoVideo[0].path.replace(/\\/g, "/") : req.body.demoVideo || "",
+      demoVideo: fileUploads.demoVideo ?? req.body.demoVideo ?? "",
       seoMetaDescription: req.body.seoMetaDescription,
       seoContent: req.body.seoContent,
       // Parse comma-separated arrays
@@ -260,7 +277,6 @@ export const createCourse = async (req, res) => {
       mentorName: req.body.mentorName,
       mentorTitle: req.body.mentorTitle,
       mentorDescription: req.body.mentorDescription,
-      mentorImage: req.files?.mentorImage?.[0]?.path.replace(/\\/g, "/") || req.body.mentorImage,
       mentorAchievements: req.body.mentorAchievements
         ? (typeof req.body.mentorAchievements === 'string'
           ? JSON.parse(req.body.mentorAchievements)
@@ -1539,19 +1555,18 @@ export const updateCourse = async (req, res) => {
     };
 
 
+    const fileUploads = await mergeCourseUploads(req.files, req.body);
+
     const updateData = {
       ...req.body,
-      thumbnail: req.files?.thumbnail?.[0]?.path.replace(/\\/g, "/"),
-      coverImage: req.files?.coverImage?.[0]?.path.replace(/\\/g, "/"),
-      verticalCarouselImage: req.files?.verticalCarouselImage?.[0]?.path.replace(/\\/g, "/"),
-      featuredImageBanner: req.files?.featuredImageBanner?.[0]?.path.replace(/\\/g, "/"),
-      mentorImage: req.files?.mentorImage?.[0]?.path.replace(/\\/g, "/") || req.body.mentorImage,
-      certificateImage: req.files?.certificateImage?.[0]?.path.replace(/\\/g, "/") || req.body.certificateImage,
-      demoVideo: req.files?.demoVideo?.[0]?.path
-        ? req.files.demoVideo[0].path.replace(/\\/g, "/")
-        : req.body.demoVideo !== undefined
-          ? req.body.demoVideo
-          : undefined,
+      ...fileUploads,
+      ...(fileUploads.demoVideo === undefined && req.body.demoVideo === undefined
+        ? {}
+        : {
+            demoVideo:
+              fileUploads.demoVideo ??
+              (req.body.demoVideo !== undefined ? req.body.demoVideo : undefined),
+          }),
 
       level: parseArray(req.body.level),
       languages: parseArray(req.body.languages),
@@ -3237,41 +3252,15 @@ export const uploadCourseEditorImage = async (req, res) => {
       });
     }
 
-    // Extract relative path from uploads directory
-    const filePath = req.file.path.replace(/\\/g, "/");
+    const { url: imageUrl } = await persistImageFile(req.file, "courses/editor");
 
-    // Find the 'uploads' directory in the path and extract everything after it
-    const uploadsIndex = filePath.indexOf("uploads/");
-    if (uploadsIndex !== -1) {
-      const relativePath = filePath.substring(uploadsIndex);
-
-      // Split path into directory and filename to encode filename separately
-      const pathParts = relativePath.split("/");
-      const filename = pathParts.pop();
-      const directory = pathParts.join("/");
-
-      // URL encode the filename to handle spaces and special characters
-      const encodedFilename = encodeURIComponent(filename);
-      const encodedPath = `${directory}/${encodedFilename}`;
-
-      // Return relative path - Editor component will prepend API_BASE_URL
-      // This ensures the URL works regardless of proxy/port configuration
-      const imageUrl = `/${encodedPath}`;
-
-      // Return EditorJS expected format
-      return res.status(200).json({
-        success: 1,
-        file: {
-          url: imageUrl,
-          name: filename || req.file.originalname,
-        },
-      });
-    } else {
-      return res.status(500).json({
-        success: 0,
-        message: "Failed to process uploaded file",
-      });
-    }
+    return res.status(200).json({
+      success: 1,
+      file: {
+        url: imageUrl,
+        name: req.file.originalname,
+      },
+    });
   } catch (error) {
     console.error("Upload Course Editor Image Error:", error);
     return res.status(500).json({
@@ -3291,41 +3280,17 @@ export const uploadCourseEditorVideo = async (req, res) => {
       });
     }
 
-    // Extract relative path from uploads directory
-    const filePath = req.file.path.replace(/\\/g, "/");
+    const stored = await singleUploadUrl(req.file, "courses/editor/video");
 
-    // Find the 'uploads' directory in the path and extract everything after it
-    const uploadsIndex = filePath.indexOf("uploads/");
-    if (uploadsIndex !== -1) {
-      const relativePath = filePath.substring(uploadsIndex);
-
-      // Split path into directory and filename to encode filename separately
-      const pathParts = relativePath.split("/");
-      const filename = pathParts.pop();
-      const directory = pathParts.join("/");
-
-      // URL encode the filename to handle spaces and special characters
-      const encodedFilename = encodeURIComponent(filename);
-      const encodedPath = `${directory}/${encodedFilename}`;
-
-      // Return relative path - SimpleVideo component will prepend API_BASE_URL
-      const videoUrl = `/${encodedPath}`;
-
-      return res.status(200).json({
-        success: true,
-        message: "Course content video uploaded successfully",
-        data: {
-          url: videoUrl,
-          path: `/${encodedPath}`,
-          filename: filename || req.file.originalname,
-        },
-      });
-    } else {
-      return res.status(500).json({
-        success: false,
-        message: "Failed to process uploaded file",
-      });
-    }
+    return res.status(200).json({
+      success: true,
+      message: "Course content video uploaded successfully",
+      data: {
+        url: stored,
+        path: stored,
+        filename: req.file.originalname,
+      },
+    });
   } catch (error) {
     console.error("Upload Course Editor Video Error:", error);
     return res.status(500).json({
@@ -3350,7 +3315,7 @@ export const addReview = async (req, res) => {
         rating: Number(req.body.rating || 5),
         reviewText: req.body.reviewText,
         sequence: Number(req.body.sequence || 0),
-        image: req.file ? req.file.path.replace(/\\/g, "/") : ""
+        image: req.file ? (await persistImageFile(req.file, "courses/reviews")).url : ""
       };
     } else {
       // Raw JSON body
